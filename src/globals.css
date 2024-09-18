@@ -1,0 +1,266 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 25 100% 100%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.5rem;
+
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+  }
+
+  .dark {
+    --background: 0 0% 5%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 254 10% 9%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  .hover-row {
+    @apply hover:bg-muted/50;
+  }
+
+  .marker {
+    background-image: url("assets/icons/pointer.svg");
+    background-size: cover;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+}
+
+.compass {
+  display: block;
+  width: var(--compass-size, 80px);
+  height: var(--compass-size, 80px);
+  border-radius: 100%;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  position: relative;
+  color: #555;
+  text-shadow: 1px 1px 1px white;
+
+  &:before {
+    font-weight: bold;
+    position: absolute;
+    text-align: center;
+    /* content: "N"; */
+    font-size: calc(var(--compass-size) * 0.175);
+    /* Adjust based on size */
+    left: 25%;
+    width: 50%;
+    top: 2px;
+  }
+
+  .direction {
+    height: 100%;
+    width: 100%;
+    display: block;
+    background: #f2f6f5;
+    background: -moz-linear-gradient(top, #f2f6f5 0%, #cbd5d6 100%);
+    background: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      color-stop(0%, #f2f6f5),
+      color-stop(100%, #cbd5d6)
+    );
+    background: -webkit-linear-gradient(top, #f2f6f5 0%, #cbd5d6 100%);
+    background: -o-linear-gradient(top, #f2f6f5 0%, #cbd5d6 100%);
+    border-radius: 100%;
+
+    p {
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      position: absolute;
+      top: 45%;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      line-height: var(--compass-size);
+      display: block;
+      margin-top: calc(var(--compass-size) * -0.5625);
+      font-size: calc(var(--compass-size) * 0.35);
+      font-weight: bold;
+      color: black;
+
+      span {
+        display: block;
+        line-height: normal;
+        margin-top: calc(var(--compass-size) * -0.3);
+        font-size: calc(var(--compass-size) * 0.1375);
+        /* text-transform: uppercase; */
+        font-weight: normal;
+      }
+    }
+  }
+
+  .arrow {
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    top: 0;
+
+    &:after {
+      content: "";
+      width: 0;
+      height: 0;
+      border-left: calc(var(--compass-size) * 0.125) solid transparent;
+      border-right: calc(var(--compass-size) * 0.125) solid transparent;
+      border-bottom: calc(var(--compass-size) * 0.35) solid rgb(255, 208, 0);
+      position: absolute;
+      box-shadow: 0 0 10 rgba(0, 0, 0, 0.2);
+      top: calc(var(--compass-size) * -0.3);
+      left: 45%;
+      margin-left: calc(var(--compass-size) * -0.0625);
+      z-index: 99;
+    }
+
+    &.NNE {
+      transform: rotate(22.5deg);
+    }
+
+    &.NE {
+      transform: rotate(45deg);
+    }
+
+    &.ENE {
+      transform: rotate(67.5deg);
+    }
+
+    &.E {
+      transform: rotate(90deg);
+    }
+
+    &.ESE {
+      transform: rotate(112.5deg);
+    }
+
+    &.SE {
+      transform: rotate(135deg);
+    }
+
+    &.SSE {
+      transform: rotate(157.5deg);
+    }
+
+    &.S {
+      transform: rotate(180deg);
+    }
+
+    &.SSW {
+      transform: rotate(202.5deg);
+    }
+
+    &.SW {
+      transform: rotate(-135deg);
+    }
+
+    &.WSW {
+      transform: rotate(-114.5deg);
+    }
+
+    &.W {
+      transform: rotate(-90deg);
+    }
+
+    &.WNW {
+      transform: rotate(-69.5deg);
+    }
+
+    &.NW {
+      transform: rotate(-45deg);
+    }
+
+    &.NNW {
+      transform: rotate(-24.5deg);
+    }
+  }
+}
+
+.mainContainer {
+  width: 100%;
+  height: calc(100vh-5rem);
+  background-color: #f6f8fc;
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+.cardContainer {
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+}

@@ -1,0 +1,241 @@
+import { useTheme } from "@/components/theme-provider";
+import Starfield from "react-starfield";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { login } from "@/lib/types/validation";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import toast from "react-hot-toast";
+import { useUserContext } from "@/lib/context/authContext";
+import { useEffect, useState } from "react";
+import HashLoader from "react-spinners/PacmanLoader";
+import PuffLoader from "react-spinners/PuffLoader";
+
+const server = import.meta.env.VITE_SERVER_LOCAL;
+
+const Signin = () => {
+  const navigate = useNavigate();
+  const { theme } = useTheme();
+  const [isLoading, setIsLoading] = useState(false);
+  const { isAuthenticated, checkAuthUser } = useUserContext();
+
+  const form = useForm<z.infer<typeof login>>({
+    resolver: zodResolver(login),
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = async (values: z.infer<typeof login>) => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${server}/user/signin`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+        credentials: "include",
+      });
+      const data = await response.json();
+
+      if (!data) {
+        toast("Login failed. Please try again.");
+        return;
+      }
+
+      const isLoggedIn = await checkAuthUser();
+      console.log("user logged in? ", isLoggedIn);
+      if (isLoggedIn) {
+        form.reset();
+
+        navigate("/");
+      } else {
+        toast("Login failed. Please try again.");
+
+        return;
+      }
+    } catch (error) {
+      toast.error("Failed to login");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <>
+      {isAuthenticated ? (
+        <Navigate to="/" />
+      ) : (
+        <>
+          {isLoading ? (
+            <div className="w-full h-full flex justify-center items-center relative">
+              <HashLoader
+                color={"#fbd008"}
+                size={150}
+                className="absolute top-0 left-[15.5rem] z-50"
+              />
+              <PuffLoader
+                color={"#545454"}
+                size={500}
+                className="absolute top-0 left-[-10rem]"
+              />
+            </div>
+          ) : (
+            <Form {...form}>
+              <div className=" w-full h-full items-center flex flex-col justify-center gap-5">
+                <Starfield
+                  starCount={5000}
+                  starColor={theme === "dark" ? [255, 255, 255] : [0, 0, 0]}
+                  speedFactor={0.05}
+                />
+
+                <svg
+                  className="h-14 absolute top-5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 1000 1000"
+                >
+                  <path
+                    className="fill-[#545454] dark:fill-white"
+                    d="M143.74,240.62l108.36-62.6v504.11l-88.65,88.65-19.72-11.39c-28.79-16.6-46.51-47.3-46.51-80.55v-357.65c0-33.25,17.72-63.95,46.51-80.55Z"
+                  />
+                  <path
+                    className="fill-[#545454] dark:fill-white"
+                    d="M753.15,181.09l-408.02,408.02V124.35l108.36-62.6c28.79-16.6,64.23-16.6,93.02,0l206.64,119.34Z"
+                  />
+                  <path
+                    className="fill-[#545454] dark:fill-white"
+                    d="M902.76,321.17v357.65c0,33.25-17.72,63.95-46.51,80.55l-19.72,11.39-270.77-270.77,270.77-270.77,19.72,11.39c28.79,16.6,46.51,47.3,46.51,80.55Z"
+                  />
+                  <path
+                    className="fill-[#FBD008]"
+                    d="M753.15,818.91l-206.64,119.34c-28.79,16.6-64.23,16.6-93.02,0l-206.64-119.34,253.15-253.15,253.15,253.15Z"
+                  />
+                </svg>
+
+                <div className="font-Courier py-4 px-6 pb-6 rounded-lg w-[40rem] max-w-full bg-[#F6F8FC] dark:bg-gray-800">
+                  <p className="leading-7 text-gray-400">
+                    Welcome to Kloudtrack by Kloudtech, your official weather
+                    monitoring hub! 🌤️ <br></br>
+                    If you landed here by mistake, head over to our{" "}
+                    <a
+                      className="text-blue-400 hover:text-blue-300 dark:text-blue-400 dark:hover:text-blue-300 "
+                      href="http://kloudtrack.kloudtechsea.com"
+                    >
+                      public website
+                    </a>
+                    . <br></br>
+                    Otherwise, let's dive into some weather tracking fun!
+                    <br></br>
+                  </p>
+                  <br></br>
+
+                  <span className="text-blue-500">
+                    Enter your e-mail/username to begin*{" "}
+                  </span>
+                  <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="flex flex-col gap-1 w-full mt-1"
+                  >
+                    <div className="pt-2 flex flex-row items-center gap-3">
+                      <svg
+                        width="1rem"
+                        height="1rem"
+                        viewBox="0 0 24.00 24.00"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          className="stroke-red-500"
+                          d="M0 12H18M18 12L13 7M18 12L13 17"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        ></path>
+                      </svg>
+                      <div className="w-full">
+                        <FormField
+                          control={form.control}
+                          name="username"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormControl>
+                                <Input
+                                  type="text"
+                                  placeholder="username"
+                                  className="border-r-2 rounded-lg py-1 px-2 grow"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage className="shad-form_message" />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </div>
+                    <br></br>
+                    <span className="text-blue-500">Input your password* </span>
+                    <div className="pt-2 flex flex-row items-center gap-3">
+                      <svg
+                        width="1rem"
+                        height="1rem"
+                        viewBox="0 0 24.00 24.00"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          className="stroke-red-500"
+                          d="M0 12H18M18 12L13 7M18 12L13 17"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        ></path>
+                      </svg>
+                      <div className="w-full">
+                        <FormField
+                          control={form.control}
+                          name="password"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormControl>
+                                <Input
+                                  type="password"
+                                  placeholder="password"
+                                  className="border-r-2 rounded-lg py-1 px-2 grow"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage className="shad-form_message" />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <Button
+                        // onClick={() => navigate("/dashboard")}
+                        className="rounded-lg bg-gray-200 text-gray-700 "
+                      >
+                        Continue
+                      </Button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </Form>
+          )}
+        </>
+      )}
+    </>
+  );
+};
+
+export default Signin;

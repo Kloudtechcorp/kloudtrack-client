@@ -1,0 +1,143 @@
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { ModeToggle } from "./ModeToggle";
+import { useTheme } from "@/components/theme-provider";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { SidebarProps } from "@/lib/types";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { INITIAL_USER, useUserContext } from "@/lib/context/authContext";
+
+const LeftSidebar = ({ expand }: SidebarProps) => {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const { setUser, user, setIsAuthenticated } = useUserContext();
+  const server = import.meta.env.VITE_SERVER_LOCAL;
+  // Logout to redirect to signin
+  const handleLogout = async () => {
+    try {
+      const response = await fetch(`${server}/user/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+      const data = await response.json();
+      if (response.ok) {
+        toast(data.message);
+        setIsAuthenticated(false);
+        setUser(INITIAL_USER);
+        navigate("/signin");
+      }
+    } catch (error) {
+      toast.error((error as Error).message);
+    }
+  };
+
+  const sidebarItems = [
+    {
+      imgUrl: "assets/icons/dashboard.svg",
+      route: "/",
+      label: "Dashboard",
+    },
+    {
+      imgUrl: "assets/icons/map.svg",
+      route: "/map",
+      label: "Map",
+    },
+    {
+      imgUrl: "assets/icons/graphs.svg",
+      route: "/graphs",
+      label: "Graphs",
+    },
+    {
+      imgUrl: "assets/icons/satellite.svg",
+      route: "/satellite",
+      label: "Satellite",
+    },
+
+    {
+      imgUrl: "assets/icons/settings.svg",
+      route: "/settings",
+      label: "Settings",
+    },
+
+    user.role === "ADMIN"
+      ? {
+          imgUrl: "assets/icons/adminProtected.svg",
+          route: "/admin-settings",
+          label: "Admin",
+        }
+      : null,
+  ];
+  return (
+    <nav
+      className={`bg-white dark:bg-[#181819] ease-in-out duration-300 hidden md:flex ${
+        expand ? "w-48" : "w-[5rem]"
+      }`}
+    >
+      <div className="flex flex-col gap-7 justify-between w-full">
+        <div className="flex flex-col justify-center h-2/3">
+          <ul className="flex flex-col gap-4 justify-center p-[1rem]">
+            {sidebarItems.map((link) => {
+              if (!link) return null;
+              const isActive = pathname === link.route;
+              return (
+                <li
+                  key={link.route}
+                  className={` ${
+                    isActive
+                      ? "dark:bg-blue-400 bg-yellow-400"
+                      : "hover:bg-gray-200 dark:hover:bg-gray-600"
+                  } rounded-full`}
+                >
+                  <NavLink
+                    to={link.route}
+                    className={`flex gap-4 items-center py-3  ${
+                      expand ? "justify-start px-4" : "justify-center"
+                    }`}
+                  >
+                    <img src={link.imgUrl} className={`dark:invert `} />{" "}
+                    <div
+                      className={`ease-in-out transition-all delay-300 duration-300 ${
+                        expand ? "block" : "hidden"
+                      }`}
+                    >
+                      {link.label}
+                    </div>
+                  </NavLink>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
+        <div className="w-full flex flex-col justify-end items-center gap-3 py-3">
+          <ModeToggle expand={expand} />
+
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <div className="flex gap-3">
+                  <img
+                    src="assets/icons/logout.svg"
+                    className="bg-white dark:bg-transparent dark:invert w-full"
+                    onClick={handleLogout}
+                  />
+                  <span className={expand ? "block" : "hidden"}>Logout</span>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Logout</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+export default LeftSidebar;

@@ -12,62 +12,41 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import toast from "react-hot-toast";
-import { useState } from "react";
-import { userValidation } from "@/lib/types/validation";
-const server = import.meta.env.VITE_SERVER_LOCAL || "http://localhost:8000";
+import { userValidation } from "@/types/validation";
+import { useCreateUser } from "@/hooks/react-query/mutations";
+
+const defaultValues = {
+  username: "",
+  role: "USER",
+  password: "",
+};
 
 const UserCreation = () => {
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
+  const { mutate: createUser, isPending } = useCreateUser();
   const form = useForm<z.infer<typeof userValidation>>({
     resolver: zodResolver(userValidation),
-    defaultValues: {
-      username: "",
-      role: "USER",
-      password: "",
-    },
+    defaultValues,
   });
 
   const clearForms = () => {
-    form.setValue("username", "");
-    form.setValue("password", "");
-    form.setValue("role", "USER");
+    form.reset(defaultValues);
   };
 
-  // BACKEND SERVER SUBMISSION
-  const onSubmit = async (values: z.infer<typeof userValidation>) => {
-    setIsLoading(true);
-    try {
-      const response = await fetch(`${server}/admin/signup`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-        credentials: "include",
-      });
-      const data = await response.json();
-      if (response.ok) {
-        setIsLoading(false);
-        toast.success("Successfully created user!");
+  const onSubmit = (values: z.infer<typeof userValidation>) => {
+    createUser(values, {
+      onSuccess: () => {
         clearForms();
-      } else {
-        setIsLoading(false);
-        toast.error(`${data.error}`);
+      },
+      onError: () => {
         clearForms();
-      }
-    } catch (error) {
-      setIsLoading(false);
-      toast.error("Failed to create a user");
-      clearForms();
-    }
+      },
+    });
   };
 
   return (
     <Form {...form}>
       <div className="px-5 w-full">
-        {isLoading && <div className="w-full "></div>}
+        {isPending && <div className="w-full "></div>}
         <span className="flex py-5 font-bold text-lg">
           Add information for new user
         </span>
@@ -121,7 +100,7 @@ const UserCreation = () => {
           </>
           <div className="w-full flex justify-end">
             <Button type="submit" className={`my-5 dark:bg-blue-200`}>
-              {isLoading ? "Loading..." : "Submit"}
+              {isPending ? "Loading..." : "Submit"}
             </Button>
           </div>
         </form>

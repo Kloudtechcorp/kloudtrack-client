@@ -1,6 +1,5 @@
+import { Barangay } from "@/types";
 import barangays from "../data/psgc/barangays.json";
-import municipalities from "../data/psgc/municipalities.json";
-import { Barangay, Municipality } from "../types/index";
 
 export default {
   all: (): Array<Barangay> => barangays,

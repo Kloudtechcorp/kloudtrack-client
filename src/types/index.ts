@@ -221,3 +221,27 @@ export type profileType = {
     updatedAt: string;
   };
 };
+
+export type stationStaticType = {
+  stationName: string;
+  isActive: boolean;
+  imageLink: string;
+  latitude: string;
+  longitude: string;
+  stationType: {
+    typeName: string;
+  };
+  region: {
+    region: string;
+  };
+  province: {
+    province: string;
+  };
+  municipality: {
+    municipality: string;
+  };
+  barangay: {
+    barangay: string;
+    psgc: string;
+  };
+};

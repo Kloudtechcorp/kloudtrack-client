@@ -1,5 +1,5 @@
 import { Input } from "@/components/ui/input";
-import { dataProps } from "@/lib/types";
+import { dataProps } from "@/types";
 import React, { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 

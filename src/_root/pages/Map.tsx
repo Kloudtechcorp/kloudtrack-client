@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { WeatherDataProps } from "@/lib/types";
-import { locationArray, styles } from "@/lib/objects/arrays";
+import { styles } from "@/lib/objects/arrays";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription } from "@/components/ui/card";
 import {
@@ -19,161 +18,72 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useStationContext } from "@/hooks/context/stationContext";
+import { stationStaticType } from "@/types";
+import { stationDashboardType } from "@/types/queryTypes";
+import { getStationData } from "@/api/get";
+import toast from "react-hot-toast";
+import PuffLoader from "react-spinners/PuffLoader";
+import {
+  batteryPercentage,
+  formatDateString,
+  getBatteryImg,
+  getWindDirectionLabel,
+} from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 
-import {
-  mergeStationData,
-  chartData,
-  stationInfo,
-} from "@/_root/data/variableData";
-import { useStationData } from "@/lib/context/stationContext";
-
 const Map = () => {
+  const { stationNames } = useStationContext();
+  const [isLoading, setIsLoading] = useState(false);
   const mapContainer = useRef<HTMLDivElement>(null);
-  const [data, setData] = useState<WeatherDataProps | null>(null);
-  const [time, setTime] = useState("");
-  const [dataStation, setDataStation] = useState<DataStationType[]>([]);
-  const navigate = useNavigate();
-
-  type DataStationType = {
-    dataName: string;
-    iconSrc: string;
-    toolTip: string;
-    dataValue: number;
-    dataLabel: string;
-  };
-
-  const getWindDirectionLabel = (value: number) => {
-    if (value === 0 || value === 360) {
-      return "°N";
-    } else if (value > 0 && value < 90) {
-      return "°NE";
-    } else if (value === 90) {
-      return "°E";
-    } else if (value > 90 && value < 180) {
-      return "°SE";
-    } else if (value === 180) {
-      return "°S";
-    } else if (value > 180 && value < 270) {
-      return "°SW";
-    } else if (value === 270) {
-      return "°W";
-    } else if (value > 270 && value < 360) {
-      return "°NW";
-    } else {
-      return `${value}°`;
-    }
-  };
-
-  const getBatteryImg = (level: number) => {
-    if (level == 100) {
-      return "assets/img/batteryFull.svg";
-    } else if (level >= 80) {
-      return "assets/img/battery6Bar.svg";
-    } else if (level >= 50) {
-      return "assets/img/battery5Bar.svg";
-    } else if (level >= 30) {
-      return "assets/img/battery4Bar.svg";
-    } else if (level > 0) {
-      return "assets/img/battery2Bar.svg";
-    } else if (level == 0) {
-      return "assets/img/battery0Bar.svg";
-    }
-  };
-
-  const updateDataStation = (weatherData: WeatherDataProps) => {
-    const newDataStation: DataStationType[] = [
-      {
-        dataName: "Temperature",
-        iconSrc: "assets/icons/temp.svg",
-        toolTip: "This is a tip for temperature....",
-        dataValue: weatherData.temperature,
-        dataLabel: "°C",
-      },
-      {
-        dataName: "Heat Index",
-        iconSrc: "assets/icons/heatIndex.svg",
-        toolTip: "This is a tip for humidity....",
-        dataValue: weatherData.heatIndex,
-        dataLabel: "°C",
-      },
-      {
-        dataName: "Humidity",
-        iconSrc: "assets/icons/humidity.svg",
-        toolTip: "This is a tip for humidity....",
-        dataValue: weatherData.humidity,
-        dataLabel: "%",
-      },
-      {
-        dataName: "Precipitation",
-        iconSrc: "assets/icons/precip.svg",
-        toolTip: "This is a tip for precipitation....",
-        dataValue: weatherData.precipitation,
-        dataLabel: "mm/hr",
-      },
-      {
-        dataName: "Air Pressure",
-        iconSrc: "assets/icons/airPressure.svg",
-        toolTip: "This is a tip for air pressure....",
-        dataValue: weatherData.airPressure,
-        dataLabel: "mb",
-      },
-      {
-        dataName: "Wind Speed",
-        iconSrc: "assets/icons/windSpeed.svg",
-        toolTip: "This is a tip for temperature....",
-        dataValue: weatherData.windSpeed,
-        dataLabel: "kph",
-      },
-      {
-        dataName: "Wind Direction",
-        iconSrc: "assets/icons/windDirection.svg",
-        toolTip: "This is a tip for temperature....",
-        dataValue: weatherData.windDirection,
-        dataLabel: getWindDirectionLabel(weatherData.windDirection),
-      },
-      {
-        dataName: "Irradiance",
-        iconSrc: "assets/icons/windDirection.svg",
-        toolTip: "This is a tip for irradiance....",
-        dataValue: weatherData.windDirection,
-        dataLabel: getWindDirectionLabel(weatherData.irradiance),
-      },
-      {
-        dataName: "Light Intensity",
-        iconSrc: "assets/icons/windDirection.svg",
-        toolTip: "This is a tip for light intensity....",
-        dataValue: weatherData.windDirection,
-        dataLabel: getWindDirectionLabel(weatherData.lux),
-      },
-      {
-        dataName: "Battery Level",
-        iconSrc: "assets/icons/windDirection.svg",
-        toolTip: "This is a tip for battery level....",
-        dataValue: weatherData.windDirection,
-        dataLabel: getWindDirectionLabel(weatherData.batteryLevel),
-      },
-    ];
-    setDataStation(newDataStation);
-  };
-
+  const [data, setData] = useState<stationDashboardType | null>(null);
+  const [stationDetails, setStationDetails] =
+    useState<stationStaticType | null>(null);
+  const mapRef = useRef<mapboxgl.Map | null>(null);
   const [mapboxStyle, setMapboxStyle] = useState(
     "mapbox://styles/mapbox/satellite-streets-v11"
   );
+  const navigate = useNavigate();
 
-  const monitoringClick = async (
-    stationName: string,
-    currentData: WeatherDataProps
-  ) => {
-    navigate(`/dashboard/${stationName}`, { state: { currentData } });
-  };
+  useEffect(() => {
+    if (mapContainer.current && !mapRef.current) {
+      const map = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: mapboxStyle,
+        center: [120.4818, 14.6417],
+        zoom: 10,
+        maxZoom: 15,
+        minZoom: 8,
+        accessToken: import.meta.env.VITE_MAPBOX_TOKEN,
+        maxBounds: [117.27427453, 5.68100332277, 126.557423944, 18.5552273625],
+      });
+
+      mapRef.current = map;
+
+      map.addControl(new mapboxgl.NavigationControl(), "bottom-left");
+      map.addControl(
+        new mapboxgl.GeolocateControl({
+          positionOptions: {
+            enableHighAccuracy: true,
+          },
+          trackUserLocation: true,
+          showUserHeading: true,
+        }),
+        "bottom-left"
+      );
+
+      return () => {
+        mapRef.current?.remove();
+        mapRef.current = null;
+      };
+    }
+  }, [mapboxStyle]);
 
   useEffect(() => {
     if (mapContainer.current) {
       const map = new mapboxgl.Map({
         container: mapContainer.current,
-        style: "mapbox://styles/mapbox/satellite-streets-v11",
-
+        style: mapboxStyle,
         center: [120.4818, 14.6417],
         zoom: 11,
         maxZoom: 15,
@@ -182,7 +92,6 @@ const Map = () => {
         maxBounds: [117.27427453, 5.68100332277, 126.557423944, 18.5552273625],
       });
 
-      map.setStyle(mapboxStyle);
       map.addControl(new mapboxgl.NavigationControl(), "bottom-left");
       map.addControl(
         new mapboxgl.GeolocateControl({
@@ -197,20 +106,33 @@ const Map = () => {
 
       map.on("load", () => {
         const markerList: mapboxgl.Marker[] = [];
-        locationArray.length > 0 &&
-          locationArray.forEach((item) => {
+        stationNames.length > 0 &&
+          stationNames.forEach((item) => {
             const el = document.createElement("div");
             el.className = "marker";
 
             const marker = new mapboxgl.Marker(el)
-              .setLngLat(item.coordinates)
+              .setLngLat([+item.longitude, +item.latitude])
               .addTo(map);
 
-            marker.getElement().addEventListener("click", () => {
-              setData(item);
-              updateDataStation(item); // Update dataStation with the current marker's data
-              // map.setCenter(item.coordinates);
-              // map.setZoom(13);
+            marker.getElement().addEventListener("click", async () => {
+              setIsLoading(true);
+              setData(null);
+              try {
+                const stationData = await getStationData(item.stationName);
+                if (!stationData) {
+                  toast.error("Error fetching station data");
+                  throw new Error("Error fetching data");
+                }
+                setData(stationData);
+                setStationDetails(item);
+                map.setCenter([+item.longitude, +item.latitude]);
+                map.setZoom(13);
+              } catch (error) {
+                console.log(error);
+              } finally {
+                setIsLoading(false);
+              }
             });
 
             el.addEventListener("mouseenter", () => {
@@ -229,19 +151,7 @@ const Map = () => {
 
       return () => map.remove();
     }
-  }, [mapboxStyle]);
-
-  useEffect(() => {
-    setInterval(() => {
-      const dateObject = new Date();
-      const currentDate = dateObject.toDateString();
-      const currentTime = dateObject.toLocaleTimeString();
-      setTime(currentTime + ", " + currentDate);
-    }, 1000);
-  }, []);
-
-  const mergedData = mergeStationData(stationInfo, chartData);
-  console.log("merged values is ", mergedData);
+  }, [mapboxStyle, stationNames]);
 
   return (
     <>
@@ -249,7 +159,6 @@ const Map = () => {
         <Select
           onValueChange={(value) => {
             setMapboxStyle(value);
-            setData(null);
           }}
           defaultValue={mapboxStyle}
         >
@@ -257,15 +166,20 @@ const Map = () => {
             <SelectValue placeholder="Theme" />
           </SelectTrigger>
           <SelectContent>
-            {styles.map((style) => (
-              <SelectItem value={style.uri} key={style.uri}>
+            {styles.map((style, key) => (
+              <SelectItem value={style.uri} key={key}>
                 {style.title}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
       </div>
-      {data && (
+      {isLoading && (
+        <div className="bg-white dark:bg-gray-950 xs:py-5 shadow-lg rounded-lg lg:top-0 lg:right-0 xs:bottom-0 xs:top-48 w-1/2 xs:max-w-screen-sm flex justify-center items-center">
+          <PuffLoader color={"#545454"} size={500} />
+        </div>
+      )}
+      {data && stationDetails && (
         <div
           className={`bg-white dark:bg-gray-950 xs:py-5 shadow-lg rounded-lg lg:top-0 lg:right-0 xs:bottom-0 xs:top-48 w-1/2 xs:max-w-screen-sm`}
         >
@@ -274,84 +188,303 @@ const Map = () => {
               <img src={"/assets/icons/close.svg"} className="dark:invert" />
             </button>
           </div>
-          <img src={data.imgStation} className="h-1/3 w-full object-fill" />
+          <img
+            src={stationDetails.imageLink}
+            className="h-1/3 w-full object-cover"
+          />
           <div className="flex flex-col">
-            <span className="w-full px-2 flex justify-between items-center">
-              <span className="h-full flex flex-row my-2  items-center ">
-                <h2 className="font-bold text-2xl capitalize">{data.name}</h2>
-                <span className="px-1 flex items-center">
-                  <img
-                    src={getBatteryImg(data.battery)}
-                    alt="battery level"
-                    className="size-6 dark:invert"
-                  />
-                  <h3 className="text-sm">({data.battery}%)</h3>
-                </span>
-              </span>
-              <h3>{data.type}</h3>
-            </span>
+            <div className="w-full px-2 flex justify-between items-center">
+              <div className="flex gap-2">
+                <h2 className="font-bold my-2 text-2xl capitalize">
+                  {stationDetails.stationName}
+                </h2>
+                <img
+                  src={getBatteryImg(
+                    batteryPercentage(data.currentweather.batteryVoltage)
+                  )}
+                />
+              </div>
+              <h3>{stationDetails.stationType.typeName}</h3>
+            </div>
             <hr className="bg-black dark:bg-white h-[0.1rem] mx-2" />
             <div className="flex flex-row p-2">
               <span className="flex flex-col w-2/3">
-                <h3 className="font-medium">{data.location}</h3>
+                <h3 className="font-medium">
+                  {stationDetails.barangay.barangay},{" "}
+                  {stationDetails.municipality.municipality},{" "}
+                  {stationDetails.province.province}
+                </h3>
                 <p>
-                  {data.coordinates[0]} , {data.coordinates[1]}
+                  {stationDetails.latitude} , {stationDetails.longitude}
                 </p>
               </span>
               <Button
-                className="w-1/3 text-white dark:invert"
-                onClick={() => monitoringClick(data.name, data)}
+                className="w-1/3 dark:bg-secondary dark:text-gray-200"
+                onClick={() =>
+                  navigate(`/dashboard/${stationDetails.stationName}`)
+                }
               >
                 Monitoring Page
               </Button>
             </div>
-
-            <div className="pt-2 px-14">
+            <div className="p-2 ">
               <Card>
-                <CardDescription className="px-4 py-2">
-                  Current Weather Data recorded as of {time}
+                <CardDescription className="p-2">
+                  Current Weather data recorded as of{" "}
+                  {formatDateString(data.currentweather.recordedAt)}
                 </CardDescription>
                 <CardContent>
                   <div className="">
-                    <span className="font-medium text-3xl flex justify-center">
-                      Weather Data
-                    </span>
-
-                    <div className="p-2 pb-0">
+                    <div className="flex justify-center flex-col">
+                      <div className="flex justify-center">
+                        <span className="font-medium text-2xl">
+                          Temperature
+                        </span>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <img
+                                src="/assets/icons/help.svg"
+                                width={15}
+                                className="dark:invert hidden md:block"
+                              />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Temperature is ...</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
+                      <span className="font-medium text-7xl text-center">
+                        {Math.round(data.currentweather.heatIndex * 100) / 100}{" "}
+                        <span className="text-5xl text-">°C</span>
+                      </span>
+                    </div>
+                    <div className="mt-4 p-2 flex border ">
                       <Table>
                         <TableBody>
-                          {dataStation.map((data, index) => (
-                            <TableRow key={index}>
-                              <TableCell className="font-medium w-[12.5%]">
-                                <img
-                                  src={data.iconSrc}
-                                  width={25}
-                                  className="dark:invert hidden md:block"
-                                />
-                              </TableCell>
-                              <TableCell className="font-medium text-lg w-[60%]">
-                                <span>{data.dataName}</span>
-                                <TooltipProvider>
-                                  <Tooltip>
-                                    <TooltipTrigger>
-                                      <img
-                                        src="assets/icons/help.svg"
-                                        width={15}
-                                        className="dark:invert hidden md:block"
-                                      />
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                      <p>{data.toolTip}</p>
-                                    </TooltipContent>
-                                  </Tooltip>
-                                </TooltipProvider>
-                              </TableCell>
-                              <TableCell className="font-bold text-lg">
-                                {data.dataValue}
-                                {data.dataLabel}
-                              </TableCell>
-                            </TableRow>
-                          ))}
+                          <TableRow>
+                            <TableCell className="font-medium w-[12.5%]">
+                              <img
+                                src="assets/icons/heatIndex.svg"
+                                width={25}
+                                className="dark:invert hidden md:block"
+                              />
+                            </TableCell>
+                            <TableCell className="font-medium flex gap-1 items-center">
+                              <span>Heat Index</span>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger>
+                                    <img
+                                      src="/assets/icons/help.svg"
+                                      width={15}
+                                      className="dark:invert hidden md:block"
+                                    />
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Heat Index is ...</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </TableCell>
+                            <TableCell className="font-bold  ">
+                              {Math.round(data.currentweather.heatIndex * 100) /
+                                100}{" "}
+                              °C
+                            </TableCell>
+                          </TableRow>
+
+                          <TableRow>
+                            <TableCell className="font-medium w-[12.5%]">
+                              <img
+                                src="assets/icons/humidity.svg"
+                                width={25}
+                                className="dark:invert hidden md:block"
+                              />
+                            </TableCell>
+                            <TableCell className="font-medium flex gap-1 items-center">
+                              <span>Humidity</span>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger>
+                                    <img
+                                      src="/assets/icons/help.svg"
+                                      width={15}
+                                      className="dark:invert hidden md:block"
+                                    />
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Humidity is ...</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </TableCell>
+                            <TableCell className="font-bold  ">
+                              {Math.round(data.currentweather.humidity * 100) /
+                                100}{" "}
+                              %
+                            </TableCell>
+                          </TableRow>
+
+                          <TableRow>
+                            <TableCell className="font-medium w-[12.5%]">
+                              <img
+                                src="assets/icons/precip.svg"
+                                width={25}
+                                className="dark:invert hidden md:block"
+                              />
+                            </TableCell>
+                            <TableCell className="font-medium flex gap-1 items-center">
+                              <span>Precipitation</span>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger>
+                                    <img
+                                      src="/assets/icons/help.svg"
+                                      width={15}
+                                      className="dark:invert hidden md:block"
+                                    />
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Precipitation is ...</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </TableCell>
+                            <TableCell className="font-bold text-sm ">
+                              {Math.round(
+                                data.currentweather.precipitation * 100
+                              ) / 100}{" "}
+                              mm/hr
+                            </TableCell>
+                          </TableRow>
+
+                          <TableRow>
+                            <TableCell className="font-medium w-[12.5%]">
+                              <img
+                                src="assets/icons/airPressure.svg"
+                                width={25}
+                                className="dark:invert hidden md:block"
+                              />
+                            </TableCell>
+                            <TableCell className="font-medium flex gap-1 items-center">
+                              <span>Air Pressure</span>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger>
+                                    <img
+                                      src="/assets/icons/help.svg"
+                                      width={15}
+                                      className="dark:invert hidden md:block"
+                                    />
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Air Pressure is ...</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </TableCell>
+                            <TableCell className="font-bold  ">
+                              {data.currentweather.pressure} mb
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell className="font-medium w-[12.5%]">
+                              <img
+                                src="/assets/icons/light.svg"
+                                width={25}
+                                className="dark:invert hidden md:block"
+                              />
+                            </TableCell>
+                            <TableCell className="font-medium flex gap-1 items-center">
+                              <span>Light Intensity</span>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger>
+                                    <img
+                                      src="/assets/icons/help.svg"
+                                      width={15}
+                                      className="dark:invert hidden md:block"
+                                    />
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Light Intensity is ...</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </TableCell>
+                            <TableCell className="font-bold text-sm ">
+                              {Math.round(data.currentweather.light * 100) /
+                                100}{" "}
+                              lux
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell className="font-medium w-[12.5%]">
+                              <img
+                                src="/assets/icons/windDirection.svg"
+                                width={25}
+                                className="dark:invert hidden md:block"
+                              />
+                            </TableCell>
+                            <TableCell className="font-medium flex gap-1 items-center">
+                              <span>Wind Direction</span>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger>
+                                    <img
+                                      src="/assets/icons/help.svg"
+                                      width={15}
+                                      className="dark:invert hidden md:block"
+                                    />
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Wind Direction is ...</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </TableCell>
+                            <TableCell className="font-bold text-sm ">
+                              {Math.round(
+                                data.currentweather.windDirection * 100
+                              ) / 100}{" "}
+                              {getWindDirectionLabel(
+                                data.currentweather.windDirection
+                              )}
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell className="font-medium w-[12.5%]">
+                              <img
+                                src="/assets/icons/windSpeed.svg"
+                                width={25}
+                                className="dark:invert hidden md:block"
+                              />
+                            </TableCell>
+                            <TableCell className="font-medium flex gap-1 items-center">
+                              <span>Wind Speed</span>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger>
+                                    <img
+                                      src="/assets/icons/help.svg"
+                                      width={15}
+                                      className="dark:invert hidden md:block"
+                                    />
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Wind Speed is ...</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </TableCell>
+                            <TableCell className="font-bold text-sm ">
+                              {Math.round(data.currentweather.windSpeed * 100) /
+                                100}{" "}
+                              km/h
+                            </TableCell>
+                          </TableRow>
                         </TableBody>
                       </Table>
                     </div>

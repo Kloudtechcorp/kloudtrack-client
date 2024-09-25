@@ -1,4 +1,3 @@
-import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -12,59 +11,37 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import toast from "react-hot-toast";
-import { useState } from "react";
-import { passwordSchema, userValidation } from "@/lib/types/validation";
-import { useUserContext } from "@/lib/context/authContext";
-const server = import.meta.env.VITE_SERVER_LOCAL || "http://localhost:8000";
+import { passwordSchema, userValidation } from "@/types/validation";
+import { useUpdateUserPassword } from "@/hooks/react-query/mutations";
+
+const defaultValues = {
+  currentPassword: "",
+  password: "",
+  confirmPassword: "",
+};
 
 const ChangePassword = () => {
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  const { user } = useUserContext();
+  const { mutateAsync: updateUserPassword, isPending } =
+    useUpdateUserPassword();
+
   const form = useForm<z.infer<typeof passwordSchema>>({
     resolver: zodResolver(passwordSchema),
-    defaultValues: {
-      currentPassword: "",
-      password: "",
-      confirmPassword: "",
-    },
+    defaultValues,
   });
 
   const clearForms = () => {
-    form.setValue("password", "");
-    form.setValue("currentPassword", "");
-    form.setValue("confirmPassword", "");
+    form.reset(defaultValues);
   };
 
-  // BACKEND SERVER SUBMISSION
   const onSubmit = async (values: z.infer<typeof passwordSchema>) => {
-    setIsLoading(true);
-
-    try {
-      const response = await fetch(`${server}/user/update-password`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-        credentials: "include",
-      });
-      const data = await response.json();
-      if (response.ok) {
-        setIsLoading(false);
-        toast.success(data.message);
+    updateUserPassword(values, {
+      onSuccess: () => {
         clearForms();
-      } else {
-        setIsLoading(false);
-        toast.error(`${data.error}`);
+      },
+      onError: () => {
         clearForms();
-      }
-    } catch (error) {
-      setIsLoading(false);
-      toast.error(String(error));
-      clearForms();
-    }
+      },
+    });
   };
 
   return (
@@ -130,7 +107,7 @@ const ChangePassword = () => {
             />
             <div className="w-full h-full flex justify-end">
               <Button type="submit" className={`my-5 dark:bg-blue-200`}>
-                {isLoading ? "Loading..." : "Submit"}
+                {isPending ? "Loading..." : "Submit"}
               </Button>
             </div>
           </div>

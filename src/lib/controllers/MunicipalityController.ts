@@ -1,6 +1,6 @@
 import municipalities from "../data/psgc/municipalities.json";
 import barangays from "../data/psgc/barangays.json";
-import { Municipality, Barangay, MappedMunicipality } from "../types/index";
+import { Municipality, Barangay, MappedMunicipality } from "../../types/index";
 
 const findMunicipalityBarangays = (
   municipalityName: string

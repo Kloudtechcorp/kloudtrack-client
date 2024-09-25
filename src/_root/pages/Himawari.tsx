@@ -8,16 +8,55 @@ const Himawari = () => {
   const [sliderValue, setSliderValue] = useState<number[]>([0]);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [lastValidImgUrl, setLastValidImgUrl] = useState<string | null>(null);
+  const [imageElement, setImageElement] = useState<string>(
+    "https://www.data.jma.go.jp/mscweb/data/himawari/img/se2/se2_snd_0000.jpg"
+  );
+  const [bandSelect, setBandSelect] = useState<string>("snd");
 
-  const getFormattedDate = () => {
-    const today = new Date();
-    today.setDate(today.getDate() - 1); // Subtract one day
-    return today.toLocaleDateString("en-PH", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
+  const convertUTCtoLocal = (
+    utcHour: number,
+    utcMinute: number
+  ): { hour: number; minute: number } => {
+    const localDate = new Date(Date.UTC(1970, 0, 1, utcHour, utcMinute));
+    localDate.setHours(localDate.getHours() + 8); // Adjust for GMT+8
+    return { hour: localDate.getUTCHours(), minute: localDate.getUTCMinutes() };
   };
+
+  const convertLocaltoUTC = (
+    localHour: number,
+    localMinute: number
+  ): { hour: number; minute: number } => {
+    const utcDate = new Date(Date.UTC(1970, 0, 1, localHour - 8, localMinute));
+    return { hour: utcDate.getUTCHours(), minute: utcDate.getUTCMinutes() };
+  };
+
+  const getNearestTimeIndex = (hours: number, minutes: number): number => {
+    const { hour: localHour, minute: localMinute } = convertLocaltoUTC(
+      hours,
+      minutes
+    );
+    const roundedMinutes = Math.floor(localMinute / 10) * 10;
+    const formattedTime = `${localHour
+      .toString()
+      .padStart(2, "0")}${roundedMinutes.toString().padStart(2, "0")}`;
+    return timer.indexOf(formattedTime);
+  };
+
+  const generateDynamicTimerArray = (): string[] => {
+    const now = new Date();
+    const currentHours = now.getUTCHours();
+    const currentMinutes = now.getUTCMinutes();
+
+    const nearestTimeIndex = getNearestTimeIndex(currentHours, currentMinutes);
+    const startTimeIndex = nearestTimeIndex % timer.length;
+
+    return [
+      ...timer.slice(startTimeIndex),
+      ...timer.slice(0, nearestTimeIndex + 1),
+    ];
+  };
+
+  const [dynamicTimerArray, setDynamicTimerArray] = useState<string[]>([]);
 
   const delay = (ms: number): Promise<void> => {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -33,25 +72,31 @@ const Himawari = () => {
   };
 
   const updateImage = async (index: number) => {
-    const imgElement = document.getElementById("imgXd") as HTMLImageElement;
-    const bandSelect = document.getElementById("band") as HTMLSelectElement;
-    const element = bandSelect.value;
+    const element = bandSelect;
 
-    if (imgElement) {
+    if (element) {
+      const { hour: imgHour, minute: imgMinute } = convertUTCtoLocal(
+        parseInt(dynamicTimerArray[index].slice(0, 2)),
+        parseInt(dynamicTimerArray[index].slice(2, 4))
+      );
       const imgName =
         "https://www.data.jma.go.jp/mscweb/data/himawari/img/se2/se2_" +
         element +
         "_" +
-        timer[index] +
+        `${imgHour.toString().padStart(2, "0")}${imgMinute
+          .toString()
+          .padStart(2, "0")}` +
         ".jpg";
+
+      console.log("image name is ", imgName);
 
       const isValidImage = await checkImageUrl(imgName);
 
       if (isValidImage) {
-        imgElement.src = imgName;
+        setImageElement(imgName);
         setLastValidImgUrl(imgName);
       } else if (lastValidImgUrl) {
-        imgElement.src = lastValidImgUrl;
+        setImageElement(lastValidImgUrl);
       }
     }
   };
@@ -64,7 +109,7 @@ const Himawari = () => {
     await delay(500);
 
     setCurrentIndex((prevIndex) =>
-      prevIndex + 1 < timer.length ? prevIndex + 1 : 0
+      prevIndex + 1 < dynamicTimerArray.length - 1 ? prevIndex + 1 : 0
     );
   };
 
@@ -87,6 +132,11 @@ const Himawari = () => {
     setSliderValue([currentIndex]);
   }, [currentIndex]);
 
+  useEffect(() => {
+    const newDynamicTimerArray = generateDynamicTimerArray();
+    setDynamicTimerArray(newDynamicTimerArray);
+  }, []);
+
   const handleSliderChange = (value: number[]) => {
     if (isCycling) {
       setIsCycling(false);
@@ -96,19 +146,113 @@ const Himawari = () => {
     updateImage(value[0]);
   };
 
-  const handleBandChange = () => {
+  const handleBandChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setBandSelect(event.target.value);
     updateImage(currentIndex);
   };
 
+  function getFormattedDate(passedTime: string): string {
+    const now = new Date();
+
+    const roundDownToNearest10Minutes = (date: Date): Date => {
+      const minutes = date.getMinutes();
+      const roundedMinutes = Math.floor(minutes / 10) * 10;
+      const roundedDate = new Date(date);
+      roundedDate.setMinutes(roundedMinutes);
+      return roundedDate;
+    };
+
+    const roundedNow = roundDownToNearest10Minutes(now);
+
+    const [passedHours, passedMinutes] = passedTime.split(":").map(Number);
+    const passedDate = new Date(now);
+    passedDate.setHours(passedHours);
+    passedDate.setMinutes(passedMinutes);
+
+    if (passedDate > roundedNow) {
+      const yesterday = new Date(now);
+      yesterday.setDate(yesterday.getDate() - 1);
+      passedDate.setDate(yesterday.getDate());
+    }
+
+    const formattedDate = passedDate.toLocaleString("en-PH", {
+      timeZone: "Asia/Manila",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+    return formattedDate;
+  }
+
+  const formatDisplayTime = (index: number): string => {
+    if (dynamicTimerArray.length === 0) return "00:00";
+
+    const time = dynamicTimerArray[index];
+
+    const hours = parseInt(time.slice(0, 2), 10);
+    const minutes = parseInt(time.slice(2, 4), 10);
+
+    const date = new Date(Date.UTC(1970, 0, 1, hours, minutes));
+    date.setUTCHours(date.getUTCHours() + 8);
+
+    const rawHours = date.getUTCHours() + 8;
+    const formattedMinutes = date.getUTCMinutes().toString().padStart(2, "0");
+
+    const formattedHours =
+      rawHours >= 24
+        ? (rawHours - 24).toString().padStart(2, "0")
+        : rawHours.toString().padStart(2, "0");
+
+    return `${formattedHours}:${formattedMinutes}`;
+  };
+
   return (
-    <div className="flex mr-12 w-full rounded-2xl dark:bg-secondary bg-white  ">
-      <div className="w-full flex flex-row-reverse xs:flex-col-reverse bg-[#F6F8FC] dark:bg-slate-950 rounded-2xl ">
-        <div className="py-6 px-8 w-[80%]">
+    <div className="flex w-full rounded-2xl dark:bg-secondary bg-white  ">
+      <div className="w-full flex sm:flex-col lg:flex-row bg-[#F6F8FC] dark:bg-slate-950 rounded-2xl ">
+        <div className="h-full w-full flex flex-col relative">
+          <div className="rounded-full p-3 pr-6 bg-white dark:bg-black flex flex-row items-center gap-3 absolute top-5 left-5 w-2/3 text-nowrap ">
+            <button
+              className="bg-blue-500 size-10 p-2 rounded-full"
+              onClick={() => setIsCycling(!isCycling)}
+            >
+              {isCycling ? (
+                <img src="/assets/icons/pause.svg" />
+              ) : (
+                <img src="/assets/icons/play.svg" />
+              )}
+            </button>
+            <div className="flex flex-row gap-2 grow">
+              <Slider
+                className="grow"
+                defaultValue={[0]}
+                max={timer.length - 1}
+                step={1}
+                value={sliderValue}
+                onValueChange={handleSliderChange}
+              />
+              <div className="text-base xs:text-xs">
+                {formatDisplayTime(sliderValue[0])}{" "}
+                {getFormattedDate(formatDisplayTime(sliderValue[0]))} PHT
+              </div>
+            </div>
+          </div>
+
+          <div className="h-full w-full">
+            <img
+              id="imgXd"
+              src={imageElement}
+              alt="Himawari Satellite View"
+              className="rounded-2xl h-full aspect-[701/601] object-cover"
+            />
+          </div>
+        </div>
+
+        <div className="py-6 px-8 w-3/4 sm:w-full ">
           <div>
-            <h2 className="lg:text-3xl xs:text-base font-bold">
+            <h2 className="lg:text-3xl sm:text-base font-bold">
               Real-time Satellite View
             </h2>
-            <span className="p-1 lg:text-sm xs:text-xs">
+            <span className="p-1 lg:text-sm sm:text-xs">
               <p>
                 Source: The True Color Reproduction (TCR) imagery from Himawari
                 Satellite is provided by Meteorological Satellite Center, Japan
@@ -154,14 +298,14 @@ const Himawari = () => {
 
           <div className="p-2 py-20 lg:text-l xs:text-xs text-gray-500 self-end">
             <span className="font-bold">About Himawari 8/9</span>
-            <p className="lg:text-sm text-justify indent-8">
+            <p className="lg:text-sm text-justify indent-8 sm:text-xs">
               The Himawari satellite series was developed and operated by the
               Japan Meteorological Agency (JMA). Named after the Japanese word
               for "sunflower," the Himawari satellites are geostationary
               meteorological satellites positioned at an altitude of
               approximately 35,786 kilometers above the equator.
             </p>
-            <p className="lg:text-sm text-justify indent-8">
+            <p className="lg:text-sm text-justify indent-8 sm:text-xs">
               The latest in the series, Himawari-8 and Himawari-9, launched in
               2014 and 2016 respectively. They provide data every 10 minutes,
               enabling real-time monitoring of weather phenomena such as
@@ -171,45 +315,6 @@ const Himawari = () => {
               wavelengths, providing critical information for weather prediction
               models, disaster management, and climate research.
             </p>
-          </div>
-        </div>
-
-        <div className="h-full w-full flex flex-col relative">
-          <div className="rounded-full p-3 pr-6 bg-white dark:bg-black flex flex-row items-center gap-3 absolute top-5 left-5 w-[70%] text-nowrap">
-            <button
-              className="bg-blue-500 size-10 p-2 rounded-full"
-              onClick={() => setIsCycling(!isCycling)}
-            >
-              {isCycling ? (
-                <img src="/assets/icons/pause.svg" />
-              ) : (
-                <img src="/assets/icons/play.svg" />
-              )}
-            </button>
-            <div className="flex flex-row gap-2 grow">
-              <Slider
-                className="grow"
-                defaultValue={[0]}
-                max={timer.length - 1}
-                step={1}
-                value={sliderValue}
-                onValueChange={handleSliderChange}
-              />
-              <div>
-                {timer[sliderValue[0]].slice(0, 2) +
-                  ":" +
-                  timer[sliderValue[0]].slice(2)}{" "}
-                {getFormattedDate()} PHT
-              </div>
-            </div>
-          </div>
-
-          <div className="h-full w-full overflow-hidden">
-            <img
-              id="imgXd"
-              alt="Himawari Satellite View"
-              className="rounded-2xl h-full aspect-[701/601] object-contain"
-            />
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { useUserContext } from "@/lib/context/authContext";
+import { useUserContext } from "@/hooks/context/authContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import StationRegistration from "./adminpages/StationRegistration";
 import UserCreation from "./adminpages/UserCreation";

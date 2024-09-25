@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useStationData } from "@/lib/context/stationContext";
-import { useUserContext } from "@/lib/context/userContext"; // Ensure this is the correct path to your UserContext
-import { ReusableLineChartProps } from "@/lib/types/chartTypes";
+import { useStationData } from "@/hooks/context/stationContext";
+import { useUserContext } from "@/hooks/context/userContext"; // Ensure this is the correct path to your UserContext
+import { ReusableLineChartProps } from "@/types/chartTypes";
 
 import {
   CartesianGrid,

@@ -2,15 +2,13 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 import LeftSidebar from "../components/shared/LeftSidebar";
 import Header from "@/components/shared/Header";
 import { useState } from "react";
-import { useUserContext } from "@/lib/context/authContext";
+import { useUserContext } from "@/hooks/context/authContext";
 
 const RootLayout = () => {
   const [clicked, setClicked] = useState(false);
-  const { isAuthenticated, user } = useUserContext();
   const handleBurgerMenu = (data: boolean) => {
     setClicked(data);
   };
-  const location = useLocation();
 
   return (
     <div className="flex flex-col w-full">

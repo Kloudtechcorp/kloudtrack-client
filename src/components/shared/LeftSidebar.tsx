@@ -1,77 +1,58 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { ModeToggle } from "./ModeToggle";
-import { useTheme } from "@/components/theme-provider";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { SidebarProps } from "@/lib/types";
-import { useState } from "react";
-import toast from "react-hot-toast";
-import { INITIAL_USER, useUserContext } from "@/lib/context/authContext";
+import { SidebarProps } from "@/types";
+import { INITIAL_USER, useUserContext } from "@/hooks/context/authContext";
+import { useHandleLogout } from "@/hooks/react-query/mutations";
 
 const LeftSidebar = ({ expand }: SidebarProps) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { setUser, user, setIsAuthenticated } = useUserContext();
-  const server = import.meta.env.VITE_SERVER_LOCAL;
-  // Logout to redirect to signin
-  const handleLogout = async () => {
-    try {
-      const response = await fetch(`${server}/user/logout`, {
-        method: "POST",
-        credentials: "include",
-      });
-      const data = await response.json();
-      if (response.ok) {
-        toast(data.message);
-        setIsAuthenticated(false);
-        setUser(INITIAL_USER);
-        navigate("/signin");
-      }
-    } catch (error) {
-      toast.error((error as Error).message);
-    }
-  };
+  const { mutate: handleLogout } = useHandleLogout();
 
   const sidebarItems = [
     {
-      imgUrl: "assets/icons/dashboard.svg",
+      imgUrl: "/assets/icons/dashboard.svg",
       route: "/",
       label: "Dashboard",
     },
     {
-      imgUrl: "assets/icons/map.svg",
+      imgUrl: "/assets/icons/map.svg",
       route: "/map",
       label: "Map",
     },
     {
-      imgUrl: "assets/icons/graphs.svg",
+      imgUrl: "/assets/icons/graphs.svg",
       route: "/graphs",
       label: "Graphs",
     },
     {
-      imgUrl: "assets/icons/satellite.svg",
+      imgUrl: "/assets/icons/satellite.svg",
       route: "/satellite",
       label: "Satellite",
     },
 
     {
-      imgUrl: "assets/icons/settings.svg",
+      imgUrl: "/assets/icons/settings.svg",
       route: "/settings",
       label: "Settings",
     },
 
     user.role === "ADMIN"
       ? {
-          imgUrl: "assets/icons/adminProtected.svg",
+          imgUrl: "/assets/icons/adminProtected.svg",
           route: "/admin-settings",
           label: "Admin",
         }
       : null,
   ];
+
   return (
     <nav
       className={`bg-white dark:bg-[#181819] ease-in-out duration-300 hidden md:flex ${
@@ -81,12 +62,12 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
       <div className="flex flex-col gap-7 justify-between w-full">
         <div className="flex flex-col justify-center h-2/3">
           <ul className="flex flex-col gap-4 justify-center p-[1rem]">
-            {sidebarItems.map((link) => {
+            {sidebarItems.map((link, key) => {
               if (!link) return null;
               const isActive = pathname === link.route;
               return (
                 <li
-                  key={link.route}
+                  key={key}
                   className={` ${
                     isActive
                       ? "dark:bg-blue-400 bg-yellow-400"
@@ -122,9 +103,14 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
               <TooltipTrigger>
                 <div className="flex gap-3">
                   <img
-                    src="assets/icons/logout.svg"
+                    src="/assets/icons/logout.svg"
                     className="bg-white dark:bg-transparent dark:invert w-full"
-                    onClick={handleLogout}
+                    onClick={() => {
+                      handleLogout();
+                      setIsAuthenticated(false);
+                      setUser(INITIAL_USER);
+                      navigate("/signin");
+                    }}
                   />
                   <span className={expand ? "block" : "hidden"}>Logout</span>
                 </div>

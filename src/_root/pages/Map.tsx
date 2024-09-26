@@ -181,7 +181,7 @@ const Map = () => {
       )}
       {data && stationDetails && (
         <div
-          className={`bg-white dark:bg-gray-950 xs:py-5 shadow-lg rounded-lg lg:top-0 lg:right-0 xs:bottom-0 xs:top-48 w-1/2 xs:max-w-screen-sm`}
+          className={`bg-white dark:bg-gray-950 xs:py-5 shadow-lg rounded-lg lg:top-0 lg:right-0 xs:bottom-0 xs:top-48 w-1/2 xs:max-w-screen-sm overflow-auto custom-scrollbar`}
         >
           <div className="absolute right-2 py-2">
             <button onClick={() => setData(null)} className="">
@@ -220,9 +220,7 @@ const Map = () => {
               </span>
               <Button
                 className="w-1/3 dark:bg-secondary dark:text-gray-200"
-                onClick={() =>
-                  navigate(`/dashboard/${stationDetails.stationName}`)
-                }
+                onClick={() => navigate(`/${stationDetails.stationName}`)}
               >
                 Monitoring Page
               </Button>

@@ -129,7 +129,7 @@ const DataCards = ({ currentweather }: DataCardsProps) => {
             </div>
             <div className="text-xl flex h-full items-center justify-center">
               <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
-                {Math.round(currentweather.light * 100) / 100} kph
+                {Math.round(currentweather.light * 100) / 100} lux
               </span>
             </div>
           </div>

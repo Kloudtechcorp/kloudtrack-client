@@ -24,9 +24,6 @@ import { formatDateString, returnActive } from "@/lib/utils";
 import VariableGraph from "@/components/dynamic/VariableGraph";
 import { useState } from "react";
 import { stationStaticType } from "@/types";
-import { DateRange } from "react-day-picker";
-import { downloadData } from "@/api/post";
-import { Calendar } from "@/components/ui/calendar";
 import DialogDownload from "@/components/shared/DialogDownload";
 
 const DataDashboard = () => {
@@ -55,8 +52,8 @@ const DataDashboard = () => {
   if (isError) return <div>Error fetching data</div>;
 
   return (
-    <div className="w-full bg-[#F6F8FC] dark:bg-slate-950 ">
-      <div className="container p-1">
+    <div className="w-full overflow-auto bg-[#F6F8FC] dark:bg-secondary rounded-xl p-5">
+      <div className="container">
         <Card className="cardContainer">
           <CardContent className="flex flex-col p-0">
             <div className="w-full flex justify-start flex-row gap-3">
@@ -130,7 +127,7 @@ const DataDashboard = () => {
                       {stationNames.map((station, index) => (
                         <TableRow
                           key={index}
-                          className={`hover-row h-11 ${
+                          className={`hover-row h-5 ${
                             index % 2 === 0
                               ? "bg-gray-100 dark:bg-gray-700"
                               : "bg-white dark:bg-gray-500"
@@ -154,7 +151,7 @@ const DataDashboard = () => {
                   <span className="px-2 w-full">Graphs</span>
                   <DialogDownload name={filteredStations.stationName} />
                 </div>
-                <div className="flex flex-col gap-2 overflow-y-auto custom-scrollbar">
+                <div className="flex flex-col gap-2 overflow-auto max-h-[40rem] custom-scrollbar">
                   <div className="flex flex-col gap-1 h-52 border p-1 rounded-lg w-full">
                     <div className="flex flex-between w-full items-center">
                       <span>Temperature</span>

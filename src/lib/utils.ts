@@ -9,9 +9,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export function formatDateString(dateString: string) {
   const now = new Date(dateString);
-  const utcPlus8Now = new Date(
-    now.getTime() - 16 * 60 * 60 * 1000 + 10 * 60 * 1000
-  );
+  const utcPlus8Now = new Date(now.getTime() - 8 * 60 * 60 * 1000);
 
   const options: Intl.DateTimeFormatOptions = {
     year: "numeric",

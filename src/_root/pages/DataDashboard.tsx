@@ -25,6 +25,7 @@ import VariableGraph from "@/components/dynamic/VariableGraph";
 import { useState } from "react";
 import { stationStaticType } from "@/types";
 import DialogDownload from "@/components/shared/DialogDownload";
+import NotFound from "@/components/shared/NotFound";
 
 const DataDashboard = () => {
   const { station } = useParams<string>();
@@ -38,16 +39,19 @@ const DataDashboard = () => {
     isLoading,
   } = useGetStationData(!station ? "" : station);
 
-  if (!station) {
-    return <div>No station found</div>;
+  if (!station || !stationData) {
+    return (
+      <div className="rounded-xl bg-[#F6F8FC] dark:bg-secondary w-full h-full">
+        <NotFound />
+      </div>
+    );
   }
 
   const filteredStations = stationNames.find(
     (stationItem: stationStaticType) => stationItem.stationName === station
   );
 
-  if (isLoading || !stationData || !filteredStations)
-    return <div>Loading...</div>;
+  if (isLoading || !filteredStations) return <div>Loading...</div>;
 
   if (isError) return <div>Error fetching data</div>;
 
@@ -151,8 +155,8 @@ const DataDashboard = () => {
                   <span className="px-2 w-full">Graphs</span>
                   <DialogDownload name={filteredStations.stationName} />
                 </div>
-                <div className="flex flex-col gap-2 overflow-auto max-h-[40rem] custom-scrollbar">
-                  <div className="flex flex-col gap-1 h-52 border p-1 rounded-lg w-full">
+                <div className="flex flex-col gap-2 overflow-auto custom-scrollbar">
+                  <div className="flex flex-col gap-1 border p-1 rounded-lg w-full">
                     <div className="flex flex-between w-full items-center">
                       <span>Temperature</span>
                     </div>
@@ -165,33 +169,23 @@ const DataDashboard = () => {
                       key={1}
                     />
                   </div>
-                  <div className="flex flex-col gap-1 h-52 border p-1 rounded-lg">
-                    <div className="">Humidity</div>
+                  <div className="flex flex-col gap-1 border p-1 rounded-lg">
+                    <div className="">Heat Index</div>
                     <VariableGraph
                       stationName={station}
-                      weatherData={"humidity"}
+                      weatherData={"heatIndex"}
                       range={12}
                       key={1}
                       repeat={"minute"}
                     />
                   </div>
-                  <div className="flex flex-col gap-1 h-52 border p-1 rounded-lg">
+                  <div className="flex flex-col gap-1 border p-1 rounded-lg">
                     <div className="">Precipitation</div>
                     <VariableGraph
                       stationName={station}
                       weatherData={"precipitation"}
                       range={12}
                       repeat={"minute"}
-                      key={1}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-1 h-52 border p-1 rounded-lg">
-                    <div className="">Precipitation</div>
-                    <VariableGraph
-                      stationName={station}
-                      weatherData={"heatIndex"}
-                      repeat={"minute"}
-                      range={12}
                       key={1}
                     />
                   </div>

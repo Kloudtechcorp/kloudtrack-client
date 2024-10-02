@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useStationContext } from "@/hooks/context/stationContext";
-import { useGetTableGraphData } from "@/hooks/react-query/queries";
 import { stationStaticType } from "@/types";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";

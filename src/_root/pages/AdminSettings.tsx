@@ -5,6 +5,7 @@ import UserCreation from "./adminpages/UserCreation";
 import AddPsgc from "./adminpages/AddPsgc";
 import AddStationType from "./adminpages/AddStationType";
 import StationList from "./adminpages/StationList";
+import NotFound from "@/components/shared/NotFound";
 
 const AdminSettings = () => {
   const { user } = useUserContext();
@@ -12,7 +13,7 @@ const AdminSettings = () => {
   return user.role === "ADMIN" ? (
     <Tabs
       defaultValue="account"
-      className="w-full flex-col dark:bg-slate-950 bg-[#F6F8FC] p-3 rounded-2xl overflow-x-auto min-x-[420px]"
+      className="w-full flex-col dark:bg-slate-950 bg-[#F6F8FC] p-5 rounded-2xl overflow-x-auto min-x-[420px]"
     >
       <TabsList className="flex flex-row justify-start container">
         <TabsTrigger value="account">Account Creation</TabsTrigger>
@@ -38,7 +39,9 @@ const AdminSettings = () => {
       </TabsContent>
     </Tabs>
   ) : (
-    <div>This page is off limits</div>
+    <div className="rounded-xl bg-[#F6F8FC] dark:bg-secondary w-full h-full">
+      <NotFound />
+    </div>
   );
 };
 

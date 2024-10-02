@@ -97,25 +97,25 @@ const Profile = () => {
                       <span className="text-nowrap text-md font-bold ">
                         Api key:
                       </span>
-                      <div className="flex flex-row gap-2 items-center text-center">
+                      <div className="flex flex-row gap-2 justify-between items-center text-center">
                         <div
                           className="capitalize text-lg
                         border border-transparent rounded-none"
                         >
                           {profile.apiKeys.apiKey}
                         </div>
-                        <Button
-                          className="bg-gray-500 hover:bg-gray-700"
-                          onClick={() => {
-                            navigator.clipboard.writeText(
-                              profile.apiKeys.apiKey
-                            );
-                            toast.success("API key copied to clipboard");
-                          }}
-                        >
-                          <img src="/assets/icons/copy.svg" width={30} />
-                        </Button>
                         <div className="flex gap-2 justify-end items-end">
+                          <Button
+                            className="bg-gray-500 hover:bg-gray-700"
+                            onClick={() => {
+                              navigator.clipboard.writeText(
+                                profile.apiKeys.apiKey
+                              );
+                              toast.success("API key copied to clipboard");
+                            }}
+                          >
+                            <img src="/assets/icons/copy.svg" width={30} />
+                          </Button>
                           <AlertDialog>
                             <AlertDialogTrigger asChild>
                               <Button className="bg-blue-500 hover:bg-blue-700">

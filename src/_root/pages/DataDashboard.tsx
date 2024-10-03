@@ -15,7 +15,6 @@ import { useStationContext } from "@/hooks/context/stationContext";
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -25,7 +24,7 @@ import VariableGraph from "@/components/dynamic/VariableGraph";
 import { useState } from "react";
 import { stationStaticType } from "@/types";
 import DialogDownload from "@/components/shared/DialogDownload";
-import NotFound from "@/components/shared/NotFound";
+import PuffLoader from "react-spinners/PuffLoader";
 
 const DataDashboard = () => {
   const { station } = useParams<string>();
@@ -39,36 +38,47 @@ const DataDashboard = () => {
     isLoading,
   } = useGetStationData(!station ? "" : station);
 
-  if (!station || !stationData) {
-    return (
-      <div className="rounded-xl bg-[#F6F8FC] dark:bg-secondary w-full h-full">
-        <NotFound />
-      </div>
-    );
+  if (!station) {
+    return <div>No station found</div>;
   }
 
   const filteredStations = stationNames.find(
     (stationItem: stationStaticType) => stationItem.stationName === station
   );
 
-  if (isLoading || !filteredStations) return <div>Loading...</div>;
+  if (isLoading || !stationData || !filteredStations)
+    return (
+      <Card className="cardContainer flex flex-row">
+        <CardContent className="flex flex-row w-full p-0 gap-2">
+          <div className="flex flex-col gap-3 justify-center items-center w-full">
+            <PuffLoader color={"#545454"} size={500} />
+          </div>
+        </CardContent>
+      </Card>
+    );
 
-  if (isError) return <div>Error fetching data</div>;
+  if (isError)
+    return (
+      <div className="w-full flex justify-center items-center h-full">
+        <img src="/assets/icons/error.svg" className="size-14" />
+        <span>Error fetching data.</span>
+      </div>
+    );
 
   return (
-    <div className="w-full overflow-auto bg-[#F6F8FC] dark:bg-secondary rounded-xl p-5">
-      <div className="container">
+    <div className="w-full bg-[#F6F8FC] dark:bg-secondary rounded-xl p-[1rem] custom-scrollbar overflow-auto">
+      <div className="container p-1">
         <Card className="cardContainer">
           <CardContent className="flex flex-col p-0">
             <div className="w-full flex justify-start flex-row gap-3">
               <div className="p-1">
                 <img src="/assets/img/logo-v1.png" className="size-14" />
               </div>
-              <div className="flex flex-col justify-center items-start">
+              <div className="flex flex-col justify-center items-start dark:invert">
                 <Dialog open={isOpen} onOpenChange={setIsOpen}>
                   <DialogTrigger asChild>
                     <span
-                      className="text-xl font-bold cursor-pointer hover:underline"
+                      className="text-sm xs:text-lg m2d:text-xl xl:text-2xl font-bold self-start p-0 hover:text-[#fbd008] dark:invert dark:hover:text-blue-500 ease-in-out duration-300 hover:scale-110 hover:underline cursor-pointer"
                       onClick={() => setIsOpen(true)}
                     >
                       {station}
@@ -95,7 +105,7 @@ const DataDashboard = () => {
                   </DialogContent>
                 </Dialog>
 
-                <span className="text-sm">
+                <span className="text-xs md:text-sm lg:text-base dark:invert">
                   {filteredStations.longitude} , {filteredStations.latitude}
                 </span>
               </div>
@@ -104,10 +114,10 @@ const DataDashboard = () => {
             <div className="flex lg:flex-row flex-col w-full gap-2">
               <div className="flex flex-col w-full px-2 gap-2">
                 {!stationData.currentweather ? (
-                  <p>station not found</p>
+                  <p className="font-bold">There is no station data.</p>
                 ) : (
                   <div className="w-full gap-2 flex flex-col">
-                    <div className="border px-2">
+                    <div className=" px-3 text-xs md:text-sm border lg:text-base">
                       Current Weather as of{" "}
                       {formatDateString(stationData.currentweather.recordedAt)}
                     </div>
@@ -115,12 +125,12 @@ const DataDashboard = () => {
                   </div>
                 )}
 
-                <div className="px-2 overflow-y-auto custom-scrollbar h-36 w-full">
+                <div className="p-2 overflow-y-auto custom-scrollbar h-56 w-full">
                   <Table>
                     <TableHeader>
                       <TableRow>
                         <TableHead
-                          className="text-center border px-2 py-1 bg-[#FBD008] dark:bg-slate-800 text-lg font-bold   dark:text-white rounded"
+                          className="text-center border px-2 py-1 bg-[#FBD008] dark:bg-slate-800 text-lg font-bold dark:text-white rounded"
                           colSpan={2}
                         >
                           Weather Stations
@@ -131,16 +141,16 @@ const DataDashboard = () => {
                       {stationNames.map((station, index) => (
                         <TableRow
                           key={index}
-                          className={`hover-row h-5 ${
+                          className={`hover-row h-11 ${
                             index % 2 === 0
                               ? "bg-gray-100 dark:bg-gray-700"
                               : "bg-white dark:bg-gray-500"
                           }`}
                         >
-                          <TableCell className="text-center">
+                          <TableCell className="text-center ">
                             {station.stationName}
                           </TableCell>
-                          <TableCell>
+                          <TableCell className="text-center ">
                             {returnActive(station.isActive)}
                           </TableCell>
                         </TableRow>
@@ -150,43 +160,61 @@ const DataDashboard = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col w-full px-3 gap-2">
-                <div className="flex w-full justify-between items-center border">
-                  <span className="px-2 w-full">Graphs</span>
+              <div className="flex flex-col w-full gap-2">
+                <div className="flex w-full justify-start border px-3">
+                  <span className="w-full font-bold">Weather Data Graphs</span>
                   <DialogDownload name={filteredStations.stationName} />
                 </div>
-                <div className="flex flex-col gap-2 overflow-auto custom-scrollbar">
-                  <div className="flex flex-col gap-1 border p-1 rounded-lg w-full">
-                    <div className="flex flex-between w-full items-center">
-                      <span>Temperature</span>
-                    </div>
-
+                <div className="flex flex-col gap-2 overflow-y-auto cursor-pointer">
+                  <div
+                    className="flex flex-col gap-1 border p-1 rounded-lg"
+                    onClick={() =>
+                      navigate(`/${station}/data-analysis`, {
+                        state: { variable: "heatIndex" },
+                      })
+                    }
+                  >
+                    <div className="px-2 font-semibold">Heat Index</div>
+                    <VariableGraph
+                      stationName={station}
+                      weatherData={"heatIndex"}
+                      repeat={"hour"}
+                      range={12}
+                      key={1}
+                    />
+                  </div>
+                  <div
+                    className="flex flex-col gap-1 border p-1 rounded-lg"
+                    onClick={() =>
+                      navigate(`/${station}/data-analysis`, {
+                        state: { variable: "temperature" },
+                      })
+                    }
+                  >
+                    <div className="px-2 font-semibold">Temperature</div>
                     <VariableGraph
                       stationName={station}
                       weatherData={"temperature"}
                       range={12}
-                      repeat={"minute"}
+                      repeat={"hour"}
                       key={1}
                     />
                   </div>
-                  <div className="flex flex-col gap-1 border p-1 rounded-lg">
-                    <div className="">Heat Index</div>
+                  <div
+                    className="flex flex-col gap-1 border p-1 rounded-lg"
+                    onClick={() =>
+                      navigate(`/${station}/data-analysis`, {
+                        state: { variable: "humidity" },
+                      })
+                    }
+                  >
+                    <div className="px-2 font-semibold">Humidity</div>
                     <VariableGraph
                       stationName={station}
-                      weatherData={"heatIndex"}
+                      weatherData={"humidity"}
                       range={12}
                       key={1}
-                      repeat={"minute"}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-1 border p-1 rounded-lg">
-                    <div className="">Precipitation</div>
-                    <VariableGraph
-                      stationName={station}
-                      weatherData={"precipitation"}
-                      range={12}
-                      repeat={"minute"}
-                      key={1}
+                      repeat={"hour"}
                     />
                   </div>
                 </div>

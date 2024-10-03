@@ -14,13 +14,17 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useStationContext } from "@/hooks/context/stationContext";
 import { stationStaticType } from "@/types";
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const VariableDashboard = () => {
   const navigate = useNavigate();
   const { station } = useParams();
   const { stationNames, isLoading } = useStationContext();
-  const [weatherData, setWeatherData] = useState("temperature");
+  const { state } = useLocation();
+
+  const [weatherData, setWeatherData] = useState(
+    state && state.variable ? state.variable : "temperature"
+  );
 
   const filteredStations = stationNames.find(
     (stationItem: stationStaticType) => stationItem.stationName === station
@@ -80,9 +84,9 @@ const VariableDashboard = () => {
                   <SelectItem value="pressure">Air Pressure</SelectItem>
                   <SelectItem value="precipitation">Precipitation</SelectItem>
                   <SelectItem value="uvIntensity">UV Index</SelectItem>
-                  <SelectItem value="irradiance">Irradiance</SelectItem>
+                  {/* <SelectItem value="irradiance">Irradiance</SelectItem> */}
                   <SelectItem value="light">Light Intensity</SelectItem>
-                  <SelectItem value="batteryVoltage">Battery Level</SelectItem>
+                  {/* <SelectItem value="batteryVoltage">Battery Level</SelectItem> */}
                 </SelectContent>
               </Select>
             </div>

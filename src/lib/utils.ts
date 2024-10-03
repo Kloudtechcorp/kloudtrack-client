@@ -96,3 +96,99 @@ export const getBatteryImg = (level: number) => {
     return "/assets/img/battery2Bar.svg";
   }
 };
+
+export const roundUpToNearest10Minutes = (date: Date): string => {
+  const adjustedDate = new Date(date);
+  adjustedDate.setHours(adjustedDate.getHours() - 8);
+
+  const hours = adjustedDate.getHours();
+  const minutes = adjustedDate.getMinutes();
+
+  let roundedMinutes = Math.ceil(minutes / 10) * 10;
+
+  if (roundedMinutes === 60) {
+    roundedMinutes = 0;
+    adjustedDate.setHours(hours + 1);
+  }
+
+  adjustedDate.setMinutes(roundedMinutes);
+  adjustedDate.setSeconds(0);
+  adjustedDate.setMilliseconds(0);
+
+  const finalHours = adjustedDate.getHours().toString().padStart(2, "0");
+  const finalMinutes = adjustedDate.getMinutes().toString().padStart(2, "0");
+
+  return `${finalHours}${finalMinutes}`;
+};
+
+export const convertLocaltoUTC = (
+  localHour: number,
+  localMinute: number
+): { hour: number; minute: number } => {
+  const utcDate = new Date(Date.UTC(1970, 0, 1, localHour - 8, localMinute));
+  return { hour: utcDate.getUTCHours(), minute: utcDate.getUTCMinutes() };
+};
+
+export const checkImageUrl = (url: string): Promise<boolean> => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.src = url;
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+  });
+};
+
+export function getFormattedDate(passedTime: string): string {
+  const now = new Date();
+
+  const roundDownToNearest10Minutes = (date: Date): Date => {
+    const minutes = date.getMinutes();
+    const roundedMinutes = Math.floor(minutes / 10) * 10;
+    const roundedDate = new Date(date);
+    roundedDate.setMinutes(roundedMinutes);
+    return roundedDate;
+  };
+
+  const roundedNow = roundDownToNearest10Minutes(now);
+
+  const [passedHours, passedMinutes] = passedTime.split(":").map(Number);
+  const passedDate = new Date(now);
+  passedDate.setHours(passedHours);
+  passedDate.setMinutes(passedMinutes);
+
+  if (passedDate > roundedNow) {
+    passedDate.setDate(passedDate.getDate() - 1);
+  }
+
+  const formattedDate = passedDate.toLocaleString("en-PH", {
+    timeZone: "Asia/Manila",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  return formattedDate;
+}
+
+export const convertUTCtoLocal = (
+  utcHour: number,
+  utcMinute: number
+): { hour: number; minute: number } => {
+  const localDate = new Date(Date.UTC(1970, 0, 1, utcHour, utcMinute));
+  localDate.setHours(localDate.getHours() + 8); // Adjust for GMT+8
+  return { hour: localDate.getUTCHours(), minute: localDate.getUTCMinutes() };
+};
+
+export const weatherUnit = (measurement: string): string | null => {
+  const units: Record<string, string> = {
+    temperature: "°C",
+    heatIndex: "°C",
+    humidity: "%",
+    light: "lux",
+    pressure: "mb",
+    windSpeed: "kph",
+    precipitation: "mm",
+  };
+
+  return units[measurement] || null;
+};

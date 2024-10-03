@@ -3,6 +3,7 @@ import { Card, CardContent } from "../ui/card";
 import { useGetTableGraphData } from "@/hooks/react-query/queries";
 import { TableGraphCardType } from "@/types/queryTypes";
 import { Skeleton } from "../ui/skeleton";
+import { weatherUnit } from "@/lib/utils";
 
 const VerticalCards = ({
   stationName,
@@ -10,38 +11,58 @@ const VerticalCards = ({
   range,
   repeat,
 }: TableGraphCardType) => {
-  const stationDataParams: TableGraphCardType = {
+  const {
+    data: stationData,
+    isError,
+    isLoading,
+  } = useGetTableGraphData({
     stationName,
     weatherData,
     range,
     repeat,
-  };
-  const {
-    data: stationData,
-    isError,
-    isLoading: isTableLoading,
-  } = useGetTableGraphData(stationDataParams);
+  });
 
-  if (isTableLoading || !stationData) {
+  const renderSkeletons = () => (
+    <>
+      {[...Array(4)].map((_, index) => (
+        <div
+          key={index}
+          className="w-full h-full aspect-square text-center flex flex-col px-0 gap-1"
+        >
+          <Skeleton className="w-full h-7 border" />
+          <Skeleton className="h-52 w-full" />
+        </div>
+      ))}
+    </>
+  );
+
+  const renderCard = (title: string, value: number | null) => {
+    const displayValue =
+      weatherData === "uvIntensity"
+        ? value
+        : value !== null
+        ? value.toFixed(2)
+        : null;
+
     return (
-      <div className="flex flex-col gap-3 w-[20%]">
-        <div className="w-full h-full aspect-square text-center flex flex-col px-0 gap-1">
-          <Skeleton className="w-full h-7 border" />
-          <Skeleton className="h-52 w-full" />
-        </div>
-        <div className="w-full h-full aspect-square text-center flex flex-col px-0 gap-1">
-          <Skeleton className="w-full h-7 border" />
-          <Skeleton className="h-52 w-full" />
-        </div>
-        <div className="w-full h-full aspect-square text-center flex flex-col px-0 gap-1">
-          <Skeleton className="w-full h-7 border" />
-          <Skeleton className="h-52 w-full" />
-        </div>
-        <div className="w-full h-full aspect-square text-center flex flex-col px-0 gap-1">
-          <Skeleton className="w-full h-7 border" />
-          <Skeleton className="h-52 w-full" />
-        </div>
-      </div>
+      <Card className="w-full h-full aspect-[10/9]">
+        <CardContent className="text-center flex flex-col h-full w-full px-0">
+          <span className="w-full h-7 border border-transparent border-b-gray-300">
+            {title}
+          </span>
+          <div className="h-full flex items-center justify-center">
+            <span className="text-5xl font-bold">
+              {displayValue} {weatherUnit(weatherData)}
+            </span>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  };
+
+  if (isLoading || !stationData) {
+    return (
+      <div className="flex flex-col gap-3 w-[20%]">{renderSkeletons()}</div>
     );
   }
 
@@ -51,50 +72,10 @@ const VerticalCards = ({
 
   return (
     <div className="flex flex-col gap-3 w-[20%]">
-      <Card className="w-full h-full aspect-square">
-        <CardContent className="text-center flex flex-col h-full w-full px-0">
-          <span className="w-full h-7 border border-transparent border-b-gray-300">
-            Current
-          </span>
-          <div className="h-full flex items-center justify-center">
-            <span className="text-5xl font-bold ">
-              {stationData.currentData.current}°C
-            </span>
-          </div>
-        </CardContent>
-      </Card>
-      <Card className="w-full h-full aspect-[10/9]">
-        <CardContent className="text-center flex flex-col h-full w-full px-0">
-          <span className="w-full h-7 border border-transparent border-b-gray-300">
-            Past 1-minute°C
-          </span>
-          <div className="h-full flex items-center justify-center">
-            <span className="text-5xl font-bold ">
-              {stationData.currentData.past1min}°C
-            </span>
-          </div>
-        </CardContent>
-      </Card>
-      <Card className="w-full h-full aspect-[10/9]">
-        <CardContent className="text-center flex flex-col h-full w-full px-0">
-          <span className="w-full h-7 border border-transparent border-b-gray-300">
-            Highest (Past 24-hours)
-          </span>
-          <div className="h-full flex items-center justify-center">
-            <span className="text-5xl font-bold ">{stationData.max}°C </span>
-          </div>
-        </CardContent>
-      </Card>
-      <Card className="w-full h-full aspect-[10/9]">
-        <CardContent className="text-center flex flex-col h-full w-full px-0">
-          <span className="w-full h-7 border border-transparent border-b-gray-300">
-            Lowest (Past 24-hours)
-          </span>
-          <div className="h-full flex items-center justify-center">
-            <span className="text-5xl font-bold ">{stationData.min}°C</span>
-          </div>
-        </CardContent>
-      </Card>
+      {renderCard("Current", stationData.currentData.current)}
+      {renderCard("Past 1-minute", stationData.currentData.past1min)}
+      {renderCard("Highest (Past 24-hours)", stationData.max)}
+      {renderCard("Lowest (Past 24-hours)", stationData.min)}
     </div>
   );
 };

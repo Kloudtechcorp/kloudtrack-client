@@ -7,7 +7,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Skeleton } from "../ui/skeleton";
-import { formatDateString } from "@/lib/utils";
+import { formatDateString, weatherUnit } from "@/lib/utils";
 import { useGetTableGraphData } from "@/hooks/react-query/queries";
 import VariableGrapht from "./VariableGraph";
 import { TableGraphCardType } from "@/types/queryTypes";
@@ -106,7 +106,8 @@ const TableGraphCard = ({
                 Highest (12-Hours)
               </TableCell>
               <TableCell className="border border-[#545454]">
-                {Math.round(stationData.max * 100) / 100}
+                {Math.round(stationData.max * 100) / 100}{" "}
+                {weatherUnit(weatherData)}
               </TableCell>
             </TableRow>
             <TableRow>
@@ -115,6 +116,7 @@ const TableGraphCard = ({
               </TableCell>
               <TableCell className="border border-[#545454]">
                 {Math.round(stationData.min * 100) / 100}{" "}
+                {weatherUnit(weatherData)}
               </TableCell>
             </TableRow>
             <TableRow>
@@ -123,12 +125,13 @@ const TableGraphCard = ({
               </TableCell>
               <TableCell className="border border-[#545454]">
                 {Math.round(stationData.average * 100) / 100}{" "}
+                {weatherUnit(weatherData)}
               </TableCell>
             </TableRow>
           </TableBody>
         </Table>
       </div>
-      <div className="border rounded-lg w-full h-full grow p-1">
+      <div className="border rounded-lg w-full h-full grow p-1 flex">
         <VariableGrapht
           stationName={stationName}
           range={range}

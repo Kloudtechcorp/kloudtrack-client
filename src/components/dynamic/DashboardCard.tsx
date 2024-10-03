@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardContent } from "../ui/card";
+import { Card, CardContent, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
 import HashLoader from "react-spinners/HashLoader";
 import PuffLoader from "react-spinners/PuffLoader";
@@ -36,20 +36,17 @@ const DashboardCard: React.FC<{ station: stationStaticType }> = ({
   }
 
   return (
-    <Card className="cardContainer flex flex-row">
+    <Card
+      className="cardContainer flex flex-row cursor-pointer hover:scale-[1.01] hover:bg-card/75 transition ease-in-out"
+      onClick={() => {
+        navigate(`/${station.stationName}`);
+      }}
+    >
       <CardContent className="flex flex-row w-full p-0 gap-2">
         <div className="flex flex-col gap-3 justify-between w-full">
           <div className="flex flex-col justify-between px-2 gap-3">
             <div className="flex flex-col">
-              <Button
-                variant="link"
-                className="dark:invert text-lg md:text-xl xl:text-2xl font-bold self-start p-0 hover:text-[#fbd008] ease-in-out duration-300 hover:scale-110"
-                onClick={() => {
-                  navigate(`/${station.stationName}`);
-                }}
-              >
-                {station.stationName}
-              </Button>
+              <CardTitle className="py-2">{station.stationName}</CardTitle>
               <hr className="h-[0.25rem] bg-black" />
               <div className="flex flex-col">
                 <span className="text-base md:text-lg xl:text-xl font-semibold">

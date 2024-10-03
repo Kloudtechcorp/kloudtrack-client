@@ -12,7 +12,7 @@ import { R } from "node_modules/@tanstack/react-query-devtools/build/modern/Reac
 
 const chartConfig = {
   desktop: {
-    label: "Average ",
+    label: "average",
     color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig;
@@ -46,13 +46,11 @@ const VariableGraph = ({
     );
   }
 
-  const sliceDetails = (change: string, value: any) => {
-    console.log(repeat);
+  const reversedGraphData = [...graphData].reverse();
 
-    if (change == "minute") {
+  const sliceDetails = (change: string, value: any) => {
+    if (change == "minute" || change == "hour") {
       return value.slice(11, 16);
-    } else if (change == "hour") {
-      return value.slice(5, 10);
     }
     return value.slice(0, 10);
   };
@@ -62,9 +60,9 @@ const VariableGraph = ({
       <ChartContainer config={chartConfig} className="h-52 w-full m-0 p-0">
         <LineChart
           accessibilityLayer
-          data={graphData}
+          data={reversedGraphData}
           margin={{
-            left: 12,
+            left: 2,
             right: 12,
           }}
         >
@@ -77,10 +75,7 @@ const VariableGraph = ({
             tickFormatter={(value) => sliceDetails(repeat, value)}
           />
           <YAxis />
-          <ChartTooltip
-            cursor={false}
-            content={<ChartTooltipContent hideLabel />}
-          />
+          <ChartTooltip cursor={true} content={<ChartTooltipContent />} />
           <Line
             dataKey="average"
             type="natural"

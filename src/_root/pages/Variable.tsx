@@ -15,7 +15,7 @@ const Variable = () => {
   const [weatherData, setWeatherData] = useState("temperature");
 
   return (
-    <div className="mainContainer bg-[#F6F8FC] dark:bg-secondary flex flex-col overflow-hidden ">
+    <div className="mainContainer bg-[#F6F8FC] dark:bg-secondary flex flex-col overflow-hidden">
       <div className="container p-2">
         <Card className="cardContainer">
           <CardContent className="flex flex-col p-0 gap-2">
@@ -42,18 +42,18 @@ const Variable = () => {
                         Precipitation
                       </SelectItem>
                       <SelectItem value="uvIntensity">UV Index</SelectItem>
-                      <SelectItem value="irradiance">Irradiance</SelectItem>
+                      {/* <SelectItem value="irradiance">Irradiance</SelectItem> */}
                       <SelectItem value="light">Light Intensity</SelectItem>
-                      <SelectItem value="batteryVoltage">
+                      {/* <SelectItem value="batteryVoltage">
                         Battery Level
-                      </SelectItem>
+                      </SelectItem> */}
                     </SelectContent>
                   </Select>
                 </span>
               </div>
             </div>
 
-            <div className="flex flex-col gap-[.4rem] overflow-y-auto w-full h-[calc(100vh-14rem)]">
+            <div className="flex flex-col gap-[.4rem] overflow-y-auto w-full h-[calc(100vh-14rem)] custom-scrollbar">
               {stationNames.map((names, key) => (
                 <TableGraphCard
                   stationName={names.stationName}

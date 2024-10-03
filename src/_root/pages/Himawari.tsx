@@ -1,34 +1,29 @@
 import React, { useEffect, useState, useRef } from "react";
 import { timer } from "../../lib/objects/himawariArrays";
 import { Slider } from "@/components/ui/slider";
+import {
+  roundUpToNearest10Minutes,
+  convertLocaltoUTC,
+  checkImageUrl,
+  getFormattedDate,
+  convertUTCtoLocal,
+} from "@/lib/utils";
+import HimawariDetails from "@/components/dynamic/HimawariDetails";
 
 const Himawari = () => {
-  const [isCycling, setIsCycling] = useState(true);
+  const [isCycling, setIsCycling] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [sliderValue, setSliderValue] = useState<number[]>([0]);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [lastValidImgUrl, setLastValidImgUrl] = useState<string | null>(null);
-  const [imageElement, setImageElement] = useState<string>(
-    "https://www.data.jma.go.jp/mscweb/data/himawari/img/se2/se2_snd_0000.jpg"
-  );
+
   const [bandSelect, setBandSelect] = useState<string>("snd");
 
-  const convertUTCtoLocal = (
-    utcHour: number,
-    utcMinute: number
-  ): { hour: number; minute: number } => {
-    const localDate = new Date(Date.UTC(1970, 0, 1, utcHour, utcMinute));
-    localDate.setHours(localDate.getHours() + 8); // Adjust for GMT+8
-    return { hour: localDate.getUTCHours(), minute: localDate.getUTCMinutes() };
-  };
-
-  const convertLocaltoUTC = (
-    localHour: number,
-    localMinute: number
-  ): { hour: number; minute: number } => {
-    const utcDate = new Date(Date.UTC(1970, 0, 1, localHour - 8, localMinute));
-    return { hour: utcDate.getUTCHours(), minute: utcDate.getUTCMinutes() };
-  };
+  const [imageElement, setImageElement] = useState<string>(
+    `https://www.data.jma.go.jp/mscweb/data/himawari/img/se2/se2_snd_${roundUpToNearest10Minutes(
+      new Date()
+    )}.jpg`
+  );
 
   const getNearestTimeIndex = (hours: number, minutes: number): number => {
     const { hour: localHour, minute: localMinute } = convertLocaltoUTC(
@@ -51,7 +46,7 @@ const Himawari = () => {
     const startTimeIndex = nearestTimeIndex % timer.length;
 
     return [
-      ...timer.slice(startTimeIndex),
+      ...timer.slice(startTimeIndex + 1),
       ...timer.slice(0, nearestTimeIndex + 1),
     ];
   };
@@ -60,15 +55,6 @@ const Himawari = () => {
 
   const delay = (ms: number): Promise<void> => {
     return new Promise((resolve) => setTimeout(resolve, ms));
-  };
-
-  const checkImageUrl = (url: string): Promise<boolean> => {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.src = url;
-      img.onload = () => resolve(true);
-      img.onerror = () => resolve(false);
-    });
   };
 
   const updateImage = async (index: number) => {
@@ -87,8 +73,6 @@ const Himawari = () => {
           .toString()
           .padStart(2, "0")}` +
         ".jpg";
-
-      console.log("image name is ", imgName);
 
       const isValidImage = await checkImageUrl(imgName);
 
@@ -151,39 +135,6 @@ const Himawari = () => {
     updateImage(currentIndex);
   };
 
-  function getFormattedDate(passedTime: string): string {
-    const now = new Date();
-
-    const roundDownToNearest10Minutes = (date: Date): Date => {
-      const minutes = date.getMinutes();
-      const roundedMinutes = Math.floor(minutes / 10) * 10;
-      const roundedDate = new Date(date);
-      roundedDate.setMinutes(roundedMinutes);
-      return roundedDate;
-    };
-
-    const roundedNow = roundDownToNearest10Minutes(now);
-
-    const [passedHours, passedMinutes] = passedTime.split(":").map(Number);
-    const passedDate = new Date(now);
-    passedDate.setHours(passedHours);
-    passedDate.setMinutes(passedMinutes);
-
-    if (passedDate > roundedNow) {
-      const yesterday = new Date(now);
-      yesterday.setDate(yesterday.getDate() - 1);
-      passedDate.setDate(yesterday.getDate());
-    }
-
-    const formattedDate = passedDate.toLocaleString("en-PH", {
-      timeZone: "Asia/Manila",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-    return formattedDate;
-  }
-
   const formatDisplayTime = (index: number): string => {
     if (dynamicTimerArray.length === 0) return "00:00";
 
@@ -212,7 +163,7 @@ const Himawari = () => {
         <div className="h-full w-full flex flex-col relative">
           <div className="rounded-full p-3 pr-6 bg-white dark:bg-black flex flex-row items-center gap-3 absolute top-5 left-5 w-2/3 text-nowrap ">
             <button
-              className="bg-blue-500 size-10 p-2 rounded-full"
+              className="bg-yellow-400 dark:bg-blue-500 size-10 p-2 rounded-full"
               onClick={() => setIsCycling(!isCycling)}
             >
               {isCycling ? (
@@ -239,7 +190,6 @@ const Himawari = () => {
 
           <div className="h-full w-full">
             <img
-              id="imgXd"
               src={imageElement}
               alt="Himawari Satellite View"
               className="rounded-2xl h-full aspect-[701/601] object-cover"
@@ -296,26 +246,7 @@ const Himawari = () => {
             </select>
           </div>
 
-          <div className="p-2 py-20 lg:text-l xs:text-xs text-gray-500 self-end">
-            <span className="font-bold">About Himawari 8/9</span>
-            <p className="lg:text-sm text-justify indent-8 sm:text-xs">
-              The Himawari satellite series was developed and operated by the
-              Japan Meteorological Agency (JMA). Named after the Japanese word
-              for "sunflower," the Himawari satellites are geostationary
-              meteorological satellites positioned at an altitude of
-              approximately 35,786 kilometers above the equator.
-            </p>
-            <p className="lg:text-sm text-justify indent-8 sm:text-xs">
-              The latest in the series, Himawari-8 and Himawari-9, launched in
-              2014 and 2016 respectively. They provide data every 10 minutes,
-              enabling real-time monitoring of weather phenomena such as
-              typhoons, thunderstorms, and heavy rainfall. The satellites are
-              equipped with a 16-band multispectral imager, which captures
-              detailed images in visible, near-infrared, and infrared
-              wavelengths, providing critical information for weather prediction
-              models, disaster management, and climate research.
-            </p>
-          </div>
+          <HimawariDetails />
         </div>
       </div>
     </div>

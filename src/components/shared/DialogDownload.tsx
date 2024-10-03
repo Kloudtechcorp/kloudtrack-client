@@ -114,9 +114,12 @@ const DialogDownload = ({ name }: DialogDownload) => {
 
       <DialogContent className="min-w-[720px] gap-2 p-2">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <DialogTitle>Please Select date</DialogTitle>
-            <DialogDescription>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="gap-2 py-2 flex flex-col justifly -center"
+          >
+            <DialogTitle className="px-2 m-0">Please Select date</DialogTitle>
+            <DialogDescription className="px-2 m-0">
               Select range for downloading data
             </DialogDescription>
             <div className="w-full flex flex-row items-start justify-start py-4 gap-2">
@@ -331,7 +334,7 @@ const DialogDownload = ({ name }: DialogDownload) => {
             </div>
             <Button
               type="submit"
-              className="cursor-pointer text-gray-950 hover:text-gray-200 bg-gray-200 w-1/3 dark:bg-gray-500 dark:hover:bg-gray-700"
+              className="cursor-pointer text-gray-950 hover:text-gray-200 bg-gray-200 w-full dark:bg-gray-500 dark:hover:bg-gray-700"
             >
               Download CSV
             </Button>

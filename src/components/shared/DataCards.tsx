@@ -6,7 +6,7 @@ type DataCardsProps = {
 };
 const DataCards = ({ currentweather }: DataCardsProps) => {
   return (
-    <div className="grid grid-cols-3 w-full h-full gap-3 px-2 justify-center">
+    <div className="grid grid-cols-3 w-full h-full gap-3 justify-center">
       <Card className="w-full h-full aspect-[10/9]">
         <CardContent className="px-0 p-0 h-full">
           <div className="text-center w-full flex flex-col h-full">

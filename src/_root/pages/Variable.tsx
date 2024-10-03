@@ -24,7 +24,7 @@ const Variable = () => {
                 {weatherData}
               </span>
               <div className="flex flex-col justify-center px-6">
-                <span className="text-sm px-1">Sensor Option</span>
+                <span className="text-sm px-1">Parameter Option</span>
                 <span className="text-3xl font-bold">
                   <Select
                     defaultValue={weatherData}
@@ -41,7 +41,7 @@ const Variable = () => {
                       <SelectItem value="precipitation">
                         Precipitation
                       </SelectItem>
-                      <SelectItem value="uvIntensity">UV Index</SelectItem>
+                      <SelectItem value="uvIndex">UV Index</SelectItem>
                       {/* <SelectItem value="irradiance">Irradiance</SelectItem> */}
                       <SelectItem value="light">Light Intensity</SelectItem>
                       {/* <SelectItem value="batteryVoltage">

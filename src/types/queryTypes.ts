@@ -80,6 +80,7 @@ export type stationCurrentWeatherType = {
   heatIndex: number;
   light: number;
   uvIntensity: number;
+  uvIndex: number;
   windDirection: number;
   windSpeed: number;
   precipitation: number;
@@ -156,6 +157,7 @@ export type weatherDataTypes = {
   windSpeed: number;
   precipitation: number;
   gust: number;
+  uvIndex: number;
 };
 
 export type downloadableDataTypes = {

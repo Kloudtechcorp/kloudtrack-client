@@ -26,9 +26,6 @@ import { downloadParamsTypes } from "@/types/queryTypes";
 export const useSignInAccount = () => {
   return useMutation({
     mutationFn: (user: signInAccountType) => signInAccount(user),
-    onError: (error: Error) => {
-      toast.error(error.message);
-    },
     onSuccess: () => {
       toast.success("Login Successfull!");
     },
@@ -101,9 +98,6 @@ export const useHandleLogout = () => {
     mutationFn: () => handleLogout(),
     onError: (error: Error) => {
       toast.error(error.message);
-    },
-    onSuccess: () => {
-      toast.success("Logout Successfull!");
     },
   });
 };

@@ -181,11 +181,11 @@ const Map = () => {
       )}
       {data && stationDetails && (
         <div
-          className={`bg-white dark:bg-gray-950 xs:py-5 shadow-lg rounded-lg lg:top-0 lg:right-0 xs:bottom-0 xs:top-48 w-1/2 xs:max-w-screen-sm overflow-auto custom-scrollbar`}
+          className={`bg-white dark:bg-gray-950 xs:py-5 shadow-lg lg:top-0 lg:right-0 xs:bottom-0 xs:top-48 w-1/2 xs:max-w-screen-sm overflow-auto custom-scrollbar`}
         >
           <div className="absolute right-2 py-2">
             <button onClick={() => setData(null)} className="">
-              <img src={"/assets/icons/close.svg"} className="dark:invert" />
+              <img src={"/assets/icons/close.svg"} className="invert" />
             </button>
           </div>
           <img
@@ -198,11 +198,11 @@ const Map = () => {
                 <h2 className="font-bold my-2 text-2xl capitalize">
                   {stationDetails.stationName}
                 </h2>
-                <img
+                {/* <img
                   src={getBatteryImg(
                     batteryPercentage(data.currentweather.batteryVoltage)
                   )}
-                />
+                /> */}
               </div>
               <h3>{stationDetails.stationType.typeName}</h3>
             </div>
@@ -229,263 +229,258 @@ const Map = () => {
               <Card>
                 <CardDescription className="p-2">
                   Current Weather data recorded as of{" "}
-                  {formatDateString(data.currentweather.recordedAt)}
+                  {formatDateString(data.currentweather.recordedAt, "long")}
                 </CardDescription>
                 <CardContent>
-                  <div className="">
-                    <div className="flex justify-center flex-col">
-                      <div className="flex justify-center">
-                        <span className="font-medium text-2xl">
-                          Temperature
-                        </span>
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger>
-                              <img
-                                src="/assets/icons/help.svg"
-                                width={15}
-                                className="dark:invert hidden md:block"
-                              />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p>Temperature is ...</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      </div>
-                      <span className="font-medium text-7xl text-center">
-                        {Math.round(data.currentweather.heatIndex * 100) / 100}{" "}
-                        <span className="text-5xl text-">°C</span>
-                      </span>
+                  <div className="flex justify-center flex-col">
+                    <div className="flex justify-center">
+                      <span className="font-medium text-2xl">Temperature</span>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <img
+                              src="/assets/icons/help.svg"
+                              width={15}
+                              className="dark:invert hidden md:block"
+                            />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Temperature is ...</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                     </div>
-                    <div className="mt-4 p-2 flex border ">
-                      <Table>
-                        <TableBody>
-                          <TableRow>
-                            <TableCell className="font-medium w-[12.5%]">
-                              <img
-                                src="assets/icons/heatIndex.svg"
-                                width={25}
-                                className="dark:invert hidden md:block"
-                              />
-                            </TableCell>
-                            <TableCell className="font-medium flex gap-1 items-center">
-                              <span>Heat Index</span>
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger>
-                                    <img
-                                      src="/assets/icons/help.svg"
-                                      width={15}
-                                      className="dark:invert hidden md:block"
-                                    />
-                                  </TooltipTrigger>
-                                  <TooltipContent>
-                                    <p>Heat Index is ...</p>
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
-                            </TableCell>
-                            <TableCell className="font-bold  ">
-                              {Math.round(data.currentweather.heatIndex * 100) /
-                                100}{" "}
-                              °C
-                            </TableCell>
-                          </TableRow>
+                    <span className="font-medium text-7xl text-center">
+                      {Math.round(data.currentweather.heatIndex * 100) / 100}{" "}
+                      <span className="text-5xl text-">°C</span>
+                    </span>
+                  </div>
+                  <div className="mt-4 p-2 flex border rounded-xl">
+                    <Table>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell className="font-medium w-[12.5%]">
+                            <img
+                              src="assets/icons/heatIndex.svg"
+                              width={25}
+                              className="dark:invert hidden md:block"
+                            />
+                          </TableCell>
+                          <TableCell className="font-medium flex gap-1 items-center">
+                            <span>Heat Index</span>
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger>
+                                  <img
+                                    src="/assets/icons/help.svg"
+                                    width={15}
+                                    className="dark:invert hidden md:block"
+                                  />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>Heat Index is ...</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          </TableCell>
+                          <TableCell className="font-bold  ">
+                            {Math.round(data.currentweather.heatIndex * 100) /
+                              100}{" "}
+                            °C
+                          </TableCell>
+                        </TableRow>
 
-                          <TableRow>
-                            <TableCell className="font-medium w-[12.5%]">
-                              <img
-                                src="assets/icons/humidity.svg"
-                                width={25}
-                                className="dark:invert hidden md:block"
-                              />
-                            </TableCell>
-                            <TableCell className="font-medium flex gap-1 items-center">
-                              <span>Humidity</span>
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger>
-                                    <img
-                                      src="/assets/icons/help.svg"
-                                      width={15}
-                                      className="dark:invert hidden md:block"
-                                    />
-                                  </TooltipTrigger>
-                                  <TooltipContent>
-                                    <p>Humidity is ...</p>
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
-                            </TableCell>
-                            <TableCell className="font-bold  ">
-                              {Math.round(data.currentweather.humidity * 100) /
-                                100}{" "}
-                              %
-                            </TableCell>
-                          </TableRow>
+                        <TableRow>
+                          <TableCell className="font-medium w-[12.5%]">
+                            <img
+                              src="assets/icons/humidity.svg"
+                              width={25}
+                              className="dark:invert hidden md:block"
+                            />
+                          </TableCell>
+                          <TableCell className="font-medium flex gap-1 items-center">
+                            <span>Humidity</span>
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger>
+                                  <img
+                                    src="/assets/icons/help.svg"
+                                    width={15}
+                                    className="dark:invert hidden md:block"
+                                  />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>Humidity is ...</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          </TableCell>
+                          <TableCell className="font-bold  ">
+                            {Math.round(data.currentweather.humidity * 100) /
+                              100}{" "}
+                            %
+                          </TableCell>
+                        </TableRow>
 
-                          <TableRow>
-                            <TableCell className="font-medium w-[12.5%]">
-                              <img
-                                src="assets/icons/precip.svg"
-                                width={25}
-                                className="dark:invert hidden md:block"
-                              />
-                            </TableCell>
-                            <TableCell className="font-medium flex gap-1 items-center">
-                              <span>Precipitation</span>
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger>
-                                    <img
-                                      src="/assets/icons/help.svg"
-                                      width={15}
-                                      className="dark:invert hidden md:block"
-                                    />
-                                  </TooltipTrigger>
-                                  <TooltipContent>
-                                    <p>Precipitation is ...</p>
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
-                            </TableCell>
-                            <TableCell className="font-bold text-sm ">
-                              {Math.round(
-                                data.currentweather.precipitation * 100
-                              ) / 100}{" "}
-                              mm/hr
-                            </TableCell>
-                          </TableRow>
+                        <TableRow>
+                          <TableCell className="font-medium w-[12.5%]">
+                            <img
+                              src="assets/icons/precip.svg"
+                              width={25}
+                              className="dark:invert hidden md:block"
+                            />
+                          </TableCell>
+                          <TableCell className="font-medium flex gap-1 items-center">
+                            <span>Precipitation</span>
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger>
+                                  <img
+                                    src="/assets/icons/help.svg"
+                                    width={15}
+                                    className="dark:invert hidden md:block"
+                                  />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>Precipitation is ...</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          </TableCell>
+                          <TableCell className="font-bold text-sm ">
+                            {Math.round(
+                              data.currentweather.precipitation * 100
+                            ) / 100}{" "}
+                            mm/hr
+                          </TableCell>
+                        </TableRow>
 
-                          <TableRow>
-                            <TableCell className="font-medium w-[12.5%]">
-                              <img
-                                src="assets/icons/airPressure.svg"
-                                width={25}
-                                className="dark:invert hidden md:block"
-                              />
-                            </TableCell>
-                            <TableCell className="font-medium flex gap-1 items-center">
-                              <span>Air Pressure</span>
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger>
-                                    <img
-                                      src="/assets/icons/help.svg"
-                                      width={15}
-                                      className="dark:invert hidden md:block"
-                                    />
-                                  </TooltipTrigger>
-                                  <TooltipContent>
-                                    <p>Air Pressure is ...</p>
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
-                            </TableCell>
-                            <TableCell className="font-bold  ">
-                              {data.currentweather.pressure} mb
-                            </TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell className="font-medium w-[12.5%]">
-                              <img
-                                src="/assets/icons/light.svg"
-                                width={25}
-                                className="dark:invert hidden md:block"
-                              />
-                            </TableCell>
-                            <TableCell className="font-medium flex gap-1 items-center">
-                              <span>Light Intensity</span>
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger>
-                                    <img
-                                      src="/assets/icons/help.svg"
-                                      width={15}
-                                      className="dark:invert hidden md:block"
-                                    />
-                                  </TooltipTrigger>
-                                  <TooltipContent>
-                                    <p>Light Intensity is ...</p>
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
-                            </TableCell>
-                            <TableCell className="font-bold text-sm ">
-                              {Math.round(data.currentweather.light * 100) /
-                                100}{" "}
-                              lux
-                            </TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell className="font-medium w-[12.5%]">
-                              <img
-                                src="/assets/icons/windDirection.svg"
-                                width={25}
-                                className="dark:invert hidden md:block"
-                              />
-                            </TableCell>
-                            <TableCell className="font-medium flex gap-1 items-center">
-                              <span>Wind Direction</span>
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger>
-                                    <img
-                                      src="/assets/icons/help.svg"
-                                      width={15}
-                                      className="dark:invert hidden md:block"
-                                    />
-                                  </TooltipTrigger>
-                                  <TooltipContent>
-                                    <p>Wind Direction is ...</p>
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
-                            </TableCell>
-                            <TableCell className="font-bold text-sm ">
-                              {Math.round(
-                                data.currentweather.windDirection * 100
-                              ) / 100}{" "}
-                              {getWindDirectionLabel(
-                                data.currentweather.windDirection
-                              )}
-                            </TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell className="font-medium w-[12.5%]">
-                              <img
-                                src="/assets/icons/windSpeed.svg"
-                                width={25}
-                                className="dark:invert hidden md:block"
-                              />
-                            </TableCell>
-                            <TableCell className="font-medium flex gap-1 items-center">
-                              <span>Wind Speed</span>
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger>
-                                    <img
-                                      src="/assets/icons/help.svg"
-                                      width={15}
-                                      className="dark:invert hidden md:block"
-                                    />
-                                  </TooltipTrigger>
-                                  <TooltipContent>
-                                    <p>Wind Speed is ...</p>
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
-                            </TableCell>
-                            <TableCell className="font-bold text-sm ">
-                              {Math.round(data.currentweather.windSpeed * 100) /
-                                100}{" "}
-                              km/h
-                            </TableCell>
-                          </TableRow>
-                        </TableBody>
-                      </Table>
-                    </div>
+                        <TableRow>
+                          <TableCell className="font-medium w-[12.5%]">
+                            <img
+                              src="assets/icons/airPressure.svg"
+                              width={25}
+                              className="dark:invert hidden md:block"
+                            />
+                          </TableCell>
+                          <TableCell className="font-medium flex gap-1 items-center">
+                            <span>Air Pressure</span>
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger>
+                                  <img
+                                    src="/assets/icons/help.svg"
+                                    width={15}
+                                    className="dark:invert hidden md:block"
+                                  />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>Air Pressure is ...</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          </TableCell>
+                          <TableCell className="font-bold  ">
+                            {data.currentweather.pressure} mb
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="font-medium w-[12.5%]">
+                            <img
+                              src="/assets/icons/light.svg"
+                              width={25}
+                              className="dark:invert hidden md:block"
+                            />
+                          </TableCell>
+                          <TableCell className="font-medium flex gap-1 items-center">
+                            <span>Light Intensity</span>
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger>
+                                  <img
+                                    src="/assets/icons/help.svg"
+                                    width={15}
+                                    className="dark:invert hidden md:block"
+                                  />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>Light Intensity is ...</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          </TableCell>
+                          <TableCell className="font-bold text-sm ">
+                            {Math.round(data.currentweather.light * 100) / 100}{" "}
+                            lux
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="font-medium w-[12.5%]">
+                            <img
+                              src="/assets/icons/windDirection.svg"
+                              width={25}
+                              className="dark:invert hidden md:block"
+                            />
+                          </TableCell>
+                          <TableCell className="font-medium flex gap-1 items-center">
+                            <span>Wind Direction</span>
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger>
+                                  <img
+                                    src="/assets/icons/help.svg"
+                                    width={15}
+                                    className="dark:invert hidden md:block"
+                                  />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>Wind Direction is ...</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          </TableCell>
+                          <TableCell className="font-bold text-sm ">
+                            {Math.round(
+                              data.currentweather.windDirection * 100
+                            ) / 100}{" "}
+                            {getWindDirectionLabel(
+                              data.currentweather.windDirection
+                            )}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="font-medium w-[12.5%]">
+                            <img
+                              src="/assets/icons/windSpeed.svg"
+                              width={25}
+                              className="dark:invert hidden md:block"
+                            />
+                          </TableCell>
+                          <TableCell className="font-medium flex gap-1 items-center">
+                            <span>Wind Speed</span>
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger>
+                                  <img
+                                    src="/assets/icons/help.svg"
+                                    width={15}
+                                    className="dark:invert hidden md:block"
+                                  />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>Wind Speed is ...</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          </TableCell>
+                          <TableCell className="font-bold text-sm ">
+                            {Math.round(data.currentweather.windSpeed * 100) /
+                              100}{" "}
+                            km/h
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
                   </div>
                 </CardContent>
               </Card>

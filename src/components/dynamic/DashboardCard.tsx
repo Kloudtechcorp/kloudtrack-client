@@ -37,7 +37,7 @@ const DashboardCard: React.FC<{ station: stationStaticType }> = ({
 
   return (
     <Card
-      className="cardContainer flex flex-row cursor-pointer hover:scale-[1.01] hover:bg-card/75 transition ease-in-out"
+      className="cardContainer flex flex-row cursor-pointer hover:scale-[1.01] hover:bg-yellow-50/75 dark:hover:bg-card/75 transition ease-in-out"
       onClick={() => {
         navigate(`/${station.stationName}`);
       }}
@@ -77,7 +77,7 @@ const DashboardCard: React.FC<{ station: stationStaticType }> = ({
           <div className="flex flex-col gap-2 w-full">
             <div className="w-full px-2 py-1 font-normal text-lg">
               Current Weather Conditions as of{" "}
-              {formatDateString(stationData.currentweather.recordedAt)}
+              {formatDateString(stationData.currentweather.recordedAt, "long")}
             </div>
             <div className="flex flex-col pb-3 gap-1">
               <DataCards currentweather={stationData.currentweather} />

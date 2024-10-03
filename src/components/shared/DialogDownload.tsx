@@ -18,6 +18,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { useDownloadData } from "@/hooks/react-query/mutations";
 import { weatherDataTypes } from "@/types/queryTypes";
+import { formatDateString } from "@/lib/utils";
 
 type DialogDownload = {
   name: string;
@@ -52,14 +53,14 @@ const DialogDownload = ({ name }: DialogDownload) => {
     ];
 
     const rows = data.map((item) => [
-      item.recordedAt,
+      formatDateString(item.recordedAt, "numeric"),
       item.temperature,
       item.heatIndex,
       item.humidity,
       item.pressure,
       item.precipitation,
       item.light,
-      item.uvIntensity,
+      item.uvIndex,
       item.windDirection,
       item.windSpeed,
       item.gust,

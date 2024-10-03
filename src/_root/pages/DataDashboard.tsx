@@ -69,7 +69,7 @@ const DataDashboard = () => {
     <div className="w-full bg-[#F6F8FC] dark:bg-secondary rounded-xl p-[1rem] custom-scrollbar overflow-auto">
       <div className="container p-1">
         <Card className="cardContainer">
-          <CardContent className="flex flex-col p-0">
+          <CardContent className="flex flex-col p-0 gap-2">
             <div className="w-full flex justify-start flex-row gap-3">
               <div className="p-1">
                 <img src="/assets/img/logo-v1.png" className="size-14" />
@@ -78,7 +78,7 @@ const DataDashboard = () => {
                 <Dialog open={isOpen} onOpenChange={setIsOpen}>
                   <DialogTrigger asChild>
                     <span
-                      className="text-sm xs:text-lg m2d:text-xl xl:text-2xl font-bold self-start p-0 hover:text-[#fbd008] dark:invert dark:hover:text-blue-500 ease-in-out duration-300 hover:scale-110 hover:underline cursor-pointer"
+                      className="text-sm xs:text-lg md:text-xl xl:text-3xl font-bold self-start p-0 hover:text-[#fbd008] dark:invert dark:hover:text-blue-500 ease-in-out duration-300 hover:scale-125 cursor-pointer"
                       onClick={() => setIsOpen(true)}
                     >
                       {station}
@@ -106,7 +106,7 @@ const DataDashboard = () => {
                 </Dialog>
 
                 <span className="text-xs md:text-sm lg:text-base dark:invert">
-                  {filteredStations.longitude} , {filteredStations.latitude}
+                  <span>{`${filteredStations.barangay.barangay}, ${filteredStations.municipality.municipality}, ${filteredStations.province.province}`}</span>
                 </span>
               </div>
             </div>
@@ -119,18 +119,21 @@ const DataDashboard = () => {
                   <div className="w-full gap-2 flex flex-col">
                     <div className=" px-3 text-xs md:text-sm border lg:text-base">
                       Current Weather as of{" "}
-                      {formatDateString(stationData.currentweather.recordedAt)}
+                      {formatDateString(
+                        stationData.currentweather.recordedAt,
+                        "long"
+                      )}
                     </div>
                     <DataCards currentweather={stationData.currentweather} />
                   </div>
                 )}
 
-                <div className="p-2 overflow-y-auto custom-scrollbar h-56 w-full">
+                <div className="p-2 overflow-y-auto custom-scrollbar w-full">
                   <Table>
                     <TableHeader>
                       <TableRow>
                         <TableHead
-                          className="text-center border px-2 py-1 bg-[#FBD008] dark:bg-slate-800 text-lg font-bold dark:text-white rounded"
+                          className="text-center border px-2 py-1 dark:bg-slate-800 text-lg font-bold dark:text-white rounded"
                           colSpan={2}
                         >
                           Weather Stations
@@ -141,7 +144,7 @@ const DataDashboard = () => {
                       {stationNames.map((station, index) => (
                         <TableRow
                           key={index}
-                          className={`hover-row h-11 ${
+                          className={`hover-row h-7 ${
                             index % 2 === 0
                               ? "bg-gray-100 dark:bg-gray-700"
                               : "bg-white dark:bg-gray-500"
@@ -167,7 +170,7 @@ const DataDashboard = () => {
                 </div>
                 <div className="flex flex-col gap-2 overflow-y-auto cursor-pointer">
                   <div
-                    className="flex flex-col gap-1 border p-1 rounded-lg"
+                    className="flex flex-col gap-1 border p-1 rounded-lg hover:bg-yellow-100/25 dark:hover:bg-gray-900"
                     onClick={() =>
                       navigate(`/${station}/data-analysis`, {
                         state: { variable: "heatIndex" },
@@ -184,7 +187,7 @@ const DataDashboard = () => {
                     />
                   </div>
                   <div
-                    className="flex flex-col gap-1 border p-1 rounded-lg"
+                    className="flex flex-col gap-1 border p-1 rounded-lg hover:bg-yellow-100/25 dark:hover:bg-gray-900"
                     onClick={() =>
                       navigate(`/${station}/data-analysis`, {
                         state: { variable: "temperature" },
@@ -201,7 +204,7 @@ const DataDashboard = () => {
                     />
                   </div>
                   <div
-                    className="flex flex-col gap-1 border p-1 rounded-lg"
+                    className="flex flex-col gap-1 border p-1 rounded-lg hover:bg-yellow-100/25 dark:hover:bg-gray-900"
                     onClick={() =>
                       navigate(`/${station}/data-analysis`, {
                         state: { variable: "humidity" },

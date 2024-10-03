@@ -87,7 +87,7 @@ const Profile = () => {
                     </div>
                     <span className="text-xs">
                       Your profile was created on{" "}
-                      {formatDateString(profile.createdAt)}
+                      {formatDateString(profile.createdAt, "long")}
                     </span>
                   </div>
                 </div>
@@ -185,7 +185,7 @@ const Profile = () => {
                       </div>
                       <span className="text-xs">
                         The API key was generated on{" "}
-                        {formatDateString(profile.apiKeys.createdAt)}
+                        {formatDateString(profile.apiKeys.createdAt, "long")}
                       </span>
                     </div>
                   </div>

@@ -83,7 +83,7 @@ const VariableDashboard = () => {
                   <SelectItem value="heatIndex">Heat Index</SelectItem>
                   <SelectItem value="pressure">Air Pressure</SelectItem>
                   <SelectItem value="precipitation">Precipitation</SelectItem>
-                  <SelectItem value="uvIntensity">UV Index</SelectItem>
+                  <SelectItem value="uvIndex">UV Index</SelectItem>
                   {/* <SelectItem value="irradiance">Irradiance</SelectItem> */}
                   <SelectItem value="light">Light Intensity</SelectItem>
                   {/* <SelectItem value="batteryVoltage">Battery Level</SelectItem> */}

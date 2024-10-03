@@ -9,6 +9,7 @@ import {
 import { SidebarProps } from "@/types";
 import { INITIAL_USER, useUserContext } from "@/hooks/context/authContext";
 import { useHandleLogout } from "@/hooks/react-query/mutations";
+import toast from "react-hot-toast";
 
 const LeftSidebar = ({ expand }: SidebarProps) => {
   const navigate = useNavigate();
@@ -110,6 +111,7 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
                       setIsAuthenticated(false);
                       setUser(INITIAL_USER);
                       navigate("/signin");
+                      toast.success("Logout Successfull!");
                     }}
                   />
                   <span className={expand ? "block" : "hidden"}>Logout</span>

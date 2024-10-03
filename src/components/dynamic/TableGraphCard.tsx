@@ -80,7 +80,7 @@ const TableGraphCard = ({
                     Date Recorded
                   </TableCell>
                   <TableCell className="border border-[#545454]">
-                    {formatDateString(data.recordedAt)}
+                    {formatDateString(data.recordedAt, "long")}
                   </TableCell>
                 </TableRow>
               </React.Fragment>
@@ -90,7 +90,8 @@ const TableGraphCard = ({
                 Current
               </TableCell>
               <TableCell className="border border-[#545454]">
-                {Math.round(stationData.info.data[0] * 100) / 100}
+                {Math.round(stationData.info.data[0] * 100) / 100}{" "}
+                {weatherUnit(weatherData)}
               </TableCell>
             </TableRow>
             <TableRow>

@@ -12,8 +12,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { passwordSchema, userValidation } from "@/types/validation";
-import { useUpdateUserPassword } from "@/hooks/react-query/mutations";
+import {
+  useHandleLogout,
+  useUpdateUserPassword,
+} from "@/hooks/react-query/mutations";
 import { useState } from "react";
+import { handleLogout } from "@/api/post";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { INITIAL_USER, useUserContext } from "@/hooks/context/authContext";
 
 const defaultValues = {
   currentPassword: "",
@@ -22,8 +29,11 @@ const defaultValues = {
 };
 
 const ChangePassword = () => {
+  const navigate = useNavigate();
   const { mutateAsync: updateUserPassword, isPending } =
     useUpdateUserPassword();
+  const { mutate: handleLogout } = useHandleLogout();
+  const { setUser, user, setIsAuthenticated } = useUserContext();
 
   const form = useForm<z.infer<typeof passwordSchema>>({
     resolver: zodResolver(passwordSchema),
@@ -45,6 +55,11 @@ const ChangePassword = () => {
     updateUserPassword(values, {
       onSuccess: () => {
         clearForms();
+        handleLogout();
+        toast.success("Please login again!");
+        setIsAuthenticated(false);
+        setUser(INITIAL_USER);
+        navigate("/signin");
       },
       onError: () => {
         clearForms();

@@ -7,6 +7,8 @@ import {
   checkImageUrl,
   getFormattedDate,
   convertUTCtoLocal,
+  getNearestTimeIndex,
+  delay,
 } from "@/lib/utils";
 import HimawariDetails from "@/components/dynamic/HimawariDetails";
 
@@ -25,18 +27,6 @@ const Himawari = () => {
     )}.jpg`
   );
 
-  const getNearestTimeIndex = (hours: number, minutes: number): number => {
-    const { hour: localHour, minute: localMinute } = convertLocaltoUTC(
-      hours,
-      minutes
-    );
-    const roundedMinutes = Math.floor(localMinute / 10) * 10;
-    const formattedTime = `${localHour
-      .toString()
-      .padStart(2, "0")}${roundedMinutes.toString().padStart(2, "0")}`;
-    return timer.indexOf(formattedTime);
-  };
-
   const generateDynamicTimerArray = (): string[] => {
     const now = new Date();
     const currentHours = now.getUTCHours();
@@ -53,13 +43,8 @@ const Himawari = () => {
 
   const [dynamicTimerArray, setDynamicTimerArray] = useState<string[]>([]);
 
-  const delay = (ms: number): Promise<void> => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  };
-
   const updateImage = async (index: number) => {
     const element = bandSelect;
-
     if (element) {
       const { hour: imgHour, minute: imgMinute } = convertUTCtoLocal(
         parseInt(dynamicTimerArray[index].slice(0, 2)),
@@ -73,9 +58,7 @@ const Himawari = () => {
           .toString()
           .padStart(2, "0")}` +
         ".jpg";
-
       const isValidImage = await checkImageUrl(imgName);
-
       if (isValidImage) {
         setImageElement(imgName);
         setLastValidImgUrl(imgName);
@@ -87,11 +70,8 @@ const Himawari = () => {
 
   const processImagesWithDelay = async () => {
     if (!isCycling) return;
-
     await updateImage(currentIndex);
-
     await delay(500);
-
     setCurrentIndex((prevIndex) =>
       prevIndex + 1 < dynamicTimerArray.length - 1 ? prevIndex + 1 : 0
     );
@@ -109,7 +89,6 @@ const Himawari = () => {
         clearInterval(intervalRef.current);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCycling, currentIndex]);
 
   useEffect(() => {
@@ -192,13 +171,13 @@ const Himawari = () => {
             <img
               src={imageElement}
               alt="Himawari Satellite View"
-              className="rounded-2xl h-full aspect-[701/601] object-cover"
+              className="rounded-2xl h-full p-0 m-0 w-full"
             />
           </div>
         </div>
 
-        <div className="py-6 px-8 w-3/4 sm:w-full ">
-          <div>
+        <div className="w-full">
+          <div className="p-5">
             <h2 className="lg:text-3xl sm:text-base font-bold">
               Real-time Satellite View
             </h2>
@@ -211,42 +190,40 @@ const Himawari = () => {
                   className="text-gray-500 hover:text-black"
                   href="https://www.data.jma.go.jp/mscweb/data/himawari/sat_img.php?area=se2"
                 >
-                  {" "}
                   Real Time Imagery Website
                 </a>
                 .
               </p>
             </span>
-          </div>
+            <div className="flex items-left flex-col gap-2 self-center">
+              <div>Band</div>
+              <select
+                id="band"
+                className="p-2 w-1/1 rounded-lg w-full bg-white  dark:bg-black"
+                onChange={handleBandChange} // Call handleBandChange when the band is changed
+              >
+                <option value="snd">Sandwich</option>
+                <option value="hrp">Heavy rainfall potential areas</option>
+                <option value="trm">True Color Reproduction Image</option>
+                <option value="b13">B13 (Infrared)</option>
+                <option value="b03">B03 (Visible)</option>
+                <option value="b08">B08 (Water Vapor)</option>
+                <option value="b07">B07 (Short Wave Infrared)</option>
+                <option value="dms">Day Microphysics RGB</option>
+                <option value="ngt">Night Microphysics RGB</option>
+                <option value="dst">Dust RGB</option>
+                <option value="arm">Airmass RGB</option>
+                <option value="dsl">Day Snow-Fog RGB</option>
+                <option value="dnc">Natural Color RGB</option>
+                <option value="tre">True Color RGB (Enhanced)</option>
+                <option value="cve">Day Convective Storm RGB</option>
+                <option value="vir">B03 combined with B13</option>
+                <option value="irv">B03 and B13 at night</option>
+              </select>
+            </div>
 
-          <div className="flex items-left flex-col gap-2 self-center">
-            <div>Band</div>
-            <select
-              id="band"
-              className="p-2 w-1/1 rounded-lg w-full bg-white  dark:bg-black"
-              onChange={handleBandChange} // Call handleBandChange when the band is changed
-            >
-              <option value="snd">Sandwich</option>
-              <option value="hrp">Heavy rainfall potential areas</option>
-              <option value="trm">True Color Reproduction Image</option>
-              <option value="b13">B13 (Infrared)</option>
-              <option value="b03">B03 (Visible)</option>
-              <option value="b08">B08 (Water Vapor)</option>
-              <option value="b07">B07 (Short Wave Infrared)</option>
-              <option value="dms">Day Microphysics RGB</option>
-              <option value="ngt">Night Microphysics RGB</option>
-              <option value="dst">Dust RGB</option>
-              <option value="arm">Airmass RGB</option>
-              <option value="dsl">Day Snow-Fog RGB</option>
-              <option value="dnc">Natural Color RGB</option>
-              <option value="tre">True Color RGB (Enhanced)</option>
-              <option value="cve">Day Convective Storm RGB</option>
-              <option value="vir">B03 combined with B13</option>
-              <option value="irv">B03 and B13 at night</option>
-            </select>
+            <HimawariDetails />
           </div>
-
-          <HimawariDetails />
         </div>
       </div>
     </div>

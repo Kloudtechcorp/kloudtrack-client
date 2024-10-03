@@ -37,13 +37,6 @@ const VerticalCards = ({
   );
 
   const renderCard = (title: string, value: number | null) => {
-    const displayValue =
-      weatherData === "uvIntensity"
-        ? value
-        : value !== null
-        ? value.toFixed(2)
-        : null;
-
     return (
       <Card className="w-full h-full aspect-[10/9]">
         <CardContent className="text-center flex flex-col h-full w-full px-0">
@@ -52,7 +45,10 @@ const VerticalCards = ({
           </span>
           <div className="h-full flex items-center justify-center">
             <span className="text-5xl font-bold">
-              {displayValue} {weatherUnit(weatherData)}
+              {weatherData !== "uvIndex"
+                ? value
+                : value?.toString().slice(0, 1)}{" "}
+              <span className="text-3xl">{weatherUnit(weatherData)}</span>
             </span>
           </div>
         </CardContent>

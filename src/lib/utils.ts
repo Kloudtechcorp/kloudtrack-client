@@ -2,30 +2,49 @@ import { type ClassValue, clsx } from "clsx";
 import { set } from "date-fns";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
+import { timer } from "./objects/himawariArrays";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatDateString(dateString: string) {
+export function formatDateString(
+  dateString: string,
+  month: "numeric" | "2-digit" | "long" | "short" | "narrow" | undefined
+) {
   const now = new Date(dateString);
   const utcPlus8Now = new Date(now.getTime() - 8 * 60 * 60 * 1000);
 
   const options: Intl.DateTimeFormatOptions = {
-    year: "numeric",
-    month: "short",
+    month: month,
     day: "numeric",
+    year: "numeric",
   };
   const date = new Date(utcPlus8Now);
   const formattedDate = date.toLocaleDateString("en-US", options);
-
   const time = date.toLocaleTimeString([], {
     hour: "2-digit",
     minute: "numeric",
   });
 
-  return `${formattedDate} at ${time}`;
+  return `${formattedDate} ${time}`;
 }
+
+export const getNearestTimeIndex = (hours: number, minutes: number): number => {
+  const { hour: localHour, minute: localMinute } = convertLocaltoUTC(
+    hours,
+    minutes
+  );
+  const roundedMinutes = Math.floor(localMinute / 10) * 10;
+  const formattedTime = `${localHour
+    .toString()
+    .padStart(2, "0")}${roundedMinutes.toString().padStart(2, "0")}`;
+  return timer.indexOf(formattedTime);
+};
+
+export const delay = (ms: number): Promise<void> => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
 
 export const stationType = (type: string) => {
   switch (type) {
@@ -51,23 +70,23 @@ export const returnActive = (active: boolean) => {
 
 export const getWindDirectionLabel = (value: number) => {
   if (value === 0 || value === 360) {
-    return "°N";
+    return `${Math.round(value * 100) / 100} °N`;
   } else if (value > 0 && value < 90) {
-    return "°NE";
+    return `${Math.round(value * 100) / 100} °NE`;
   } else if (value === 90) {
-    return "°E";
+    return `${Math.round(value * 100) / 100} °E`;
   } else if (value > 90 && value < 180) {
-    return "°SE";
+    return `${Math.round(value * 100) / 100} °SE`;
   } else if (value === 180) {
-    return "°S";
+    return `${Math.round(value * 100) / 100} °S`;
   } else if (value > 180 && value < 270) {
-    return "°SW";
+    return `${Math.round(value * 100) / 100} °SW`;
   } else if (value === 270) {
-    return "°W";
+    return `${Math.round(value * 100) / 100} °W`;
   } else if (value > 270 && value < 360) {
-    return "°NW";
+    return `${Math.round(value * 100) / 100} °NW`;
   } else {
-    return `${value}°`;
+    return `N/A`;
   }
 };
 

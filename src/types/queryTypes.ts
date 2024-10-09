@@ -68,8 +68,16 @@ export type stationsListType = {
   }[];
 };
 
-export type stationDashboardType = {
+export type awsDashboardType = {
   currentweather: stationCurrentWeatherType;
+};
+
+export type argDashboardType = {
+  raingaugedata: stationCurrentRainType;
+};
+
+export type rlmsDashboardType = {
+  riverleveldata: stationCurrentRiverLevelType;
 };
 
 export type stationCurrentWeatherType = {
@@ -86,6 +94,16 @@ export type stationCurrentWeatherType = {
   precipitation: number;
   gust: number;
   batteryVoltage: number;
+};
+
+export type stationCurrentRainType = {
+  recordedAt: string;
+  precipitation: number;
+};
+
+export type stationCurrentRiverLevelType = {
+  recordedAt: string;
+  distance: number;
 };
 
 export type userProfileTypes = {

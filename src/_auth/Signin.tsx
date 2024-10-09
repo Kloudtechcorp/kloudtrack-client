@@ -53,7 +53,7 @@ const Signin = () => {
         toast.error("Login failed. Please try again.");
       }
     } catch (error: any) {
-      toast.error(error.message || "An unexpected error occurred.");
+      toast.error("Username or password not found");
     } finally {
       setIsLoading(false);
     }

@@ -10,7 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import DataCards from "@/components/shared/DataCards";
-import { useGetStationData } from "@/hooks/react-query/queries";
+import { useGetAwsData } from "@/hooks/react-query/queries";
 import { useStationContext } from "@/hooks/context/stationContext";
 import {
   Dialog,
@@ -25,6 +25,7 @@ import { useState } from "react";
 import { stationStaticType } from "@/types";
 import DialogDownload from "@/components/shared/DialogDownload";
 import PuffLoader from "react-spinners/PuffLoader";
+import NotFound from "@/components/shared/NotFound";
 
 const DataDashboard = () => {
   const { station } = useParams<string>();
@@ -36,16 +37,21 @@ const DataDashboard = () => {
     data: stationData,
     isError,
     isLoading,
-  } = useGetStationData(!station ? "" : station);
+  } = useGetAwsData(!station ? "" : station);
 
   if (!station) {
     return <div>No station found</div>;
   }
-
   const filteredStations = stationNames.find(
     (stationItem: stationStaticType) => stationItem.stationName === station
   );
 
+  if (isError)
+    return (
+      <div className="w-full flex justify-center items-center h-full">
+        <NotFound />
+      </div>
+    );
   if (isLoading || !stationData || !filteredStations)
     return (
       <Card className="cardContainer flex flex-row">
@@ -57,17 +63,9 @@ const DataDashboard = () => {
       </Card>
     );
 
-  if (isError)
-    return (
-      <div className="w-full flex justify-center items-center h-full">
-        <img src="/assets/icons/error.svg" className="size-14" />
-        <span>Error fetching data.</span>
-      </div>
-    );
-
   return (
     <div className="w-full bg-[#F6F8FC] dark:bg-secondary rounded-xl p-[1rem] custom-scrollbar overflow-auto">
-      <div className="container p-1">
+      <div className="container p-1 shadow-lg">
         <Card className="cardContainer">
           <CardContent className="flex flex-col p-0 gap-2">
             <div className="w-full flex justify-start flex-row gap-3">
@@ -113,7 +111,7 @@ const DataDashboard = () => {
 
             <div className="flex lg:flex-row flex-col w-full gap-2">
               <div className="flex flex-col w-full px-2 gap-2">
-                {!stationData.currentweather ? (
+                {!stationData ? (
                   <p className="font-bold">There is no station data.</p>
                 ) : (
                   <div className="w-full gap-2 flex flex-col">

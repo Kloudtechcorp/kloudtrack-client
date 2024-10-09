@@ -91,8 +91,24 @@
     @apply hover:bg-muted/50;
   }
 
-  .marker {
-    background-image: url("assets/icons/pointer.svg");
+  .marker-aws {
+    background-image: url("assets/icons/pointer-aws.svg");
+    background-size: cover;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .marker-arg {
+    background-image: url("assets/icons/pointer-arg.svg");
+    background-size: cover;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .marker-rlms {
+    background-image: url("assets/icons/pointer-rlms.svg");
     background-size: cover;
     width: 50px;
     height: 50px;
@@ -282,4 +298,8 @@
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #cdcdcd;
+}
+
+.button-icon {
+  @apply bg-transparent hover:bg-transparent border-2 border-transparent  hover:border-black dark:hover:border-white ease-in-out duration-300;
 }

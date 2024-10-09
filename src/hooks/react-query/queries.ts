@@ -1,12 +1,12 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { QUERY_KEYS } from "./queryKeys";
 import {
-  downloadableDataTypes,
-  downloadParamsTypes,
+  argDashboardType,
+  awsDashboardType,
   hourlyDataTypes,
+  rlmsDashboardType,
   stationBarangayType,
   stationComputedTypes,
-  stationDashboardType,
   stationMunicipalityType,
   stationNamesType,
   stationProvinceType,
@@ -16,10 +16,12 @@ import {
   userProfileTypes,
 } from "@/types/queryTypes";
 import {
+  getArgData,
+  getAwsData,
   getHourlyDataset,
   getIsAuthenticated,
+  getRlmsData,
   getStationBarangays,
-  getStationData,
   getStationList,
   getStationMunicipalities,
   getStationNames,
@@ -32,12 +34,36 @@ import {
 } from "@/api/get";
 import { stationStaticType, UserType } from "@/types";
 
-export const useGetStationData = (
+export const useGetAwsData = (
   name: string
-): UseQueryResult<stationDashboardType, Error> => {
+): UseQueryResult<awsDashboardType, Error> => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_STATION_DATA, name],
-    queryFn: () => getStationData(name),
+    queryKey: [QUERY_KEYS.GET_AWS_DATA, name],
+    queryFn: () => getAwsData(name),
+    refetchInterval: 5000,
+    retry: 1,
+    staleTime: 30000,
+  });
+};
+
+export const useGetArgData = (
+  name: string
+): UseQueryResult<argDashboardType, Error> => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_ARG_DATA, name],
+    queryFn: () => getArgData(name),
+    refetchInterval: 5000,
+    retry: 1,
+    staleTime: 30000,
+  });
+};
+
+export const useGetRlmsData = (
+  name: string
+): UseQueryResult<rlmsDashboardType, Error> => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_RLMS_DATA, name],
+    queryFn: () => getRlmsData(name),
     refetchInterval: 5000,
     retry: 1,
     staleTime: 30000,

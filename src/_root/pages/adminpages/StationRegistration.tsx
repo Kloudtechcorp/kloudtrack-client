@@ -30,20 +30,14 @@ import {
   useGetStationBarangays,
 } from "@/hooks/react-query/queries";
 import { useCreateStation } from "@/hooks/react-query/mutations";
+import { stationStaticType } from "@/types";
 
-const defaultValues = {
-  stationName: "",
-  latitude: "",
-  stationtype: "AWS",
-  longitude: "",
-  psgc: "",
-  municipality: "",
-  province: "",
-  region: "",
-  imageLink: "",
+type StationRegistrationProps = {
+  action: "CREATE" | "UPDATE";
+  station?: stationStaticType;
 };
 
-const StationRegistration = () => {
+const StationRegistration = ({ action, station }: StationRegistrationProps) => {
   const { data: stationTypes } = useGetStationTypes();
   const { data: regions } = useGetStationRegions();
 
@@ -56,6 +50,18 @@ const StationRegistration = () => {
   const { data: barangays } = useGetStationBarangays(municipalityId || 0);
 
   const { mutateAsync: createStation, isPending } = useCreateStation();
+  console.log(station);
+  const defaultValues = {
+    stationName: station?.stationName || "",
+    latitude: station?.latitude || "",
+    stationtype: station?.stationType.typeName || "AWS",
+    longitude: station?.latitude || "",
+    psgc: station?.barangay.psgc || "",
+    municipality: station?.municipality.municipality || "",
+    province: station?.province.province || "",
+    region: station?.region.region || "",
+    imageLink: station?.imageLink || "",
+  };
 
   const form = useForm<z.infer<typeof stationSchema>>({
     resolver: zodResolver(stationSchema),
@@ -84,7 +90,16 @@ const StationRegistration = () => {
     <Form {...form}>
       <div className="px-5 w-full">
         {isPending && <div className="w-full">Loading...</div>}
-        <span className="flex py-5 font-bold text-lg">Register a station</span>
+        {action === "CREATE" ? (
+          <span className="flex py-5 font-bold text-lg">
+            Register a station
+          </span>
+        ) : (
+          <span className="flex py-5 text-2xl gap-2 items-center">
+            Update station
+            <span className="font-bold"> {station?.stationName}</span>
+          </span>
+        )}
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-2">
             <FormField

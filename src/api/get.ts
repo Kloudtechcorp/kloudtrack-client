@@ -1,7 +1,6 @@
 import { stationStaticType, UserType } from "@/types";
 import {
   stationBarangayType,
-  stationDashboardType,
   stationsListType,
   stationMunicipalityType,
   stationNamesType,
@@ -13,15 +12,19 @@ import {
   hourlyDataTypes,
   downloadParamsTypes,
   downloadableDataTypes,
+  stationCurrentRainType,
+  stationCurrentRiverLevelType,
+  stationCurrentWeatherType,
+  awsDashboardType,
+  argDashboardType,
+  rlmsDashboardType,
 } from "@/types/queryTypes";
 
 const method: string = "GET";
 const server = import.meta.env.VITE_SERVER;
 
 //=========================== GET DATA FOR DASHBOARD
-export const getStationData = async (
-  name: string
-): Promise<stationDashboardType> => {
+export const getAwsData = async (name: string): Promise<awsDashboardType> => {
   const response = await fetch(`${server}/weather/station/${name}`, {
     method,
     credentials: "include",
@@ -30,7 +33,32 @@ export const getStationData = async (
     throw new Error("Error fetching station data");
   }
   const data = await response.json();
-  console.log(data);
+  return data.data;
+};
+
+//=========================== GET DATA FOR DASHBOARD
+export const getArgData = async (name: string): Promise<argDashboardType> => {
+  const response = await fetch(`${server}/raingauge/station/${name}`, {
+    method,
+    credentials: "include",
+  });
+  if (!response.ok) {
+    throw new Error("Error fetching station data");
+  }
+  const data = await response.json();
+  return data.data;
+};
+
+//=========================== GET DATA FOR DASHBOARD
+export const getRlmsData = async (name: string): Promise<rlmsDashboardType> => {
+  const response = await fetch(`${server}/riverlevel/station/${name}`, {
+    method,
+    credentials: "include",
+  });
+  if (!response.ok) {
+    throw new Error("Error fetching station data");
+  }
+  const data = await response.json();
   return data.data;
 };
 
@@ -147,7 +175,7 @@ export const getUserSession = async (): Promise<UserType> => {
 
 //=========================== GET DATA FOR EACH STATION
 export const getStationNames = async (): Promise<stationStaticType[]> => {
-  const response = await fetch(`${server}/weather/station-names`, {
+  const response = await fetch(`${server}/station-names/Bataan`, {
     method,
     credentials: "include",
   });

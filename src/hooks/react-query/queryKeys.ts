@@ -1,6 +1,9 @@
 export enum QUERY_KEYS {
   //Station
-  GET_STATION_DATA = "getStationData",
+  GET_AWS_DATA = "getAwsData",
+  GET_ARG_DATA = "getArgData",
+  GET_RLMS_DATA = "getRlmsData",
+
   GET_STATION_LIST = "getStationList",
   GET_STATION_TYPES = "getStationTypes",
   GET_STATION_REGIONS = "getStationRegions",

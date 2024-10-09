@@ -232,12 +232,15 @@ export type stationStaticType = {
     typeName: string;
   };
   region: {
+    id: number;
     region: string;
   };
   province: {
+    id: number;
     province: string;
   };
   municipality: {
+    id: number;
     municipality: string;
   };
   barangay: {

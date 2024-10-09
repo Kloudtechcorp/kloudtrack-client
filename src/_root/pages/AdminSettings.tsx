@@ -32,7 +32,7 @@ const AdminSettings = () => {
         <AddStationType />
       </TabsContent>
       <TabsContent value="station" className="container">
-        <StationRegistration />
+        <StationRegistration action="CREATE" />
       </TabsContent>
       <TabsContent value="list" className="container">
         <StationList />

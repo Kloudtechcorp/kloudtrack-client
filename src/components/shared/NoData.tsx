@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function NoData() {
   return (
-    <div className="absolute items-center justify-center text-center flex flex-col gap-5">
+    <div className="items-center justify-center text-center flex flex-col gap-5">
       <span className="bg-gradient-to-b from-[#fbd008] to-bg-transparent bg-clip-text text-[10rem] font-extrabold leading-none text-transparent">
         No Data Found
       </span>

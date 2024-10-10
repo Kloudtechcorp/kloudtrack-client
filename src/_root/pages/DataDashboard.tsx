@@ -1,15 +1,6 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import DataCards from "@/components/shared/DataCards";
 import { useGetAwsData } from "@/hooks/react-query/queries";
 import { useStationContext } from "@/hooks/context/stationContext";
 import {
@@ -19,13 +10,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { formatDateString, returnActive } from "@/lib/utils";
-import VariableGraph from "@/components/dynamic/VariableGraph";
 import { useState } from "react";
 import { stationStaticType } from "@/types";
-import DialogDownload from "@/components/shared/DialogDownload";
 import PuffLoader from "react-spinners/PuffLoader";
 import NotFound from "@/components/shared/NotFound";
+import AwsDataCard from "@/components/dynamic/DataDashboardCards.tsx/AwsDataCards";
+import ArgDataCard from "@/components/dynamic/DataDashboardCards.tsx/ArgDataCard";
+import RlmsDataCard from "@/components/dynamic/DataDashboardCards.tsx/RlmsDataCard";
 
 const DataDashboard = () => {
   const { station } = useParams<string>();
@@ -109,118 +100,15 @@ const DataDashboard = () => {
               </div>
             </div>
 
-            <div className="flex lg:flex-row flex-col w-full gap-2">
-              <div className="flex flex-col w-full px-2 gap-2">
-                {!stationData ? (
-                  <p className="font-bold">There is no station data.</p>
-                ) : (
-                  <div className="w-full gap-2 flex flex-col">
-                    <div className=" px-3 text-xs md:text-sm border lg:text-base">
-                      Current Weather as of{" "}
-                      {formatDateString(
-                        stationData.currentweather.recordedAt,
-                        "long"
-                      )}
-                    </div>
-                    <DataCards currentweather={stationData.currentweather} />
-                  </div>
-                )}
-
-                <div className="p-2 overflow-y-auto custom-scrollbar w-full">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead
-                          className="text-center border px-2 py-1 dark:bg-slate-800 text-lg font-bold dark:text-white rounded"
-                          colSpan={2}
-                        >
-                          Weather Stations
-                        </TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {stationNames.map((station, index) => (
-                        <TableRow
-                          key={index}
-                          className={`hover-row h-7 ${
-                            index % 2 === 0
-                              ? "bg-gray-100 dark:bg-gray-700"
-                              : "bg-white dark:bg-gray-500"
-                          }`}
-                        >
-                          <TableCell className="text-center ">
-                            {station.stationName}
-                          </TableCell>
-                          <TableCell className="text-center ">
-                            {returnActive(station.isActive)}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </div>
-
-              <div className="flex flex-col w-full gap-2">
-                <div className="flex w-full justify-start border px-3">
-                  <span className="w-full font-bold">Weather Data Graphs</span>
-                  <DialogDownload name={filteredStations.stationName} />
-                </div>
-                <div className="flex flex-col gap-2 overflow-y-auto cursor-pointer">
-                  <div
-                    className="flex flex-col gap-1 border p-1 rounded-lg hover:bg-yellow-100/25 dark:hover:bg-gray-900"
-                    onClick={() =>
-                      navigate(`/${station}/data-analysis`, {
-                        state: { variable: "heatIndex" },
-                      })
-                    }
-                  >
-                    <div className="px-2 font-semibold">Heat Index</div>
-                    <VariableGraph
-                      stationName={station}
-                      weatherData={"heatIndex"}
-                      repeat={"hour"}
-                      range={12}
-                      key={1}
-                    />
-                  </div>
-                  <div
-                    className="flex flex-col gap-1 border p-1 rounded-lg hover:bg-yellow-100/25 dark:hover:bg-gray-900"
-                    onClick={() =>
-                      navigate(`/${station}/data-analysis`, {
-                        state: { variable: "temperature" },
-                      })
-                    }
-                  >
-                    <div className="px-2 font-semibold">Temperature</div>
-                    <VariableGraph
-                      stationName={station}
-                      weatherData={"temperature"}
-                      range={12}
-                      repeat={"hour"}
-                      key={1}
-                    />
-                  </div>
-                  <div
-                    className="flex flex-col gap-1 border p-1 rounded-lg hover:bg-yellow-100/25 dark:hover:bg-gray-900"
-                    onClick={() =>
-                      navigate(`/${station}/data-analysis`, {
-                        state: { variable: "humidity" },
-                      })
-                    }
-                  >
-                    <div className="px-2 font-semibold">Humidity</div>
-                    <VariableGraph
-                      stationName={station}
-                      weatherData={"humidity"}
-                      range={12}
-                      key={1}
-                      repeat={"hour"}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
+            {(filteredStations.stationType.typeName === "AWS" && (
+              <AwsDataCard stationName={filteredStations.stationName} />
+            )) ||
+              (filteredStations.stationType.typeName === "ARG" && (
+                <ArgDataCard stationName={filteredStations.stationName} />
+              )) ||
+              (filteredStations.stationType.typeName === "RLMS" && (
+                <RlmsDataCard stationName={filteredStations.stationName} />
+              ))}
           </CardContent>
         </Card>
       </div>

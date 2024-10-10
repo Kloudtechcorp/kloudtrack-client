@@ -17,7 +17,12 @@ export default function NotFound() {
         moved.
       </p>
       <div className="mt-8 flex justify-center gap-2">
-        <Button onClick={() => router(-1)} variant="default" size="lg">
+        <Button
+          onClick={() => router(-1)}
+          variant="default"
+          size="lg"
+          className="dark:bg-white"
+        >
           Go back
         </Button>
         <Button onClick={() => router("/dashboard")} variant="ghost" size="lg">

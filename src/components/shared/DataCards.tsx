@@ -1,6 +1,7 @@
 import { stationCurrentWeatherType } from "@/types/queryTypes";
 import { Card, CardContent } from "../ui/card";
 import { getWindDirectionLabel } from "@/lib/utils";
+import { HeatIndex } from "../../lib/heatIndexUtils";
 
 type DataCardsProps = {
   currentweather: stationCurrentWeatherType;
@@ -10,18 +11,7 @@ const DataCards = ({ currentweather }: DataCardsProps) => {
     <div className="grid grid-cols-3 w-full h-full gap-3 justify-center">
       <Card className="w-full h-full aspect-[10/9]">
         <CardContent className="px-0 p-0 h-full">
-          <div className="text-center w-full flex flex-col h-full">
-            <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-              <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-                Heat Index
-              </span>
-            </div>
-            <div className="text-xl flex h-full items-center justify-center">
-              <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
-                {Math.round(currentweather.heatIndex * 100) / 100} C&deg;
-              </span>
-            </div>
-          </div>
+          <HeatIndex heatIndexval={currentweather.heatIndex} />
         </CardContent>
       </Card>
       <Card className="w-full h-full aspect-[10/9]">

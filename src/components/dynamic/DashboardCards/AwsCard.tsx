@@ -1,16 +1,13 @@
 import React from "react";
 import { Card, CardContent, CardTitle } from "../../ui/card";
 import { Button } from "../../ui/button";
-import HashLoader from "react-spinners/HashLoader";
 import PuffLoader from "react-spinners/PuffLoader";
 import { useNavigate } from "react-router-dom";
 import { useGetAwsData } from "../../../hooks/react-query/queries";
 import { formatDateString, stationType } from "@/lib/utils";
 import DataCards from "../../shared/DataCards";
-import { stationStaticType } from "@/types";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useUserContext } from "@/hooks/context/authContext";
-import StationRegistration from "@/_root/pages/adminpages/StationRegistration";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,13 +22,9 @@ import {
 import { useTheme } from "../../theme-provider";
 import NoData from "@/components/shared/NoData";
 
-const AwsCard: React.FC<{ station: stationStaticType }> = ({ station }) => {
+const AwsCard: React.FC<{ id: number }> = ({ id }) => {
   const navigate = useNavigate();
-  const {
-    data: stationData,
-    isLoading,
-    isError,
-  } = useGetAwsData(station.stationName);
+  const { data: stationData, isLoading, isError } = useGetAwsData(id);
 
   const { theme } = useTheme();
   const { user } = useUserContext();
@@ -57,28 +50,29 @@ const AwsCard: React.FC<{ station: stationStaticType }> = ({ station }) => {
         <div className="flex flex-col gap-3 justify-between w-full">
           <div className="flex flex-col justify-between px-2 gap-3">
             <div className="flex flex-col">
-              <CardTitle className="py-2">{station.stationName}</CardTitle>
+              <CardTitle className="py-2">{stationData.station.name}</CardTitle>
               <hr className="h-[0.25rem] bg-black" />
               <div className="flex flex-col">
                 <span className="text-base md:text-lg xl:text-xl font-semibold">
-                  {stationType(station.stationType.typeName)}
+                  {stationType(stationData.station.type)}
                 </span>
-                <span>{`${station.barangay.barangay}, ${station.municipality.municipality}, ${station.province.province}`}</span>
+                <span>{`${stationData.station.barangay}, ${stationData.station.municipality}, ${stationData.station.province}`}</span>
                 <span className="text-sm">
-                  {station.latitude}, {station.longitude}
+                  {stationData.station.latitude},{" "}
+                  {stationData.station.longitude}
                 </span>
               </div>
             </div>
           </div>
           <div className="h-full px-2 pb-3 hidden lg:block">
             <img
-              src={station.imageLink}
+              src={stationData.station.image}
               className="rounded-md object-cover h-full flex self-center"
               alt="Station"
             />
           </div>
         </div>
-        {!stationData.currentweather ? (
+        {!stationData.data ? (
           <div className="flex flex-col gap-2 w-full">
             <div className="flex flex-col pb-3 gap-1 relative h-full items-center justify-center">
               <NoData />
@@ -89,15 +83,12 @@ const AwsCard: React.FC<{ station: stationStaticType }> = ({ station }) => {
             <div className="px-2 py-1 flex items-center gap-2">
               <span className="w-full font-normal text-lg">
                 Current Weather Conditions as of{" "}
-                {formatDateString(
-                  stationData.currentweather.recordedAt,
-                  "long"
-                )}
+                {formatDateString(stationData.data.recordedAt, "long")}
               </span>
               <Button
                 className="button-icon"
                 onClick={() => {
-                  navigate(`/${station.stationName}`);
+                  navigate(`/${stationData.station.name}`);
                 }}
               >
                 <svg
@@ -128,7 +119,7 @@ const AwsCard: React.FC<{ station: stationStaticType }> = ({ station }) => {
                       </Button>
                     </SheetTrigger>
                     <SheetContent className="min-w-[720px]">
-                      <StationRegistration action="UPDATE" station={station} />
+                      {/* <StationRegistration action="UPDATE" station={station} /> */}
                     </SheetContent>
                   </Sheet>
                   <AlertDialog>

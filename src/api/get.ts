@@ -10,11 +10,6 @@ import {
   TableGraphCardType,
   stationComputedTypes,
   hourlyDataTypes,
-  downloadParamsTypes,
-  downloadableDataTypes,
-  stationCurrentRainType,
-  stationCurrentRiverLevelType,
-  stationCurrentWeatherType,
   awsDashboardType,
   argDashboardType,
   rlmsDashboardType,
@@ -24,8 +19,8 @@ const method: string = "GET";
 const server = import.meta.env.VITE_SERVER;
 
 //=========================== GET DATA FOR DASHBOARD
-export const getAwsData = async (name: string): Promise<awsDashboardType> => {
-  const response = await fetch(`${server}/weather/station/${name}`, {
+export const getAwsData = async (id: number): Promise<awsDashboardType> => {
+  const response = await fetch(`${server}/weather/station/${id}`, {
     method,
     credentials: "include",
   });
@@ -37,8 +32,8 @@ export const getAwsData = async (name: string): Promise<awsDashboardType> => {
 };
 
 //=========================== GET DATA FOR DASHBOARD
-export const getArgData = async (name: string): Promise<argDashboardType> => {
-  const response = await fetch(`${server}/raingauge/station/${name}`, {
+export const getArgData = async (id: number): Promise<argDashboardType> => {
+  const response = await fetch(`${server}/raingauge/station/${id}`, {
     method,
     credentials: "include",
   });
@@ -50,8 +45,23 @@ export const getArgData = async (name: string): Promise<argDashboardType> => {
 };
 
 //=========================== GET DATA FOR DASHBOARD
-export const getRlmsData = async (name: string): Promise<rlmsDashboardType> => {
-  const response = await fetch(`${server}/riverlevel/station/${name}`, {
+export const getRlmsData = async (id: number): Promise<rlmsDashboardType> => {
+  const response = await fetch(`${server}/riverlevel/station/${id}`, {
+    method,
+    credentials: "include",
+  });
+  if (!response.ok) {
+    throw new Error("Error fetching station data");
+  }
+  const data = await response.json();
+  return data.data;
+};
+
+//=========================== GET DATA FOR DASHBOARD
+export const getCoastalData = async (
+  id: number
+): Promise<rlmsDashboardType> => {
+  const response = await fetch(`${server}/coastal/station/${id}`, {
     method,
     credentials: "include",
   });
@@ -162,7 +172,7 @@ export const getUserProfile = async (): Promise<userProfileTypes> => {
 
 //=========================== GET DATA FOR USER SESSION
 export const getUserSession = async (): Promise<UserType> => {
-  const response = await fetch(`${server}/user/session`, {
+  const response = await fetch(`${server}/user/profile/account`, {
     method,
     credentials: "include",
   });
@@ -170,7 +180,7 @@ export const getUserSession = async (): Promise<UserType> => {
   if (!response.ok) {
     throw new Error(data.message || "Failed to fetch user session");
   }
-  return data.token;
+  return data.profile;
 };
 
 //=========================== GET DATA FOR EACH STATION
@@ -189,13 +199,13 @@ export const getStationNames = async (): Promise<stationStaticType[]> => {
 
 //=========================== GET DATA FOR GRAHPHS
 export const getTableGraphData = async ({
-  stationName,
+  stationId,
   weatherData,
   repeat,
   range,
 }: TableGraphCardType): Promise<stationComputedTypes> => {
   const response = await fetch(
-    `${server}/weather/analysis?variable=${weatherData}&range=${range}&name=${stationName}&repeat=${repeat}`,
+    `${server}/aws/analysis/${stationId}?variable=${weatherData}&range=${range}&repeat=${repeat}`,
     {
       method,
       credentials: "include",
@@ -230,13 +240,15 @@ export const getHourlyDataset = async ({
 };
 
 //=========================== CHECK IF USER IS AUTHENTICATED
-export const getIsAuthenticated = async (): Promise<boolean> => {
-  const response = await fetch(`${server}/user/is-auth`, {
+export const getIsAuthenticated = async (): Promise<{
+  isAuthenticated: boolean;
+}> => {
+  const response = await fetch(`${server}/user/auth/session`, {
     credentials: "include",
   });
   const data = await response.json();
   if (!response.ok) {
-    return false;
+    return data;
   }
   return data;
 };

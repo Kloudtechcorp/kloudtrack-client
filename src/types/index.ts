@@ -56,9 +56,19 @@ export type dataProps = {
 };
 
 export type UserType = {
-  id: number | null;
+  id: number;
   username: string;
   role: string;
+  stationPrivileges:
+    | {
+        stationId: number;
+        station: {
+          stationType: {
+            typeName: string;
+          };
+        };
+      }[]
+    | [];
 };
 
 export type UserCreate = {

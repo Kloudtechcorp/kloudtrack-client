@@ -35,11 +35,11 @@ import {
 import { stationStaticType, UserType } from "@/types";
 
 export const useGetAwsData = (
-  name: string
+  id: number
 ): UseQueryResult<awsDashboardType, Error> => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_AWS_DATA, name],
-    queryFn: () => getAwsData(name),
+    queryKey: [QUERY_KEYS.GET_AWS_DATA, id],
+    queryFn: () => getAwsData(id),
     refetchInterval: 5000,
     retry: 1,
     staleTime: 30000,
@@ -47,11 +47,11 @@ export const useGetAwsData = (
 };
 
 export const useGetArgData = (
-  name: string
+  id: number
 ): UseQueryResult<argDashboardType, Error> => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_ARG_DATA, name],
-    queryFn: () => getArgData(name),
+    queryKey: [QUERY_KEYS.GET_ARG_DATA, id],
+    queryFn: () => getArgData(id),
     refetchInterval: 5000,
     retry: 1,
     staleTime: 30000,
@@ -59,11 +59,23 @@ export const useGetArgData = (
 };
 
 export const useGetRlmsData = (
-  name: string
+  id: number
 ): UseQueryResult<rlmsDashboardType, Error> => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_RLMS_DATA, name],
-    queryFn: () => getRlmsData(name),
+    queryKey: [QUERY_KEYS.GET_RLMS_DATA, id],
+    queryFn: () => getRlmsData(id),
+    refetchInterval: 5000,
+    retry: 1,
+    staleTime: 30000,
+  });
+};
+
+export const useGetCoastalData = (
+  id: number
+): UseQueryResult<rlmsDashboardType, Error> => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_CLMS_DATA, id],
+    queryFn: () => getRlmsData(id),
     refetchInterval: 5000,
     retry: 1,
     staleTime: 30000,

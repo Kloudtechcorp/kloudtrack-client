@@ -1,4 +1,3 @@
-// import StationSelect from "@/components/test/stationSelect";
 import VariableGraph from "@/components/dynamic/VariableGraph";
 import VerticalCards from "@/components/shared/VerticalCards";
 import { Button } from "@/components/ui/button";
@@ -19,7 +18,6 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 const VariableDashboard = () => {
   const navigate = useNavigate();
   const { station } = useParams();
-  const { stationNames, isLoading } = useStationContext();
   const { state } = useLocation();
 
   const [weatherData, setWeatherData] = useState(

@@ -8,10 +8,8 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
 import TableGraphCard from "@/components/dynamic/TableGraphCard";
-import { useStationContext } from "@/hooks/context/stationContext";
 
 const Variable = () => {
-  const { stationNames } = useStationContext();
   const [weatherData, setWeatherData] = useState("temperature");
 
   return (
@@ -42,11 +40,7 @@ const Variable = () => {
                         Precipitation
                       </SelectItem>
                       <SelectItem value="uvIndex">UV Index</SelectItem>
-                      {/* <SelectItem value="irradiance">Irradiance</SelectItem> */}
                       <SelectItem value="light">Light Intensity</SelectItem>
-                      {/* <SelectItem value="batteryVoltage">
-                        Battery Level
-                      </SelectItem> */}
                     </SelectContent>
                   </Select>
                 </span>

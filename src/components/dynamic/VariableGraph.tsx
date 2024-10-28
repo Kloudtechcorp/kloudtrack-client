@@ -18,13 +18,13 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 const VariableGraph = ({
-  stationName,
+  stationId,
   weatherData,
   range,
   repeat,
 }: TableGraphCardType) => {
   const stationDataParams: TableGraphCardType = {
-    stationName,
+    stationId,
     weatherData,
     range,
     repeat,

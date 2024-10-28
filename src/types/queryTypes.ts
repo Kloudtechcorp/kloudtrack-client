@@ -69,15 +69,59 @@ export type stationsListType = {
 };
 
 export type awsDashboardType = {
-  currentweather: stationCurrentWeatherType;
+  station: {
+    name: string;
+    type: string;
+    latitude: string;
+    longitude: string;
+    barangay: string;
+    municipality: string;
+    province: string;
+    image: string;
+  };
+  data: stationCurrentWeatherType;
 };
 
 export type argDashboardType = {
-  raingaugedata: stationCurrentRainType;
+  station: {
+    name: string;
+    type: string;
+    latitude: string;
+    longitude: string;
+    barangay: string;
+    municipality: string;
+    province: string;
+    image: string;
+  };
+  data: stationCurrentRainType;
 };
 
 export type rlmsDashboardType = {
-  riverleveldata: stationCurrentRiverLevelType;
+  station: {
+    name: string;
+    type: string;
+    latitude: string;
+    longitude: string;
+    barangay: string;
+    municipality: string;
+    province: string;
+    image: string;
+  };
+  data: stationCurrentRiverLevelType;
+};
+
+export type clmsDashboardType = {
+  station: {
+    name: string;
+    type: string;
+    latitude: string;
+    longitude: string;
+    barangay: string;
+    municipality: string;
+    province: string;
+    image: string;
+  };
+  data: stationCurrentRiverLevelType;
 };
 
 export type stationCurrentWeatherType = {
@@ -105,6 +149,13 @@ export type stationCurrentRiverLevelType = {
   recordedAt: string;
   distance: number;
 };
+export type stationCurrentCoastalLevelType = {
+  recordedAt: string;
+  humidity: number;
+  pressure: number;
+  temperature: number;
+  distance: number;
+};
 
 export type userProfileTypes = {
   username: string;
@@ -118,7 +169,7 @@ export type userProfileTypes = {
 };
 
 export type TableGraphCardType = {
-  stationName: string;
+  stationId: number;
   weatherData: string;
   range: number;
   repeat: "minute" | "hour" | "day" | "week" | "12-hours" | "48-hours";

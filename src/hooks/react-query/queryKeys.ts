@@ -3,6 +3,7 @@ export enum QUERY_KEYS {
   GET_AWS_DATA = "getAwsData",
   GET_ARG_DATA = "getArgData",
   GET_RLMS_DATA = "getRlmsData",
+  GET_CLMS_DATA = "getClmsData",
 
   GET_STATION_LIST = "getStationList",
   GET_STATION_TYPES = "getStationTypes",

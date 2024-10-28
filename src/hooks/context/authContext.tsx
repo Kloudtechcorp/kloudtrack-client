@@ -2,15 +2,12 @@ import { useNavigate } from "react-router-dom";
 import { createContext, useContext, useEffect, useState } from "react";
 import { UserType } from "../../types";
 import { getIsAuthenticated, getUserSession } from "@/api/get";
-import {
-  useGetIsAuthenticated,
-  useGetUserSession,
-} from "../react-query/queries";
 
 export const INITIAL_USER = {
   id: 0,
   username: "",
-  role: "",
+  role: "USER",
+  stationPrivileges: [],
 };
 
 const INITIAL_STATE = {
@@ -48,13 +45,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           id: currentAccount.id,
           username: currentAccount.username,
           role: currentAccount.role,
+          stationPrivileges: currentAccount.stationPrivileges,
         });
+        console.log(currentAccount);
         setIsAuthenticated(true);
         return true;
       }
       return false;
     } catch (error) {
-      console.error(error);
       return false;
     } finally {
       setIsLoading(false);
@@ -65,7 +63,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const checkIsLoggedIn = async () => {
       try {
         const data = await getIsAuthenticated();
-        if (data) {
+        if (data.isAuthenticated) {
+          checkAuthUser();
           return;
         }
         navigate("/signin");
@@ -74,7 +73,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     };
     checkIsLoggedIn();
-    checkAuthUser();
   }, []);
 
   const value = {

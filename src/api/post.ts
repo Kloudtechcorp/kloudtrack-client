@@ -15,7 +15,7 @@ const method: string = "POST";
 const server = import.meta.env.VITE_SERVER;
 
 export const signInAccount = async (user: signInAccountType) => {
-  const response = await fetch(`${server}/user/signin`, {
+  const response = await fetch(`${server}/user/auth/signin`, {
     method,
     headers: {
       "Content-Type": "application/json",

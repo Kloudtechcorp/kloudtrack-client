@@ -14,13 +14,13 @@ import { TableGraphCardType } from "@/types/queryTypes";
 import React from "react";
 
 const TableGraphCard = ({
-  stationName,
+  stationId,
   weatherData,
   range,
   repeat,
 }: TableGraphCardType) => {
   const stationDataParams: TableGraphCardType = {
-    stationName,
+    stationId,
     weatherData,
     range,
     repeat,
@@ -134,7 +134,7 @@ const TableGraphCard = ({
       </div>
       <div className="border rounded-lg w-full h-full grow p-1 flex">
         <VariableGrapht
-          stationName={stationName}
+          stationId={stationId}
           range={range}
           weatherData={weatherData}
           repeat={repeat}

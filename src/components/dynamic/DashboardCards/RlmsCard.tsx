@@ -23,13 +23,9 @@ import {
 import { useTheme } from "../../theme-provider";
 import NoData from "@/components/shared/NoData";
 
-const RlmsCard: React.FC<{ station: stationStaticType }> = ({ station }) => {
+const RlmsCard: React.FC<{ id: number }> = ({ id }) => {
   const navigate = useNavigate();
-  const {
-    data: stationData,
-    isLoading,
-    isError,
-  } = useGetRlmsData(station.stationName);
+  const { data: stationData, isLoading, isError } = useGetRlmsData(id);
 
   const { theme } = useTheme();
   const { user } = useUserContext();
@@ -55,28 +51,29 @@ const RlmsCard: React.FC<{ station: stationStaticType }> = ({ station }) => {
         <div className="flex flex-col gap-3 justify-between w-full">
           <div className="flex flex-col justify-between px-2 gap-3">
             <div className="flex flex-col">
-              <CardTitle className="py-2">{station.stationName}</CardTitle>
+              <CardTitle className="py-2">{stationData.station.name}</CardTitle>
               <hr className="h-[0.25rem] bg-black" />
               <div className="flex flex-col">
                 <span className="text-base md:text-lg xl:text-xl font-semibold">
-                  {stationType(station.stationType.typeName)}
+                  {stationType(stationData.station.type)}
                 </span>
-                <span>{`${station.barangay.barangay}, ${station.municipality.municipality}, ${station.province.province}`}</span>
+                <span>{`${stationData.station.barangay}, ${stationData.station.municipality}, ${stationData.station.province}`}</span>
                 <span className="text-sm">
-                  {station.latitude}, {station.longitude}
+                  {stationData.station.latitude},{" "}
+                  {stationData.station.longitude}
                 </span>
               </div>
             </div>
           </div>
           <div className="h-full px-2 pb-3 hidden lg:block">
             <img
-              src={station.imageLink}
+              src={stationData.station.image}
               className="rounded-md object-cover h-full flex self-center"
               alt="Station"
             />
           </div>
         </div>
-        {!stationData.riverleveldata ? (
+        {!stationData.data ? (
           <div className="flex flex-col gap-2 w-full">
             <div className="flex flex-col pb-3 gap-1 relative h-full items-center justify-center">
               <NoData />
@@ -87,15 +84,12 @@ const RlmsCard: React.FC<{ station: stationStaticType }> = ({ station }) => {
             <div className="px-2 py-1 flex items-center gap-2">
               <span className="w-full font-normal text-lg">
                 Current Weather Conditions as of{" "}
-                {formatDateString(
-                  stationData.riverleveldata.recordedAt,
-                  "long"
-                )}
+                {formatDateString(stationData.data.recordedAt, "long")}
               </span>
               <Button
                 className="button-icon"
                 onClick={() => {
-                  navigate(`/${station.stationName}`);
+                  navigate(`/${stationData.station.name}`);
                 }}
               >
                 <svg
@@ -126,7 +120,7 @@ const RlmsCard: React.FC<{ station: stationStaticType }> = ({ station }) => {
                       </Button>
                     </SheetTrigger>
                     <SheetContent className="min-w-[720px]">
-                      <StationRegistration action="UPDATE" station={station} />
+                      {/* <StationRegistration action="UPDATE" station={station} /> */}
                     </SheetContent>
                   </Sheet>
                   <AlertDialog>
@@ -181,10 +175,7 @@ const RlmsCard: React.FC<{ station: stationStaticType }> = ({ station }) => {
                       </div>
                       <div className="text-xl flex h-full items-center justify-center">
                         <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
-                          {Math.round(
-                            stationData.riverleveldata.distance * 100
-                          ) / 100}{" "}
-                          cm
+                          {Math.round(stationData.data.distance * 100) / 100} cm
                         </span>
                       </div>
                     </div>

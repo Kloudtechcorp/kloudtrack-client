@@ -5,13 +5,18 @@ import { HeatIndex } from "../../lib/heatIndexUtils";
 
 type DataCardsProps = {
   currentweather: stationCurrentWeatherType;
+  stationName: string;
 };
-const DataCards = ({ currentweather }: DataCardsProps) => {
+
+const DataCards = ({ currentweather, stationName }: DataCardsProps) => {
   return (
     <div className="grid grid-cols-3 w-full h-full gap-3 justify-center">
       <Card className="w-full h-full aspect-[10/9]">
         <CardContent className="px-0 p-0 h-full">
-          <HeatIndex heatIndexval={currentweather.heatIndex} />
+          <HeatIndex
+            heatIndexval={currentweather.heatIndex}
+            stationName={stationName}
+          />
         </CardContent>
       </Card>
       <Card className="w-full h-full aspect-[10/9]">

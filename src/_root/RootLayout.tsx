@@ -1,9 +1,9 @@
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import LeftSidebar from "../components/shared/LeftSidebar";
 import Header from "@/components/shared/Header";
 import { useState } from "react";
-import { useUserContext } from "@/hooks/context/authContext";
 import { StationProvider } from "@/hooks/context/stationContext";
+import { SonnerToaster } from "@/components/ui/sonner";
 
 const RootLayout = () => {
   const [clicked, setClicked] = useState(false);
@@ -22,6 +22,7 @@ const RootLayout = () => {
           </section>
         </div>
       </div>
+      <SonnerToaster />
     </StationProvider>
   );
 };

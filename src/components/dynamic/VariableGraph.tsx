@@ -5,10 +5,10 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { useGetHourlyDataset } from "@/hooks/react-query/queries";
 import { TableGraphCardType } from "@/types/queryTypes";
 import PuffLoader from "react-spinners/PuffLoader";
 import { R } from "node_modules/@tanstack/react-query-devtools/build/modern/ReactQueryDevtools-Cn7cKi7o";
+import { useGetDataset } from "@/hooks/react-query/queries";
 
 const chartConfig = {
   desktop: {
@@ -33,7 +33,7 @@ const VariableGraph = ({
     data: graphData,
     isError,
     isLoading,
-  } = useGetHourlyDataset(stationDataParams);
+  } = useGetDataset(stationDataParams);
 
   if (isError) {
     return <div>Error fetching data</div>;
@@ -45,8 +45,6 @@ const VariableGraph = ({
       </div>
     );
   }
-
-  const reversedGraphData = [...graphData].reverse();
 
   const sliceDetails = (change: string, value: any) => {
     if (change == "minute" || change == "hour") {
@@ -60,7 +58,7 @@ const VariableGraph = ({
       <ChartContainer config={chartConfig} className="h-52 w-full m-0 p-0">
         <LineChart
           accessibilityLayer
-          data={reversedGraphData}
+          data={graphData}
           margin={{
             left: 2,
             right: 12,
@@ -68,7 +66,7 @@ const VariableGraph = ({
         >
           <CartesianGrid vertical={false} />
           <XAxis
-            dataKey="hour"
+            dataKey="datetime"
             tickLine={true}
             axisLine={true}
             tickMargin={10}
@@ -77,7 +75,7 @@ const VariableGraph = ({
           <YAxis />
           <ChartTooltip cursor={true} content={<ChartTooltipContent />} />
           <Line
-            dataKey="average"
+            dataKey="data"
             type="natural"
             stroke="var(--color-desktop)"
             strokeWidth={3}

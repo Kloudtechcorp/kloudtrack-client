@@ -23,11 +23,11 @@ import { useTheme } from "../../theme-provider";
 import NoData from "@/components/shared/NoData";
 
 const AwsCard: React.FC<{ id: number }> = ({ id }) => {
+  const { user } = useUserContext();
   const navigate = useNavigate();
   const { data: stationData, isLoading, isError } = useGetAwsData(id);
-
   const { theme } = useTheme();
-  const { user } = useUserContext();
+
   if (isLoading || !stationData) {
     return (
       <Card className="cardContainer flex flex-row">
@@ -41,7 +41,17 @@ const AwsCard: React.FC<{ id: number }> = ({ id }) => {
   }
 
   if (isError) {
-    return <div>Error loading data</div>;
+    return (
+      <Card className="cardContainer flex flex-row">
+        <CardContent className="flex flex-col lg:flex-row w-full p-0 gap-2">
+          <div className="flex flex-col gap-2 w-full">
+            <div className="flex flex-col pb-3 gap-1 relative h-full items-center justify-center">
+              <NoData />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
   }
 
   return (

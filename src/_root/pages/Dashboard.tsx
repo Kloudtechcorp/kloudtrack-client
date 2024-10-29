@@ -4,10 +4,10 @@ import ArgCard from "@/components/dynamic/DashboardCards/ArgCard";
 import AwsCard from "@/components/dynamic/DashboardCards/AwsCard";
 import RlmsCard from "@/components/dynamic/DashboardCards/RlmsCard";
 import { useUserContext } from "@/hooks/context/authContext";
+import ClmsCard from "@/components/dynamic/DashboardCards/ClmsCard";
 
 const Dashboard = () => {
   const { user, isLoading } = useUserContext();
-  user.stationPrivileges.map((item) => item.stationId);
 
   return (
     <div className="bg-[#F6F8FC] dark:bg-secondary w-full overflow-auto rounded-xl p-[1rem] custom-scrollbar">
@@ -22,37 +22,41 @@ const Dashboard = () => {
             <TabsTrigger value="aws">Weather Stations</TabsTrigger>
             <TabsTrigger value="arg">Rain Gauges</TabsTrigger>
             <TabsTrigger value="rlms">River Level</TabsTrigger>
+            <TabsTrigger value="clms">Coastal Level</TabsTrigger>
           </TabsList>
           <TabsContent value="aws">
             <div className="flex flex-col gap-3 md:gap-5 w-full container p-2">
-              {user.stationPrivileges
-                .filter(
-                  (station) => station.station.stationType.typeName === "AWS"
-                )
+              {user.stations
+                .filter((station) => station.type === "AWS")
                 .map((station, key) => (
-                  <AwsCard key={key} id={station.stationId} />
+                  <AwsCard key={key} id={station.id} />
                 ))}
             </div>
           </TabsContent>
           <TabsContent value="arg">
             <div className="flex flex-col gap-3 md:gap-5 w-full container p-2">
-              {user.stationPrivileges
-                .filter(
-                  (station) => station.station.stationType.typeName === "ARG"
-                )
+              {user.stations
+                .filter((station) => station.type === "ARG")
                 .map((station, key) => (
-                  <ArgCard key={key} id={station.stationId} />
+                  <ArgCard key={key} id={station.id} />
                 ))}
             </div>
           </TabsContent>
           <TabsContent value="rlms">
             <div className="flex flex-col gap-3 md:gap-5 w-full container p-2">
-              {user.stationPrivileges
-                .filter(
-                  (station) => station.station.stationType.typeName === "RLMS"
-                )
+              {user.stations
+                .filter((station) => station.type === "RLMS")
                 .map((station, key) => (
-                  <RlmsCard key={key} id={station.stationId} />
+                  <RlmsCard key={key} id={station.id} />
+                ))}
+            </div>
+          </TabsContent>
+          <TabsContent value="clms">
+            <div className="flex flex-col gap-3 md:gap-5 w-full container p-2">
+              {user.stations
+                .filter((station) => station.type === "CLMS")
+                .map((station, key) => (
+                  <ClmsCard key={key} id={station.id} />
                 ))}
             </div>
           </TabsContent>

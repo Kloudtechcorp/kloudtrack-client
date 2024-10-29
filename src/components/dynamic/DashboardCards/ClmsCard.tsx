@@ -1,12 +1,13 @@
 import React from "react";
 import { Card, CardContent, CardTitle } from "../../ui/card";
 import { Button } from "../../ui/button";
-import HashLoader from "react-spinners/HashLoader";
 import PuffLoader from "react-spinners/PuffLoader";
 import { useNavigate } from "react-router-dom";
-import { useGetArgData } from "../../../hooks/react-query/queries";
+import {
+  useGetClmsData,
+  useGetRlmsData,
+} from "../../../hooks/react-query/queries";
 import { formatDateString, stationType } from "@/lib/utils";
-import DataCards from "../../shared/DataCards";
 import { stationStaticType } from "@/types";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useUserContext } from "@/hooks/context/authContext";
@@ -24,13 +25,10 @@ import {
 } from "../../ui/alert-dialog";
 import { useTheme } from "../../theme-provider";
 import NoData from "@/components/shared/NoData";
-import VariableGraph from "../VariableGraph";
-import Chart from "chart.js/auto";
 
-const ArgCard: React.FC<{ id: number }> = ({ id }) => {
+const ClmsCard: React.FC<{ id: number }> = ({ id }) => {
   const navigate = useNavigate();
-  const { data: stationData, isLoading, isError } = useGetArgData(id);
-
+  const { data: stationData, isLoading, isError } = useGetClmsData(id);
   const { theme } = useTheme();
   const { user } = useUserContext();
   if (isLoading || !stationData) {
@@ -46,7 +44,17 @@ const ArgCard: React.FC<{ id: number }> = ({ id }) => {
   }
 
   if (isError) {
-    return <div>Error loading data</div>;
+    return (
+      <Card className="cardContainer flex flex-row">
+        <CardContent className="flex flex-col lg:flex-row w-full p-0 gap-2">
+          <div className="flex flex-col gap-2 w-full">
+            <div className="flex flex-col pb-3 gap-1 relative h-full items-center justify-center">
+              <NoData />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
   }
 
   return (
@@ -167,44 +175,79 @@ const ArgCard: React.FC<{ id: number }> = ({ id }) => {
                 </div>
               )}
             </div>
-            <div className="flex flex-col pb-3 gap-4 items-center justify-center">
-              <Card className="w-full min-h-44">
-                <CardContent className="px-0 p-0 h-full">
-                  <div className="text-center w-full flex flex-col h-full">
-                    <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-                      <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-                        Precipitation
-                      </span>
+            <div className="flex flex-col pb-3 gap-1 h-full">
+              <div className="flex flex-col pb-3 gap-2 items-center justify-center h-full">
+                <Card className="w-full h-full">
+                  <CardContent className="px-0 p-0 h-full">
+                    <div className="text-center w-full flex flex-col h-full">
+                      <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
+                        <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
+                          Distance
+                        </span>
+                      </div>
+                      <div className="text-xl flex h-full items-center justify-center">
+                        <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
+                          {Math.round(stationData.data.distance * 100) / 100} cm
+                        </span>
+                      </div>
                     </div>
-                    <div className="text-xl flex h-full items-center justify-center">
-                      <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
-                        {Math.round(stationData.data.precipitation * 100) / 100}{" "}
-                        mm
-                      </span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              <Card className="w-full h-full">
-                <CardContent className="px-0 p-0 h-full flex justify-center items-center">
-                  <div className="text-center w-full flex flex-col h-full">
-                    <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-                      <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-                        Precipitation
-                      </span>
-                    </div>
-                    <div className="text-xl flex h-full items-center justify-center pr-5 py-5 pl-0">
-                      <VariableGraph
-                        stationId={id}
-                        weatherData={"precipitation"}
-                        repeat={"minute"}
-                        range={15}
-                        key={1}
-                      />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+                <div className="flex flex-row gap-2 w-full h-full">
+                  <Card className="w-full h-full">
+                    <CardContent className="px-0 p-0 h-full">
+                      <div className="text-center w-full flex flex-col h-full">
+                        <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
+                          <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
+                            Temperature
+                          </span>
+                        </div>
+                        <div className="text-xl flex h-full items-center justify-center">
+                          <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
+                            {Math.round(stationData.data.temperature * 100) /
+                              100}{" "}
+                            C&deg;
+                          </span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  <Card className="w-full h-full">
+                    <CardContent className="px-0 p-0 h-full">
+                      <div className="text-center w-full flex flex-col h-full">
+                        <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
+                          <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
+                            Air Pressure
+                          </span>
+                        </div>
+                        <div className="text-xl flex h-full items-center justify-center">
+                          <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
+                            {Math.round(stationData.data.pressure * 100) / 100}{" "}
+                            mb
+                          </span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  <Card className="w-full h-full">
+                    <CardContent className="px-0 p-0 h-full">
+                      <div className="text-center w-full flex flex-col h-full">
+                        <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
+                          <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
+                            Humidity
+                          </span>
+                        </div>
+                        <div className="text-xl flex h-full items-center justify-center">
+                          <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
+                            {Math.round(stationData.data.humidity * 100) / 100}{" "}
+                            %
+                          </span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -213,4 +256,4 @@ const ArgCard: React.FC<{ id: number }> = ({ id }) => {
   );
 };
 
-export default ArgCard;
+export default ClmsCard;

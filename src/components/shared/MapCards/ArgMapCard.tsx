@@ -16,7 +16,7 @@ interface MapCardProps {
 }
 
 const ArgMapCard: React.FC<MapCardProps> = ({ data }) => {
-  if (!data || !data.raingaugedata) {
+  if (!data || !data.data) {
     return (
       <div className="flex flex-col gap-2 w-full px-2">
         <div className="items-center justify-center text-center flex flex-col gap-5">
@@ -38,7 +38,7 @@ const ArgMapCard: React.FC<MapCardProps> = ({ data }) => {
         <Card className="">
           <CardDescription className="p-2 text-xs md:text-sm">
             Current weather data recorded as of{" "}
-            {formatDateString(data.raingaugedata.recordedAt, "long")}
+            {formatDateString(data.data.recordedAt, "long")}
           </CardDescription>
           <CardContent>
             <div className="">
@@ -63,7 +63,7 @@ const ArgMapCard: React.FC<MapCardProps> = ({ data }) => {
                   </TooltipProvider>
                 </div>
                 <span className="font-medium text-4xl md:text-7xl text-center">
-                  {Math.round(data.raingaugedata.precipitation * 100) / 100}
+                  {Math.round(data.data.precipitation * 100) / 100}
                   <span className="text-3xl md:text-5xl">mm</span>
                 </span>
               </div>

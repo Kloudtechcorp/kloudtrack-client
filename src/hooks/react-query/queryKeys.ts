@@ -21,6 +21,6 @@ export enum QUERY_KEYS {
   //Weather Data
   GET_CURRENT_WEATHER = "getCurrentWeather",
   GET_TABLE_GRAPH_DATA = "getTableGraphData",
-  GET_HOURLY_DATASET = "getHourlyDataset",
+  GET_DATASET = "getDataset",
   GET_DOWNLOAD_DATA = "getDownloadData",
 }

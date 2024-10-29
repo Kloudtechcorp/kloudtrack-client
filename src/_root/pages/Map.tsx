@@ -12,28 +12,37 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useStationContext } from "@/hooks/context/stationContext";
 import { stationStaticType } from "@/types";
 import {
   argDashboardType,
   awsDashboardType,
+  clmsDashboardType,
   rlmsDashboardType,
 } from "@/types/queryTypes";
-import { getArgData, getAwsData, getRlmsData } from "@/api/get";
+import { getArgData, getAwsData, getClmsData, getRlmsData } from "@/api/get";
 import toast from "react-hot-toast";
 import PuffLoader from "react-spinners/PuffLoader";
 import AwsMapCard from "@/components/shared/MapCards/AwsMapCard";
 import ArgMapCard from "@/components/shared/MapCards/ArgMapCard";
+import ClmsMapCard from "@/components/shared/MapCards/ClmsMapCard";
 import RlmsMapCard from "@/components/shared/MapCards/RlmsMapCard";
 import { useTheme } from "@/components/theme-provider";
+import { useUserContext } from "@/hooks/context/authContext";
+import {
+  useGetArgData,
+  useGetAwsData,
+  useGetRlmsData,
+  useGetStationNames,
+} from "@/hooks/react-query/queries";
 
 const Map = () => {
-  const { stationNames } = useStationContext();
+  const { user } = useUserContext();
   const [isLoading, setIsLoading] = useState(false);
   const mapContainer = useRef<HTMLDivElement>(null);
   const [awsData, setAwsData] = useState<awsDashboardType | null>(null);
   const [argData, setArgData] = useState<argDashboardType | null>(null);
   const [rlmsData, setRlmsData] = useState<rlmsDashboardType | null>(null);
+  const [clmsData, setClmsData] = useState<clmsDashboardType | null>(null);
   const { theme } = useTheme();
   const [stationDetails, setStationDetails] =
     useState<stationStaticType | null>(null);
@@ -105,19 +114,22 @@ const Map = () => {
 
       map.on("load", () => {
         const markerList: mapboxgl.Marker[] = [];
-        stationNames.length > 0 &&
-          stationNames.forEach((item) => {
+        user.stations.length > 0 &&
+          user.stations.forEach((item) => {
+            const { data: stationInfo } = useGetStationNames(item.name);
             const el = document.createElement("div");
-            if (item.stationType.typeName === "ARG") {
+            if (item.type === "ARG") {
               el.className = "marker-arg";
-            } else if (item.stationType.typeName === "RLMS") {
+            } else if (item.type === "RLMS") {
               el.className = "marker-rlms";
-            } else {
-              el.className = "marker-aws";
+            } else if (item.type === "CLMS") {
+              el.className = "marker-clms";
+            } else el.className = "marker-aws";
+            if (!stationInfo) {
+              return console.log(stationInfo);
             }
-
             const marker = new mapboxgl.Marker(el)
-              .setLngLat([+item.longitude, +item.latitude])
+              .setLngLat([+stationInfo.latitude, +stationInfo.longitude])
               .addTo(map);
 
             marker.getElement().addEventListener("click", async () => {
@@ -127,30 +139,38 @@ const Map = () => {
               setAwsData(null);
               setRlmsData(null);
               try {
-                if (item.stationType.typeName === "AWS") {
-                  const stationData = await getAwsData(item.stationName);
+                if (item.type === "AWS") {
+                  const stationData = await getAwsData(item.id);
                   if (!stationData) {
                     toast.error("Error fetching station data");
                     throw new Error("Error fetching data");
                   }
                   setAwsData(stationData);
-                  setStationDetails(item);
-                } else if (item.stationType.typeName === "ARG") {
-                  const stationData = await getArgData(item.stationName);
+                  setStationDetails(stationInfo);
+                } else if (item.type === "ARG") {
+                  const stationData = await getArgData(item.id);
                   if (!stationData) {
                     toast.error("Error fetching station data");
                     throw new Error("Error fetching data");
                   }
                   setArgData(stationData);
-                  setStationDetails(item);
-                } else if (item.stationType.typeName === "RLMS") {
-                  const stationData = await getRlmsData(item.stationName);
+                  setStationDetails(stationInfo);
+                } else if (item.type === "RLMS") {
+                  const stationData = await getRlmsData(item.id);
                   if (!stationData) {
                     toast.error("Error fetching station data");
                     throw new Error("Error fetching data");
                   }
                   setRlmsData(stationData);
-                  setStationDetails(item);
+                  setStationDetails(stationInfo);
+                } else if (item.type === "CLMS") {
+                  const stationData = await getClmsData(item.id);
+                  if (!stationData) {
+                    toast.error("Error fetching station data");
+                    throw new Error("Error fetching data");
+                  }
+                  setClmsData(stationData);
+                  setStationDetails(stationInfo);
                 }
               } catch (error) {
                 console.log(error);
@@ -175,7 +195,7 @@ const Map = () => {
 
       return () => map.remove();
     }
-  }, [mapboxStyle, stationNames]);
+  }, [mapboxStyle]);
 
   return (
     <>
@@ -222,14 +242,17 @@ const Map = () => {
                   <img src={"/assets/icons/close.svg"} className="invert" />
                 </button>
               </div>
-              {(stationDetails.stationType.typeName === "AWS" && (
+              {(stationDetails.type === "AWS" && (
                 <AwsMapCard data={awsData} />
               )) ||
-                (stationDetails.stationType.typeName === "ARG" && (
+                (stationDetails.type === "ARG" && (
                   <ArgMapCard data={argData} />
                 )) ||
-                (stationDetails.stationType.typeName === "RLMS" && (
+                (stationDetails.type === "RLMS" && (
                   <RlmsMapCard data={rlmsData} />
+                )) ||
+                (stationDetails.type === "CLMS" && (
+                  <ClmsMapCard data={clmsData} />
                 ))}
             </div>
           </div>

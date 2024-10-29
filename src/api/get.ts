@@ -1,4 +1,4 @@
-import { stationStaticType, UserType } from "@/types";
+import { formattedDataType, stationStaticType, UserType } from "@/types";
 import {
   stationBarangayType,
   stationsListType,
@@ -13,6 +13,7 @@ import {
   awsDashboardType,
   argDashboardType,
   rlmsDashboardType,
+  clmsDashboardType,
 } from "@/types/queryTypes";
 
 const method: string = "GET";
@@ -28,7 +29,7 @@ export const getAwsData = async (id: number): Promise<awsDashboardType> => {
     throw new Error("Error fetching station data");
   }
   const data = await response.json();
-  return data.data;
+  return data;
 };
 
 //=========================== GET DATA FOR DASHBOARD
@@ -41,7 +42,7 @@ export const getArgData = async (id: number): Promise<argDashboardType> => {
     throw new Error("Error fetching station data");
   }
   const data = await response.json();
-  return data.data;
+  return data;
 };
 
 //=========================== GET DATA FOR DASHBOARD
@@ -54,13 +55,11 @@ export const getRlmsData = async (id: number): Promise<rlmsDashboardType> => {
     throw new Error("Error fetching station data");
   }
   const data = await response.json();
-  return data.data;
+  return data;
 };
 
 //=========================== GET DATA FOR DASHBOARD
-export const getCoastalData = async (
-  id: number
-): Promise<rlmsDashboardType> => {
+export const getClmsData = async (id: number): Promise<clmsDashboardType> => {
   const response = await fetch(`${server}/coastal/station/${id}`, {
     method,
     credentials: "include",
@@ -69,7 +68,7 @@ export const getCoastalData = async (
     throw new Error("Error fetching station data");
   }
   const data = await response.json();
-  return data.data;
+  return data;
 };
 
 //=========================== GET DATA FOR STATIONS ALONG WITH ITS SENSORS
@@ -172,7 +171,7 @@ export const getUserProfile = async (): Promise<userProfileTypes> => {
 
 //=========================== GET DATA FOR USER SESSION
 export const getUserSession = async (): Promise<UserType> => {
-  const response = await fetch(`${server}/user/profile/account`, {
+  const response = await fetch(`${server}/user/auth/account`, {
     method,
     credentials: "include",
   });
@@ -184,8 +183,10 @@ export const getUserSession = async (): Promise<UserType> => {
 };
 
 //=========================== GET DATA FOR EACH STATION
-export const getStationNames = async (): Promise<stationStaticType[]> => {
-  const response = await fetch(`${server}/station-names/Bataan`, {
+export const getStationData = async (
+  stationName: string
+): Promise<stationStaticType> => {
+  const response = await fetch(`${server}/user/stations/${stationName}`, {
     method,
     credentials: "include",
   });
@@ -219,14 +220,14 @@ export const getTableGraphData = async ({
 };
 
 //=========================== GET DATA FOR HOURLY DATASET
-export const getHourlyDataset = async ({
-  stationName,
+export const getDataset = async ({
+  stationId,
   weatherData,
   range,
   repeat,
-}: TableGraphCardType): Promise<hourlyDataTypes[]> => {
+}: TableGraphCardType): Promise<formattedDataType[]> => {
   const response = await fetch(
-    `${server}/weather/hourly-dataset/v2?variable=${weatherData}&range=${range}&name=${stationName}&repeat=${repeat}`,
+    `${server}/dataset/dynamic/${stationId}?variable=${weatherData}&range=${range}&repeat=${repeat}`,
     {
       method,
       credentials: "include",
@@ -236,7 +237,7 @@ export const getHourlyDataset = async ({
   if (!response.ok) {
     throw new Error(data.message || "Failed to fetch graph data");
   }
-  return data;
+  return data.data;
 };
 
 //=========================== CHECK IF USER IS AUTHENTICATED

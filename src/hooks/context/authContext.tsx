@@ -7,7 +7,7 @@ export const INITIAL_USER = {
   id: 0,
   username: "",
   role: "USER",
-  stationPrivileges: [],
+  stations: [],
 };
 
 const INITIAL_STATE = {
@@ -45,7 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           id: currentAccount.id,
           username: currentAccount.username,
           role: currentAccount.role,
-          stationPrivileges: currentAccount.stationPrivileges,
+          stations: currentAccount.stations,
         });
         console.log(currentAccount);
         setIsAuthenticated(true);

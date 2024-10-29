@@ -121,7 +121,7 @@ export type clmsDashboardType = {
     province: string;
     image: string;
   };
-  data: stationCurrentRiverLevelType;
+  data: stationCurrentCoastalLevelType;
 };
 
 export type stationCurrentWeatherType = {
@@ -169,10 +169,11 @@ export type userProfileTypes = {
 };
 
 export type TableGraphCardType = {
+  graphType?: string;
   stationId: number;
   weatherData: string;
   range: number;
-  repeat: "minute" | "hour" | "day" | "week" | "12-hours" | "48-hours";
+  repeat: "minute" | "halfhour" | "hour" | "day" | "week";
 };
 
 export type stationComputedTypes = {
@@ -227,6 +228,24 @@ export type weatherDataTypes = {
   precipitation: number;
   gust: number;
   uvIndex: number;
+};
+
+export type coastalDataTypes = {
+  recordedAt: string;
+  temperature: number;
+  humidity: number;
+  pressure: number;
+  distance: number;
+};
+
+export type riverLevelDataTypes = {
+  recordedAt: string;
+  distance: number;
+};
+
+export type rainGaugeDataTypes = {
+  recordedAt: string;
+  precipitation: number;
 };
 
 export type downloadableDataTypes = {

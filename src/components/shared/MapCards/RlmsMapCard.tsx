@@ -16,7 +16,7 @@ interface MapCardProps {
 }
 
 const RlmsMapCard: React.FC<MapCardProps> = ({ data }) => {
-  if (!data || !data.riverleveldata) {
+  if (!data || !data.data) {
     return (
       <div className="flex flex-col gap-2 w-full px-2">
         <div className="items-center justify-center text-center flex flex-col gap-5">
@@ -38,7 +38,7 @@ const RlmsMapCard: React.FC<MapCardProps> = ({ data }) => {
         <Card className="">
           <CardDescription className="p-2 text-xs md:text-sm">
             Current weather data recorded as of{" "}
-            {formatDateString(data.riverleveldata.recordedAt, "long")}
+            {formatDateString(data.data.recordedAt, "long")}
           </CardDescription>
           <CardContent>
             <div className="">
@@ -63,7 +63,7 @@ const RlmsMapCard: React.FC<MapCardProps> = ({ data }) => {
                   </TooltipProvider>
                 </div>
                 <span className="font-medium text-4xl md:text-7xl text-center">
-                  {Math.round(data.riverleveldata.distance * 100) / 100}
+                  {Math.round(data.data.distance * 100) / 100}
                   <span className="text-3xl md:text-5xl">cm</span>
                 </span>
               </div>

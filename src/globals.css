@@ -115,6 +115,14 @@
     border-radius: 50%;
     cursor: pointer;
   }
+  .marker-clms {
+    background-image: url("assets/icons/pointer-clms.svg");
+    background-size: cover;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
 }
 
 .compass {

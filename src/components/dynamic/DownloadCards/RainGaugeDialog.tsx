@@ -1,32 +1,43 @@
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog";
+} from "../../ui/dialog";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
 import { subDays } from "date-fns";
-import { Calendar } from "../ui/calendar";
+import { Calendar } from "../../ui/calendar";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { downloadSchema } from "@/types/validation";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
-import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
-import { useDownloadData } from "@/hooks/react-query/mutations";
-import { weatherDataTypes } from "@/types/queryTypes";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "../../ui/form";
+import { RadioGroup, RadioGroupItem } from "../../ui/radio-group";
+import { rainGaugeDataTypes, weatherDataTypes } from "@/types/queryTypes";
 import { formatDateString } from "@/lib/utils";
+import toast from "react-hot-toast";
+import {
+  useRainGaugeDownloadData,
+  useWeatherDownloadData,
+} from "@/hooks/react-query/mutations";
 
-type DialogDownload = {
+type RainGaugeDialog = {
+  id: number;
   name: string;
 };
 
-const DialogDownload = ({ name }: DialogDownload) => {
+const RainGaugeDialog = ({ id, name }: RainGaugeDialog) => {
   const [selected, setSelected] = useState("7days");
-  const { mutateAsync: downloadData, isPending } = useDownloadData();
+  const { mutateAsync: downloadData, isPending } = useRainGaugeDownloadData();
   const now = new Date();
 
   const [date, setDate] = useState<DateRange | undefined>({
@@ -34,36 +45,14 @@ const DialogDownload = ({ name }: DialogDownload) => {
     to: now,
   });
 
-  const generateCSVData = (data: weatherDataTypes[]): string => {
-    console.log(data);
+  const generateCSVData = (data: rainGaugeDataTypes[]): string => {
     if (!data || data.length === 0) return "";
 
-    const headers = [
-      "Date Recorded",
-      "Temperature",
-      "Heat Index",
-      "Humidity",
-      "Air Pressure",
-      "Precipitation",
-      "Light",
-      "UV Intensity",
-      "Wind Direction",
-      "Wind Speed",
-      "Gust",
-    ];
+    const headers = ["Date Recorded", "Precipitation"];
 
     const rows = data.map((item) => [
       formatDateString(item.recordedAt, "numeric"),
-      item.temperature,
-      item.heatIndex,
-      item.humidity,
-      item.pressure,
       item.precipitation,
-      item.light,
-      item.uvIndex,
-      item.windDirection,
-      item.windSpeed,
-      item.gust,
     ]);
     const csvRows = [headers.join(","), ...rows.map((row) => row.join(","))];
     return csvRows.join("\n");
@@ -80,15 +69,14 @@ const DialogDownload = ({ name }: DialogDownload) => {
     const updatedData = {
       ...data,
       name: name,
+      id: id,
       from: date?.from,
       to: date?.to,
     };
     downloadData(updatedData, {
       onSuccess: (data) => {
         const csvData = generateCSVData(data);
-
         const blob = new Blob([csvData], { type: "text/csv" });
-
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
         link.download = `${updatedData.name}: from ${updatedData.from} to ${updatedData.to}`;
@@ -97,7 +85,7 @@ const DialogDownload = ({ name }: DialogDownload) => {
         URL.revokeObjectURL(link.href);
       },
       onError: (error) => {
-        console.log(error);
+        toast.error("Error downloading data");
       },
     });
   };
@@ -346,4 +334,4 @@ const DialogDownload = ({ name }: DialogDownload) => {
   );
 };
 
-export default DialogDownload;
+export default RainGaugeDialog;

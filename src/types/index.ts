@@ -59,14 +59,11 @@ export type UserType = {
   id: number;
   username: string;
   role: string;
-  stationPrivileges:
+  stations:
     | {
-        stationId: number;
-        station: {
-          stationType: {
-            typeName: string;
-          };
-        };
+        id: number;
+        type: string;
+        name: string;
       }[]
     | [];
 };
@@ -233,28 +230,18 @@ export type profileType = {
 };
 
 export type stationStaticType = {
-  stationName: string;
-  isActive: boolean;
-  imageLink: string;
+  name: string;
+  type: string;
+  barangay: string;
+  municipality: string;
+  province: string;
   latitude: string;
   longitude: string;
-  stationType: {
-    typeName: string;
-  };
-  region: {
-    id: number;
-    region: string;
-  };
-  province: {
-    id: number;
-    province: string;
-  };
-  municipality: {
-    id: number;
-    municipality: string;
-  };
-  barangay: {
-    barangay: string;
-    psgc: string;
-  };
+  id: number;
+  image: string;
 };
+
+export type formattedDataType = {
+  datetime: any;
+  data: number;
+}[];

@@ -1,16 +1,12 @@
 import React from "react";
 import { Card, CardContent, CardTitle } from "../../ui/card";
 import { Button } from "../../ui/button";
-import HashLoader from "react-spinners/HashLoader";
 import PuffLoader from "react-spinners/PuffLoader";
 import { useNavigate } from "react-router-dom";
 import { useGetArgData } from "../../../hooks/react-query/queries";
 import { formatDateString, stationType } from "@/lib/utils";
-import DataCards from "../../shared/DataCards";
-import { stationStaticType } from "@/types";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useUserContext } from "@/hooks/context/authContext";
-import StationRegistration from "@/_root/pages/adminpages/StationRegistration";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,7 +21,6 @@ import {
 import { useTheme } from "../../theme-provider";
 import NoData from "@/components/shared/NoData";
 import VariableGraph from "../VariableGraph";
-import Chart from "chart.js/auto";
 
 const ArgCard: React.FC<{ id: number }> = ({ id }) => {
   const navigate = useNavigate();

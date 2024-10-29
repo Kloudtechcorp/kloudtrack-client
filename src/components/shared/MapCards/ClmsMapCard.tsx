@@ -39,106 +39,75 @@ const ClmsDataCard: React.FC<MapCardProps> = ({ data }) => {
             {formatDateString(data.data.recordedAt, "long")}
           </CardDescription>
           <CardContent>
-            <div className="">
-              <div className="flex justify-center flex-col">
-                <div className="flex justify-center">
-                  <span className="font-medium text-sm sm:text-base md:text-2xl">
-                    River Level
-                  </span>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <img
-                          src="/assets/icons/help.svg"
-                          width={15}
-                          className="dark:invert hidden md:block"
-                        />
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Distance from water surface is ...</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+            <div className="flex flex-col pb-3 gap-1 h-full">
+              <div className="flex flex-col pb-3 gap-2 items-center justify-center h-full">
+                <Card className="w-full h-44">
+                  <CardContent className="px-0 p-0 h-full">
+                    <div className="text-center w-full flex flex-col h-full">
+                      <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
+                        <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
+                          Distance
+                        </span>
+                      </div>
+                      <div className="text-xl flex h-full items-center justify-center">
+                        <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
+                          {Math.round(data.data.distance * 100) / 100} cm
+                        </span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                <div className="flex flex-row gap-2 w-full h-full">
+                  <Card className="w-full h-44">
+                    <CardContent className="px-0 p-0 h-full">
+                      <div className="text-center w-full flex flex-col h-full">
+                        <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
+                          <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
+                            Temperature
+                          </span>
+                        </div>
+                        <div className="text-xl flex h-full items-center justify-center">
+                          <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
+                            {Math.round(data.data.temperature * 100) / 100}{" "}
+                            C&deg;
+                          </span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  <Card className="w-full h-44">
+                    <CardContent className="px-0 p-0 h-full">
+                      <div className="text-center w-full flex flex-col h-full">
+                        <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
+                          <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
+                            Air Pressure
+                          </span>
+                        </div>
+                        <div className="text-xl flex h-full items-center justify-center">
+                          <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
+                            {Math.round(data.data.pressure * 100) / 100} mb
+                          </span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  <Card className="w-full h-44">
+                    <CardContent className="px-0 p-0 h-full">
+                      <div className="text-center w-full flex flex-col h-full">
+                        <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
+                          <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
+                            Humidity
+                          </span>
+                        </div>
+                        <div className="text-xl flex h-full items-center justify-center">
+                          <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
+                            {Math.round(data.data.humidity * 100) / 100} %
+                          </span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
-                <span className="font-medium text-4xl md:text-7xl text-center">
-                  {Math.round(data.data.distance * 100) / 100}
-                  <span className="text-3xl md:text-5xl">cm</span>
-                </span>
-              </div>
-              <div className="flex justify-center flex-col">
-                <div className="flex justify-center">
-                  <span className="font-medium text-sm sm:text-base md:text-2xl">
-                    Temperature
-                  </span>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <img
-                          src="/assets/icons/help.svg"
-                          width={15}
-                          className="dark:invert hidden md:block"
-                        />
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Distance from water surface is ...</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-                <span className="font-medium text-4xl md:text-7xl text-center">
-                  {Math.round(data.data.temperature * 100) / 100}
-                  <span className="text-3xl md:text-5xl">cm</span>
-                </span>
-              </div>
-              <div className="flex justify-center flex-col">
-                <div className="flex justify-center">
-                  <span className="font-medium text-sm sm:text-base md:text-2xl">
-                    Humidity
-                  </span>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <img
-                          src="/assets/icons/help.svg"
-                          width={15}
-                          className="dark:invert hidden md:block"
-                        />
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Distance from water surface is ...</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-                <span className="font-medium text-4xl md:text-7xl text-center">
-                  {Math.round(data.data.humidity * 100) / 100}
-                  <span className="text-3xl md:text-5xl">cm</span>
-                </span>
-              </div>
-              <div className="flex justify-center flex-col">
-                <div className="flex justify-center">
-                  <span className="font-medium text-sm sm:text-base md:text-2xl">
-                    Air Pressure
-                  </span>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <img
-                          src="/assets/icons/help.svg"
-                          width={15}
-                          className="dark:invert hidden md:block"
-                        />
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Distance from water surface is ...</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-                <span className="font-medium text-4xl md:text-7xl text-center">
-                  {Math.round(data.data.pressure * 100) / 100}
-                  <span className="text-3xl md:text-5xl">cm</span>
-                </span>
               </div>
             </div>
           </CardContent>

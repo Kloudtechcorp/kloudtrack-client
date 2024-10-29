@@ -47,7 +47,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           role: currentAccount.role,
           stations: currentAccount.stations,
         });
-        console.log(currentAccount);
         setIsAuthenticated(true);
         return true;
       }

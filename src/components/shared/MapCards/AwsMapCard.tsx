@@ -10,7 +10,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import NoData from "../NoData";
 
 interface MapCardProps {
   data: awsDashboardType | null;

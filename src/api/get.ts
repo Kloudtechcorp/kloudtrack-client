@@ -14,6 +14,7 @@ import {
   argDashboardType,
   rlmsDashboardType,
   clmsDashboardType,
+  tablesType,
 } from "@/types/queryTypes";
 
 const method: string = "GET";
@@ -198,15 +199,16 @@ export const getStationData = async (
   return data.data;
 };
 
-//=========================== GET DATA FOR GRAHPHS
-export const getTableGraphData = async ({
+//=========================== GET AWS DATA FOR GRAHPHS
+export const getTableGraph = async ({
   stationId,
   weatherData,
   repeat,
   range,
-}: TableGraphCardType): Promise<stationComputedTypes> => {
+  type,
+}: tablesType): Promise<stationComputedTypes> => {
   const response = await fetch(
-    `${server}/aws/analysis/${stationId}?variable=${weatherData}&range=${range}&repeat=${repeat}`,
+    `${server}/${type}/analysis/${stationId}?variable=${weatherData}&range=${range}&repeat=${repeat}`,
     {
       method,
       credentials: "include",
@@ -216,6 +218,7 @@ export const getTableGraphData = async ({
   if (!response.ok) {
     throw new Error(data.message || "Failed to fetch table data");
   }
+  console.log(data);
   return data;
 };
 

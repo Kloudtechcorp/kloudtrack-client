@@ -15,6 +15,7 @@ import {
   stationRegionType,
   stationsListType,
   TableGraphCardType,
+  tablesType,
   userProfileTypes,
 } from "@/types/queryTypes";
 import {
@@ -29,11 +30,11 @@ import {
   getStationProvinces,
   getStationRegions,
   getStationTypes,
-  getTableGraphData,
   getUserProfile,
   getUserSession,
   getDataset,
   getClmsData,
+  getTableGraph,
 } from "@/api/get";
 import { formattedDataType, stationStaticType, UserType } from "@/types";
 
@@ -178,11 +179,11 @@ export const useGetStationNames = (
 };
 
 export const useGetTableGraphData = (
-  graphData: TableGraphCardType
+  graphData: tablesType
 ): UseQueryResult<stationComputedTypes, Error> => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_TABLE_GRAPH_DATA, graphData],
-    queryFn: () => getTableGraphData(graphData),
+    queryFn: () => getTableGraph(graphData),
     refetchInterval: 60000,
     staleTime: 60000,
   });

@@ -8,18 +8,20 @@ import {
 } from "@/components/ui/table";
 import { Skeleton } from "../ui/skeleton";
 import { formatDateString, weatherUnit } from "@/lib/utils";
-import { useGetTableGraphData } from "@/hooks/react-query/queries";
 import VariableGrapht from "./VariableGraph";
-import { TableGraphCardType } from "@/types/queryTypes";
 import React from "react";
+import { tablesType } from "@/types/queryTypes";
+import { useGetTableGraphData } from "@/hooks/react-query/queries";
 
 const TableGraphCard = ({
+  type,
   stationId,
   weatherData,
   range,
   repeat,
-}: TableGraphCardType) => {
-  const stationDataParams: TableGraphCardType = {
+}: tablesType) => {
+  const stationDataParams: tablesType = {
+    type,
     stationId,
     weatherData,
     range,
@@ -70,27 +72,25 @@ const TableGraphCard = ({
                 Station Name
               </TableCell>
               <TableCell className="border border-[#545454]">
-                {stationData.info.stationName}
+                {stationData.station.name}
               </TableCell>
             </TableRow>
-            {stationData.info.currentweather.map((data, key) => (
-              <React.Fragment key={key}>
-                <TableRow>
-                  <TableCell className="border border-[#545454] p-1">
-                    Date Recorded
-                  </TableCell>
-                  <TableCell className="border border-[#545454]">
-                    {formatDateString(data.recordedAt, "long")}
-                  </TableCell>
-                </TableRow>
-              </React.Fragment>
-            ))}
+
+            <TableRow>
+              <TableCell className="border border-[#545454] p-1">
+                Date Recorded
+              </TableCell>
+              <TableCell className="border border-[#545454]">
+                {formatDateString(stationData.recordedAt, "long")}
+              </TableCell>
+            </TableRow>
+
             <TableRow>
               <TableCell className="border border-[#545454] p-1">
                 Current
               </TableCell>
               <TableCell className="border border-[#545454]">
-                {Math.round(stationData.info.data[0] * 100) / 100}{" "}
+                {Math.round(stationData.currentData * 100) / 100}{" "}
                 {weatherUnit(weatherData)}
               </TableCell>
             </TableRow>
@@ -99,7 +99,7 @@ const TableGraphCard = ({
                 Location
               </TableCell>
               <TableCell className="border border-[#545454]">
-                {`${stationData.info.barangay.barangay}, ${stationData.info.municipality.municipality}, ${stationData.info.province.province}`}
+                {`${stationData.station.barangay}, ${stationData.station.municipality}, ${stationData.station.province}`}
               </TableCell>
             </TableRow>
             <TableRow>

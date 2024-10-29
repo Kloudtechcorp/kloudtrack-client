@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { styles } from "@/lib/objects/arrays";
-import MapCard from "@/components/dynamic/MapCard";
 import MapImage from "@/components/dynamic/MapImage";
 
 import {
@@ -19,7 +18,13 @@ import {
   clmsDashboardType,
   rlmsDashboardType,
 } from "@/types/queryTypes";
-import { getArgData, getAwsData, getClmsData, getRlmsData } from "@/api/get";
+import {
+  getArgData,
+  getAwsData,
+  getClmsData,
+  getRlmsData,
+  getStationData,
+} from "@/api/get";
 import toast from "react-hot-toast";
 import PuffLoader from "react-spinners/PuffLoader";
 import AwsMapCard from "@/components/shared/MapCards/AwsMapCard";
@@ -28,12 +33,6 @@ import ClmsMapCard from "@/components/shared/MapCards/ClmsMapCard";
 import RlmsMapCard from "@/components/shared/MapCards/RlmsMapCard";
 import { useTheme } from "@/components/theme-provider";
 import { useUserContext } from "@/hooks/context/authContext";
-import {
-  useGetArgData,
-  useGetAwsData,
-  useGetRlmsData,
-  useGetStationNames,
-} from "@/hooks/react-query/queries";
 
 const Map = () => {
   const { user } = useUserContext();
@@ -115,8 +114,8 @@ const Map = () => {
       map.on("load", () => {
         const markerList: mapboxgl.Marker[] = [];
         user.stations.length > 0 &&
-          user.stations.forEach((item) => {
-            const { data: stationInfo } = useGetStationNames(item.name);
+          user.stations.forEach(async (item) => {
+            const stationInfo = await getStationData(item.name);
             const el = document.createElement("div");
             if (item.type === "ARG") {
               el.className = "marker-arg";
@@ -128,8 +127,11 @@ const Map = () => {
             if (!stationInfo) {
               return console.log(stationInfo);
             }
+            const lat = +stationInfo.latitude;
+            const lng = +stationInfo.longitude;
+
             const marker = new mapboxgl.Marker(el)
-              .setLngLat([+stationInfo.latitude, +stationInfo.longitude])
+              .setLngLat([lng, lat])
               .addTo(map);
 
             marker.getElement().addEventListener("click", async () => {
@@ -195,7 +197,7 @@ const Map = () => {
 
       return () => map.remove();
     }
-  }, [mapboxStyle]);
+  }, [mapboxStyle, user]);
 
   return (
     <>
@@ -246,10 +248,10 @@ const Map = () => {
                 <AwsMapCard data={awsData} />
               )) ||
                 (stationDetails.type === "ARG" && (
-                  <ArgMapCard data={argData} />
+                  <ArgMapCard data={argData} id={stationDetails.id} />
                 )) ||
                 (stationDetails.type === "RLMS" && (
-                  <RlmsMapCard data={rlmsData} />
+                  <RlmsMapCard data={rlmsData} id={stationDetails.id} />
                 )) ||
                 (stationDetails.type === "CLMS" && (
                   <ClmsMapCard data={clmsData} />

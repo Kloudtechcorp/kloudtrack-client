@@ -235,8 +235,8 @@ export type stationStaticType = {
   barangay: string;
   municipality: string;
   province: string;
-  latitude: string;
-  longitude: string;
+  latitude: number;
+  longitude: number;
   id: number;
   image: string;
 };

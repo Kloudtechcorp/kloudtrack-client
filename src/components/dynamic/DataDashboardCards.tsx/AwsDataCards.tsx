@@ -65,7 +65,10 @@ const AwsDataCard = ({ stationName }: AwsDataCardProps) => {
               Current Weather as of{" "}
               {formatDateString(stationData.currentweather.recordedAt, "long")}
             </div>
-            <DataCards currentweather={stationData.currentweather} />
+            <DataCards
+              currentweather={stationData.currentweather}
+              stationName={stationName}
+            />
           </div>
         )}
 

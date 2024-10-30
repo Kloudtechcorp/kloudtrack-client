@@ -56,6 +56,8 @@ export const stationType = (type: string) => {
       return "River Level Monitoring System";
     case "ARG":
       return "Automated Rain Gauge";
+    case "CLMS":
+      return "Coastal Level Monitoring System";
     default:
       return "Not Defined";
   }

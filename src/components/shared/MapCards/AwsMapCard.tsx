@@ -10,14 +10,13 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import NoData from "../NoData";
 
 interface MapCardProps {
   data: awsDashboardType | null;
 }
 
 const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
-  if (!data || !data.currentweather) {
+  if (!data || !data.data) {
     return (
       <div className="flex flex-col gap-2 w-full px-2">
         <div className="items-center justify-center text-center flex flex-col gap-5">
@@ -39,7 +38,7 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
         <Card className="">
           <CardDescription className="p-2 text-xs md:text-sm">
             Current weather data recorded as of{" "}
-            {formatDateString(data.currentweather.recordedAt, "long")}
+            {formatDateString(data.data.recordedAt, "long")}
           </CardDescription>
           <CardContent>
             <div className="">
@@ -64,7 +63,7 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
                   </TooltipProvider>
                 </div>
                 <span className="font-medium text-4xl md:text-7xl text-center">
-                  {Math.round(data.currentweather.heatIndex * 100) / 100}
+                  {Math.round(data.data.heatIndex * 100) / 100}
                   <span className="text-3xl md:text-5xl">°C</span>
                 </span>
               </div>
@@ -98,8 +97,7 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
                         </TooltipProvider>
                       </TableCell>
                       <TableCell className="font-bold">
-                        {Math.round(data.currentweather.heatIndex * 100) / 100}{" "}
-                        °C
+                        {Math.round(data.data.heatIndex * 100) / 100} °C
                       </TableCell>
                     </TableRow>
 
@@ -129,7 +127,7 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
                         </TooltipProvider>
                       </TableCell>
                       <TableCell className="font-bold">
-                        {Math.round(data.currentweather.humidity * 100) / 100} %
+                        {Math.round(data.data.humidity * 100) / 100} %
                       </TableCell>
                     </TableRow>
 
@@ -159,9 +157,7 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
                         </TooltipProvider>
                       </TableCell>
                       <TableCell className="font-bold text-sm">
-                        {Math.round(data.currentweather.precipitation * 100) /
-                          100}{" "}
-                        mm/hr
+                        {Math.round(data.data.precipitation * 100) / 100} mm/hr
                       </TableCell>
                     </TableRow>
 
@@ -191,7 +187,7 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
                         </TooltipProvider>
                       </TableCell>
                       <TableCell className="font-bold">
-                        {data.currentweather.pressure} mb
+                        {data.data.pressure} mb
                       </TableCell>
                     </TableRow>
 
@@ -221,7 +217,7 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
                         </TooltipProvider>
                       </TableCell>
                       <TableCell className="font-bold text-sm">
-                        {Math.round(data.currentweather.light * 100) / 100} lux
+                        {Math.round(data.data.light * 100) / 100} lux
                       </TableCell>
                     </TableRow>
 
@@ -251,11 +247,8 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
                         </TooltipProvider>
                       </TableCell>
                       <TableCell className="font-bold text-sm">
-                        {Math.round(data.currentweather.windDirection * 100) /
-                          100}{" "}
-                        {getWindDirectionLabel(
-                          data.currentweather.windDirection
-                        )}
+                        {Math.round(data.data.windDirection * 100) / 100}{" "}
+                        {getWindDirectionLabel(data.data.windDirection)}
                       </TableCell>
                     </TableRow>
 
@@ -285,8 +278,7 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
                         </TooltipProvider>
                       </TableCell>
                       <TableCell className="font-bold text-sm">
-                        {Math.round(data.currentweather.windSpeed * 100) / 100}{" "}
-                        km/h
+                        {Math.round(data.data.windSpeed * 100) / 100} km/h
                       </TableCell>
                     </TableRow>
                   </TableBody>

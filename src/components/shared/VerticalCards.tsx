@@ -6,7 +6,7 @@ import { Skeleton } from "../ui/skeleton";
 import { weatherUnit } from "@/lib/utils";
 
 const VerticalCards = ({
-  stationName,
+  stationId,
   weatherData,
   range,
   repeat,
@@ -16,7 +16,7 @@ const VerticalCards = ({
     isError,
     isLoading,
   } = useGetTableGraphData({
-    stationName,
+    stationId,
     weatherData,
     range,
     repeat,

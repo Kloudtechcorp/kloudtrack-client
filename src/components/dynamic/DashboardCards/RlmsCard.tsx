@@ -5,10 +5,8 @@ import PuffLoader from "react-spinners/PuffLoader";
 import { useNavigate } from "react-router-dom";
 import { useGetRlmsData } from "../../../hooks/react-query/queries";
 import { formatDateString, stationType } from "@/lib/utils";
-import { stationStaticType } from "@/types";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useUserContext } from "@/hooks/context/authContext";
-import StationRegistration from "@/_root/pages/adminpages/StationRegistration";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -22,6 +20,7 @@ import {
 } from "../../ui/alert-dialog";
 import { useTheme } from "../../theme-provider";
 import NoData from "@/components/shared/NoData";
+import VariableGraph from "../VariableGraph";
 
 const RlmsCard: React.FC<{ id: number }> = ({ id }) => {
   const navigate = useNavigate();
@@ -41,8 +40,18 @@ const RlmsCard: React.FC<{ id: number }> = ({ id }) => {
     );
   }
 
-  if (isError) {
-    return <div>Error loading data</div>;
+  if (isError || !stationData.data || !stationData.station) {
+    return (
+      <Card className="cardContainer flex flex-row">
+        <CardContent className="flex flex-col lg:flex-row w-full p-0 gap-2">
+          <div className="flex flex-col gap-2 w-full">
+            <div className="flex flex-col pb-3 gap-1 relative h-full items-center justify-center">
+              <NoData />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
   }
 
   return (
@@ -164,8 +173,8 @@ const RlmsCard: React.FC<{ id: number }> = ({ id }) => {
               )}
             </div>
             <div className="flex flex-col pb-3 gap-1">
-              <div className="flex flex-col pb-3 gap-1 items-center justify-center">
-                <Card className="w-full h-44">
+              <div className="flex flex-col pb-3 gap-5 items-center justify-center">
+                <Card className="w-full min-h-44">
                   <CardContent className="px-0 p-0 h-full">
                     <div className="text-center w-full flex flex-col h-full">
                       <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
@@ -177,6 +186,26 @@ const RlmsCard: React.FC<{ id: number }> = ({ id }) => {
                         <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
                           {Math.round(stationData.data.distance * 100) / 100} cm
                         </span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card className="w-full h-full">
+                  <CardContent className="px-0 p-0 h-full flex justify-center items-center">
+                    <div className="text-center w-full flex flex-col h-full">
+                      <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
+                        <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
+                          Distance from water level
+                        </span>
+                      </div>
+                      <div className="text-xl flex h-full items-center justify-center pr-5 py-5 pl-0">
+                        <VariableGraph
+                          stationId={id}
+                          weatherData={"distance"}
+                          repeat={"minute"}
+                          range={15}
+                          key={1}
+                        />
                       </div>
                     </div>
                   </CardContent>

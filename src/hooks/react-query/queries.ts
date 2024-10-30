@@ -3,6 +3,8 @@ import { QUERY_KEYS } from "./queryKeys";
 import {
   argDashboardType,
   awsDashboardType,
+  clmsDashboardType,
+  coastalDataTypes,
   hourlyDataTypes,
   rlmsDashboardType,
   stationBarangayType,
@@ -13,26 +15,28 @@ import {
   stationRegionType,
   stationsListType,
   TableGraphCardType,
+  tablesType,
   userProfileTypes,
 } from "@/types/queryTypes";
 import {
   getArgData,
   getAwsData,
-  getHourlyDataset,
   getIsAuthenticated,
   getRlmsData,
   getStationBarangays,
   getStationList,
   getStationMunicipalities,
-  getStationNames,
+  getStationData,
   getStationProvinces,
   getStationRegions,
   getStationTypes,
-  getTableGraphData,
   getUserProfile,
   getUserSession,
+  getDataset,
+  getClmsData,
+  getTableGraph,
 } from "@/api/get";
-import { stationStaticType, UserType } from "@/types";
+import { formattedDataType, stationStaticType, UserType } from "@/types";
 
 export const useGetAwsData = (
   id: number
@@ -70,12 +74,12 @@ export const useGetRlmsData = (
   });
 };
 
-export const useGetCoastalData = (
+export const useGetClmsData = (
   id: number
-): UseQueryResult<rlmsDashboardType, Error> => {
+): UseQueryResult<clmsDashboardType, Error> => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_CLMS_DATA, id],
-    queryFn: () => getRlmsData(id),
+    queryFn: () => getClmsData(id),
     refetchInterval: 5000,
     retry: 1,
     staleTime: 30000,
@@ -164,34 +168,33 @@ export const useGetUserSession = (): UseQueryResult<UserType, Error> => {
   });
 };
 
-export const useGetStationNames = (): UseQueryResult<
-  stationStaticType[],
-  Error
-> => {
+export const useGetStationNames = (
+  stationName: string
+): UseQueryResult<stationStaticType, Error> => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_STATION_NAMES],
-    queryFn: () => getStationNames(),
+    queryKey: [QUERY_KEYS.GET_STATION_NAMES, stationName],
+    queryFn: () => getStationData(stationName),
     staleTime: 60000,
   });
 };
 
 export const useGetTableGraphData = (
-  graphData: TableGraphCardType
+  graphData: tablesType
 ): UseQueryResult<stationComputedTypes, Error> => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_TABLE_GRAPH_DATA, graphData],
-    queryFn: () => getTableGraphData(graphData),
+    queryFn: () => getTableGraph(graphData),
     refetchInterval: 60000,
     staleTime: 60000,
   });
 };
 
-export const useGetHourlyDataset = (
+export const useGetDataset = (
   graphData: TableGraphCardType
-): UseQueryResult<hourlyDataTypes[], Error> => {
+): UseQueryResult<formattedDataType[], Error> => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_HOURLY_DATASET, graphData],
-    queryFn: () => getHourlyDataset(graphData),
+    queryKey: [QUERY_KEYS.GET_DATASET, graphData],
+    queryFn: () => getDataset(graphData),
     refetchInterval: 60000,
     staleTime: 60000,
     refetchOnWindowFocus: true,

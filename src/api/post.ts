@@ -6,8 +6,10 @@ import {
   signInAccountType,
 } from "@/types/mutationTypes";
 import {
-  downloadableDataTypes,
+  coastalDataTypes,
   downloadParamsTypes,
+  rainGaugeDataTypes,
+  riverLevelDataTypes,
   weatherDataTypes,
 } from "@/types/queryTypes";
 
@@ -108,7 +110,7 @@ export const generateApi = async (): Promise<{ message: string }> => {
 };
 
 export const handleLogout = async () => {
-  const response = await fetch(`${server}/user/logout`, {
+  const response = await fetch(`${server}/user/auth/logout`, {
     method,
     credentials: "include",
   });
@@ -119,12 +121,32 @@ export const handleLogout = async () => {
   return data;
 };
 
-export const downloadData = async ({
+export const downloadWeatherData = async ({
   name,
   from,
   to,
 }: downloadParamsTypes): Promise<weatherDataTypes[]> => {
-  const response = await fetch(`${server}/weather/get/data`, {
+  const response = await fetch(`${server}/coastal/download`, {
+    method,
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name, from, to }),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch data");
+  }
+  return data;
+};
+
+export const downloadCoastalData = async ({
+  name,
+  from,
+  to,
+}: downloadParamsTypes): Promise<coastalDataTypes[]> => {
+  const response = await fetch(`${server}/coastal/download`, {
     method,
     credentials: "include",
     headers: {
@@ -137,5 +159,45 @@ export const downloadData = async ({
     throw new Error(data.message || "Failed to fetch data");
   }
   console.log(data);
+  return data;
+};
+
+export const downloadRiverLevelData = async ({
+  name,
+  from,
+  to,
+}: downloadParamsTypes): Promise<riverLevelDataTypes[]> => {
+  const response = await fetch(`${server}/riverlevel/download`, {
+    method,
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name, from, to }),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch data");
+  }
+  return data;
+};
+
+export const downloadRainGaugeData = async ({
+  name,
+  from,
+  to,
+}: downloadParamsTypes): Promise<rainGaugeDataTypes[]> => {
+  const response = await fetch(`${server}/raingauge/download`, {
+    method,
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name, from, to }),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch data");
+  }
   return data;
 };

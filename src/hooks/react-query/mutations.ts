@@ -12,7 +12,10 @@ import {
   addStationType,
   createStation,
   createUser,
-  downloadData,
+  downloadCoastalData,
+  downloadRainGaugeData,
+  downloadRiverLevelData,
+  downloadWeatherData,
   generateApi,
   handleLogout,
   signInAccount,
@@ -142,9 +145,45 @@ export const useDeleteApiKey = (onSuccess: () => void) => {
   });
 };
 
-export const useDownloadData = () => {
+export const useWeatherDownloadData = () => {
   return useMutation({
-    mutationFn: (data: downloadParamsTypes) => downloadData(data),
+    mutationFn: (data: downloadParamsTypes) => downloadWeatherData(data),
+    onError: (error: Error) => {
+      toast.error(error.message);
+    },
+    onSuccess: () => {
+      toast.success("Data Downloaded!");
+    },
+  });
+};
+
+export const useCoastalDownloadData = () => {
+  return useMutation({
+    mutationFn: (data: downloadParamsTypes) => downloadCoastalData(data),
+    onError: (error: Error) => {
+      toast.error(error.message);
+    },
+    onSuccess: () => {
+      toast.success("Data Downloaded!");
+    },
+  });
+};
+
+export const useRiverLevelDownloadData = () => {
+  return useMutation({
+    mutationFn: (data: downloadParamsTypes) => downloadRiverLevelData(data),
+    onError: (error: Error) => {
+      toast.error(error.message);
+    },
+    onSuccess: () => {
+      toast.success("Data Downloaded!");
+    },
+  });
+};
+
+export const useRainGaugeDownloadData = () => {
+  return useMutation({
+    mutationFn: (data: downloadParamsTypes) => downloadRainGaugeData(data),
     onError: (error: Error) => {
       toast.error(error.message);
     },

@@ -1,7 +1,8 @@
 import { stationCurrentWeatherType } from "@/types/queryTypes";
 import { Card, CardContent } from "../ui/card";
 import { getWindDirectionLabel } from "@/lib/utils";
-import { HeatIndex } from "../../lib/heatIndexUtils";
+import { HeatIndex } from "../../lib/dataCardsUtils/heatIndexUtils";
+import { UVIndex } from "@/lib/dataCardsUtils/uvIndexUtils";
 
 type DataCardsProps = {
   currentweather: stationCurrentWeatherType;
@@ -100,18 +101,10 @@ const DataCards = ({ currentweather, stationName }: DataCardsProps) => {
       </Card>
       <Card className="w-full h-full aspect-[10/9]">
         <CardContent className="px-0 p-0 h-full">
-          <div className="text-center w-full flex flex-col h-full">
-            <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-              <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-                UV Index
-              </span>
-            </div>
-            <div className="text-xl flex h-full items-center justify-center">
-              <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
-                {Math.round(currentweather.uvIndex * 100) / 100}
-              </span>
-            </div>
-          </div>
+          <UVIndex
+            uvIndexVal={currentweather.uvIndex}
+            stationName={stationName}
+          />
         </CardContent>
       </Card>
       <Card className="w-full h-full aspect-[10/9]">

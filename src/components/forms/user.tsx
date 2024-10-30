@@ -28,7 +28,7 @@ const defaultValues = {
   password: "",
 };
 
-const UserCreation = () => {
+const user = () => {
   const { mutate: createUser, isPending } = useCreateUser();
   const form = useForm<z.infer<typeof userValidation>>({
     resolver: zodResolver(userValidation),
@@ -219,4 +219,4 @@ const UserCreation = () => {
   );
 };
 
-export default UserCreation;
+export default user;

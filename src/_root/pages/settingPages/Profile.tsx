@@ -26,13 +26,16 @@ import {
   useGenerateApi,
   useUpdateApiKey,
 } from "@/hooks/react-query/mutations";
+import { useUserContext } from "@/hooks/context/authContext";
+
+import { DataTable } from "@/components/shared/DataTable";
+import { columns } from "@/components/shared/Columns";
 
 const Profile = () => {
-  const { data: profile, refetch } = useGetUserProfile();
+  const { user } = useUserContext();
+  const { data: profile, refetch } = useGetUserProfile(user.id);
   const { mutate: generateApi, isPending: isGeneratingApi } =
     useGenerateApi(refetch);
-  const { mutate: refreshApiKey } = useUpdateApiKey(refetch);
-  const { mutate: deleteApiKey } = useDeleteApiKey(refetch);
 
   return (
     <div className="px-5 w-full h-full flex flex-col gap-3">
@@ -64,7 +67,7 @@ const Profile = () => {
                   This section contains your username and api key.
                 </CardDescription>
               </div>
-              {!profile.apiKeys && (
+              {profile.apiKeys.length <= 3 && profile.apiKeys.length! > 3 && (
                 <Button
                   className="dark:text-white"
                   onClick={() => generateApi()}
@@ -76,7 +79,7 @@ const Profile = () => {
 
             <CardContent>
               <div className="flex flex-col gap-5">
-                <div className="flex flex-row gap-2">
+                <div className="flex flex-col gap-4">
                   <div className="flex flex-col w-full items-start">
                     <span className="text-md font-bold">Username</span>
                     <div
@@ -90,105 +93,18 @@ const Profile = () => {
                       {formatDateString(profile.createdAt, "long")}
                     </span>
                   </div>
-                </div>
-                {profile.apiKeys ? (
-                  <div className="flex gap-2">
-                    <div className="flex flex-col w-full">
-                      <span className="text-nowrap text-md font-bold ">
-                        Api key:
-                      </span>
-                      <div className="flex flex-row gap-2 justify-between items-center text-center">
-                        <div
-                          className="capitalize text-lg
-                        border border-transparent rounded-none"
-                        >
-                          {profile.apiKeys.apiKey}
-                        </div>
-                        <div className="flex gap-2 justify-end items-end">
-                          <Button
-                            className="bg-gray-500 hover:bg-gray-700"
-                            onClick={() => {
-                              navigator.clipboard.writeText(
-                                profile.apiKeys.apiKey
-                              );
-                              toast.success("API key copied to clipboard");
-                            }}
-                          >
-                            <img src="/assets/icons/copy.svg" width={30} />
-                          </Button>
-                          <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                              <Button className="bg-blue-500 hover:bg-blue-700">
-                                <img
-                                  src="/assets/icons/refresh.svg"
-                                  width={30}
-                                />
-                              </Button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                              <AlertDialogHeader>
-                                <AlertDialogTitle>
-                                  Are you absolutely sure?
-                                </AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  This action cannot be undone. This will
-                                  permanently delete your current api key and
-                                  will create a new one.
-                                </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction
-                                  onClick={() => {
-                                    refreshApiKey();
-                                    refetch();
-                                  }}
-                                >
-                                  Continue
-                                </AlertDialogAction>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
-                          </AlertDialog>
-                          <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                              <Button className="bg-red-500 hover:bg-red-700">
-                                <img
-                                  src="/assets/icons/delete.svg"
-                                  width={30}
-                                />
-                              </Button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                              <AlertDialogHeader>
-                                <AlertDialogTitle>
-                                  Are you absolutely sure?
-                                </AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  This action cannot be undone. This will
-                                  permanently delete your api key.
-                                </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction
-                                  onClick={() => {
-                                    deleteApiKey();
-                                    refetch();
-                                  }}
-                                >
-                                  Continue
-                                </AlertDialogAction>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
-                          </AlertDialog>
-                        </div>
-                      </div>
-                      <span className="text-xs">
-                        The API key was generated on{" "}
-                        {formatDateString(profile.apiKeys.createdAt, "long")}
-                      </span>
+                  <div className="flex flex-col w-full items-start">
+                    <span className="text-md font-bold">ROLE</span>
+                    <div
+                      className="capitalize text-lg
+                        border border-transparent rounded-none py-0 "
+                    >
+                      {profile.role}
                     </div>
                   </div>
+                </div>
+                {profile.apiKeys ? (
+                  <DataTable columns={columns} data={profile.apiKeys} />
                 ) : (
                   <div>No api key generated</div>
                 )}

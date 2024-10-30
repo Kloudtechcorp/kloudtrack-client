@@ -9,9 +9,9 @@ import {
 import { Skeleton } from "../ui/skeleton";
 import { formatDateString, weatherUnit } from "@/lib/utils";
 import VariableGrapht from "./VariableGraph";
-import React from "react";
 import { tablesType } from "@/types/queryTypes";
 import { useGetTableGraphData } from "@/hooks/react-query/queries";
+import NoData from "../shared/NoData";
 
 const TableGraphCard = ({
   type,
@@ -34,7 +34,15 @@ const TableGraphCard = ({
   } = useGetTableGraphData(stationDataParams);
 
   if (isError) {
-    return <div>Error fetching data</div>;
+    return (
+      <div className="w-full min-h-[16rem] flex flex-row rounded-lg p-1 pr-3 gap-1">
+        <div className="flex flex-col gap-2 w-full">
+          <div className="flex flex-col pb-3 gap-1 relative h-full items-center justify-center">
+            <NoData />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (isLoading || !stationData) {
@@ -132,7 +140,7 @@ const TableGraphCard = ({
           </TableBody>
         </Table>
       </div>
-      <div className="border rounded-lg w-full h-full grow p-1 flex">
+      <div className="border rounded-lg w-full items-center h-full grow p-1 flex">
         <VariableGrapht
           stationId={stationId}
           range={range}

@@ -158,8 +158,10 @@ export const getStationBarangays = async (
 };
 
 //=========================== GET DATA FOR USER PROFILE DATA
-export const getUserProfile = async (): Promise<userProfileTypes> => {
-  const response = await fetch(`${server}/user/get-profile`, {
+export const getUserProfile = async (
+  userId: number
+): Promise<userProfileTypes> => {
+  const response = await fetch(`${server}/user/profile/${userId}`, {
     method,
     credentials: "include",
   });
@@ -167,7 +169,8 @@ export const getUserProfile = async (): Promise<userProfileTypes> => {
   if (!response.ok) {
     throw new Error(data.message || "Failed to fetch profile");
   }
-  return data.userApi;
+  console.log(data.profile);
+  return data.profile;
 };
 
 //=========================== GET DATA FOR USER SESSION

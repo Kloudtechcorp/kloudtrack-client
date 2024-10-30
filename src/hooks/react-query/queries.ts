@@ -149,13 +149,12 @@ export const useGetStationBarangays = (
   });
 };
 
-export const useGetUserProfile = (): UseQueryResult<
-  userProfileTypes,
-  Error
-> => {
+export const useGetUserProfile = (
+  userId: number
+): UseQueryResult<userProfileTypes, Error> => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_USER_PROFILE],
-    queryFn: () => getUserProfile(),
+    queryKey: [QUERY_KEYS.GET_USER_PROFILE, userId],
+    queryFn: () => getUserProfile(userId),
     staleTime: 60000,
   });
 };

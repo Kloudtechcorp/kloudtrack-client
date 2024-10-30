@@ -158,14 +158,17 @@ export type stationCurrentCoastalLevelType = {
 };
 
 export type userProfileTypes = {
-  username: string;
   createdAt: string;
-  updatedAt: string;
+  username: string;
+  updatedAt: string | null;
+  role: string;
   apiKeys: {
-    apiKey: string;
     createdAt: string;
-    updatedAt: string;
-  };
+    updatedAt: string | null;
+    apiKey: string;
+    expiresAt: string | null;
+    isActive: boolean;
+  }[];
 };
 
 export type TableGraphCardType = {

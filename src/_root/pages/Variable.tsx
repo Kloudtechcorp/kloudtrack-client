@@ -12,6 +12,9 @@ import { useUserContext } from "@/hooks/context/authContext";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AwsVariableCard from "@/components/dynamic/VariableCards/AwsVariableCard";
+import ArgVariableCard from "@/components/dynamic/VariableCards/ArgVariableCard";
+import ClmsVariableCard from "@/components/dynamic/VariableCards/ClmsVariableCard";
+import RlmsVariableCard from "@/components/dynamic/VariableCards/RlmsVariableCard";
 
 const Variable = () => {
   const { user, isLoading } = useUserContext();
@@ -30,6 +33,15 @@ const Variable = () => {
 
   const awsIds = user.stations
     .filter((item) => item.type === "AWS")
+    .map((item) => item.id);
+  const argIds = user.stations
+    .filter((item) => item.type === "ARG")
+    .map((item) => item.id);
+  const clmsIds = user.stations
+    .filter((item) => item.type === "CLMS")
+    .map((item) => item.id);
+  const rlmsIds = user.stations
+    .filter((item) => item.type === "RLMS")
     .map((item) => item.id);
 
   return (
@@ -51,9 +63,15 @@ const Variable = () => {
             <TabsContent value="aws">
               <AwsVariableCard id={awsIds} />
             </TabsContent>
-            <TabsContent value="arg"></TabsContent>
-            <TabsContent value="rlms"></TabsContent>
-            <TabsContent value="clms"></TabsContent>
+            <TabsContent value="arg">
+              <ArgVariableCard id={argIds} />
+            </TabsContent>
+            <TabsContent value="rlms">
+              <RlmsVariableCard id={rlmsIds} />
+            </TabsContent>
+            <TabsContent value="clms">
+              <ClmsVariableCard id={clmsIds} />
+            </TabsContent>
           </Tabs>
         )}
       </div>

@@ -48,7 +48,7 @@ const AwsVariableCard: React.FC<{ id: number[] }> = ({ id }) => {
               </div>
             </div>
 
-            <div className="flex flex-col gap-[.4rem] overflow-y-auto w-full h-[calc(100vh-14rem)] custom-scrollbar">
+            <div className="flex flex-col gap-[.4rem] overflow-y-auto w-full custom-scrollbar">
               {id.map((id, key) => (
                 <TableGraphCard
                   type={"aws"}

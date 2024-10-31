@@ -93,15 +93,6 @@ const Profile = () => {
                       {formatDateString(profile.createdAt, "long")}
                     </span>
                   </div>
-                  <div className="flex flex-col w-full items-start">
-                    <span className="text-md font-bold">ROLE</span>
-                    <div
-                      className="capitalize text-lg
-                        border border-transparent rounded-none py-0 "
-                    >
-                      {profile.role}
-                    </div>
-                  </div>
                 </div>
                 {profile.apiKeys ? (
                   <DataTable columns={columns} data={profile.apiKeys} />

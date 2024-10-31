@@ -5,8 +5,11 @@ import { HeatIndex } from "../../lib/heatIndexUtils";
 
 type DataCardsProps = {
   currentweather: stationCurrentWeatherType;
+  pastHourPrecip: number;
 };
-const DataCards = ({ currentweather }: DataCardsProps) => {
+
+const DataCards = ({ currentweather, pastHourPrecip }: DataCardsProps) => {
+  console.log("data card precip is ", pastHourPrecip);
   return (
     <div className="grid grid-cols-3 w-full h-full gap-3 justify-center">
       <Card className="w-full h-full aspect-[10/9]">
@@ -137,6 +140,9 @@ const DataCards = ({ currentweather }: DataCardsProps) => {
             <div className="text-xl flex h-full items-center justify-center">
               <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
                 {Math.round(currentweather.precipitation * 100) / 100} mm
+              </span>
+              <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
+                {Math.round(pastHourPrecip * 100) / 100} mm/hr
               </span>
             </div>
           </div>

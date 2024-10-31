@@ -3,6 +3,7 @@ import { QUERY_KEYS } from "./queryKeys";
 import {
   argDashboardType,
   awsDashboardType,
+  awsDashboardType2,
   clmsDashboardType,
   coastalDataTypes,
   hourlyDataTypes,
@@ -21,6 +22,7 @@ import {
 import {
   getArgData,
   getAwsData,
+  getAwsData2,
   getIsAuthenticated,
   getRlmsData,
   getStationBarangays,
@@ -44,6 +46,18 @@ export const useGetAwsData = (
   return useQuery({
     queryKey: [QUERY_KEYS.GET_AWS_DATA, id],
     queryFn: () => getAwsData(id),
+    refetchInterval: 5000,
+    retry: 1,
+    staleTime: 30000,
+  });
+};
+
+export const useGetAwsData2 = (
+  id: number
+): UseQueryResult<awsDashboardType2, Error> => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_AWS_DATA2, id],
+    queryFn: () => getAwsData2(id),
     refetchInterval: 5000,
     retry: 1,
     staleTime: 30000,

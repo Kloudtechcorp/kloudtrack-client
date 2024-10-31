@@ -3,7 +3,9 @@ import { Card, CardContent, CardTitle } from "../../ui/card";
 import { Button } from "../../ui/button";
 import PuffLoader from "react-spinners/PuffLoader";
 import { useNavigate } from "react-router-dom";
-import { useGetAwsData } from "../../../hooks/react-query/queries";
+// import { useGetAwsData } from "../../../hooks/react-query/queries";
+import { useGetAwsData2 } from "../../../hooks/react-query/queries";
+
 import { formatDateString, stationType } from "@/lib/utils";
 import DataCards from "../../shared/DataCards";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -25,7 +27,12 @@ import NoData from "@/components/shared/NoData";
 const AwsCard: React.FC<{ id: number }> = ({ id }) => {
   const { user } = useUserContext();
   const navigate = useNavigate();
-  const { data: stationData, isLoading, isError } = useGetAwsData(id);
+  // const { data: stationData, isLoading, isError } = useGetAwsData(id);
+  const { data: stationData, isLoading, isError } = useGetAwsData2(id);
+  console.log("past hour precip is" + stationData?.pastHourPrecip);
+
+  console.log("stationData:", stationData);
+
   const { theme } = useTheme();
 
   if (isLoading || !stationData) {
@@ -173,7 +180,10 @@ const AwsCard: React.FC<{ id: number }> = ({ id }) => {
               )}
             </div>
             <div className="flex flex-col pb-3 gap-1">
-              <DataCards currentweather={stationData.data} />
+              <DataCards
+                currentweather={stationData.data}
+                pastHourPrecip={stationData.pastHourPrecip}
+              />
             </div>
           </div>
         )}

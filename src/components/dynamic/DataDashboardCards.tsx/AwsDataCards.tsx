@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate, useParams } from "react-router-dom";
 import DataCards from "@/components/shared/DataCards";
-import { useGetAwsData } from "@/hooks/react-query/queries";
+import { useGetAwsData2 } from "@/hooks/react-query/queries";
 import { formatDateString } from "@/lib/utils";
 import VariableGraph from "@/components/dynamic/VariableGraph";
 import PuffLoader from "react-spinners/PuffLoader";
@@ -14,8 +14,12 @@ type AwsDataCardProps = {
 
 const AwsDataCard = ({ stationId }: AwsDataCardProps) => {
   const navigate = useNavigate();
-  const { data: stationData, isError, isLoading } = useGetAwsData(stationId);
+  const { data: stationData, isError, isLoading } = useGetAwsData2(stationId);
+  console.log("past hour precip2 is" + stationData?.pastHourPrecip);
 
+  // console.log("stationData:", stationData);
+
+  console.log("Aws card data is " + stationData);
   if (isError || !stationData?.data)
     return (
       <div className="w-full flex justify-center items-center h-full">

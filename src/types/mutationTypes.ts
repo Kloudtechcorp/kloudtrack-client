@@ -28,6 +28,7 @@ export type createUserData = {
   username: string;
   role: string;
   password: string;
+  grantedStations: number[];
 };
 
 //Update Data types

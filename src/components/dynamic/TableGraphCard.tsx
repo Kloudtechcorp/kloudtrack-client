@@ -66,7 +66,7 @@ const TableGraphCard = ({
         <Table className="border border-[#545454]">
           <TableHeader>
             <TableRow className="bg-yellow-200 border border-[#545454]">
-              <TableHead className="p-2 border border-[#545454] text-center">
+              <TableHead className="p-2 border border-[#545454] text-center !h-12">
                 Information
               </TableHead>
               <TableHead className="p-2 border border-[#545454] text-center">
@@ -76,7 +76,7 @@ const TableGraphCard = ({
           </TableHeader>
           <TableBody className="text-center">
             <TableRow>
-              <TableCell className="border border-[#545454] p-1">
+              <TableCell className="border border-[#545454] p-1 ">
                 Station Name
               </TableCell>
               <TableCell className="border border-[#545454]">

@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -21,14 +22,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useUserContext } from "@/hooks/context/authContext";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const defaultValues = {
   username: "",
   role: "USER",
   password: "",
+  grantedStations: [],
 };
 
 const UserCreation = () => {
+  const { user } = useUserContext();
   const { mutate: createUser, isPending } = useCreateUser();
   const form = useForm<z.infer<typeof userValidation>>({
     resolver: zodResolver(userValidation),
@@ -114,11 +119,11 @@ const UserCreation = () => {
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select a verified email to display" />
+                          <SelectValue placeholder="Select role" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="ADMIN">ADMIN </SelectItem>
+                        <SelectItem value="ADMIN">ADMIN</SelectItem>
                         <SelectItem value="USER">USER</SelectItem>
                       </SelectContent>
                     </Select>
@@ -203,12 +208,52 @@ const UserCreation = () => {
                 </FormItem>
               )}
             />
+
+            {form.watch("role") === "USER" && (
+              <FormField
+                control={form.control}
+                name="grantedStations"
+                render={() => (
+                  <FormItem>
+                    {user.stations.map((item) => (
+                      <FormField
+                        key={item.id}
+                        control={form.control}
+                        name="grantedStations"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value?.includes(item.id)}
+                                onCheckedChange={(checked) => {
+                                  return checked
+                                    ? field.onChange([...field.value, item.id])
+                                    : field.onChange(
+                                        field.value?.filter(
+                                          (value) => value !== item.id
+                                        )
+                                      );
+                                }}
+                              />
+                            </FormControl>
+                            <FormLabel className="text-sm font-normal">
+                              {item.name}
+                            </FormLabel>
+                          </FormItem>
+                        )}
+                      />
+                    ))}
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
           </>
           <div className="w-full flex justify-end">
             <Button
               type="submit"
               className={`my-5 dark:bg-blue-200`}
-              disabled={!isPasswordValid}
+              // disabled={!isPasswordValid}
             >
               {isPending ? "Loading..." : "Submit"}
             </Button>

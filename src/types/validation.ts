@@ -13,6 +13,7 @@ export const userValidation = z.object({
     .string()
     .min(8, { message: "Must be a minimum of 8 characters." }),
   role: z.string(),
+  grantedStations: z.array(z.number()),
 });
 
 export const psgcValidation = z.object({

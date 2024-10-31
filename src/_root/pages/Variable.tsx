@@ -1,13 +1,3 @@
-import React, { useState } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Card, CardContent } from "@/components/ui/card";
-import TableGraphCard from "@/components/dynamic/TableGraphCard";
 import { useUserContext } from "@/hooks/context/authContext";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -30,6 +20,19 @@ const Variable = () => {
       </div>
     );
   }
+
+  const hasAwsStations = user.stations.some(
+    (station) => station.type === "AWS"
+  );
+  const hasArgStations = user.stations.some(
+    (station) => station.type === "ARG"
+  );
+  const hasRlmsStations = user.stations.some(
+    (station) => station.type === "RLMS"
+  );
+  const hasClmsStations = user.stations.some(
+    (station) => station.type === "CLMS"
+  );
 
   const awsIds = user.stations
     .filter((item) => item.type === "AWS")
@@ -55,23 +58,39 @@ const Variable = () => {
         ) : (
           <Tabs defaultValue="aws" className="w-full flex flex-col">
             <TabsList className="flex justify-start">
-              <TabsTrigger value="aws">Weather Stations</TabsTrigger>
-              <TabsTrigger value="arg">Rain Gauges</TabsTrigger>
-              <TabsTrigger value="rlms">River Level</TabsTrigger>
-              <TabsTrigger value="clms">Coastal Level</TabsTrigger>
+              {hasAwsStations && (
+                <TabsTrigger value="aws">Weather Stations</TabsTrigger>
+              )}
+              {hasArgStations && (
+                <TabsTrigger value="arg">Rain Gauges</TabsTrigger>
+              )}
+              {hasRlmsStations && (
+                <TabsTrigger value="rlms">River Level</TabsTrigger>
+              )}
+              {hasClmsStations && (
+                <TabsTrigger value="clms">Coastal Level</TabsTrigger>
+              )}
             </TabsList>
-            <TabsContent value="aws">
-              <AwsVariableCard id={awsIds} />
-            </TabsContent>
-            <TabsContent value="arg">
-              <ArgVariableCard id={argIds} />
-            </TabsContent>
-            <TabsContent value="rlms">
-              <RlmsVariableCard id={rlmsIds} />
-            </TabsContent>
-            <TabsContent value="clms">
-              <ClmsVariableCard id={clmsIds} />
-            </TabsContent>
+            {hasAwsStations && (
+              <TabsContent value="aws">
+                <AwsVariableCard id={awsIds} />
+              </TabsContent>
+            )}
+            {hasArgStations && (
+              <TabsContent value="arg">
+                <ArgVariableCard id={argIds} />
+              </TabsContent>
+            )}
+            {hasRlmsStations && (
+              <TabsContent value="rlms">
+                <RlmsVariableCard id={rlmsIds} />
+              </TabsContent>
+            )}
+            {hasClmsStations && (
+              <TabsContent value="clms">
+                <ClmsVariableCard id={clmsIds} />
+              </TabsContent>
+            )}
           </Tabs>
         )}
       </div>

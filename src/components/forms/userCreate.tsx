@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -21,14 +22,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useUserContext } from "@/hooks/context/authContext";
+import { Checkbox } from "../ui/checkbox";
 
 const defaultValues = {
   username: "",
   role: "USER",
   password: "",
+  grantedStations: [],
 };
 
-const user = () => {
+const userCreate = () => {
+  const { user } = useUserContext();
   const { mutate: createUser, isPending } = useCreateUser();
   const form = useForm<z.infer<typeof userValidation>>({
     resolver: zodResolver(userValidation),
@@ -203,6 +208,54 @@ const user = () => {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="grantedStations"
+              render={() => (
+                <FormItem>
+                  <div className="mb-4">
+                    <FormLabel className="text-base">Sidebar</FormLabel>
+                    <FormDescription>
+                      Select the items you want to display in the sidebar.
+                    </FormDescription>
+                  </div>
+                  {user.stations.map((item) => (
+                    <FormField
+                      key={item.id}
+                      control={form.control}
+                      name="grantedStations"
+                      render={({ field }) => {
+                        return (
+                          <FormItem
+                            key={item.id}
+                            className="flex flex-row items-start space-x-3 space-y-0"
+                          >
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value?.includes(item.id)}
+                                onCheckedChange={(checked) => {
+                                  return checked
+                                    ? field.onChange([...field.value, item.id])
+                                    : field.onChange(
+                                        field.value?.filter(
+                                          (value) => value !== item.id
+                                        )
+                                      );
+                                }}
+                              />
+                            </FormControl>
+                            <FormLabel className="text-sm font-normal">
+                              {item.name}
+                            </FormLabel>
+                          </FormItem>
+                        );
+                      }}
+                    />
+                  ))}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </>
           <div className="w-full flex justify-end">
             <Button
@@ -219,4 +272,4 @@ const user = () => {
   );
 };
 
-export default user;
+export default userCreate;

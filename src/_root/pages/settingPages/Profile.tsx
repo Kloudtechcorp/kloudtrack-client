@@ -67,7 +67,7 @@ const Profile = () => {
                   This section contains your username and api key.
                 </CardDescription>
               </div>
-              {profile.apiKeys.length <= 3 && profile.apiKeys.length! > 3 && (
+              {profile.apiKeys.length < 3 && profile.apiKeys.length > -1 && (
                 <Button
                   className="dark:text-white"
                   onClick={() => generateApi()}

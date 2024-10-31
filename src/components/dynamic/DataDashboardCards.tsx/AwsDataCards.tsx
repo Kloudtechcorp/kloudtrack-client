@@ -35,7 +35,7 @@ const AwsDataCard = ({ stationId }: AwsDataCardProps) => {
 
   return (
     <div className="flex lg:flex-row flex-col w-full gap-2">
-      <div className="flex flex-col w-full px-2 gap-2">
+      <div className="flex flex-col w-full lg:w-2/3 px-2 gap-2">
         {!stationData ? (
           <p className="font-bold">There is no station data.</p>
         ) : (
@@ -44,7 +44,10 @@ const AwsDataCard = ({ stationId }: AwsDataCardProps) => {
               Current Weather as of{" "}
               {formatDateString(stationData.data.recordedAt, "long")}
             </div>
-            <DataCards currentweather={stationData.data} />
+            <DataCards
+              currentweather={stationData.data}
+              type={"DATADASHBOARD"}
+            />
           </div>
         )}
       </div>

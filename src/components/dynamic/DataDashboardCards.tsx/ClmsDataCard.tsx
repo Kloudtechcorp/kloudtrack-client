@@ -36,7 +36,7 @@ const ClmsDataCard = ({ stationId }: ClmsDataCardProps) => {
 
   return (
     <div className="flex lg:flex-row flex-col w-full gap-2">
-      <div className="flex flex-col w-full px-2 gap-2">
+      <div className="flex flex-col w-full lg:w-2/3 px-2 gap-2">
         {!stationData ? (
           <p className="font-bold">There is no station data.</p>
         ) : (
@@ -45,7 +45,7 @@ const ClmsDataCard = ({ stationId }: ClmsDataCardProps) => {
               Current Weather as of{" "}
               {formatDateString(stationData.data.recordedAt, "long")}
             </div>
-            <Card className="h-96">
+            <Card className="h-52">
               <CardContent className="px-0 p-0 h-full">
                 <div className="text-center w-full flex flex-col h-full">
                   <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
@@ -61,7 +61,7 @@ const ClmsDataCard = ({ stationId }: ClmsDataCardProps) => {
                 </div>
               </CardContent>
             </Card>{" "}
-            <Card className="h-96">
+            <Card className="h-52">
               <CardContent className="px-0 p-0 h-full">
                 <div className="text-center w-full flex flex-col h-full">
                   <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
@@ -77,7 +77,7 @@ const ClmsDataCard = ({ stationId }: ClmsDataCardProps) => {
                 </div>
               </CardContent>
             </Card>{" "}
-            <Card className="h-96">
+            <Card className="h-52">
               <CardContent className="px-0 p-0 h-full">
                 <div className="text-center w-full flex flex-col h-full">
                   <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
@@ -94,7 +94,7 @@ const ClmsDataCard = ({ stationId }: ClmsDataCardProps) => {
                 </div>
               </CardContent>
             </Card>{" "}
-            <Card className="h-96">
+            <Card className="h-52">
               <CardContent className="px-0 p-0 h-full">
                 <div className="text-center w-full flex flex-col h-full">
                   <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">

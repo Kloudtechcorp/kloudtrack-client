@@ -55,7 +55,7 @@ const ClmsDataCard = ({ stationId }: ClmsDataCardProps) => {
                   </div>
                   <div className="text-xl flex h-full items-center justify-center">
                     <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
-                      {Math.round(stationData.data.distance * 100) / 100} cm;
+                      {Math.round(stationData.data.distance * 100) / 100} cm
                     </span>
                   </div>
                 </div>
@@ -71,7 +71,7 @@ const ClmsDataCard = ({ stationId }: ClmsDataCardProps) => {
                   </div>
                   <div className="text-xl flex h-full items-center justify-center">
                     <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
-                      {Math.round(stationData.data.humidity * 100) / 100} cm;
+                      {Math.round(stationData.data.humidity * 100) / 100} %
                     </span>
                   </div>
                 </div>
@@ -87,7 +87,8 @@ const ClmsDataCard = ({ stationId }: ClmsDataCardProps) => {
                   </div>
                   <div className="text-xl flex h-full items-center justify-center">
                     <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
-                      {Math.round(stationData.data.temperature * 100) / 100} cm;
+                      {Math.round(stationData.data.temperature * 100) / 100}{" "}
+                      &deg;C
                     </span>
                   </div>
                 </div>
@@ -103,7 +104,7 @@ const ClmsDataCard = ({ stationId }: ClmsDataCardProps) => {
                   </div>
                   <div className="text-xl flex h-full items-center justify-center">
                     <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
-                      {Math.round(stationData.data.pressure * 100) / 100} cm;
+                      {Math.round(stationData.data.pressure * 100) / 100} mb
                     </span>
                   </div>
                 </div>

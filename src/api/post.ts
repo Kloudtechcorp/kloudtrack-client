@@ -158,7 +158,6 @@ export const downloadCoastalData = async ({
   if (!response.ok) {
     throw new Error(data.message || "Failed to fetch data");
   }
-  console.log(data);
   return data;
 };
 

@@ -173,7 +173,7 @@ const AwsCard: React.FC<{ id: number }> = ({ id }) => {
               )}
             </div>
             <div className="flex flex-col pb-3 gap-1">
-              <DataCards currentweather={stationData.currentweather} />
+              <DataCards currentweather={stationData.data} />
             </div>
           </div>
         )}

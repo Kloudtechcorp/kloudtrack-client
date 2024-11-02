@@ -10,7 +10,6 @@ import Variable from "./_root/pages/Variable";
 import DataDashboard from "./_root/pages/DataDashboard";
 import SampleDashboard from "./_root/pages/SampleDashboard";
 import Login from "./_root/pages/Login";
-import Register from "./_root/pages/Register";
 import Test from "./test/Test";
 import { Toaster } from "react-hot-toast";
 import AdminSettings from "./_root/pages/AdminSettings";
@@ -31,7 +30,6 @@ function App() {
               <Route path="/signin" element={<Signin />} />
               <Route path="/test" element={<Test />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />{" "}
               <Route path="/csv" element={<TestCsv />} />{" "}
               <Route path="/test" element={<Test />} />{" "}
               <Route path="/sampleDashboard" element={<SampleDashboard />} />

@@ -7,7 +7,6 @@ import {
   useState,
 } from "react";
 import { UserType } from "../types";
-import Cookies from "universal-cookie";
 
 export const INITIAL_USER = {
   id: 0,
@@ -41,7 +40,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<UserType>(INITIAL_USER);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const cookies = new Cookies(null, { path: "/" });
 
   const checkAuthUser = async () => {
     setIsLoading(true);

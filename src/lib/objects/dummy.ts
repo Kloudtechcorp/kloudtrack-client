@@ -1,4 +1,4 @@
-import { testProps } from "../types";
+import { testProps } from "../../types";
 
 export const chartData = [
   { month: "January", desktop: 186, mobile: 80, tablet: 500, Macintosh: 1024 },

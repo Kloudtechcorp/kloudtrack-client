@@ -1,7 +1,7 @@
 import { useTheme } from "@/components/theme-provider";
 import Starfield from "react-starfield";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -11,22 +11,22 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { login } from "@/lib/types/validation";
+import { login } from "@/types/validation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import toast from "react-hot-toast";
-import { useUserContext } from "@/lib/context/authContext";
-import { useEffect, useState } from "react";
+import { useUserContext } from "@/hooks/context/authContext";
 import HashLoader from "react-spinners/PacmanLoader";
 import PuffLoader from "react-spinners/PuffLoader";
-
-const server = import.meta.env.VITE_SERVER_LOCAL;
+import { useSignInAccount } from "@/hooks/react-query/mutations";
+import { useState } from "react";
 
 const Signin = () => {
   const navigate = useNavigate();
   const { theme } = useTheme();
-  const [isLoading, setIsLoading] = useState(false);
   const { isAuthenticated, checkAuthUser } = useUserContext();
+  const [isLoading, setIsLoading] = useState(false);
+  const { mutateAsync: signInAccount } = useSignInAccount();
 
   const form = useForm<z.infer<typeof login>>({
     resolver: zodResolver(login),
@@ -39,34 +39,21 @@ const Signin = () => {
   const onSubmit = async (values: z.infer<typeof login>) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${server}/user/signin`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-        credentials: "include",
-      });
-      const data = await response.json();
+      const session = await signInAccount(values);
 
-      if (!data) {
-        toast("Login failed. Please try again.");
-        return;
+      if (!session) {
+        toast.error("Login failed. Please try again.");
       }
-
       const isLoggedIn = await checkAuthUser();
-      console.log("user logged in? ", isLoggedIn);
+
       if (isLoggedIn) {
         form.reset();
-
         navigate("/");
       } else {
-        toast("Login failed. Please try again.");
-
-        return;
+        toast.error("Login failed. Please try again.");
       }
-    } catch (error) {
-      toast.error("Failed to login");
+    } catch (error: any) {
+      toast.error("Username or password not found");
     } finally {
       setIsLoading(false);
     }

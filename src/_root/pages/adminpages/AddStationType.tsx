@@ -1,9 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { stationTypeSchema } from "@/lib/types/validation";
+import { stationTypeSchema } from "@/types/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import { z } from "zod";
 import {
   Form,
@@ -21,12 +19,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Skeleton } from "@/components/ui/skeleton";
-
-const server = import.meta.env.VITE_SERVER_LOCAL || "http://localhost:8000";
-
+import { useAddStationType } from "@/hooks/react-query/mutations";
+import { useNavigate } from "react-router-dom";
+const defaultValues = {
+  typeName: "AWS",
+};
 const AddStationType = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const { mutateAsync: addStationType, isPending } = useAddStationType();
   const form = useForm<z.infer<typeof stationTypeSchema>>({
     resolver: zodResolver(stationTypeSchema),
     defaultValues: {
@@ -34,30 +34,22 @@ const AddStationType = () => {
     },
   });
 
+  const clearForms = () => {
+    form.reset({
+      typeName: "AWS",
+    });
+  };
+
   // BACKEND SERVER SUBMISSION
   const onSubmit = async (values: z.infer<typeof stationTypeSchema>) => {
-    setIsLoading(true);
-    try {
-      const response = await fetch(`${server}/admin/add-station-type`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-        credentials: "include",
-      });
-      const data = await response.json();
-      if (response.ok) {
-        setIsLoading(false);
-        toast.success("Successfully added stationType!");
-      } else {
-        setIsLoading(false);
-        toast.error(`${data.error}`);
-      }
-    } catch (error) {
-      setIsLoading(false);
-      toast.error("Failed to add station Type");
-    }
+    addStationType(values, {
+      onSuccess: () => {
+        clearForms();
+      },
+      onError: () => {
+        clearForms();
+      },
+    });
   };
 
   return (
@@ -107,7 +99,7 @@ const AddStationType = () => {
           </>
           <div className="w-full flex justify-end">
             <Button type="submit" className={`my-5 dark:bg-blue-200`}>
-              {isLoading ? "Loading..." : "Submit"}
+              {isPending ? "Loading..." : "Submit"}
             </Button>
           </div>
         </form>

@@ -1,5 +1,3 @@
-// src/pages/DataDashboard.tsx
-import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -9,246 +7,217 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent } from "@/components/ui/card";
-import { chartData1, chartData2, chartData3 } from "@/lib/objects/dummy";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import ChartComponent from "@/components/graphs/chartComponent";
-import { WeatherDataProps } from "@/lib/types";
-import { locationArray } from "@/lib/objects/arrays";
-import StationSelect from "@/components/test/stationSelect";
+import DataCards from "@/components/shared/DataCards";
+import { useGetAwsData } from "@/hooks/react-query/queries";
+import { useStationContext } from "@/hooks/context/stationContext";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { formatDateString, returnActive } from "@/lib/utils";
+import VariableGraph from "@/components/dynamic/VariableGraph";
+import { useState } from "react";
+import { stationStaticType } from "@/types";
+import DialogDownload from "@/components/shared/DialogDownload";
+import PuffLoader from "react-spinners/PuffLoader";
+import NotFound from "@/components/shared/NotFound";
 
 const DataDashboard = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
+  const { station } = useParams<string>();
+  const { stationNames } = useStationContext();
+  const [isOpen, setIsOpen] = useState(false);
 
-  const { currentData: initialData } = location.state || {};
-  const [currentData, setCurrentData] = useState<WeatherDataProps | undefined>(
-    initialData
+  const navigate = useNavigate();
+  const {
+    data: stationData,
+    isError,
+    isLoading,
+  } = useGetAwsData(!station ? "" : station);
+
+  if (!station) {
+    return <div>No station found</div>;
+  }
+  const filteredStations = stationNames.find(
+    (stationItem: stationStaticType) => stationItem.stationName === station
   );
 
-  const handleStationChange = (stationName: string) => {
-    const selectedStation = locationArray.find(
-      (station) => station.name === stationName
+  if (isError)
+    return (
+      <div className="w-full flex justify-center items-center h-full">
+        <NotFound />
+      </div>
     );
-    if (selectedStation) {
-      setCurrentData(selectedStation);
-      navigate(`/dashboard/${stationName}`);
-    }
-  };
-
-  const handleStationClick = (station: WeatherDataProps) => {
-    setCurrentData(station);
-    navigate(`/dashboard/${station.name}`, { state: { currentData: station } });
-  };
-
-  const getWindDirectionLabel = (value: number) => {
-    const direction = value === undefined ? 0 : value;
-    if (direction === 0 || direction === 360) {
-      return "N";
-    } else if (direction > 0 && direction < 90) {
-      return "NE";
-    } else if (direction === 90) {
-      return "E";
-    } else if (direction > 90 && direction < 180) {
-      return "SE";
-    } else if (direction === 180) {
-      return "S";
-    } else if (direction > 180 && direction < 270) {
-      return "SW";
-    } else if (direction === 270) {
-      return "W";
-    } else if (direction > 270 && direction < 360) {
-      return "NW";
-    } else {
-      return `${direction}`;
-    }
-  };
-
-  const cardsData = [
-    { title: "Temperature", value: currentData?.temp ?? 0, unit: " °C" },
-    { title: "Heat Index", value: currentData?.heatIndex ?? 0, unit: " °C" },
-    { title: "Humidity", value: currentData?.humidity ?? 0, unit: " %" },
-    { title: "Precipitation", value: currentData?.precip ?? 0, unit: " mm/hr" },
-    { title: "UV Index", value: currentData?.uvIndex ?? 0, unit: "" },
-    { title: "Irradiance", value: currentData?.irradiance ?? 0, unit: " W/m²" },
-    {
-      title: "Air Pressure",
-      value: currentData?.airPressure ?? 0,
-      unit: " mb",
-    },
-    { title: "Gust", value: currentData?.gust ?? 0, unit: " kph" },
-    {
-      title: "10 min Wind Averages",
-      value: currentData?.windSpeed ?? 0,
-      unit: " kph",
-      value2: currentData?.windDirection ?? 0,
-      unit2: " °N",
-    },
-  ];
+  if (isLoading || !stationData || !filteredStations)
+    return (
+      <Card className="cardContainer flex flex-row">
+        <CardContent className="flex flex-row w-full p-0 gap-2">
+          <div className="flex flex-col gap-3 justify-center items-center w-full">
+            <PuffLoader color={"#545454"} size={500} />
+          </div>
+        </CardContent>
+      </Card>
+    );
 
   return (
-    <div className="mainContainer bg-[#F6F8FC] dark:bg-slate-950 overflow-hidden">
-      <div className="container p-2">
+    <div className="w-full bg-[#F6F8FC] dark:bg-secondary rounded-xl p-[1rem] custom-scrollbar overflow-auto">
+      <div className="container p-1 shadow-lg">
         <Card className="cardContainer">
-          <CardContent className="flex flex-col p-0">
-            <div className="w-full flex justify-start flex-row gap-3 ">
+          <CardContent className="flex flex-col p-0 gap-2">
+            <div className="w-full flex justify-start flex-row gap-3">
               <div className="p-1">
                 <img src="/assets/img/logo-v1.png" className="size-14" />
               </div>
-              <div className="flex flex-col py-1">
-                <span className="text-3xl font-bold">
-                  <StationSelect
-                    currentData={currentData}
-                    onValueChange={handleStationChange}
-                  />
-                </span>
-                <span className="text-sm">
-                  {currentData?.coordinates[0]} , {currentData?.coordinates[1]}
+              <div className="flex flex-col justify-center items-start dark:invert">
+                <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                  <DialogTrigger asChild>
+                    <span
+                      className="text-sm xs:text-lg md:text-xl xl:text-3xl font-bold self-start p-0 hover:text-[#fbd008] dark:invert dark:hover:text-blue-500 ease-in-out duration-300 hover:scale-125 cursor-pointer"
+                      onClick={() => setIsOpen(true)}
+                    >
+                      {station}
+                    </span>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[425px] ">
+                    <DialogHeader>
+                      <DialogTitle>Choose station to navigate</DialogTitle>
+                    </DialogHeader>
+                    <div className="flex flex-col gap-2 max-h-72 overflow-y-auto custom-scrollbar">
+                      {stationNames.map((stations, key) => (
+                        <Button
+                          key={key}
+                          className="bg-gray-200 text-gray-900 dark:bg-gray-900 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-800"
+                          onClick={() => {
+                            navigate(`/${stations.stationName}`);
+                            setIsOpen(false);
+                          }}
+                        >
+                          {stations.stationName}
+                        </Button>
+                      ))}
+                    </div>
+                  </DialogContent>
+                </Dialog>
+
+                <span className="text-xs md:text-sm lg:text-base dark:invert">
+                  <span>{`${filteredStations.barangay.barangay}, ${filteredStations.municipality.municipality}, ${filteredStations.province.province}`}</span>
                 </span>
               </div>
             </div>
 
-            <div className="flex lg:flex-row flex-col w-full h-[calc(100vh-14rem)]">
-              <div className="flex flex-col min-w-[46%]">
-                <div className="flex w-full px-2 py-1 justify-between items-center ">
-                  <span className="font-bold text-xl">
-                    Current Weather Conditions
-                  </span>
-                  <Button
-                    variant="link"
-                    className="font-semibold text-sm underline"
-                  >
-                    Download Data
-                  </Button>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <div className="grid grid-cols-3 w-full gap-3 px-2 py-1 justify-center h-full">
-                    {cardsData.map((data, key) => (
-                      <Card key={key} className="h-36">
-                        <CardContent className="px-0 p-0 h-full">
-                          <div className="text-center w-full flex flex-col h-full">
-                            <div className="border w-full bg-yellow-200 dark:bg-slate-800">
-                              <span className="font-bold xl:text-base lg:text-sm md:text-xs flex justify-center px-2 h-8 items-center">
-                                {data.title}
-                              </span>
-                            </div>
-                            {key !== 8 ? (
-                              <div className="text-xl flex h-full items-center justify-center">
-                                <span className="w-full xl:text-3xl lg:text-xl md:text-base sm:text-sm ">
-                                  {data.value ?? 0}
-                                  {data.unit}
-                                </span>
-                              </div>
-                            ) : (
-                              <div className="flex py-5 justify-center items-center overflow-hidden">
-                                <div
-                                  className="compass"
-                                  style={
-                                    {
-                                      "--compass-size": "4rem",
-                                    } as React.CSSProperties
-                                  }
-                                >
-                                  <div className="direction">
-                                    <p>
-                                      {getWindDirectionLabel(data.value2 ?? 0)}
-                                      <span>{data.value ?? 0} kph</span>
-                                    </p>
-                                  </div>
-                                  <div
-                                    className={`arrow ${getWindDirectionLabel(
-                                      data.value2 ?? 0
-                                    )}`}
-                                  ></div>
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
+            <div className="flex lg:flex-row flex-col w-full gap-2">
+              <div className="flex flex-col w-full px-2 gap-2">
+                {!stationData ? (
+                  <p className="font-bold">There is no station data.</p>
+                ) : (
+                  <div className="w-full gap-2 flex flex-col">
+                    <div className=" px-3 text-xs md:text-sm border lg:text-base">
+                      Current Weather as of{" "}
+                      {formatDateString(
+                        stationData.currentweather.recordedAt,
+                        "long"
+                      )}
+                    </div>
+                    <DataCards currentweather={stationData.currentweather} />
                   </div>
+                )}
 
-                  <div className="px-2 overflow-y-auto h-36">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead
-                            className="text-center border px-2 py-1 bg-yellow-200 dark:bg-slate-800 text-lg font-bold   dark:text-white rounded"
-                            colSpan={2}
-                          >
-                            Weather Stations
-                          </TableHead>
+                <div className="p-2 overflow-y-auto custom-scrollbar w-full">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead
+                          className="text-center border px-2 py-1 dark:bg-slate-800 text-lg font-bold dark:text-white rounded"
+                          colSpan={2}
+                        >
+                          Weather Stations
+                        </TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {stationNames.map((station, index) => (
+                        <TableRow
+                          key={index}
+                          className={`hover-row h-7 ${
+                            index % 2 === 0
+                              ? "bg-gray-100 dark:bg-gray-700"
+                              : "bg-white dark:bg-gray-500"
+                          }`}
+                        >
+                          <TableCell className="text-center ">
+                            {station.stationName}
+                          </TableCell>
+                          <TableCell className="text-center ">
+                            {returnActive(station.isActive)}
+                          </TableCell>
                         </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {locationArray.map((station, index) => (
-                          <TableRow
-                            key={station.stationId}
-                            className={`hover-row ${
-                              index % 2 === 0
-                                ? "bg-gray-100 dark:bg-gray-700"
-                                : "bg-white dark:bg-gray-500"
-                            }`}
-                          >
-                            <TableCell>
-                              <Button
-                                variant="link"
-                                onClick={() => handleStationClick(station)}
-                                className="dark:invert "
-                              >
-                                {station.name}
-                              </Button>
-                            </TableCell>
-                            <TableCell className="text-center">
-                              {station.status}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </div>
+                      ))}
+                    </TableBody>
+                  </Table>
                 </div>
               </div>
 
-              <div className="flex flex-col w-full px-6">
-                <div className="flex w-full py-1 justify-between items-center">
-                  <span className="font-bold text-xl">
-                    Current Weather Conditions
-                  </span>
-                  <Button
-                    variant="link"
-                    className="font-semibold text-sm underline"
-                    onClick={() => {
-                      if (currentData) {
-                        navigate(`/dashboard/${currentData.name}/graphs`, {
-                          state: { stationData: currentData },
-                        });
-                      }
-                    }}
-                  >
-                    See more...
-                  </Button>
+              <div className="flex flex-col w-full gap-2">
+                <div className="flex w-full justify-start border px-3">
+                  <span className="w-full font-bold">Weather Data Graphs</span>
+                  <DialogDownload name={filteredStations.stationName} />
                 </div>
-                <div className="h-full">
-                  <ChartComponent
-                    title="Temperature"
-                    data={chartData1}
-                    xKey="name"
-                    lineKeys={["highest", "lowest"]}
-                  />
-                  <ChartComponent
-                    title="Humidity"
-                    data={chartData2}
-                    xKey="name"
-                    lineKeys={["highest", "lowest"]}
-                  />
-                  <ChartComponent
-                    title="Wind Speed"
-                    data={chartData3}
-                    xKey="name"
-                    lineKeys={["highest", "lowest"]}
-                  />
+                <div className="flex flex-col gap-2 overflow-y-auto cursor-pointer">
+                  <div
+                    className="flex flex-col gap-1 border p-1 rounded-lg hover:bg-yellow-100/25 dark:hover:bg-gray-900"
+                    onClick={() =>
+                      navigate(`/${station}/data-analysis`, {
+                        state: { variable: "heatIndex" },
+                      })
+                    }
+                  >
+                    <div className="px-2 font-semibold">Heat Index</div>
+                    <VariableGraph
+                      stationName={station}
+                      weatherData={"heatIndex"}
+                      repeat={"hour"}
+                      range={12}
+                      key={1}
+                    />
+                  </div>
+                  <div
+                    className="flex flex-col gap-1 border p-1 rounded-lg hover:bg-yellow-100/25 dark:hover:bg-gray-900"
+                    onClick={() =>
+                      navigate(`/${station}/data-analysis`, {
+                        state: { variable: "temperature" },
+                      })
+                    }
+                  >
+                    <div className="px-2 font-semibold">Temperature</div>
+                    <VariableGraph
+                      stationName={station}
+                      weatherData={"temperature"}
+                      range={12}
+                      repeat={"hour"}
+                      key={1}
+                    />
+                  </div>
+                  <div
+                    className="flex flex-col gap-1 border p-1 rounded-lg hover:bg-yellow-100/25 dark:hover:bg-gray-900"
+                    onClick={() =>
+                      navigate(`/${station}/data-analysis`, {
+                        state: { variable: "humidity" },
+                      })
+                    }
+                  >
+                    <div className="px-2 font-semibold">Humidity</div>
+                    <VariableGraph
+                      stationName={station}
+                      weatherData={"humidity"}
+                      range={12}
+                      key={1}
+                      repeat={"hour"}
+                    />
+                  </div>
                 </div>
               </div>
             </div>

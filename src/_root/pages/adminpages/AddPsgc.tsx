@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import toast from "react-hot-toast";
 import { useState } from "react";
-import { psgcValidation } from "@/lib/types/validation";
+import { psgcValidation } from "@/types/validation";
 import {
   Select,
   SelectContent,
@@ -23,61 +23,45 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { barangays, municipalities, provinces, regions } from "@/lib/psgc";
-import { Barangay } from "@/lib/types";
-const server = import.meta.env.VITE_SERVER_LOCAL || "http://localhost:8000";
+import { useAddPsgc } from "@/hooks/react-query/mutations";
+
+const defaultValues = {
+  psgc: "",
+  region: "",
+  province: "",
+  municipality: "",
+  barangay: "",
+};
 
 const AddPsgc = () => {
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
   const [region, setRegion] = useState<string>("");
   const [province, setProvince] = useState<string>("");
   const [municipality, setMunicipality] = useState<string>("");
-  const [barangay, setBarangay] = useState<string>("");
   const [psgc, setPsgc] = useState<string>("");
+  const { mutateAsync: addPsgc, isPending } = useAddPsgc();
 
   const form = useForm<z.infer<typeof psgcValidation>>({
     resolver: zodResolver(psgcValidation),
-    defaultValues: {
-      psgc: "",
-      region: "",
-      province: "",
-      municipality: "",
-      barangay: "",
-    },
+    defaultValues,
   });
 
-  // BACKEND SERVER SUBMISSION
+  const clearForms = () => {
+    form.reset(defaultValues);
+  };
+
   const onSubmit = async (values: z.infer<typeof psgcValidation>) => {
-    setIsLoading(true);
     const updatedValues = { ...values, psgc: psgc };
-    console.log(updatedValues);
-    try {
-      const response = await fetch(`${server}/admin/add-psgc`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedValues),
-        credentials: "include",
-      });
-      const data = await response.json();
-      if (response.ok) {
-        setIsLoading(false);
-        toast.success("Successfully added PSGC!");
-      } else {
-        setIsLoading(false);
-        toast.error(`${data.error}`);
-      }
-    } catch (error) {
-      setIsLoading(false);
-      toast.error("Failed to add PSGC");
-    }
+    addPsgc(updatedValues, {
+      onError: () => {
+        clearForms();
+      },
+    });
   };
 
   return (
     <Form {...form}>
       <div className="px-5 w-full">
-        {isLoading && <div className="w-full "></div>}
+        {isPending && <div className="w-full "></div>}
         <span className="flex py-5 font-bold text-lg">
           Add information for Philippine Standard Geographic Code (PSGC)
         </span>
@@ -94,7 +78,6 @@ const AddPsgc = () => {
                       setRegion(value);
                       setProvince("");
                       setMunicipality("");
-                      setBarangay("");
                       field.onChange(value);
                     }}
                     defaultValue={field.value}
@@ -126,7 +109,6 @@ const AddPsgc = () => {
                     onValueChange={(value) => {
                       setProvince(value);
                       setMunicipality("");
-                      setBarangay("");
                       field.onChange(value);
                     }}
                     defaultValue={field.value}
@@ -158,7 +140,6 @@ const AddPsgc = () => {
                   <Select
                     onValueChange={(value) => {
                       setMunicipality(value);
-                      setBarangay("");
                       field.onChange(value);
                     }}
                     defaultValue={field.value}
@@ -191,7 +172,6 @@ const AddPsgc = () => {
                   <FormLabel>Barangay</FormLabel>
                   <Select
                     onValueChange={(value) => {
-                      setBarangay(value);
                       field.onChange(value);
                       setPsgc(barangays.find(value));
                     }}
@@ -237,7 +217,7 @@ const AddPsgc = () => {
           </>
           <div className="w-full flex justify-end">
             <Button type="submit" className={`my-5 dark:bg-white`}>
-              {isLoading ? "Loading..." : "Submit"}
+              {isPending ? "Loading..." : "Submit"}
             </Button>
           </div>
         </form>

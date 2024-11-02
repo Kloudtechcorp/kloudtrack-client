@@ -1,4 +1,3 @@
-import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -12,60 +11,82 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import toast from "react-hot-toast";
+import { passwordSchema, userValidation } from "@/types/validation";
+import {
+  useHandleLogout,
+  useUpdateUserPassword,
+} from "@/hooks/react-query/mutations";
 import { useState } from "react";
-import { passwordSchema, userValidation } from "@/lib/types/validation";
-import { useUserContext } from "@/lib/context/authContext";
-const server = import.meta.env.VITE_SERVER_LOCAL || "http://localhost:8000";
+import { handleLogout } from "@/api/post";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { INITIAL_USER, useUserContext } from "@/hooks/context/authContext";
+
+const defaultValues = {
+  currentPassword: "",
+  password: "",
+  confirmPassword: "",
+};
 
 const ChangePassword = () => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  const { user } = useUserContext();
+  const { mutateAsync: updateUserPassword, isPending } =
+    useUpdateUserPassword();
+  const { mutate: handleLogout } = useHandleLogout();
+  const { setUser, user, setIsAuthenticated } = useUserContext();
+
   const form = useForm<z.infer<typeof passwordSchema>>({
     resolver: zodResolver(passwordSchema),
-    defaultValues: {
-      currentPassword: "",
-      password: "",
-      confirmPassword: "",
-    },
+    defaultValues,
   });
 
   const clearForms = () => {
-    form.setValue("password", "");
-    form.setValue("currentPassword", "");
-    form.setValue("confirmPassword", "");
+    form.reset(defaultValues);
+    setPasswordCriteria({
+      length: false,
+      uppercase: false,
+      lowercase: false,
+      digit: false,
+      specialChar: false,
+    });
   };
 
-  // BACKEND SERVER SUBMISSION
   const onSubmit = async (values: z.infer<typeof passwordSchema>) => {
-    setIsLoading(true);
-
-    try {
-      const response = await fetch(`${server}/user/update-password`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-        credentials: "include",
-      });
-      const data = await response.json();
-      if (response.ok) {
-        setIsLoading(false);
-        toast.success(data.message);
+    updateUserPassword(values, {
+      onSuccess: () => {
         clearForms();
-      } else {
-        setIsLoading(false);
-        toast.error(`${data.error}`);
+        handleLogout();
+        toast.success("Please login again!");
+        setIsAuthenticated(false);
+        setUser(INITIAL_USER);
+        navigate("/signin");
+      },
+      onError: () => {
         clearForms();
-      }
-    } catch (error) {
-      setIsLoading(false);
-      toast.error(String(error));
-      clearForms();
-    }
+      },
+    });
   };
+
+  const [passwordCriteria, setPasswordCriteria] = useState({
+    length: false,
+    uppercase: false,
+    lowercase: false,
+    digit: false,
+    specialChar: false,
+  });
+
+  const checkPasswordStrength = (password: string) => {
+    const criteria = {
+      length: password.length >= 8,
+      uppercase: /[A-Z]/.test(password),
+      lowercase: /[a-z]/.test(password),
+      digit: /[0-9]/.test(password),
+      specialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+    };
+    setPasswordCriteria(criteria);
+  };
+
+  const isPasswordValid = Object.values(passwordCriteria).every(Boolean);
 
   return (
     <Form {...form}>
@@ -84,7 +105,7 @@ const ChangePassword = () => {
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder="Enter your desired password."
+                      placeholder="Enter your current password."
                       {...field}
                     />
                   </FormControl>
@@ -104,8 +125,13 @@ const ChangePassword = () => {
                       {...field}
                       type="password"
                       placeholder="Enter new password"
+                      onChange={(e) => {
+                        field.onChange(e);
+                        checkPasswordStrength(e.target.value); // Check password as the user types
+                      }}
                     />
                   </FormControl>
+
                   <FormMessage className="shad-form_message" />
                 </FormItem>
               )}
@@ -128,9 +154,64 @@ const ChangePassword = () => {
                 </FormItem>
               )}
             />
-            <div className="w-full h-full flex justify-end">
-              <Button type="submit" className={`my-5 dark:bg-blue-200`}>
-                {isLoading ? "Loading..." : "Submit"}
+
+            <div className="mt-2 text-sm">
+              <ul>
+                <li
+                  className={
+                    passwordCriteria.length ? "text-green-500" : "text-red-500"
+                  }
+                >
+                  {passwordCriteria.length ? "✔" : "✘"} Must be a minimum of 8
+                  characters.
+                </li>
+                <li
+                  className={
+                    passwordCriteria.uppercase
+                      ? "text-green-500"
+                      : "text-red-500"
+                  }
+                >
+                  {passwordCriteria.uppercase ? "✔" : "✘"} Must contain at least
+                  one uppercase letter.
+                </li>
+                <li
+                  className={
+                    passwordCriteria.lowercase
+                      ? "text-green-500"
+                      : "text-red-500"
+                  }
+                >
+                  {passwordCriteria.lowercase ? "✔" : "✘"} Must contain at least
+                  one lowercase letter.
+                </li>
+                <li
+                  className={
+                    passwordCriteria.digit ? "text-green-500" : "text-red-500"
+                  }
+                >
+                  {passwordCriteria.digit ? "✔" : "✘"} Must contain at least one
+                  digit.
+                </li>
+                <li
+                  className={
+                    passwordCriteria.specialChar
+                      ? "text-green-500"
+                      : "text-red-500"
+                  }
+                >
+                  {passwordCriteria.specialChar ? "✔" : "✘"} Must contain at
+                  least one special character.
+                </li>
+              </ul>
+            </div>
+            <div className="w-full flex justify-end">
+              <Button
+                type="submit"
+                className={`my-5 dark:bg-blue-200`}
+                disabled={!isPasswordValid}
+              >
+                {isPending ? "Loading..." : "Submit"}
               </Button>
             </div>
           </div>

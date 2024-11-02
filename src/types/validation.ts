@@ -55,3 +55,11 @@ export const passwordSchema = z
     message: "Passwords don't match",
     path: ["confirmPassword"],
   });
+
+export const downloadSchema = z.object({
+  // date: z.object({
+  //   from: z.string({ required_error: "from is required" }),
+  //   to: z.string({ required_error: "to is required" }),
+  // }),
+  type: z.string({ required_error: "type is required" }),
+});

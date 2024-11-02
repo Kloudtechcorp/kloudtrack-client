@@ -3,8 +3,8 @@
 import React from "react";
 import ReusableLineChart from "./reusableLineChart";
 
-import { useStationData } from "@/lib/context/stationContext";
-import { useUserContext } from "@/lib/context/userContext";
+import { useStationData } from "@/hooks/context/stationContext";
+import { useUserContext } from "@/hooks/context/userContext";
 
 const VariableLineChart = () => {
   const { stationData } = useStationData();

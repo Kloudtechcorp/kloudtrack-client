@@ -21,6 +21,7 @@ export type WeatherDataProps = {
   heatIndex: number;
   humidity: number;
   precipitation: number;
+  gust: number;
   airPressure: number;
   windSpeed: number;
   windDirection: number;
@@ -173,6 +174,7 @@ export type stationsListType = {
 };
 
 export type stationDashboardType = {
+  heatIndex: string | undefined;
   imageLink: string;
   stationName: string;
   latitude: string;
@@ -205,6 +207,7 @@ export type stationDashboardType = {
     windSpeed: number;
     precipitation: number;
     gust: number;
+    batteryVoltage: number;
   }[];
 };
 

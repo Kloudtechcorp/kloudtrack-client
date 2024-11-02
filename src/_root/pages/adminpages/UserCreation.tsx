@@ -1,4 +1,3 @@
-import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -12,62 +11,70 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import toast from "react-hot-toast";
+import { userValidation } from "@/types/validation";
+import { useCreateUser } from "@/hooks/react-query/mutations";
 import { useState } from "react";
-import { userValidation } from "@/lib/types/validation";
-const server = import.meta.env.VITE_SERVER_LOCAL || "http://localhost:8000";
+
+const defaultValues = {
+  username: "",
+  role: "USER",
+  password: "",
+};
 
 const UserCreation = () => {
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
+  const { mutate: createUser, isPending } = useCreateUser();
   const form = useForm<z.infer<typeof userValidation>>({
     resolver: zodResolver(userValidation),
-    defaultValues: {
-      username: "",
-      role: "USER",
-      password: "",
-    },
+    defaultValues,
   });
 
   const clearForms = () => {
-    form.setValue("username", "");
-    form.setValue("password", "");
-    form.setValue("role", "USER");
+    form.reset(defaultValues);
+    setPasswordCriteria({
+      length: false,
+      uppercase: false,
+      lowercase: false,
+      digit: false,
+      specialChar: false,
+    });
   };
 
-  // BACKEND SERVER SUBMISSION
-  const onSubmit = async (values: z.infer<typeof userValidation>) => {
-    setIsLoading(true);
-    try {
-      const response = await fetch(`${server}/admin/signup`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-        credentials: "include",
-      });
-      const data = await response.json();
-      if (response.ok) {
-        setIsLoading(false);
-        toast.success("Successfully created user!");
+  const onSubmit = (values: z.infer<typeof userValidation>) => {
+    createUser(values, {
+      onSuccess: () => {
         clearForms();
-      } else {
-        setIsLoading(false);
-        toast.error(`${data.error}`);
+      },
+      onError: () => {
         clearForms();
-      }
-    } catch (error) {
-      setIsLoading(false);
-      toast.error("Failed to create a user");
-      clearForms();
-    }
+      },
+    });
   };
+
+  const [passwordCriteria, setPasswordCriteria] = useState({
+    length: false,
+    uppercase: false,
+    lowercase: false,
+    digit: false,
+    specialChar: false,
+  });
+
+  const checkPasswordStrength = (password: string) => {
+    const criteria = {
+      length: password.length >= 8,
+      uppercase: /[A-Z]/.test(password),
+      lowercase: /[a-z]/.test(password),
+      digit: /[0-9]/.test(password),
+      specialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+    };
+    setPasswordCriteria(criteria);
+  };
+
+  const isPasswordValid = Object.values(passwordCriteria).every(Boolean);
 
   return (
     <Form {...form}>
       <div className="px-5 w-full">
-        {isLoading && <div className="w-full "></div>}
+        {isPending && <div className="w-full "></div>}
         <span className="flex py-5 font-bold text-lg">
           Add information for new user
         </span>
@@ -112,16 +119,80 @@ const UserCreation = () => {
                       type="password"
                       placeholder="Enter your desired password."
                       {...field}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        checkPasswordStrength(e.target.value); // Check password as the user types
+                      }}
                     />
                   </FormControl>
-                  <FormMessage className="shad-form_message" />
+                  {/* <FormMessage className="shad-form_message" /> */}
+
+                  {/* Password Checklist */}
+                  <div className="mt-2 text-sm">
+                    <ul>
+                      <li
+                        className={
+                          passwordCriteria.length
+                            ? "text-green-500"
+                            : "text-red-500"
+                        }
+                      >
+                        {passwordCriteria.length ? "✔" : "✘"} Must be a minimum
+                        of 8 characters.
+                      </li>
+                      <li
+                        className={
+                          passwordCriteria.uppercase
+                            ? "text-green-500"
+                            : "text-red-500"
+                        }
+                      >
+                        {passwordCriteria.uppercase ? "✔" : "✘"} Must contain at
+                        least one uppercase letter.
+                      </li>
+                      <li
+                        className={
+                          passwordCriteria.lowercase
+                            ? "text-green-500"
+                            : "text-red-500"
+                        }
+                      >
+                        {passwordCriteria.lowercase ? "✔" : "✘"} Must contain at
+                        least one lowercase letter.
+                      </li>
+                      <li
+                        className={
+                          passwordCriteria.digit
+                            ? "text-green-500"
+                            : "text-red-500"
+                        }
+                      >
+                        {passwordCriteria.digit ? "✔" : "✘"} Must contain at
+                        least one digit.
+                      </li>
+                      <li
+                        className={
+                          passwordCriteria.specialChar
+                            ? "text-green-500"
+                            : "text-red-500"
+                        }
+                      >
+                        {passwordCriteria.specialChar ? "✔" : "✘"} Must contain
+                        at least one special character.
+                      </li>
+                    </ul>
+                  </div>
                 </FormItem>
               )}
             />
           </>
           <div className="w-full flex justify-end">
-            <Button type="submit" className={`my-5 dark:bg-blue-200`}>
-              {isLoading ? "Loading..." : "Submit"}
+            <Button
+              type="submit"
+              className={`my-5 dark:bg-blue-200`}
+              disabled={!isPasswordValid}
+            >
+              {isPending ? "Loading..." : "Submit"}
             </Button>
           </div>
         </form>

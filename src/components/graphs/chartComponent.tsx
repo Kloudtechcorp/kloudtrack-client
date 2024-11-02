@@ -46,7 +46,7 @@ const ChartComponent = ({
 }: ChartComponentProps) => {
   return (
     <Card className="mb-3 h-[29%]">
-      <div className="text-center  px-2 py-0.5 border bg-yellow-200 text-lg font-bold dark:bg-slate-800 dark:text-white">
+      <div className="text-center  px-2 py-0.5 border bg-[#FBD008] text-lg font-bold dark:bg-slate-800 dark:text-white">
         {title}
       </div>
       <ChartContainer

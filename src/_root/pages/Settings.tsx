@@ -1,12 +1,10 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ChangePassword from "./settingPages/ChangePassword";
 import Profile from "./settingPages/Profile";
 
 const Settings = () => {
   return (
-    <div className="flex w-full h-full dark:bg-slate-950 bg-[#F6F8FC]">
+    <div className="flex w-full h-full dark:bg-slate-950 bg-[#F6F8FC] p-2">
       <Tabs
         defaultValue="profile"
         className="w-full flex lg:flex-row flex-col p-3 rounded-2xl gap-5 justify-center container"

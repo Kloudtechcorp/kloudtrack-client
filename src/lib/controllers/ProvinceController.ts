@@ -7,7 +7,7 @@ import {
   MappedProvince,
   Region,
   MappedRegion,
-} from "../types/index";
+} from "../../types/index";
 
 const findProvinceMunicipalities = (
   provinceName: string

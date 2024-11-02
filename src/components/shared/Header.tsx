@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { useTheme } from "../theme-provider";
-import { HeaderProps } from "@/lib/types";
-import { useUserContext } from "@/lib/context/authContext";
+import { HeaderProps } from "@/types";
+import { useUserContext } from "@/hooks/context/authContext";
 import { Skeleton } from "../ui/skeleton";
 
 const Header = ({ burgerMenu }: HeaderProps) => {
@@ -38,7 +38,7 @@ const Header = ({ burgerMenu }: HeaderProps) => {
         <div className="w-full bg-white dark:bg-[#181819] px-2 h-20 flex text-center">
           <div className="flex px-[1.25rem] gap-2">
             <img
-              src="assets/icons/burger.svg"
+              src="/assets/icons/burger.svg"
               width={30}
               onClick={handleClick}
               className="dark:invert hidden md:block"
@@ -46,17 +46,17 @@ const Header = ({ burgerMenu }: HeaderProps) => {
           </div>
 
           <div className="items-center flex w-full flex-row justify-center">
-            <Link to="/home" className="flex gap-3 justify-start p-3">
+            {/* <Link to="/home" className="flex gap-3 justify-start p-3">
               <img
                 src={
                   theme === "dark"
-                    ? "assets/img/logo-v2.png"
-                    : "assets/img/logo-v1.png"
+                    ? "/assets/img/logo-v2.png"
+                    : "/assets/img/logo-v1.png"
                 }
                 alt="logo"
                 className="size-12"
               />
-            </Link>
+            </Link> */}
             <div className="flex flex-col text-center">
               <span className="text-3xl font-bold capitalize">
                 {user.username}

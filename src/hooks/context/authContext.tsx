@@ -1,12 +1,11 @@
 import { useNavigate } from "react-router-dom";
+import { createContext, useContext, useEffect, useState } from "react";
+import { UserType } from "../../types";
+import { getIsAuthenticated, getUserSession } from "@/api/get";
 import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-import { UserType } from "../types";
+  useGetIsAuthenticated,
+  useGetUserSession,
+} from "../react-query/queries";
 
 export const INITIAL_USER = {
   id: 0,
@@ -33,7 +32,6 @@ type IContextType = {
 };
 
 const AuthContext = createContext<IContextType>(INITIAL_STATE);
-const server = import.meta.env.VITE_SERVER_LOCAL;
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
@@ -44,17 +42,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const checkAuthUser = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${server}/user/session`, {
-        credentials: "include",
-      });
-      const currentAccount = await response.json();
-      console.log(currentAccount);
-      if (currentAccount.token) {
-        console.log(currentAccount.token);
+      const currentAccount = await getUserSession();
+      if (currentAccount) {
         setUser({
-          id: currentAccount.token.id,
-          username: currentAccount.token.username,
-          role: currentAccount.token.role,
+          id: currentAccount.id,
+          username: currentAccount.username,
+          role: currentAccount.role,
         });
         setIsAuthenticated(true);
         return true;
@@ -69,22 +62,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    const isUserAuthenticated = async () => {
-      setIsLoading(true);
+    const checkIsLoggedIn = async () => {
       try {
-        const response = await fetch(`${server}/user/is-auth`, {
-          credentials: "include",
-        });
-        const currentAccount = await response.json();
-        if (currentAccount) {
+        const data = await getIsAuthenticated();
+        if (data) {
           return;
         }
         navigate("/signin");
       } catch (error) {
-        console.log(error);
+        navigate("/signin");
       }
     };
-    isUserAuthenticated();
+    checkIsLoggedIn();
     checkAuthUser();
   }, []);
 

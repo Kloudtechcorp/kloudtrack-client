@@ -17,8 +17,6 @@ const AwsDataCard = ({ stationId }: AwsDataCardProps) => {
   const { data: stationData, isError, isLoading } = useGetAwsData2(stationId);
   console.log("past hour precip2 is" + stationData?.pastHourPrecip);
 
-  // console.log("stationData:", stationData);
-
   console.log("Aws card data is " + stationData);
   if (isError || !stationData?.data)
     return (
@@ -48,7 +46,11 @@ const AwsDataCard = ({ stationId }: AwsDataCardProps) => {
               Current Weather as of{" "}
               {formatDateString(stationData.data.recordedAt, "long")}
             </div>
-            <DataCards currentweather={stationData.data} />
+            <DataCards
+              currentweather={stationData.data}
+              pastHourPrecip={stationData.pastHourPrecip}
+              stationName={stationData.station.name}
+            />
           </div>
         )}
       </div>

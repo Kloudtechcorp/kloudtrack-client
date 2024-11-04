@@ -7,61 +7,60 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-export function HeatIndex({
-  heatIndexval,
+export function UVIndex({
+  uvIndexVal,
   stationName,
 }: {
-  heatIndexval: number;
+  uvIndexVal: number;
   stationName: string;
 }) {
-  const roundedHeatIndex = Math.round((heatIndexval + 40) * 100) / 100;
-
   const [colorClass, setColorClass] = useState("");
   const [warning, setWarning] = useState("");
   const hasShownToastRef = useRef(false);
 
   const determineWarning = useCallback(() => {
-    if (roundedHeatIndex < 27) {
-      setColorClass("bg-green-500");
-      setWarning("Caution: Stay hydrated!");
+    if (uvIndexVal < 3) {
+      setWarning("Low danger from the sun's UV rays for the average person.");
       hasShownToastRef.current = false;
-    } else if (roundedHeatIndex >= 27 && roundedHeatIndex <= 32) {
-      setColorClass("bg-green-500");
-      setWarning("Caution: Stay hydrated");
+    } else if (uvIndexVal >= 3 && uvIndexVal <= 5) {
+      setColorClass("bg-[#fbfc04]");
+      setWarning("Moderate risk of harm from unprotected sun exposure.");
       hasShownToastRef.current = false;
-    } else if (roundedHeatIndex > 32 && roundedHeatIndex <= 41) {
-      setColorClass("bg-[#ffff01]");
-      setWarning("Extreme Caution: Avoid prolonged exertion!");
-      hasShownToastRef.current = false;
-    } else if (roundedHeatIndex > 41 && roundedHeatIndex <= 54) {
-      setColorClass("bg-[#f79647] text-white");
+    } else if (uvIndexVal >= 6 && uvIndexVal <= 7) {
+      setColorClass("bg-[#fa6801]");
       setWarning(
-        `Danger: High risk of heat-related illnesses in ${stationName}!`
+        "High risk of harm from unprotected sun exposure. Protection against skin and eye damage is needed!"
+      );
+      hasShownToastRef.current = false;
+    } else if (uvIndexVal >= 8 && uvIndexVal <= 10) {
+      setColorClass("bg-[#fe0000] text-white");
+      setWarning(
+        `Very high risk of harm from unprotected sun exposure. Take extra precautions because unprotected skin and eyes will be damaged and can burn quickly at ${stationName}!`
       );
       if (!hasShownToastRef.current) {
         triggerWarningToast(
-          `Danger: High risk of heat-related illnesses in ${stationName}!`
+          `Very high risk of harm from unprotected sun exposure. Take extra precautions because unprotected skin and eyes will be damaged and can burn quickly at ${stationName}!`
         );
         hasShownToastRef.current = true;
       }
-    } else if (roundedHeatIndex > 54) {
-      setColorClass("bg-[#ff3300] text-white");
+    } else if (uvIndexVal > 10) {
+      setColorClass("bg-[#83007e] text-white");
       setWarning("Extreme Danger: Heatstroke is imminent!");
       if (!hasShownToastRef.current) {
         triggerWarningToast(
-          `Extreme Danger: Heatstroke is imminent at ${stationName}!`
+          `Extreme risk of harm from unprotected sun exposure. Take all precautions because unprotected skin and eyes can burn in minutes at ${stationName}!`
         );
         hasShownToastRef.current = true;
       }
     }
-  }, [roundedHeatIndex, stationName]);
+  }, [uvIndexVal, stationName]);
 
   const triggerWarningToast = (message: string) => {
     toast(message, {
       description: "Please take the necessary precautions.",
       action: {
         label: "Close",
-        onClick: () => console.log("Acknowledge clicked"),
+        onClick: () => console.log("Sonner closed"),
       },
     });
   };
@@ -74,7 +73,7 @@ export function HeatIndex({
     <div className="text-center w-full flex flex-col h-full">
       <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
         <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-          Heat Index
+          UV Index
         </span>
       </div>
 
@@ -86,7 +85,7 @@ export function HeatIndex({
             <TooltipTrigger asChild>
               <div className="flex items-center">
                 <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
-                  {roundedHeatIndex} C&deg;
+                  {Math.round(uvIndexVal * 100) / 100}
                 </span>
                 {warning && (
                   <span className="ml-2">

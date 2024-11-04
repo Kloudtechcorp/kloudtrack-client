@@ -2,6 +2,8 @@ import { stationCurrentWeatherType } from "@/types/queryTypes";
 import { Card, CardContent } from "../ui/card";
 import { getWindDirectionLabel } from "@/lib/utils";
 import { HeatIndex } from "../../lib/dataCardUtils/heatIndexUtils";
+import { UVIndex } from "@/lib/dataCardUtils/uvIndexUtils";
+import { Precipitation } from "@/lib/dataCardUtils/rainUtils";
 
 type DataCardsProps = {
   currentweather: stationCurrentWeatherType;
@@ -14,7 +16,6 @@ const DataCards = ({
   pastHourPrecip,
   stationName,
 }: DataCardsProps) => {
-  console.log("data card precip is ", pastHourPrecip);
   return (
     <div className="grid grid-cols-3 w-full h-full gap-3 justify-center">
       <Card className="w-full h-full aspect-[10/9]">
@@ -107,18 +108,10 @@ const DataCards = ({
       </Card>
       <Card className="w-full h-full aspect-[10/9]">
         <CardContent className="px-0 p-0 h-full">
-          <div className="text-center w-full flex flex-col h-full">
-            <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-              <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-                UV Index
-              </span>
-            </div>
-            <div className="text-xl flex h-full items-center justify-center">
-              <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
-                {Math.round(currentweather.uvIndex * 100) / 100}
-              </span>
-            </div>
-          </div>
+          <UVIndex
+            uvIndexVal={currentweather.uvIndex}
+            stationName={stationName}
+          />
         </CardContent>
       </Card>
       <Card className="w-full h-full aspect-[10/9]">
@@ -139,21 +132,11 @@ const DataCards = ({
       </Card>
       <Card className="w-full h-full aspect-[10/9]">
         <CardContent className="px-0 p-0 h-full">
-          <div className="text-center w-full flex flex-col h-full">
-            <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-              <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-                Precipitation
-              </span>
-            </div>
-            <div className="text-xl flex h-full items-center justify-center">
-              <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
-                {Math.round(currentweather.precipitation * 100) / 100} mm
-              </span>
-              <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
-                {Math.round(pastHourPrecip * 100) / 100} mm/hr
-              </span>
-            </div>
-          </div>
+          <Precipitation
+            precipitation={currentweather.precipitation}
+            pastHourPrecip={pastHourPrecip}
+            stationName={stationName}
+          />
         </CardContent>
       </Card>
     </div>

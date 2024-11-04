@@ -1,19 +1,31 @@
 import { stationCurrentWeatherType } from "@/types/queryTypes";
 import { Card, CardContent } from "../ui/card";
 import { getWindDirectionLabel } from "@/lib/utils";
-import { HeatIndex } from "../../lib/heatIndexUtils";
+import { HeatIndex } from "../../lib/dataCardUtils/heatIndexUtils";
+import { UVIndex } from "@/lib/dataCardUtils/uvIndexUtils";
+import { Precipitation } from "@/lib/dataCardUtils/rainUtils";
 
 type DataCardsProps = {
   type: "DASHBOARD" | "DATADASHBOARD";
   currentweather: stationCurrentWeatherType;
+  pastHourPrecip: number;
+  stationName: string;
 };
-const DataCards = ({ currentweather, type }: DataCardsProps) => {
+const DataCards = ({
+  currentweather,
+  type,
+  stationName,
+  pastHourPrecip,
+}: DataCardsProps) => {
   if (type === "DATADASHBOARD") {
     return (
       <div className="flex flex-col gap-2">
         <Card className="w-full h-[10.5rem]">
           <CardContent className="px-0 p-0 h-full">
-            <HeatIndex heatIndexval={currentweather.heatIndex} />
+            <HeatIndex
+              heatIndexval={currentweather.heatIndex}
+              stationName={stationName}
+            />
           </CardContent>
         </Card>
         <div className={`grid grid-cols-2 w-full h-full gap-3 justify-center`}>
@@ -153,7 +165,10 @@ const DataCards = ({ currentweather, type }: DataCardsProps) => {
     <div className={`grid grid-cols-3 w-full h-full gap-3 justify-center`}>
       <Card className="w-full h-full aspect-[10/9]">
         <CardContent className="px-0 p-0 h-full">
-          <HeatIndex heatIndexval={currentweather.heatIndex} />
+          <HeatIndex
+            heatIndexval={currentweather.heatIndex}
+            stationName={stationName}
+          />
         </CardContent>
       </Card>
       <Card className="w-full h-full aspect-[10/9]">
@@ -238,18 +253,10 @@ const DataCards = ({ currentweather, type }: DataCardsProps) => {
       </Card>
       <Card className="w-full h-full aspect-[10/9]">
         <CardContent className="px-0 p-0 h-full">
-          <div className="text-center w-full flex flex-col h-full">
-            <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-              <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-                UV Index
-              </span>
-            </div>
-            <div className="text-xl flex h-full items-center justify-center">
-              <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
-                {Math.round(currentweather.uvIndex * 100) / 100}
-              </span>
-            </div>
-          </div>
+          <UVIndex
+            uvIndexVal={currentweather.uvIndex}
+            stationName={stationName}
+          />
         </CardContent>
       </Card>
       <Card className="w-full h-full aspect-[10/9]">
@@ -270,18 +277,11 @@ const DataCards = ({ currentweather, type }: DataCardsProps) => {
       </Card>
       <Card className="w-full h-full aspect-[10/9]">
         <CardContent className="px-0 p-0 h-full">
-          <div className="text-center w-full flex flex-col h-full">
-            <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-              <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-                Precipitation
-              </span>
-            </div>
-            <div className="text-xl flex h-full items-center justify-center">
-              <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
-                {Math.round(currentweather.precipitation * 100) / 100} mm
-              </span>
-            </div>
-          </div>
+          <Precipitation
+            precipitation={currentweather.precipitation}
+            pastHourPrecip={pastHourPrecip}
+            stationName={stationName}
+          />
         </CardContent>
       </Card>
     </div>

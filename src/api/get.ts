@@ -11,6 +11,7 @@ import {
   stationComputedTypes,
   hourlyDataTypes,
   awsDashboardType,
+  awsDashboardType2,
   argDashboardType,
   rlmsDashboardType,
   clmsDashboardType,
@@ -30,6 +31,19 @@ export const getAwsData = async (id: number): Promise<awsDashboardType> => {
     throw new Error("Error fetching station data");
   }
   const data = await response.json();
+  return data;
+};
+
+export const getAwsData2 = async (id: number): Promise<awsDashboardType2> => {
+  const response = await fetch(`${server}/weather/v2/station/${id}`, {
+    method,
+    credentials: "include",
+  });
+  if (!response.ok) {
+    throw new Error("Error fetching station data");
+  }
+  const data = await response.json();
+  console.log("data in context is " + data.pastHourPrecip);
   return data;
 };
 

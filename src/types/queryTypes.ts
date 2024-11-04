@@ -82,6 +82,21 @@ export type awsDashboardType = {
   data: stationCurrentWeatherType;
 };
 
+export type awsDashboardType2 = {
+  station: {
+    name: string;
+    type: string;
+    latitude: string;
+    longitude: string;
+    barangay: string;
+    municipality: string;
+    province: string;
+    image: string;
+  };
+  data: stationCurrentWeatherType;
+  pastHourPrecip: number;
+};
+
 export type argDashboardType = {
   station: {
     name: string;
@@ -138,6 +153,7 @@ export type stationCurrentWeatherType = {
   precipitation: number;
   gust: number;
   batteryVoltage: number;
+  pastHourPrecip: number;
 };
 
 export type stationCurrentRainType = {

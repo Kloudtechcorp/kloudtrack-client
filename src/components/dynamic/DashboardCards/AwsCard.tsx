@@ -183,6 +183,7 @@ const AwsCard: React.FC<{ id: number }> = ({ id }) => {
               <DataCards
                 currentweather={stationData.data}
                 pastHourPrecip={stationData.pastHourPrecip}
+                stationName={stationData.station.name}
               />
             </div>
           </div>

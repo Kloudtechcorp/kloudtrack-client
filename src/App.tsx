@@ -8,6 +8,7 @@ import Settings from "./_root/pages/Settings";
 import Variable from "./_root/pages/Variable";
 import DataDashboard from "./_root/pages/DataDashboard";
 import { Toaster } from "react-hot-toast";
+import { SonnerToaster } from "@/components/ui/sonner";
 import AdminSettings from "./_root/pages/AdminSettings";
 import VariableDashboard from "./_root/pages/VariableDashboard";
 
@@ -32,6 +33,7 @@ function App() {
           </Route>
         </Routes>
         <Toaster position="top-center" reverseOrder={false} />
+        <SonnerToaster />
       </main>
     </>
   );

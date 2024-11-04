@@ -1,20 +1,28 @@
 import { stationCurrentWeatherType } from "@/types/queryTypes";
 import { Card, CardContent } from "../ui/card";
 import { getWindDirectionLabel } from "@/lib/utils";
-import { HeatIndex } from "../../lib/heatIndexUtils";
+import { HeatIndex } from "../../lib/dataCardUtils/heatIndexUtils";
 
 type DataCardsProps = {
   currentweather: stationCurrentWeatherType;
   pastHourPrecip: number;
+  stationName: string;
 };
 
-const DataCards = ({ currentweather, pastHourPrecip }: DataCardsProps) => {
+const DataCards = ({
+  currentweather,
+  pastHourPrecip,
+  stationName,
+}: DataCardsProps) => {
   console.log("data card precip is ", pastHourPrecip);
   return (
     <div className="grid grid-cols-3 w-full h-full gap-3 justify-center">
       <Card className="w-full h-full aspect-[10/9]">
         <CardContent className="px-0 p-0 h-full">
-          <HeatIndex heatIndexval={currentweather.heatIndex} />
+          <HeatIndex
+            heatIndexval={currentweather.heatIndex}
+            stationName={stationName}
+          />
         </CardContent>
       </Card>
       <Card className="w-full h-full aspect-[10/9]">

@@ -1,4 +1,5 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+"use client";
+import { useMutation } from "@tanstack/react-query";
 import {
   addPsgcType,
   addStationTypeType,

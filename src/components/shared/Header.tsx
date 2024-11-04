@@ -46,17 +46,6 @@ const Header = ({ burgerMenu }: HeaderProps) => {
           </div>
 
           <div className="items-center flex w-full flex-row justify-center">
-            {/* <Link to="/home" className="flex gap-3 justify-start p-3">
-              <img
-                src={
-                  theme === "dark"
-                    ? "/assets/img/logo-v2.png"
-                    : "/assets/img/logo-v1.png"
-                }
-                alt="logo"
-                className="size-12"
-              />
-            </Link> */}
             <div className="flex flex-col text-center">
               <span className="text-3xl font-bold capitalize">
                 {user.username}

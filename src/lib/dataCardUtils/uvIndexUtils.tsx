@@ -6,6 +6,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import AlertIcon from "@/components/dynamic/DynamicIcons/AlertIcon";
 
 export function UVIndex({
   uvIndexVal,
@@ -17,23 +18,27 @@ export function UVIndex({
   const [colorClass, setColorClass] = useState("");
   const [warning, setWarning] = useState("");
   const hasShownToastRef = useRef(false);
+  const hasWarning = useRef(false);
 
   const determineWarning = useCallback(() => {
     if (uvIndexVal < 3) {
       setWarning("Low danger from the sun's UV rays for the average person.");
       hasShownToastRef.current = false;
+      hasWarning.current = false;
     } else if (uvIndexVal >= 3 && uvIndexVal <= 5) {
-      setColorClass("bg-[#fbfc04]");
+      setColorClass("text-[#fbfc04]");
       setWarning("Moderate risk of harm from unprotected sun exposure.");
       hasShownToastRef.current = false;
+      hasWarning.current = false;
     } else if (uvIndexVal >= 6 && uvIndexVal <= 7) {
-      setColorClass("bg-[#fa6801]");
+      setColorClass("text-[#fa6801]");
       setWarning(
         "High risk of harm from unprotected sun exposure. Protection against skin and eye damage is needed!"
       );
       hasShownToastRef.current = false;
+      hasWarning.current = true;
     } else if (uvIndexVal >= 8 && uvIndexVal <= 10) {
-      setColorClass("bg-[#fe0000] text-white");
+      setColorClass("text-[#fe0000] text-white");
       setWarning(
         `Very high risk of harm from unprotected sun exposure. Take extra precautions because unprotected skin and eyes will be damaged and can burn quickly at ${stationName}!`
       );
@@ -42,15 +47,17 @@ export function UVIndex({
           `Very high risk of harm from unprotected sun exposure. Take extra precautions because unprotected skin and eyes will be damaged and can burn quickly at ${stationName}!`
         );
         hasShownToastRef.current = true;
+        hasWarning.current = true;
       }
     } else if (uvIndexVal > 10) {
-      setColorClass("bg-[#83007e] text-white");
+      setColorClass("text-[#83007e] text-white");
       setWarning("Extreme Danger: Heatstroke is imminent!");
       if (!hasShownToastRef.current) {
         triggerWarningToast(
           `Extreme risk of harm from unprotected sun exposure. Take all precautions because unprotected skin and eyes can burn in minutes at ${stationName}!`
         );
         hasShownToastRef.current = true;
+        hasWarning.current = true;
       }
     }
   }, [uvIndexVal, stationName]);
@@ -71,15 +78,13 @@ export function UVIndex({
 
   return (
     <div className="text-center w-full flex flex-col h-full">
-      <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
+      <div className="border border-transparent border-b-gray-200 w-full dark:text-slate-800 py-1">
         <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
           UV Index
         </span>
       </div>
 
-      <div
-        className={`text-xl flex h-full items-center justify-center ${colorClass} `}
-      >
+      <div className={`text-xl flex h-full items-center justify-center `}>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -87,6 +92,10 @@ export function UVIndex({
                 <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
                   {Math.round(uvIndexVal * 100) / 100}
                 </span>
+                {hasWarning.current && (
+                  <AlertIcon className={`dark:invert md:block ${colorClass}`} />
+                )}
+
                 {warning && (
                   <span className="ml-2">
                     <i className="fas fa-exclamation-circle"></i>

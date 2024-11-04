@@ -6,6 +6,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import AlertIcon from "@/components/dynamic/DynamicIcons/AlertIcon";
 
 export function HeatIndex({
   heatIndexval,
@@ -14,27 +15,31 @@ export function HeatIndex({
   heatIndexval: number;
   stationName: string;
 }) {
-  const roundedHeatIndex = Math.round((heatIndexval + 40) * 100) / 100;
+  const roundedHeatIndex = Math.round(heatIndexval * 100) / 100;
 
   const [colorClass, setColorClass] = useState("");
   const [warning, setWarning] = useState("");
   const hasShownToastRef = useRef(false);
+  const hasWarning = useRef(false);
 
   const determineWarning = useCallback(() => {
     if (roundedHeatIndex < 27) {
-      setColorClass("bg-green-500");
+      setColorClass("text-green-500");
       setWarning("Caution: Stay hydrated!");
       hasShownToastRef.current = false;
+      hasWarning.current = false;
     } else if (roundedHeatIndex >= 27 && roundedHeatIndex <= 32) {
-      setColorClass("bg-green-500");
+      setColorClass("text-green-500");
       setWarning("Caution: Stay hydrated");
       hasShownToastRef.current = false;
+      hasWarning.current = false;
     } else if (roundedHeatIndex > 32 && roundedHeatIndex <= 41) {
-      setColorClass("bg-[#ffff01]");
+      setColorClass("text-[#ffff01]");
       setWarning("Extreme Caution: Avoid prolonged exertion!");
       hasShownToastRef.current = false;
+      hasWarning.current = false;
     } else if (roundedHeatIndex > 41 && roundedHeatIndex <= 54) {
-      setColorClass("bg-[#f79647] text-white");
+      setColorClass("text-[#f79647] text-white");
       setWarning(
         `Danger: High risk of heat-related illnesses in ${stationName}!`
       );
@@ -43,15 +48,17 @@ export function HeatIndex({
           `Danger: High risk of heat-related illnesses in ${stationName}!`
         );
         hasShownToastRef.current = true;
+        hasWarning.current = true;
       }
     } else if (roundedHeatIndex > 54) {
-      setColorClass("bg-[#ff3300] text-white");
+      setColorClass("text-[#ff3300] text-white");
       setWarning("Extreme Danger: Heatstroke is imminent!");
       if (!hasShownToastRef.current) {
         triggerWarningToast(
           `Extreme Danger: Heatstroke is imminent at ${stationName}!`
         );
         hasShownToastRef.current = true;
+        hasWarning.current = true;
       }
     }
   }, [roundedHeatIndex, stationName]);
@@ -72,15 +79,13 @@ export function HeatIndex({
 
   return (
     <div className="text-center w-full flex flex-col h-full">
-      <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
+      <div className="border border-transparent border-b-gray-200 w-full dark:text-slate-800 py-1">
         <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
           Heat Index
         </span>
       </div>
 
-      <div
-        className={`text-xl flex h-full items-center justify-center ${colorClass} `}
-      >
+      <div className={`text-xl flex h-full items-center justify-center `}>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -88,6 +93,10 @@ export function HeatIndex({
                 <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
                   {roundedHeatIndex} C&deg;
                 </span>
+                {hasWarning.current && (
+                  <AlertIcon className={`dark:invert md:block ${colorClass}`} />
+                )}
+
                 {warning && (
                   <span className="ml-2">
                     <i className="fas fa-exclamation-circle"></i>

@@ -7,6 +7,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import AlertIcon from "@/components/dynamic/DynamicIcons/AlertIcon";
+import { triggerWarningToast } from "./triggerWarning";
 
 export function Precipitation({
   precipitation,
@@ -18,66 +19,58 @@ export function Precipitation({
   pastHourPrecip: number;
 }) {
   const [colorClass, setColorClass] = useState("");
-  const [warning, setWarning] = useState("");
+
   const hasShownToastRef = useRef(false);
   const hasWarning = useRef(false);
+  const warning = useRef<string | null>("");
+
+  const handleSetWarning = async (warningMessage: string) => {
+    warning.current = warningMessage;
+  };
 
   const determineWarning = useCallback(() => {
     if (pastHourPrecip > 2 && pastHourPrecip < 7.5) {
       setColorClass("text-[#00ff01]");
 
-      setWarning(`Light rain at ${stationName}.`);
+      handleSetWarning(`Light rain at ${stationName}.`);
       hasShownToastRef.current = false;
       hasWarning.current = false;
     } else if (pastHourPrecip >= 7.5 && pastHourPrecip < 15) {
       setColorClass("text-[#fbd007]");
-      setWarning(
+      handleSetWarning(
         `Heavy rains are expected, flooding is possible at ${stationName}.`
       );
       if (!hasShownToastRef.current) {
-        triggerWarningToast(
-          `Heavy rains are expected, flooding is possible at ${stationName}.`
-        );
+        triggerWarningToast(`${warning.current} at ${stationName} `);
+
         hasShownToastRef.current = true;
         hasWarning.current = true;
       }
     } else if (pastHourPrecip >= 15 && pastHourPrecip <= 30) {
       setColorClass("text-[#ed761c]");
-      setWarning(
+      handleSetWarning(
         `With intense rains, flooding is threatening, and the public is advised to be alert for possible evacuation at ${stationName}`
       );
       if (!hasShownToastRef.current) {
-        triggerWarningToast(
-          `With intense rains, flooding is threatening, and the public is advised to be alert for possible evacuation at ${stationName}`
-        );
+        triggerWarningToast(`${warning.current} at ${stationName} `);
+
         hasShownToastRef.current = true;
         hasWarning.current = true;
       }
     } else if (pastHourPrecip > 30) {
       setColorClass("text-[#ff3300] ");
-      setWarning(
+      handleSetWarning(
         `Torrential rains could cause serious flooding in some areas, so affected residents must evacuate as soon as possible. at ${stationName}!`
       );
 
       if (!hasShownToastRef.current) {
-        triggerWarningToast(
-          `Torrential rains could cause serious flooding in some areas, so affected residents must evacuate as soon as possible. at ${stationName}!`
-        );
+        triggerWarningToast(`${warning.current} at ${stationName} `);
+
         hasShownToastRef.current = true;
         hasWarning.current = true;
       }
     }
   }, [pastHourPrecip, stationName]);
-
-  const triggerWarningToast = (message: string) => {
-    toast(message, {
-      description: "Please take the necessary precautions.",
-      action: {
-        label: "Close",
-        onClick: () => console.log("Sonner closed"),
-      },
-    });
-  };
 
   useEffect(() => {
     determineWarning();
@@ -110,7 +103,7 @@ export function Precipitation({
               </div>
             </TooltipTrigger>
             <TooltipContent side="top" align="center">
-              <p>{warning || "No warning available"}</p>
+              <p>{warning.current || "No warning available"}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

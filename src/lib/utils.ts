@@ -1,6 +1,4 @@
 import { type ClassValue, clsx } from "clsx";
-import { set } from "date-fns";
-import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { timer } from "./objects/himawariArrays";
 

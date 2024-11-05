@@ -1,5 +1,4 @@
 import { useTheme } from "@/components/theme-provider";
-import Starfield from "react-starfield";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -81,12 +80,6 @@ const Signin = () => {
           ) : (
             <Form {...form}>
               <div className=" w-full h-full items-center flex flex-col justify-center gap-5">
-                <Starfield
-                  starCount={5000}
-                  starColor={theme === "dark" ? [255, 255, 255] : [0, 0, 0]}
-                  speedFactor={0.05}
-                />
-
                 <svg
                   className="h-14 absolute top-5"
                   xmlns="http://www.w3.org/2000/svg"

@@ -49,6 +49,8 @@ const AwsDataCard = ({ stationId }: AwsDataCardProps) => {
             <DataCards
               currentweather={stationData.data}
               type={"DATADASHBOARD"}
+              stationName={stationData.station.name}
+              pastHourPrecip={stationData.pastHourPrecip}
             />
           </div>
         )}

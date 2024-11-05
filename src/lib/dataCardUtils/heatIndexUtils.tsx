@@ -39,7 +39,7 @@ export function HeatIndex({
       hasShownToastRef.current = false;
       hasWarning.current = false;
     } else if (roundedHeatIndex > 41 && roundedHeatIndex <= 54) {
-      setColorClass("text-[#f79647] text-white");
+      setColorClass("text-[#f79647]");
       setWarning(
         `Danger: High risk of heat-related illnesses in ${stationName}!`
       );
@@ -51,7 +51,7 @@ export function HeatIndex({
         hasWarning.current = true;
       }
     } else if (roundedHeatIndex > 54) {
-      setColorClass("text-[#ff3300] text-white");
+      setColorClass("text-[#ff3300]");
       setWarning("Extreme Danger: Heatstroke is imminent!");
       if (!hasShownToastRef.current) {
         triggerWarningToast(

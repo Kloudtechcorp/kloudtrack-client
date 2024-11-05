@@ -54,7 +54,7 @@ export function Precipitation({
         hasWarning.current = true;
       }
     } else if (pastHourPrecip > 30) {
-      setColorClass("text-[#ff3300] text-white");
+      setColorClass("text-[#ff3300] ");
       setWarning(
         `Torrential rains could cause serious flooding in some areas, so affected residents must evacuate as soon as possible. at ${stationName}!`
       );

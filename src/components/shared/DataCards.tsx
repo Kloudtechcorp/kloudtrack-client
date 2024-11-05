@@ -111,18 +111,10 @@ const DataCards = ({
           </Card>
           <Card className="w-full h-[10.5rem]">
             <CardContent className="px-0 p-0 h-full">
-              <div className="text-center w-full flex flex-col h-full">
-                <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-                  <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-                    UV Index
-                  </span>
-                </div>
-                <div className="text-xl flex h-full items-center justify-center">
-                  <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
-                    {Math.round(currentweather.uvIndex * 100) / 100}
-                  </span>
-                </div>
-              </div>
+              <UVIndex
+                uvIndexVal={currentweather.uvIndex}
+                stationName={stationName}
+              />
             </CardContent>
           </Card>
           <Card className="w-full h-[10.5rem]">
@@ -143,18 +135,11 @@ const DataCards = ({
           </Card>
           <Card className="w-full h-[10.5rem]">
             <CardContent className="px-0 p-0 h-full">
-              <div className="text-center w-full flex flex-col h-full">
-                <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-                  <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-                    Precipitation
-                  </span>
-                </div>
-                <div className="text-xl flex h-full items-center justify-center">
-                  <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
-                    {Math.round(currentweather.precipitation * 100) / 100} mm
-                  </span>
-                </div>
-              </div>
+              <Precipitation
+                precipitation={currentweather.precipitation}
+                pastHourPrecip={pastHourPrecip}
+                stationName={stationName}
+              />
             </CardContent>
           </Card>
         </div>

@@ -38,7 +38,7 @@ export function UVIndex({
       hasShownToastRef.current = false;
       hasWarning.current = true;
     } else if (uvIndexVal >= 8 && uvIndexVal <= 10) {
-      setColorClass("text-[#fe0000] text-white");
+      setColorClass("text-[#fe0000] ");
       setWarning(
         `Very high risk of harm from unprotected sun exposure. Take extra precautions because unprotected skin and eyes will be damaged and can burn quickly at ${stationName}!`
       );
@@ -50,7 +50,7 @@ export function UVIndex({
         hasWarning.current = true;
       }
     } else if (uvIndexVal > 10) {
-      setColorClass("text-[#83007e] text-white");
+      setColorClass("text-[#83007e] ");
       setWarning("Extreme Danger: Heatstroke is imminent!");
       if (!hasShownToastRef.current) {
         triggerWarningToast(

@@ -7,6 +7,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import AlertIcon from "@/components/dynamic/DynamicIcons/AlertIcon";
+import { triggerWarningToast } from "./triggerWarning";
 
 export function HeatIndex({
   heatIndexval,
@@ -18,60 +19,52 @@ export function HeatIndex({
   const roundedHeatIndex = Math.round(heatIndexval * 100) / 100;
 
   const [colorClass, setColorClass] = useState("");
-  const [warning, setWarning] = useState("");
+  // const [warning, setWarning] = useState<string | null>("aaaaa");
   const hasShownToastRef = useRef(false);
   const hasWarning = useRef(false);
+  const warning = useRef<string | null>("");
+
+  const handleSetWarning = async (warningMessage: string) => {
+    warning.current = warningMessage;
+  };
 
   const determineWarning = useCallback(() => {
     if (roundedHeatIndex < 27) {
       setColorClass("text-green-500");
-      setWarning("Caution: Stay hydrated!");
+      handleSetWarning("Caution: Stay hydrated!");
       hasShownToastRef.current = false;
       hasWarning.current = false;
     } else if (roundedHeatIndex >= 27 && roundedHeatIndex <= 32) {
       setColorClass("text-green-500");
-      setWarning("Caution: Stay hydrated");
+      handleSetWarning("Caution: Stay hydrated");
       hasShownToastRef.current = false;
       hasWarning.current = false;
     } else if (roundedHeatIndex > 32 && roundedHeatIndex <= 41) {
       setColorClass("text-[#ffff01]");
-      setWarning("Extreme Caution: Avoid prolonged exertion!");
+      handleSetWarning("Extreme Caution: Avoid prolonged exertion!");
       hasShownToastRef.current = false;
       hasWarning.current = false;
     } else if (roundedHeatIndex > 41 && roundedHeatIndex <= 54) {
       setColorClass("text-[#f79647]");
-      setWarning(
-        `Danger: High risk of heat-related illnesses in ${stationName}!`
+      handleSetWarning(
+        "Danger: High risk of heat-related illnesses in " + stationName
       );
       if (!hasShownToastRef.current) {
-        triggerWarningToast(
-          `Danger: High risk of heat-related illnesses in ${stationName}!`
-        );
+        triggerWarningToast(`${warning.current} at ${stationName}`.toString());
         hasShownToastRef.current = true;
         hasWarning.current = true;
       }
     } else if (roundedHeatIndex > 54) {
       setColorClass("text-[#ff3300]");
-      setWarning("Extreme Danger: Heatstroke is imminent!");
+      handleSetWarning("Extreme Danger: Heatstroke is imminent!");
       if (!hasShownToastRef.current) {
-        triggerWarningToast(
-          `Extreme Danger: Heatstroke is imminent at ${stationName}!`
-        );
+        triggerWarningToast(`${warning.current} at ${stationName} `);
+
         hasShownToastRef.current = true;
         hasWarning.current = true;
       }
     }
   }, [roundedHeatIndex, stationName]);
-
-  const triggerWarningToast = (message: string) => {
-    toast(message, {
-      description: "Please take the necessary precautions.",
-      action: {
-        label: "Close",
-        onClick: () => console.log("Acknowledge clicked"),
-      },
-    });
-  };
 
   useEffect(() => {
     determineWarning();

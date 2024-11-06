@@ -101,7 +101,7 @@ export const getStationList = async (): Promise<stationsListType[]> => {
 
 //=========================== GET DATA FOR STATION TYPES
 export const getStationTypes = async (): Promise<stationNamesType[]> => {
-  const response = await fetch(`${server}/admin/get-station-types`, {
+  const response = await fetch(`${server}/admin/station-types`, {
     method,
     credentials: "include",
   });
@@ -115,7 +115,7 @@ export const getStationTypes = async (): Promise<stationNamesType[]> => {
 
 //=========================== GET DATA FOR REGIONS
 export const getStationRegions = async (): Promise<stationRegionType[]> => {
-  const response = await fetch(`${server}/admin/get-region`, {
+  const response = await fetch(`${server}/admin/regions`, {
     method,
     credentials: "include",
   });
@@ -128,7 +128,7 @@ export const getStationRegions = async (): Promise<stationRegionType[]> => {
 export const getStationProvinces = async (
   regionId: number
 ): Promise<stationProvinceType[]> => {
-  const response = await fetch(`${server}/admin/get-province/${regionId}`, {
+  const response = await fetch(`${server}/admin/provinces/${regionId}`, {
     method,
     credentials: "include",
   });
@@ -141,13 +141,10 @@ export const getStationProvinces = async (
 export const getStationMunicipalities = async (
   provinceId: number
 ): Promise<stationMunicipalityType[]> => {
-  const response = await fetch(
-    `${server}/admin/get-municipality/${provinceId}`,
-    {
-      method,
-      credentials: "include",
-    }
-  );
+  const response = await fetch(`${server}/admin/municipalities/${provinceId}`, {
+    method,
+    credentials: "include",
+  });
   if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
   const data = await response.json();
 
@@ -158,13 +155,10 @@ export const getStationMunicipalities = async (
 export const getStationBarangays = async (
   municipalityId: number
 ): Promise<stationBarangayType[]> => {
-  const response = await fetch(
-    `${server}/admin/get-barangay/${municipalityId}`,
-    {
-      method,
-      credentials: "include",
-    }
-  );
+  const response = await fetch(`${server}/admin/barangays/${municipalityId}`, {
+    method,
+    credentials: "include",
+  });
   if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
   const data = await response.json();
 

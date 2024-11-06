@@ -21,6 +21,7 @@ import {
 import { useTheme } from "../../theme-provider";
 import NoData from "@/components/shared/NoData";
 import VariableGraph from "../VariableGraph";
+import StationRegistration from "@/_root/pages/adminpages/StationRegistration";
 
 const ArgCard: React.FC<{ id: number }> = ({ id }) => {
   const navigate = useNavigate();
@@ -119,7 +120,7 @@ const ArgCard: React.FC<{ id: number }> = ({ id }) => {
                       </Button>
                     </SheetTrigger>
                     <SheetContent className="min-w-[720px]">
-                      {/* <StationRegistration action="UPDATE" station={station} /> */}
+                      <StationRegistration action="UPDATE" station={station} />
                     </SheetContent>
                   </Sheet>
                   <AlertDialog>

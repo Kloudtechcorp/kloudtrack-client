@@ -54,6 +54,10 @@ export type dataProps = {
   T2: number | null;
   recordedAt: string;
 };
+export type apiKeyType = {
+  expiresAt: Date | null;
+  title: string;
+};
 
 export type UserType = {
   id: number;

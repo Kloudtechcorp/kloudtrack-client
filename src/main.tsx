@@ -7,6 +7,7 @@ import { AuthProvider } from "./hooks/context/authContext.tsx";
 import React from "react";
 import { QueryProvider } from "./hooks/react-query/QueryProvider.tsx";
 import { SidebarProvider } from "./components/ui/sidebar.tsx";
+import { ToastProvider } from "./components/ui/toast.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -14,7 +15,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <QueryProvider>
           <AuthProvider>
-            <App />
+            <ToastProvider>
+              <App />
+            </ToastProvider>
           </AuthProvider>
         </QueryProvider>
       </ThemeProvider>

@@ -14,7 +14,7 @@ export type addStationTypeType = {
 
 export type createStationType = {
   stationName: string;
-  stationType: "AWS" | "TC" | "CLMS" | "RLMS" | "ARG";
+  stationType: string;
   latitude: string;
   longitude: string;
   psgc: string;

@@ -30,7 +30,7 @@ export const stationTypeSchema = z.object({
 
 export const stationSchema = z.object({
   stationName: z.string({ required_error: "station name is required" }),
-  stationType: z.enum(["AWS", "TC", "CLMS", "RLMS", "ARG"]),
+  stationType: z.string({ required_error: "station type is required" }),
   latitude: z.string({ required_error: "latitude is required" }),
   longitude: z.string({ required_error: "longitude is required" }),
   psgc: z.string({ required_error: "psgc id is required" }),

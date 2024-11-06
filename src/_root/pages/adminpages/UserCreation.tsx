@@ -24,6 +24,8 @@ import {
 } from "@/components/ui/select";
 import { useUserContext } from "@/hooks/context/authContext";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Card } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 const defaultValues = {
   username: "",
@@ -151,7 +153,7 @@ const UserCreation = () => {
                     />
                   </FormControl>
 
-                  <div className="mt-2 text-sm">
+                  <div className="my-2 text-sm">
                     <ul>
                       <li
                         className={
@@ -210,43 +212,55 @@ const UserCreation = () => {
             />
 
             {form.watch("role") === "USER" && (
-              <FormField
-                control={form.control}
-                name="grantedStations"
-                render={() => (
-                  <FormItem>
-                    {user.stations.map((item) => (
-                      <FormField
-                        key={item.id}
-                        control={form.control}
-                        name="grantedStations"
-                        render={({ field }) => (
-                          <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                            <FormControl>
-                              <Checkbox
-                                checked={field.value?.includes(item.id)}
-                                onCheckedChange={(checked) => {
-                                  return checked
-                                    ? field.onChange([...field.value, item.id])
-                                    : field.onChange(
-                                        field.value?.filter(
-                                          (value) => value !== item.id
-                                        )
-                                      );
-                                }}
-                              />
-                            </FormControl>
-                            <FormLabel className="text-sm font-normal">
-                              {item.name}
-                            </FormLabel>
-                          </FormItem>
-                        )}
-                      />
-                    ))}
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline">Stations Granted</Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                  <span className="py-2">Station Access</span>
+
+                  <FormField
+                    control={form.control}
+                    name="grantedStations"
+                    render={() => (
+                      <FormItem>
+                        {user.stations.map((item) => (
+                          <FormField
+                            key={item.id}
+                            control={form.control}
+                            name="grantedStations"
+                            render={({ field }) => (
+                              <FormItem className="flex flex-row items-center space-x-2 space-y-0">
+                                <FormControl className="">
+                                  <Checkbox
+                                    checked={field.value?.includes(item.id)}
+                                    onCheckedChange={(checked) => {
+                                      return checked
+                                        ? field.onChange([
+                                            ...field.value,
+                                            item.id,
+                                          ])
+                                        : field.onChange(
+                                            field.value?.filter(
+                                              (value) => value !== item.id
+                                            )
+                                          );
+                                    }}
+                                  />
+                                </FormControl>
+                                <FormLabel className="text-sm font-normal">
+                                  {item.name}
+                                </FormLabel>
+                              </FormItem>
+                            )}
+                          />
+                        ))}
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </DialogContent>
+              </Dialog>
             )}
           </>
           <div className="w-full flex justify-end">

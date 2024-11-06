@@ -6,6 +6,7 @@ import AddPsgc from "./adminpages/AddPsgc";
 import AddStationType from "./adminpages/AddStationType";
 import StationList from "./adminpages/StationList";
 import NotFound from "@/components/shared/NotFound";
+import { Card } from "@/components/ui/card";
 
 const AdminSettings = () => {
   const { user } = useUserContext();
@@ -23,7 +24,9 @@ const AdminSettings = () => {
         <TabsTrigger value="list">Station List</TabsTrigger>
       </TabsList>
       <TabsContent value="account" className="container">
-        <UserCreation />
+        <Card>
+          <UserCreation />
+        </Card>
       </TabsContent>
       <TabsContent value="psgc" className="container">
         <AddPsgc />

@@ -121,7 +121,7 @@ export const getStationRegions = async (): Promise<stationRegionType[]> => {
   });
   if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
   const data = await response.json();
-  return data.region;
+  return data.regions;
 };
 
 //=========================== GET DATA FOR PROVINCES

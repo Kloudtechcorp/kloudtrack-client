@@ -65,11 +65,11 @@ const TableGraphCard = ({
       <div className="grow w-full h-full md:w-1/2 rounded-lg p-1">
         <Table className="border border-[#545454]">
           <TableHeader>
-            <TableRow className="bg-yellow-200 border border-[#545454]">
-              <TableHead className="p-2 border border-[#545454] text-center !h-12">
+            <TableRow className="border dark:bg-slate-800  border-[#545454]">
+              <TableHead className="p-2 border border-[#545454] text-center text-black dark:text-white font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs !h-12 ">
                 Information
               </TableHead>
-              <TableHead className="p-2 border border-[#545454] text-center">
+              <TableHead className="p-2 border border-[#545454] text-black dark:text-white font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs text-center">
                 Measurement
               </TableHead>
             </TableRow>

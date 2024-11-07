@@ -185,9 +185,9 @@ const Himawari = () => {
               <p>
                 Source: The True Color Reproduction (TCR) imagery from Himawari
                 Satellite is provided by Meteorological Satellite Center, Japan
-                Meteorological Agency through their general-use
+                Meteorological Agency through their general-use{" "}
                 <a
-                  className="text-gray-500 hover:text-black"
+                  className="text-gray-500 hover:text-blue-500"
                   href="https://www.data.jma.go.jp/mscweb/data/himawari/sat_img.php?area=se2"
                 >
                   Real Time Imagery Website
@@ -199,8 +199,8 @@ const Himawari = () => {
               <div>Band</div>
               <select
                 id="band"
-                className="p-2 w-1/1 rounded-lg w-full bg-white  dark:bg-black"
-                onChange={handleBandChange} // Call handleBandChange when the band is changed
+                className="p-2 w-1/1 rounded-lg w-full bg-white dark:bg-slate-800"
+                onChange={handleBandChange}
               >
                 <option value="snd">Sandwich</option>
                 <option value="hrp">Heavy rainfall potential areas</option>

@@ -153,7 +153,7 @@ const UserCreation = () => {
                     />
                   </FormControl>
 
-                  <div className="my-2 text-sm">
+                  <div className="text-sm pb-2 px-1">
                     <ul>
                       <li
                         className={
@@ -216,9 +216,8 @@ const UserCreation = () => {
                 <DialogTrigger asChild>
                   <Button variant="outline">Stations Granted</Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                  <span className="py-2">Station Access</span>
-
+                <DialogContent className="sm:max-w-[460px] pt-3">
+                  <span className="font-medium">Station Access</span>
                   <FormField
                     control={form.control}
                     name="grantedStations"
@@ -230,8 +229,8 @@ const UserCreation = () => {
                             control={form.control}
                             name="grantedStations"
                             render={({ field }) => (
-                              <FormItem className="flex flex-row items-center space-x-2 space-y-0">
-                                <FormControl className="">
+                              <FormItem className="flex flex-row space-x-2 space-y-0 justify-items-center">
+                                <FormControl>
                                   <Checkbox
                                     checked={field.value?.includes(item.id)}
                                     onCheckedChange={(checked) => {
@@ -248,7 +247,7 @@ const UserCreation = () => {
                                     }}
                                   />
                                 </FormControl>
-                                <FormLabel className="text-sm font-normal">
+                                <FormLabel className="font-normal">
                                   {item.name}
                                 </FormLabel>
                               </FormItem>

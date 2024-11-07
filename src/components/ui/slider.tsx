@@ -24,7 +24,7 @@ const Slider = React.forwardRef<
       {...props}
     >
       <SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden bg-secondary">
-        <SliderPrimitive.Range className="absolute h-full bg-primary" />
+        <SliderPrimitive.Range className="absolute h-full bg-primary dark:bg-blue-500" />
         <div className="absolute inset-0 flex justify-between">
           {Array.from({ length: notchCount + 1 }).map((_, index) => {
             // Only render major notches
@@ -32,7 +32,7 @@ const Slider = React.forwardRef<
               return (
                 <div
                   key={index}
-                  className="bg-black h-full w-[2px]"
+                  className="bg-black h-full w-[2px] dark:bg-blue-500"
                   style={{
                     left: `${(index / notchCount) * 100}%`,
                   }}
@@ -43,7 +43,7 @@ const Slider = React.forwardRef<
           })}
         </div>
       </SliderPrimitive.Track>
-      <SliderPrimitive.Thumb className="block h-5 w-0 border-2 border-primary bg-background transition-colors disabled:pointer-events-none disabled:opacity-50" />
+      <SliderPrimitive.Thumb className="block h-5 w-0 border-2 border-primary bg-background transition-colors disabled:pointer-events-none disabled:opacity-50 dark:border-blue-500" />
     </SliderPrimitive.Root>
   );
 });

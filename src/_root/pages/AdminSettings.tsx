@@ -4,9 +4,9 @@ import StationRegistration from "./adminpages/StationRegistration";
 import UserCreation from "./adminpages/UserCreation";
 import AddPsgc from "./adminpages/AddPsgc";
 import AddStationType from "./adminpages/AddStationType";
-import StationList from "./adminpages/StationList";
 import NotFound from "@/components/shared/NotFound";
 import { Card } from "@/components/ui/card";
+// import StationList from "./adminpages/StationList";
 
 const AdminSettings = () => {
   const { user } = useUserContext();
@@ -23,19 +23,25 @@ const AdminSettings = () => {
         <TabsTrigger value="station">Station Registration</TabsTrigger>
         {/* <TabsTrigger value="list">Station List</TabsTrigger> */}
       </TabsList>
-      <TabsContent value="account" className="container">
+      <TabsContent value="account" className="container px-0">
         <Card>
           <UserCreation />
         </Card>
       </TabsContent>
-      <TabsContent value="psgc" className="container">
-        <AddPsgc />
+      <TabsContent value="psgc" className="container px-0">
+        <Card>
+          <AddPsgc />
+        </Card>
       </TabsContent>
-      <TabsContent value="stationType" className="container">
-        <AddStationType />
+      <TabsContent value="stationType" className="container px-0">
+        <Card>
+          <AddStationType />
+        </Card>
       </TabsContent>
-      <TabsContent value="station" className="container">
-        <StationRegistration action="CREATE" />
+      <TabsContent value="station" className="container px-0">
+        <Card>
+          <StationRegistration action="CREATE" />
+        </Card>
       </TabsContent>
       {/* <TabsContent value="list" className="container">
         <StationList />

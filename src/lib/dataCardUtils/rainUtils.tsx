@@ -1,4 +1,3 @@
-import { toast } from "sonner";
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
   Tooltip,
@@ -8,16 +7,21 @@ import {
 } from "@/components/ui/tooltip";
 import AlertIcon from "@/components/dynamic/DynamicIcons/AlertIcon";
 import { triggerWarningToast } from "./triggerWarning";
+import { useNavigate } from "react-router-dom";
 
 export function Precipitation({
   precipitation,
   stationName,
   pastHourPrecip,
+  dashboardType,
 }: {
   precipitation: number;
   stationName: string;
   pastHourPrecip: number;
+  dashboardType: string;
 }) {
+  const navigate = useNavigate();
+
   const [colorClass, setColorClass] = useState("");
 
   const hasShownToastRef = useRef(false);
@@ -41,7 +45,14 @@ export function Precipitation({
         `Heavy rains are expected, flooding is possible at ${stationName}.`
       );
       if (!hasShownToastRef.current) {
-        triggerWarningToast(`${warning.current} at ${stationName} `);
+        triggerWarningToast({
+          title: `Heavy rainfall detected at ${stationName}!`,
+          message: `${warning.current}`,
+          stationName: stationName,
+          dashboardType: dashboardType,
+
+          navigate,
+        });
 
         hasShownToastRef.current = true;
         hasWarning.current = true;
@@ -52,7 +63,14 @@ export function Precipitation({
         `With intense rains, flooding is threatening, and the public is advised to be alert for possible evacuation at ${stationName}`
       );
       if (!hasShownToastRef.current) {
-        triggerWarningToast(`${warning.current} at ${stationName} `);
+        triggerWarningToast({
+          title: `Intense rain detected at ${stationName}!`,
+          message: `${warning.current}`,
+          stationName: stationName,
+          dashboardType: dashboardType,
+
+          navigate,
+        });
 
         hasShownToastRef.current = true;
         hasWarning.current = true;
@@ -64,13 +82,20 @@ export function Precipitation({
       );
 
       if (!hasShownToastRef.current) {
-        triggerWarningToast(`${warning.current} at ${stationName} `);
+        triggerWarningToast({
+          title: `Torrential rain detected at ${stationName}!`,
+          message: `${warning.current}`,
+          stationName: stationName,
+          dashboardType: dashboardType,
+
+          navigate,
+        });
 
         hasShownToastRef.current = true;
         hasWarning.current = true;
       }
     }
-  }, [pastHourPrecip, stationName]);
+  }, [navigate, dashboardType, pastHourPrecip, stationName]);
 
   useEffect(() => {
     determineWarning();
@@ -98,7 +123,7 @@ export function Precipitation({
                   </span>
                 </div>
                 {hasWarning.current && (
-                  <AlertIcon className={`dark:invert ${colorClass} w-1/3`} />
+                  <AlertIcon className={`${colorClass} w-1/3`} />
                 )}
               </div>
             </TooltipTrigger>

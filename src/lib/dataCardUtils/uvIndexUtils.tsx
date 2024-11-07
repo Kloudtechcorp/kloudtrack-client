@@ -1,4 +1,3 @@
-import { toast } from "sonner";
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
   Tooltip,
@@ -8,14 +7,19 @@ import {
 } from "@/components/ui/tooltip";
 import AlertIcon from "@/components/dynamic/DynamicIcons/AlertIcon";
 import { triggerWarningToast } from "./triggerWarning";
+import { useNavigate } from "react-router-dom";
 
 export function UVIndex({
   uvIndexVal,
   stationName,
+  dashboardType,
 }: {
   uvIndexVal: number;
   stationName: string;
+  dashboardType: string;
 }) {
+  const navigate = useNavigate();
+
   const [colorClass, setColorClass] = useState("");
   const hasShownToastRef = useRef(false);
   const hasWarning = useRef(false);
@@ -49,7 +53,14 @@ export function UVIndex({
         `Very high risk of harm from unprotected sun exposure. Take extra precautions because unprotected skin and eyes will be damaged and can burn quickly at ${stationName}!`
       );
       if (!hasShownToastRef.current) {
-        triggerWarningToast(`${warning.current} at ${stationName} `);
+        triggerWarningToast({
+          title: ` Very High UV Index detected at ${stationName}!`,
+          message: `${warning.current}`,
+          stationName: stationName,
+          dashboardType: dashboardType,
+
+          navigate,
+        });
         hasShownToastRef.current = true;
         hasWarning.current = true;
       }
@@ -57,12 +68,20 @@ export function UVIndex({
       setColorClass("text-[#83007e] ");
       handleSetWarning("Extreme Danger: Heatstroke is imminent!");
       if (!hasShownToastRef.current) {
-        triggerWarningToast(`${warning.current} at ${stationName} `);
+        triggerWarningToast({
+          title: `Extreme UV detected at ${stationName}!`,
+
+          message: `${warning.current}`,
+          stationName: stationName,
+          dashboardType: dashboardType,
+
+          navigate,
+        });
         hasShownToastRef.current = true;
         hasWarning.current = true;
       }
     }
-  }, [uvIndexVal, stationName]);
+  }, [navigate, dashboardType, uvIndexVal, stationName]);
 
   useEffect(() => {
     determineWarning();
@@ -85,7 +104,7 @@ export function UVIndex({
                   {Math.round(uvIndexVal * 100) / 100}
                 </span>
                 {hasWarning.current && (
-                  <AlertIcon className={`dark:invert md:block ${colorClass}`} />
+                  <AlertIcon className={`${colorClass}`} />
                 )}
 
                 {warning && (

@@ -25,6 +25,7 @@ const DataCards = ({
             <HeatIndex
               heatIndexval={currentweather.heatIndex}
               stationName={stationName}
+              dashboardType={type}
             />
           </CardContent>
         </Card>
@@ -114,6 +115,7 @@ const DataCards = ({
               <UVIndex
                 uvIndexVal={currentweather.uvIndex}
                 stationName={stationName}
+                dashboardType={type}
               />
             </CardContent>
           </Card>
@@ -139,6 +141,7 @@ const DataCards = ({
                 precipitation={currentweather.precipitation}
                 pastHourPrecip={pastHourPrecip}
                 stationName={stationName}
+                dashboardType={type}
               />
             </CardContent>
           </Card>
@@ -153,6 +156,7 @@ const DataCards = ({
           <HeatIndex
             heatIndexval={currentweather.heatIndex}
             stationName={stationName}
+            dashboardType={type}
           />
         </CardContent>
       </Card>
@@ -241,6 +245,7 @@ const DataCards = ({
           <UVIndex
             uvIndexVal={currentweather.uvIndex}
             stationName={stationName}
+            dashboardType={type}
           />
         </CardContent>
       </Card>
@@ -266,6 +271,7 @@ const DataCards = ({
             precipitation={currentweather.precipitation}
             pastHourPrecip={pastHourPrecip}
             stationName={stationName}
+            dashboardType={type}
           />
         </CardContent>
       </Card>

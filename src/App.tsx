@@ -11,6 +11,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { SonnerToaster } from "@/components/ui/sonner";
 import AdminSettings from "./_root/pages/AdminSettings";
 import VariableDashboard from "./_root/pages/VariableDashboard";
+import NotFound from "./components/shared/NotFound";
 
 function App() {
   return (
@@ -29,7 +30,8 @@ function App() {
               path="/:station/data-analysis"
               element={<VariableDashboard />}
             />
-            <Route path="/admin-settings" element={<AdminSettings />}></Route>
+            <Route path="/admin-settings" element={<AdminSettings />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
         <Toaster />

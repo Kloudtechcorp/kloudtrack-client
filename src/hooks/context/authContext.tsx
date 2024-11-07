@@ -12,7 +12,7 @@ export const INITIAL_USER = {
 
 const INITIAL_STATE = {
   user: INITIAL_USER,
-  isLoading: false,
+  isLoading: true,
   isAuthenticated: false,
   setUser: () => {},
   setIsAuthenticated: () => {},
@@ -34,7 +34,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const [user, setUser] = useState<UserType>(INITIAL_USER);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const checkAuthUser = async () => {
     setIsLoading(true);
@@ -60,15 +60,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const checkIsLoggedIn = async () => {
+      setIsLoading(true); // Start loading
       try {
         const data = await getIsAuthenticated();
         if (data.isAuthenticated) {
-          checkAuthUser();
-          return;
+          await checkAuthUser(); // Wait for user to be checked
+        } else {
+          navigate("/signin"); // Only navigate if not authenticated
         }
-        navigate("/signin");
       } catch (error) {
         navigate("/signin");
+      } finally {
+        setIsLoading(false); // End loading after check
       }
     };
     checkIsLoggedIn();
@@ -83,7 +86,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     checkAuthUser,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {!isLoading && children}
+    </AuthContext.Provider>
+  );
 }
 
 export const useUserContext = () => useContext(AuthContext);

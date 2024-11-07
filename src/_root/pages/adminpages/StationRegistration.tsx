@@ -34,7 +34,16 @@ import { stationStaticType } from "@/types";
 
 type StationRegistrationProps = {
   action: "CREATE" | "UPDATE";
-  station?: stationStaticType;
+  station?: {
+    name: string;
+    type: string;
+    barangay: string;
+    municipality: string;
+    province: string;
+    latitude: string;
+    longitude: string;
+    image: string;
+  };
 };
 
 const StationRegistration = ({ action, station }: StationRegistrationProps) => {
@@ -50,19 +59,16 @@ const StationRegistration = ({ action, station }: StationRegistrationProps) => {
   const { data: barangays } = useGetStationBarangays(municipalityId || 0);
 
   const { mutateAsync: createStation, isPending } = useCreateStation();
-  console.log(station);
   const defaultValues = {
-    stationName: station?.stationName || "",
+    stationName: station?.name || "",
     latitude: station?.latitude || "",
-    stationtype: station?.stationType.typeName || "AWS",
+    stationType: station?.type || "",
     longitude: station?.latitude || "",
-    psgc: station?.barangay.psgc || "",
-    municipality: station?.municipality.municipality || "",
-    province: station?.province.province || "",
-    region: station?.region.region || "",
-    imageLink: station?.imageLink || "",
+    psgc: station?.barangay || "",
+    municipality: station?.municipality || "",
+    province: station?.province || "",
+    imageLink: station?.image || "",
   };
-
   const form = useForm<z.infer<typeof stationSchema>>({
     resolver: zodResolver(stationSchema),
     defaultValues,
@@ -97,7 +103,7 @@ const StationRegistration = ({ action, station }: StationRegistrationProps) => {
         ) : (
           <span className="flex py-5 text-2xl gap-2 items-center">
             Update station
-            <span className="font-bold"> {station?.stationName}</span>
+            <span className="font-bold"> {station?.name}</span>
           </span>
         )}
         <form onSubmit={form.handleSubmit(onSubmit)}>

@@ -7,7 +7,7 @@ import Dashboard from "./_root/pages/Dashboard";
 import Settings from "./_root/pages/Settings";
 import Variable from "./_root/pages/Variable";
 import DataDashboard from "./_root/pages/DataDashboard";
-import { Toaster } from "react-hot-toast";
+import { Toaster } from "@/components/ui/toaster";
 import { SonnerToaster } from "@/components/ui/sonner";
 import AdminSettings from "./_root/pages/AdminSettings";
 import VariableDashboard from "./_root/pages/VariableDashboard";
@@ -32,7 +32,7 @@ function App() {
             <Route path="/admin-settings" element={<AdminSettings />}></Route>
           </Route>
         </Routes>
-        <Toaster position="top-center" reverseOrder={false} />
+        <Toaster />
         <SonnerToaster />
       </main>
     </>

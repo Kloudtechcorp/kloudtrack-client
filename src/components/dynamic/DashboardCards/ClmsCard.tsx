@@ -132,7 +132,10 @@ const ClmsCard: React.FC<{ id: number }> = ({ id }) => {
                       </Button>
                     </SheetTrigger>
                     <SheetContent className="min-w-[720px]">
-                      {/* <StationRegistration action="UPDATE" station={station} /> */}
+                      <StationRegistration
+                        action="UPDATE"
+                        station={stationData.station}
+                      />
                     </SheetContent>
                   </Sheet>
                   <AlertDialog>

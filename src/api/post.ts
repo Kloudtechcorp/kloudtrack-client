@@ -1,3 +1,4 @@
+import { apiKeyType } from "@/types";
 import {
   addPsgcType,
   addStationTypeType,
@@ -35,7 +36,7 @@ export const signInAccount = async (user: signInAccountType) => {
 };
 
 export const addPsgc = async (values: addPsgcType) => {
-  const response = await fetch(`${server}/admin/add-psgc`, {
+  const response = await fetch(`${server}/admin/psgc`, {
     method,
     headers: {
       "Content-Type": "application/json",
@@ -51,7 +52,7 @@ export const addPsgc = async (values: addPsgcType) => {
 };
 
 export const addStationType = async (values: addStationTypeType) => {
-  const response = await fetch(`${server}/admin/add-station-type`, {
+  const response = await fetch(`${server}/admin/station-type`, {
     method,
     headers: {
       "Content-Type": "application/json",
@@ -68,7 +69,7 @@ export const addStationType = async (values: addStationTypeType) => {
 };
 
 export const createStation = async (station: createStationType) => {
-  const response = await fetch(`${server}/admin/add-station`, {
+  const response = await fetch(`${server}/admin/station`, {
     method,
     headers: {
       "Content-Type": "application/json",
@@ -97,10 +98,16 @@ export const createUser = async (userData: createUserData) => {
   return data;
 };
 
-export const generateApi = async (): Promise<{ message: string }> => {
+export const generateApi = async (
+  apiData: apiKeyType
+): Promise<{ message: string }> => {
   const response = await fetch(`${server}/user/create-api-key`, {
     method,
     credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(apiData),
   });
   const data = await response.json();
   if (!response.ok) {

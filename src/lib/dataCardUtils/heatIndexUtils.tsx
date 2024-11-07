@@ -1,4 +1,3 @@
-import { toast } from "sonner";
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
   Tooltip,
@@ -8,14 +7,19 @@ import {
 } from "@/components/ui/tooltip";
 import AlertIcon from "@/components/dynamic/DynamicIcons/AlertIcon";
 import { triggerWarningToast } from "./triggerWarning";
+import { useNavigate } from "react-router-dom";
 
 export function HeatIndex({
   heatIndexval,
   stationName,
+  dashboardType,
 }: {
   heatIndexval: number;
   stationName: string;
+  dashboardType: string;
 }) {
+  const navigate = useNavigate();
+
   const roundedHeatIndex = Math.round(heatIndexval * 100) / 100;
 
   const [colorClass, setColorClass] = useState("");
@@ -50,7 +54,14 @@ export function HeatIndex({
         "Danger: High risk of heat-related illnesses in " + stationName
       );
       if (!hasShownToastRef.current) {
-        triggerWarningToast(`${warning.current} at ${stationName}`.toString());
+        triggerWarningToast({
+          title: `High heat Index detected at ${stationName}!`,
+
+          message: `${warning.current}`,
+          stationName: stationName,
+          dashboardType: dashboardType,
+          navigate,
+        });
         hasShownToastRef.current = true;
         hasWarning.current = true;
       }
@@ -58,13 +69,19 @@ export function HeatIndex({
       setColorClass("text-[#ff3300]");
       handleSetWarning("Extreme Danger: Heatstroke is imminent!");
       if (!hasShownToastRef.current) {
-        triggerWarningToast(`${warning.current} at ${stationName} `);
+        triggerWarningToast({
+          title: `High heat Index detected at ${stationName}!`,
+          message: `${warning.current}`,
+          stationName: stationName,
+          dashboardType: dashboardType,
+          navigate,
+        });
 
         hasShownToastRef.current = true;
         hasWarning.current = true;
       }
     }
-  }, [roundedHeatIndex, stationName]);
+  }, [navigate, dashboardType, roundedHeatIndex, stationName]);
 
   useEffect(() => {
     determineWarning();
@@ -87,7 +104,7 @@ export function HeatIndex({
                   {roundedHeatIndex} C&deg;
                 </span>
                 {hasWarning.current && (
-                  <AlertIcon className={`dark:invert md:block ${colorClass}`} />
+                  <AlertIcon className={`${colorClass}`} />
                 )}
 
                 {warning && (
@@ -98,7 +115,7 @@ export function HeatIndex({
               </div>
             </TooltipTrigger>
             <TooltipContent side="top" align="center">
-              <p>{warning || "No warning available"}</p>
+              <p>{warning.current || "No warning available"}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

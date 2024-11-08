@@ -46,13 +46,22 @@ const VariableDashboard = () => {
       </Card>
     );
 
-  const [weatherData, setWeatherData] = useState(
-    !stationData
-      ? "temperature"
-      : (stationData.type === "ARG" && "precipitation") ||
-          stationData.type === "CLMS" ||
-          (stationData.type === "RLMS" && "distance")
-  );
+  const [weatherData, setWeatherData] = useState<string>(() => {
+    if (!stationData) {
+      return "temperature";
+    }
+
+    switch (stationData.type) {
+      case "ARG":
+        return "precipitation";
+      case "CLMS":
+        return "temperature";
+      case "RLMS":
+        return "distance";
+      default:
+        return "temperature";
+    }
+  });
 
   return (
     <div className="mainContainer bg-[#F6F8FC] dark:bg-slate-950 overflow-auto custom-scrollbar">

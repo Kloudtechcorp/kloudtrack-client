@@ -101,6 +101,7 @@ const ClmsDataCard = ({ stationId }: ClmsDataCardProps) => {
                 weatherData={variable}
                 range={12}
                 repeat="hour"
+                type={"clms"}
               />
             </div>
           ))}

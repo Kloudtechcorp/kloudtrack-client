@@ -89,8 +89,8 @@ export function HeatIndex({
 
   return (
     <div className="text-center w-full flex flex-col h-full">
-      <div className="border border-transparent border-b-gray-200 w-full dark:text-slate-800 py-1">
-        <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
+      <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800  py-1">
+        <span className="font-medium xl:text-xl lg:text-lg md:text-base sm:text-xs">
           Heat Index
         </span>
       </div>
@@ -100,17 +100,11 @@ export function HeatIndex({
           <Tooltip>
             <TooltipTrigger asChild>
               <div className="flex items-center">
-                <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
-                  {roundedHeatIndex} C&deg;
+                <span className="font-medium xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
+                  {roundedHeatIndex} &deg;C
                 </span>
                 {hasWarning.current && (
                   <AlertIcon className={`${colorClass}`} />
-                )}
-
-                {warning && (
-                  <span className="ml-2">
-                    <i className="fas fa-exclamation-circle"></i>
-                  </span>
                 )}
               </div>
             </TooltipTrigger>

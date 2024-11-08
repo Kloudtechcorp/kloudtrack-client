@@ -103,8 +103,8 @@ export function Precipitation({
 
   return (
     <div className="text-center w-full flex flex-col h-full">
-      <div className="border border-transparent border-b-gray-200 w-full dark:text-slate-800 py-1">
-        <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
+      <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
+        <span className="font-medium xl:text-xl lg:text-lg md:text-base sm:text-xs">
           Precipitation
         </span>
       </div>
@@ -113,13 +113,16 @@ export function Precipitation({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="text-xl flex h-full items-center flex-row justify-center gap-2 ">
-                <div className="flex flex-col  w-2/3">
+              <div className="font-medium text-xl flex h-full items-center flex-row justify-center gap-2 ">
+                <div className="flex flex-col  w-full">
                   <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm ">
                     {Math.round(precipitation * 100) / 100} mm
                   </span>
-                  <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm ">
-                    {Math.round(pastHourPrecip * 100) / 100} mm (per hour)
+                  <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm flex flex-col">
+                    {(Math.round(pastHourPrecip * 100) / 100).toFixed(1)} mm
+                    <span className="xl:text-2xl lg:text-xl md:text-lg sm:text-xs">
+                      (per hour)
+                    </span>
                   </span>
                 </div>
                 {hasWarning.current && (

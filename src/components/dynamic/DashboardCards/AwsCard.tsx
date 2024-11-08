@@ -78,7 +78,7 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
         {stationData.data ? (
           <div className="flex flex-col gap-2 w-full">
             <div className="px-2 py-1 flex items-center gap-2">
-              <span className="w-full font-normal text-lg">
+              <span className="w-full font-medium text-lg">
                 Current Weather Conditions as of{" "}
                 {formatDateString(stationData.data.recordedAt, "long")}
               </span>

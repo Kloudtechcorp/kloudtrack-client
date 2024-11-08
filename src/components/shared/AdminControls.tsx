@@ -12,7 +12,6 @@ import {
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
 import DeleteIcon from "./DeleteIcon";
-import { clmsDashboardType } from "@/types/queryTypes";
 
 type AdminControlsProps = {
   theme: string;

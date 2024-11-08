@@ -83,6 +83,7 @@ const ArgDataCard = ({ stationId }: ArgDataCardProps) => {
               weatherData="precipitation"
               repeat="hour"
               range={12}
+              type={"arg"}
             />
           </div>
         </div>

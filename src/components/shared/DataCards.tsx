@@ -33,14 +33,12 @@ const DataCards = ({
           <Card className="w-full h-[10.5rem]">
             <CardContent className="px-0 p-0 h-full">
               <div className="text-center w-full flex flex-col h-full">
-                <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-                  <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-                    Temperature
-                  </span>
+                <div className="cardTitleDiv">
+                  <span className="cardTitle">Temperature</span>
                 </div>
                 <div className="text-xl flex h-full items-center justify-center">
-                  <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
-                    {Math.round(currentweather.temperature * 100) / 100} C&deg;
+                  <span className="cardText">
+                    {Math.round(currentweather.temperature * 100) / 100} &deg;C
                   </span>
                 </div>
               </div>
@@ -49,13 +47,11 @@ const DataCards = ({
           <Card className="w-full h-[10.5rem]">
             <CardContent className="px-0 p-0 h-full">
               <div className="text-center w-full flex flex-col h-full">
-                <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-                  <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-                    Humidity
-                  </span>
+                <div className="cardTitleDiv">
+                  <span className="cardTitle">Humidity</span>
                 </div>
                 <div className="text-xl flex h-full items-center justify-center">
-                  <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
+                  <span className="cardText">
                     {Math.round(currentweather.humidity * 100) / 100} %
                   </span>
                 </div>
@@ -65,13 +61,11 @@ const DataCards = ({
           <Card className="w-full h-[10.5rem]">
             <CardContent className="px-0 p-0 h-full">
               <div className="text-center w-full flex flex-col h-full">
-                <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-                  <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-                    Pressure
-                  </span>
+                <div className="cardTitleDiv">
+                  <span className="cardTitle">Pressure</span>
                 </div>
                 <div className="text-xl flex h-full items-center justify-center">
-                  <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
+                  <span className="cardText">
                     {Math.round(currentweather.pressure * 100) / 100} mb
                   </span>
                 </div>
@@ -81,13 +75,11 @@ const DataCards = ({
           <Card className="w-full h-[10.5rem]">
             <CardContent className="px-0 p-0 h-full">
               <div className="text-center w-full flex flex-col h-full">
-                <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-                  <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-                    Wind Speed
-                  </span>
+                <div className="cardTitleDiv">
+                  <span className="cardTitle">Wind Speed</span>
                 </div>
                 <div className="text-xl flex h-full items-center justify-center">
-                  <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
+                  <span className="cardText">
                     {Math.round(currentweather.windSpeed * 100) / 100} kph
                   </span>
                 </div>
@@ -97,13 +89,11 @@ const DataCards = ({
           <Card className="w-full h-[10.5rem]">
             <CardContent className="px-0 p-0 h-full">
               <div className="text-center w-full flex flex-col h-full">
-                <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-                  <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-                    Wind Direction
-                  </span>
+                <div className="cardTitleDiv">
+                  <span className="cardTitle">Wind Direction</span>
                 </div>
                 <div className="text-xl flex h-full items-center justify-center">
-                  <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
+                  <span className="cardText">
                     {getWindDirectionLabel(currentweather.windDirection)}
                   </span>
                 </div>
@@ -122,13 +112,11 @@ const DataCards = ({
           <Card className="w-full h-[10.5rem]">
             <CardContent className="px-0 p-0 h-full">
               <div className="text-center w-full flex flex-col h-full">
-                <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-                  <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-                    Light
-                  </span>
+                <div className="cardTitleDiv">
+                  <span className="cardTitle">Light</span>
                 </div>
                 <div className="text-xl flex h-full items-center justify-center">
-                  <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
+                  <span className="cardText">
                     {Math.round(currentweather.light * 100) / 100} lux
                   </span>
                 </div>
@@ -163,14 +151,12 @@ const DataCards = ({
       <Card className="w-full h-full aspect-[10/9]">
         <CardContent className="px-0 p-0 h-full">
           <div className="text-center w-full flex flex-col h-full">
-            <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-              <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-                Temperature
-              </span>
+            <div className="cardTitleDiv">
+              <span className="cardTitle">Temperature</span>
             </div>
-            <div className="text-xl flex h-full items-center justify-center">
-              <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
-                {Math.round(currentweather.temperature * 100) / 100} C&deg;
+            <div className="flex h-full items-center justify-center">
+              <span className="cardText">
+                {Math.round(currentweather.temperature * 100) / 100} &deg;C
               </span>
             </div>
           </div>
@@ -179,13 +165,11 @@ const DataCards = ({
       <Card className="w-full h-full aspect-[10/9]">
         <CardContent className="px-0 p-0 h-full">
           <div className="text-center w-full flex flex-col h-full">
-            <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-              <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-                Humidity
-              </span>
+            <div className="cardTitleDiv">
+              <span className="cardTitle">Humidity</span>
             </div>
             <div className="text-xl flex h-full items-center justify-center">
-              <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
+              <span className="cardText">
                 {Math.round(currentweather.humidity * 100) / 100} %
               </span>
             </div>
@@ -195,13 +179,11 @@ const DataCards = ({
       <Card className="w-full h-full aspect-[10/9]">
         <CardContent className="px-0 p-0 h-full">
           <div className="text-center w-full flex flex-col h-full">
-            <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-              <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-                Pressure
-              </span>
+            <div className="cardTitleDiv">
+              <span className="cardTitle">Pressure</span>
             </div>
             <div className="text-xl flex h-full items-center justify-center">
-              <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
+              <span className="cardText">
                 {Math.round(currentweather.pressure * 100) / 100} mb
               </span>
             </div>
@@ -211,13 +193,11 @@ const DataCards = ({
       <Card className="w-full h-full aspect-[10/9]">
         <CardContent className="px-0 p-0 h-full">
           <div className="text-center w-full flex flex-col h-full">
-            <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-              <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-                Wind Speed
-              </span>
+            <div className="cardTitleDiv">
+              <span className="cardTitle">Wind Speed</span>
             </div>
-            <div className="text-xl flex h-full items-center justify-center">
-              <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
+            <div className="flex h-full items-center justify-center">
+              <span className="cardText">
                 {Math.round(currentweather.windSpeed * 100) / 100} kph
               </span>
             </div>
@@ -227,13 +207,11 @@ const DataCards = ({
       <Card className="w-full h-full aspect-[10/9]">
         <CardContent className="px-0 p-0 h-full">
           <div className="text-center w-full flex flex-col h-full">
-            <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-              <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-                Wind Direction
-              </span>
+            <div className="cardTitleDiv">
+              <span className="cardTitle">Wind Direction</span>
             </div>
             <div className="text-xl flex h-full items-center justify-center">
-              <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
+              <span className="cardText">
                 {getWindDirectionLabel(currentweather.windDirection)}
               </span>
             </div>
@@ -252,13 +230,11 @@ const DataCards = ({
       <Card className="w-full h-full aspect-[10/9]">
         <CardContent className="px-0 p-0 h-full">
           <div className="text-center w-full flex flex-col h-full">
-            <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-              <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-                Light
-              </span>
+            <div className="cardTitleDiv">
+              <span className="cardTitle">Light</span>
             </div>
             <div className="text-xl flex h-full items-center justify-center">
-              <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
+              <span className="cardText">
                 {Math.round(currentweather.light * 100) / 100} lux
               </span>
             </div>

@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState } from "react";
-import { stationStaticType } from "@/types";
+// import { stationStaticType } from "@/types";
 import PuffLoader from "react-spinners/PuffLoader";
 import NotFound from "@/components/shared/NotFound";
 import AwsDataCard from "@/components/dynamic/DataDashboardCards.tsx/AwsDataCards";
@@ -49,7 +49,7 @@ const DataDashboard = () => {
 
   return (
     <div className="w-full bg-[#F6F8FC] dark:bg-secondary rounded-xl p-[1rem] custom-scrollbar overflow-auto">
-      <div className="container p-1 shadow-lg">
+      <div className="container p-1">
         <Card className="cardContainer">
           <CardContent className="flex flex-col p-0 gap-2">
             <div className="w-full flex justify-start flex-row gap-3">

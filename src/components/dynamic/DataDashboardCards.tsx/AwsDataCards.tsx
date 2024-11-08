@@ -49,7 +49,7 @@ const AwsDataCard = ({ stationId }: AwsDataCardProps) => {
     <div className="flex lg:flex-row flex-col w-full gap-2">
       <div className="flex flex-col w-full lg:w-2/3 px-2 gap-2">
         <div className="w-full gap-2 flex flex-col">
-          <div className="px-3 text-xs md:text-sm border lg:text-base">
+          <div className="font-medium text-xs md:text-sm lg:text-base ">
             Current Weather as of {formattedDate}
           </div>
           <DataCards
@@ -62,8 +62,8 @@ const AwsDataCard = ({ stationId }: AwsDataCardProps) => {
       </div>
 
       <div className="flex flex-col w-full gap-2">
-        <div className="flex w-full justify-start border px-3">
-          <span className="w-full font-bold">Weather Data Graphs</span>
+        <div className="flex w-full">
+          <span className="font-medium w-full">Weather Data Graphs</span>
           <WeatherDialog name={station.name} id={stationId} />
         </div>
         <div className="flex flex-col gap-2 overflow-y-auto cursor-pointer">

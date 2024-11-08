@@ -105,6 +105,7 @@ const ArgCard: React.FC<{ id: number }> = ({ id }) => {
                 repeat="minute"
                 range={15}
                 key={1}
+                type={"arg"}
               />
             </div>
           </div>

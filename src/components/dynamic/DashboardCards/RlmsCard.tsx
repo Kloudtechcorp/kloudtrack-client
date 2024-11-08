@@ -44,7 +44,8 @@ const RlmsCard: React.FC<{ id: number }> = ({ id }) => {
     );
   }
 
-  const { station, data } = stationData;
+  // const { station, data } = stationData;
+  const { station } = stationData;
 
   return (
     <Card className="cardContainer flex flex-row">
@@ -111,6 +112,7 @@ const RlmsCard: React.FC<{ id: number }> = ({ id }) => {
                       repeat="minute"
                       range={15}
                       key={1}
+                      type={"rlms"}
                     />
                   </div>
                 </div>

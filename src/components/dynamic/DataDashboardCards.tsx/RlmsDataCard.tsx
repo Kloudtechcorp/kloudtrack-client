@@ -89,6 +89,7 @@ const RlmsDataCard = ({ stationId }: RlmsDataCardProps) => {
               repeat={"hour"}
               range={12}
               key={1}
+              type={"rlms"}
             />
           </div>
         </div>

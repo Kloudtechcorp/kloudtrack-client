@@ -1,5 +1,4 @@
 import React from "react";
-import { batteryPercentage, getBatteryImg } from "@/lib/utils";
 import { stationStaticType } from "@/types";
 import { Button } from "@/components/ui/button";
 
@@ -46,7 +45,7 @@ const MapImage: React.FC<MapImageProps> = ({
           </p>
         </span>
         <Button
-          className="w-1/3 dark:bg-secondary dark:text-gray-200 text-xs md:text-sm lg:text-base"
+          className="w-1/3 text-white dark:text-gray-200 text-xs md:text-sm lg:text-base"
           onClick={() => navigate(`/${stationDetails.name}`)}
         >
           Monitoring Page

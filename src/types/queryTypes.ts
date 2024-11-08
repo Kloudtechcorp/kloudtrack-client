@@ -188,7 +188,7 @@ export type userProfileTypes = {
 };
 
 export type TableGraphCardType = {
-  graphType?: string;
+  type: string;
   stationId: number;
   weatherData: string;
   range: number;

@@ -10,12 +10,14 @@ const VerticalCards = ({
   weatherData,
   range,
   repeat,
+  type,
 }: TableGraphCardType) => {
   const {
     data: stationData,
     isError,
     isLoading,
   } = useGetTableGraphData({
+    type,
     stationId,
     weatherData,
     range,
@@ -68,8 +70,8 @@ const VerticalCards = ({
 
   return (
     <div className="flex flex-col gap-3 w-[20%]">
-      {renderCard("Current", stationData.currentData.current)}
-      {renderCard("Past 1-minute", stationData.currentData.past1min)}
+      {renderCard("Current", stationData.currentData)}
+      {renderCard("Past 1-minute", stationData.past1minute)}
       {renderCard("Highest (Past 24-hours)", stationData.max)}
       {renderCard("Lowest (Past 24-hours)", stationData.min)}
     </div>

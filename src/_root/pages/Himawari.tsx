@@ -1,15 +1,24 @@
 import React, { useEffect, useState, useRef } from "react";
 import { timer } from "../../lib/objects/himawariArrays";
 import { Slider } from "@/components/ui/slider";
+import { band } from "@/lib/objects/arrays";
+import { Button } from "@/components/ui/button";
+
 import {
   roundUpToNearest10Minutes,
-  convertLocaltoUTC,
   checkImageUrl,
   getFormattedDate,
   convertUTCtoLocal,
   getNearestTimeIndex,
   delay,
 } from "@/lib/utils";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import HimawariDetails from "@/components/dynamic/HimawariDetails";
 
 const Himawari = () => {
@@ -36,7 +45,7 @@ const Himawari = () => {
     const startTimeIndex = nearestTimeIndex % timer.length;
 
     return [
-      ...timer.slice(startTimeIndex + 1),
+      ...timer.slice(startTimeIndex),
       ...timer.slice(0, nearestTimeIndex + 1),
     ];
   };
@@ -109,9 +118,9 @@ const Himawari = () => {
     updateImage(value[0]);
   };
 
-  const handleBandChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setBandSelect(event.target.value);
-    updateImage(currentIndex);
+  const handleBandChange = (band: string) => {
+    setBandSelect(band);
+    console.log("Selected band is:", band);
   };
 
   const formatDisplayTime = (index: number): string => {
@@ -136,12 +145,16 @@ const Himawari = () => {
     return `${formattedHours}:${formattedMinutes}`;
   };
 
+  useEffect(() => {
+    updateImage(currentIndex);
+  }, [bandSelect, currentIndex]);
+
   return (
     <div className="flex w-full rounded-2xl dark:bg-secondary bg-white  ">
       <div className="w-full flex sm:flex-col lg:flex-row bg-[#F6F8FC] dark:bg-slate-950 rounded-2xl ">
         <div className="h-full w-full flex flex-col relative">
           <div className="rounded-full p-3 pr-6 bg-white dark:bg-black flex flex-row items-center gap-3 absolute top-5 left-5 w-2/3 text-nowrap ">
-            <button
+            <Button
               className="bg-yellow-400 dark:bg-blue-500 size-10 p-2 rounded-full"
               onClick={() => setIsCycling(!isCycling)}
             >
@@ -150,7 +163,7 @@ const Himawari = () => {
               ) : (
                 <img src="/assets/icons/play.svg" />
               )}
-            </button>
+            </Button>
             <div className="flex flex-row gap-2 grow">
               <Slider
                 className="grow"
@@ -195,32 +208,25 @@ const Himawari = () => {
                 .
               </p>
             </span>
-            <div className="flex items-left flex-col gap-2 self-center">
-              <div>Band</div>
-              <select
-                id="band"
-                className="p-2 w-1/1 rounded-lg w-full bg-white dark:bg-slate-800"
-                onChange={handleBandChange}
-              >
-                <option value="snd">Sandwich</option>
-                <option value="hrp">Heavy rainfall potential areas</option>
-                <option value="trm">True Color Reproduction Image</option>
-                <option value="b13">B13 (Infrared)</option>
-                <option value="b03">B03 (Visible)</option>
-                <option value="b08">B08 (Water Vapor)</option>
-                <option value="b07">B07 (Short Wave Infrared)</option>
-                <option value="dms">Day Microphysics RGB</option>
-                <option value="ngt">Night Microphysics RGB</option>
-                <option value="dst">Dust RGB</option>
-                <option value="arm">Airmass RGB</option>
-                <option value="dsl">Day Snow-Fog RGB</option>
-                <option value="dnc">Natural Color RGB</option>
-                <option value="tre">True Color RGB (Enhanced)</option>
-                <option value="cve">Day Convective Storm RGB</option>
-                <option value="vir">B03 combined with B13</option>
-                <option value="irv">B03 and B13 at night</option>
-              </select>
-            </div>
+
+            <Select
+              onValueChange={(value) => {
+                handleBandChange(value);
+              }}
+              defaultValue={bandSelect}
+              value={bandSelect}
+            >
+              <SelectTrigger className="w-full p-2 rounded-lg bg-white dark:bg-slate-800">
+                <SelectValue placeholder="Band" />
+              </SelectTrigger>
+              <SelectContent>
+                {band.map((item, index) => (
+                  <SelectItem value={item.value} key={index}>
+                    {item.title}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
             <HimawariDetails />
           </div>

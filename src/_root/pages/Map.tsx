@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { styles } from "@/lib/objects/arrays";
@@ -233,7 +234,7 @@ const Map = () => {
             <div className=" flex flex-col sm:flex-row md:flex-col">
               <MapImage stationDetails={stationDetails} />
               <div className="absolute right-2 py-2">
-                <button
+                <Button
                   onClick={() => {
                     setStationDetails(null);
                     setAwsData(null);
@@ -242,7 +243,7 @@ const Map = () => {
                   }}
                 >
                   <img src={"/assets/icons/close.svg"} className="invert" />
-                </button>
+                </Button>
               </div>
               {(stationDetails.type === "AWS" && (
                 <AwsMapCard data={awsData} />

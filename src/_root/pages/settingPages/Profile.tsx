@@ -15,7 +15,7 @@ import { useUserContext } from "@/hooks/context/authContext";
 import { DataTable } from "@/components/shared/DataTable";
 import { columns } from "@/components/shared/Columns";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import AddApiKey from "@/components/forms/addApiKey";
+import AddApiKey from "@/components/forms/AddApiKey";
 
 const Profile = () => {
   const { user } = useUserContext();

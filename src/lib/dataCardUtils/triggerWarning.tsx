@@ -35,6 +35,12 @@ export const triggerWarningToast = ({
           navigate(`/${stationName}`);
         },
       },
+      cancel: {
+        label: "X",
+        onClick: () => {
+          console.log("sonner closed ", dashboardType);
+        },
+      },
     });
   }
 };

@@ -190,6 +190,7 @@ export type userProfileTypes = {
     expiresAt: string | null;
     isActive: boolean;
     title: string;
+    id: number;
   }[];
 };
 

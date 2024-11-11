@@ -202,7 +202,7 @@ export const useUpdateStation = () => {
 //DELETE
 export const useDeleteApiKey = (onSuccess: () => void) => {
   return useMutation({
-    mutationFn: () => deleteApiKey(),
+    mutationFn: (id: number) => deleteApiKey(id),
     onError: (error: Error) => {
       toast({
         title: "Error!",

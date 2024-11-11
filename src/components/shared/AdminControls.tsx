@@ -1,18 +1,6 @@
 import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import EditIcon from "./EditIcon";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "../ui/alert-dialog";
-import DeleteIcon from "./DeleteIcon";
 import UpdateStation from "../forms/UpdateStation";
 
 type AdminControlsProps = {
@@ -49,26 +37,6 @@ const AdminControls = ({ theme, station, id }: AdminControlsProps) => (
         />
       </SheetContent>
     </Sheet>
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button className="button-icon">
-          <DeleteIcon theme={theme} />
-        </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete this
-            station.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Continue</AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
   </div>
 );
 

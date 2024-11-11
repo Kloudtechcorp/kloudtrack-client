@@ -152,7 +152,7 @@ const Himawari = () => {
   return (
     <div className="flex w-full rounded-2xl dark:bg-secondary bg-white  ">
       <div className="w-full flex sm:flex-col lg:flex-row bg-[#F6F8FC] dark:bg-slate-950 rounded-2xl ">
-        <div className="h-full w-full flex flex-col relative">
+        <div className="h-full w-2/3 flex flex-col relative">
           <div className="rounded-full p-3 pr-6 bg-white dark:bg-black flex flex-row items-center gap-3 absolute top-5 left-5 w-2/3 text-nowrap ">
             <Button
               className="bg-yellow-400 dark:bg-blue-500 size-10 p-2 rounded-full"
@@ -189,7 +189,7 @@ const Himawari = () => {
           </div>
         </div>
 
-        <div className="w-full">
+        <div className="w-1/3">
           <div className="p-5">
             <h2 className="lg:text-3xl sm:text-base font-bold">
               Real-time Satellite View

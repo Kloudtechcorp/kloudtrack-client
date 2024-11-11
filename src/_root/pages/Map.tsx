@@ -229,7 +229,7 @@ const Map = () => {
         )}
         {stationDetails && (
           <div
-            className={`bg-white dark:bg-gray-950 shadow-lg rounded-lg lg:top-0 lg:right-0 xs:bottom-0 xs:top-48 w-full h-1/2 md:w-1/2 md:h-full`}
+            className={`bg-white dark:bg-gray-950 shadow-lg rounded-lg lg:top-0 lg:right-0 xs:bottom-0 xs:top-48 w-full h-1/2 md:w-1/2 md:h-full overflow-auto`}
           >
             <div className=" flex flex-col sm:flex-row md:flex-col">
               <MapImage stationDetails={stationDetails} />

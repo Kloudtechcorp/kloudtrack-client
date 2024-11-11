@@ -19,7 +19,7 @@ interface MapCardProps {
 const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
   if (!data || !data.data) {
     return (
-      <div className="flex flex-col gap-2 w-full px-2 bg-red-500">
+      <div className="flex flex-col gap-2 w-full px-2">
         <NoData />
       </div>
     );
@@ -56,7 +56,7 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
                   </TooltipProvider>
                 </div>
                 <span className="font-medium text-4xl md:text-7xl text-center">
-                  {Math.round(data.data.heatIndex * 100) / 100}
+                  {Math.round(data.data.temperature * 100) / 100}
                   <span className="text-3xl md:text-5xl">°C</span>
                 </span>
               </div>

@@ -74,7 +74,6 @@ export function UVIndex({
           message: `${warning.current}`,
           stationName: stationName,
           dashboardType: dashboardType,
-
           navigate,
         });
         hasShownToastRef.current = true;

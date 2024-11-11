@@ -24,6 +24,12 @@ export const triggerWarningToast = ({
           console.log("sonner closed ", dashboardType);
         },
       },
+      cancel: {
+        label: "X",
+        onClick: () => {
+          console.log("sonner closed ", dashboardType);
+        },
+      },
     });
   } else {
     toast(title, {

@@ -30,8 +30,23 @@ import {
   useGetStationBarangays,
 } from "@/hooks/react-query/queries";
 import { useCreateStation } from "@/hooks/react-query/mutations";
+import { stationStaticType } from "@/types";
 
-const StationRegistration = () => {
+type StationRegistrationProps = {
+  station?: {
+    name: string;
+    type: string;
+    barangay: string;
+    municipality: string;
+    province: string;
+    latitude: string;
+    longitude: string;
+    image: string;
+    region: string;
+  };
+};
+
+const StationRegistration = ({ station }: StationRegistrationProps) => {
   const { data: stationTypes } = useGetStationTypes();
   const { data: regions } = useGetStationRegions();
 
@@ -45,15 +60,15 @@ const StationRegistration = () => {
 
   const { mutateAsync: createStation, isPending } = useCreateStation();
   const defaultValues = {
-    stationName: "",
-    latitude: "",
-    stationType: "AWS",
-    longitude: "",
-    region: "",
-    psgc: "",
-    municipality: "",
-    province: "",
-    imageLink: "",
+    stationName: station?.name || "",
+    latitude: station?.latitude || "",
+    stationType: station?.type || "AWS",
+    longitude: station?.latitude || "",
+    region: station?.region || "",
+    psgc: station?.barangay || "",
+    municipality: station?.municipality || "",
+    province: station?.province || "",
+    imageLink: station?.image || "",
   };
   const form = useForm<z.infer<typeof stationSchema>>({
     resolver: zodResolver(stationSchema),
@@ -85,7 +100,12 @@ const StationRegistration = () => {
     <Form {...form}>
       <div className="px-5 w-full">
         {isPending && <div className="w-full">Loading...</div>}
-        <span className="flex py-5 font-bold text-lg">Register a station</span>
+
+        <span className="flex py-5 text-2xl gap-2 items-center">
+          Update station
+          <span className="font-bold"> {station?.name}</span>
+        </span>
+
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-2">
             <FormField

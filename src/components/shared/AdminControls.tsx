@@ -24,6 +24,7 @@ type AdminControlsProps = {
     municipality: string;
     province: string;
     image: string;
+    region: string;
   };
 };
 

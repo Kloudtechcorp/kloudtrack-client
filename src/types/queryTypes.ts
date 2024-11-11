@@ -78,6 +78,7 @@ export type awsDashboardType = {
     municipality: string;
     province: string;
     image: string;
+    region: string;
   };
   data: stationCurrentWeatherType;
 };
@@ -92,6 +93,7 @@ export type awsDashboardType2 = {
     municipality: string;
     province: string;
     image: string;
+    region: string;
   };
   data: stationCurrentWeatherType;
   pastHourPrecip: number;
@@ -107,6 +109,7 @@ export type argDashboardType = {
     municipality: string;
     province: string;
     image: string;
+    region: string;
   };
   data: stationCurrentRainType;
 };
@@ -121,6 +124,7 @@ export type rlmsDashboardType = {
     municipality: string;
     province: string;
     image: string;
+    region: string;
   };
   data: stationCurrentRiverLevelType;
 };

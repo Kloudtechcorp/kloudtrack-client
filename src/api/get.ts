@@ -43,7 +43,6 @@ export const getAwsData2 = async (id: number): Promise<awsDashboardType2> => {
     throw new Error("Error fetching station data");
   }
   const data = await response.json();
-  console.log("data in context is " + data.pastHourPrecip);
   return data;
 };
 

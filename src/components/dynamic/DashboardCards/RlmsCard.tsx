@@ -86,7 +86,11 @@ const RlmsCard: React.FC<{ id: number }> = ({ id }) => {
               <NavigateIcon theme={theme} />
             </Button>
             {isAdmin && (
-              <AdminControls theme={theme} station={stationData.station} />
+              <AdminControls
+                theme={theme}
+                station={stationData.station}
+                id={id}
+              />
             )}
           </div>
 

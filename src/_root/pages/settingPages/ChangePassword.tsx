@@ -21,6 +21,7 @@ import { handleLogout } from "@/api/post";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { INITIAL_USER, useUserContext } from "@/hooks/context/authContext";
+import { Card } from "@/components/ui/card";
 
 const defaultValues = {
   currentPassword: "",
@@ -90,7 +91,7 @@ const ChangePassword = () => {
 
   return (
     <Form {...form}>
-      <div className="px-5 w-full h-full">
+      <Card className="px-5 w-full h-full">
         <span className="flex py-5 font-bold text-lg">
           Add information for new user
         </span>
@@ -216,7 +217,7 @@ const ChangePassword = () => {
             </div>
           </div>
         </form>
-      </div>
+      </Card>
     </Form>
   );
 };

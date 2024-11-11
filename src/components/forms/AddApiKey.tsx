@@ -51,6 +51,7 @@ const AddApiKey = ({ onSuccess }: refetchProps) => {
         </pre>
       ),
     });
+
     addApiKey(data);
   }
 

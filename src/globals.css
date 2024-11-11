@@ -329,8 +329,12 @@
   @apply border-2 border-transparent ease-in-out duration-300;
 }
 
+.cardMain {
+  @apply w-full h-full aspect-[3/2];
+}
+
 .cardTitle {
-  @apply font-medium xl:text-xl lg:text-lg md:text-base sm:text-xs;
+  @apply xl:text-xl lg:text-lg md:text-base sm:text-xs;
 }
 
 .cardTitleDiv {
@@ -338,5 +342,5 @@
 }
 
 .cardText {
-  @apply font-medium xl:text-4xl lg:text-3xl md:text-xl sm:text-sm;
+  @apply font-bold xl:text-4xl lg:text-3xl md:text-xl sm:text-sm;
 }

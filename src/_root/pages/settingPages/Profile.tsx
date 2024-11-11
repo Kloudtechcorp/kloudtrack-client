@@ -10,16 +10,33 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatDateString } from "@/lib/utils";
 import { useGetUserProfile } from "@/hooks/react-query/queries";
-import { useGenerateApi } from "@/hooks/react-query/mutations";
+import { useDeleteApiKey, useGenerateApi } from "@/hooks/react-query/mutations";
 import { useUserContext } from "@/hooks/context/authContext";
-import { DataTable } from "@/components/shared/DataTable";
 import { columns } from "@/components/shared/Columns";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AddApiKey from "@/components/forms/AddApiKey";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { deleteApiKey } from "@/api/delete";
+import DeleteIcon from "@/components/shared/DeleteIcon";
+import { useTheme } from "@/components/theme-provider";
+import CopyIcon from "@/components/shared/CopyIcon";
+import { ArrowUpDown } from "lucide-react";
 
 const Profile = () => {
+  const { theme } = useTheme();
   const { user } = useUserContext();
   const { data: profile, refetch } = useGetUserProfile(user.id);
+  const { mutateAsync: deleteApiKey } = useDeleteApiKey(refetch);
 
   return (
     <div className="px-5 w-full h-full flex flex-col gap-3">
@@ -80,8 +97,76 @@ const Profile = () => {
                     </span>
                   </div>
                 </div>
+                <span className="text-nowrap text-md font-bold">Api key:</span>
                 {profile.apiKeys ? (
-                  <DataTable columns={columns} data={profile.apiKeys} />
+                  profile.apiKeys.map((item) => (
+                    <Card className="flex gap-2 p-5">
+                      <div className="flex flex-col">
+                        <div
+                          className="capitalize text-lg
+                        border border-transparent rounded-none"
+                        >
+                          {item.title}
+                        </div>
+                        <div className="flex flex-row gap-2 justify-between items-center text-center">
+                          <div
+                            className="capitalize text-lg
+                        border border-transparent rounded-none"
+                          >
+                            {item.apiKey}
+                          </div>
+                          <div className="flex gap-2 justify-end items-end">
+                            <Button
+                              onClick={() => {
+                                navigator.clipboard.writeText(item.apiKey);
+                              }}
+                            >
+                              <CopyIcon theme={theme} />
+                            </Button>
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <Button>
+                                  <DeleteIcon theme={theme} />
+                                </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>
+                                    Are you absolutely sure?
+                                  </AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    This action cannot be undone. This will
+                                    permanently delete your api key.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                  <AlertDialogAction
+                                    onClick={() => {
+                                      deleteApiKey(item.id);
+                                      refetch();
+                                    }}
+                                  >
+                                    Continue
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
+                          </div>
+                        </div>
+                        <div
+                          className="capitalize text-lg
+                        border border-transparent rounded-none"
+                        >
+                          {item.expiresAt}
+                        </div>
+                        <span className="text-xs">
+                          The API key was generated on{" "}
+                          {formatDateString(item.createdAt, "long")}
+                        </span>
+                      </div>
+                    </Card>
+                  ))
                 ) : (
                   <div>No api key generated</div>
                 )}

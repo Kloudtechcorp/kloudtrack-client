@@ -42,7 +42,7 @@ export function Precipitation({
     } else if (pastHourPrecip >= 7.5 && pastHourPrecip < 15) {
       setColorClass("text-[#fbd007]");
       handleSetWarning(
-        `Heavy rains are expected, flooding is possible at ${stationName}.`
+        `Heavy rains are expected, flooding is possible at ${stationName}!`
       );
       if (!hasShownToastRef.current) {
         triggerWarningToast({
@@ -78,7 +78,7 @@ export function Precipitation({
     } else if (pastHourPrecip > 30) {
       setColorClass("text-[#ff3300] ");
       handleSetWarning(
-        `Torrential rains could cause serious flooding in some areas, so affected residents must evacuate as soon as possible. at ${stationName}!`
+        `Torrential rains could cause serious flooding in some areas, so affected residents must evacuate as soon as possible at ${stationName}!`
       );
 
       if (!hasShownToastRef.current) {
@@ -115,14 +115,11 @@ export function Precipitation({
             <TooltipTrigger asChild>
               <div className="font-medium text-xl flex h-full items-center flex-row justify-center gap-2 ">
                 <div className="flex flex-col  w-full">
-                  <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm ">
-                    {Math.round(precipitation * 100) / 100} mm
+                  <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm flex flex-col">
+                    {(Math.round(precipitation * 100) / 100).toFixed(1)} mm
                   </span>
                   <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm flex flex-col">
-                    {(Math.round(pastHourPrecip * 100) / 100).toFixed(1)} mm
-                    <span className="xl:text-2xl lg:text-xl md:text-lg sm:text-xs">
-                      (per hour)
-                    </span>
+                    {(Math.round(pastHourPrecip * 100) / 100).toFixed(1)} mm/hr
                   </span>
                 </div>
                 {hasWarning.current && (

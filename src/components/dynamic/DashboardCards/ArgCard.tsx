@@ -51,8 +51,8 @@ const ArgCard: React.FC<{ id: number }> = ({ id }) => {
       <CardContent className="flex flex-col lg:flex-row w-full p-0 gap-2">
         <div className="flex flex-col gap-3 justify-between w-full px-2">
           <div>
-            <CardTitle className="py-2">{stationData.station.name}</CardTitle>
-            <hr className="h-[0.25rem] bg-black" />
+            <CardTitle className="pt-3">{stationData.station.name}</CardTitle>
+            <hr className="h-[0.25rem] bg-black mt-4" />
             <div className="flex flex-col">
               <span className="text-base md:text-lg xl:text-xl font-semibold">
                 {stationType(stationData.station.type)}
@@ -83,31 +83,40 @@ const ArgCard: React.FC<{ id: number }> = ({ id }) => {
                 Current Weather Conditions as of{" "}
                 {formatDateString(stationData.data.recordedAt, "long")}
               </span>
-              <Button
-                className="button-icon"
-                onClick={() => navigate(`/${stationData.station.name}`)}
-              >
-                <NavigateIcon theme={theme} />
-              </Button>
-              {isAdmin && (
-                <AdminControls theme={theme} station={stationData.station} />
-              )}
+              <div className="flex border rounded-md gap-1">
+                <Button
+                  className="button-icon"
+                  onClick={() => navigate(`/${stationData.station.name}`)}
+                  variant="ghost"
+                >
+                  <NavigateIcon theme={theme} />
+                </Button>
+                {isAdmin && (
+                  <AdminControls
+                    theme={theme}
+                    station={stationData.station}
+                    id={id}
+                  />
+                )}
+              </div>
             </div>
-            <MeasurementCard
-              label="Precipitation"
-              value={stationData.data.precipitation}
-              unit="mm"
-            />
-            <div className="w-full h-full">
-              <VariableGraph
-                stationId={id}
-                weatherData="precipitation"
-                repeat="minute"
-                range={15}
-                key={1}
-                type={"arg"}
+            <Card>
+              <MeasurementCard
+                label="Precipitation"
+                value={stationData.data.precipitation}
+                unit="mm"
               />
-            </div>
+              <div className="w-full h-full">
+                <VariableGraph
+                  stationId={id}
+                  weatherData="precipitation"
+                  repeat="minute"
+                  range={15}
+                  key={1}
+                  type={"arg"}
+                />
+              </div>
+            </Card>
           </div>
         )}
       </CardContent>

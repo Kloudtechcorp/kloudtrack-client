@@ -57,7 +57,7 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
   return (
     <nav
       className={`bg-white dark:bg-[#181819] ease-in-out duration-300 hidden md:flex ${
-        expand ? "w-48" : "w-[5rem]"
+        expand ? "w-44" : "w-[4.5rem]"
       }`}
     >
       <div className="flex flex-col gap-7 justify-between w-full">
@@ -71,9 +71,9 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
                   key={key}
                   className={` ${
                     isActive
-                      ? "dark:bg-blue-400 bg-yellow-400"
+                      ? "border-l-yellow-400 border-l-4 bg-accent "
                       : "hover:bg-gray-200 dark:hover:bg-gray-600"
-                  } rounded-full`}
+                  } rounded-md`}
                 >
                   <NavLink
                     to={link.route}

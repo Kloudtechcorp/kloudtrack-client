@@ -51,15 +51,26 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
   return (
     <Card className="cardContainer flex flex-row">
       <CardContent className="flex flex-col lg:flex-row w-full p-0 gap-2">
-        <div className="flex flex-col gap-3 justify-between w-full">
-          <div className="flex flex-col px-2 gap-3">
-            <CardTitle className="py-2">{stationData.station.name}</CardTitle>
+        <div className="flex flex-col gap-3 justify-between w-1/2">
+          <div className="flex flex-col px-2 ">
+            <div className="flex items-center">
+              <CardTitle className="w-full">
+                {stationData.station.name}
+              </CardTitle>
+              {user.role === "ADMIN" && (
+                <AdminControls
+                  theme={theme}
+                  station={stationData.station}
+                  id={id}
+                />
+              )}
+            </div>
             <hr className="h-[0.25rem] bg-black" />
             <div className="flex flex-col">
               <span className="text-base md:text-lg xl:text-xl font-semibold">
                 {stationType(stationData.station.type)}
               </span>
-              <span>{`${stationData.station.barangay}, ${stationData.station.municipality}, ${stationData.station.province}`}</span>
+              <span className="text-base">{`${stationData.station.barangay}, ${stationData.station.municipality}, ${stationData.station.province}`}</span>
               <span className="text-sm">
                 {stationData.station.latitude}, {stationData.station.longitude}
               </span>
@@ -77,20 +88,18 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
         </div>
         {stationData.data ? (
           <div className="flex flex-col gap-2 w-full">
-            <div className="px-2 py-1 flex items-center gap-2">
-              <span className="w-full font-medium text-lg">
+            <div className="flex items-center gap-2">
+              <span className="w-full font-medium text-lg ">
                 Current Weather Conditions as of{" "}
                 {formatDateString(stationData.data.recordedAt, "long")}
               </span>
               <Button
                 className="button-icon"
                 onClick={() => navigate(`/${stationData.station.name}`)}
+                variant="ghost"
               >
                 <NavigateIcon theme={theme} />
               </Button>
-              {user.role === "ADMIN" && (
-                <AdminControls station={stationData.station} theme={theme} />
-              )}
             </div>
             <div className="flex flex-col pb-3 gap-1">
               <DataCards

@@ -6,6 +6,7 @@ import {
   createStationType,
   createUserData,
   signInAccountType,
+  UpdateStationProps,
   updateUserPasswordType,
 } from "@/types/mutationTypes";
 import {
@@ -22,7 +23,7 @@ import {
   signInAccount,
 } from "@/api/post";
 import { toast } from "@/hooks/use-toast";
-import { updateApiKey, updateUserPassword } from "@/api/put";
+import { updateApiKey, updateStation, updateUserPassword } from "@/api/put";
 import { deleteApiKey } from "@/api/delete";
 import { downloadParamsTypes } from "@/types/queryTypes";
 import { apiKeyType } from "@/types";
@@ -180,10 +181,28 @@ export const useUpdateApiKey = (onSuccess: () => void) => {
   });
 };
 
+export const useUpdateStation = () => {
+  return useMutation({
+    mutationFn: (values: UpdateStationProps) => updateStation(values),
+    onError: (error: Error) => {
+      toast({
+        title: "Error!",
+        description: error.message,
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Update Successful!",
+        description: "Station updated.",
+      });
+    },
+  });
+};
+
 //DELETE
 export const useDeleteApiKey = (onSuccess: () => void) => {
   return useMutation({
-    mutationFn: () => deleteApiKey(),
+    mutationFn: (id: number) => deleteApiKey(id),
     onError: (error: Error) => {
       toast({
         title: "Error!",

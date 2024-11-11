@@ -57,7 +57,7 @@ const Variable = () => {
           </div>
         ) : (
           <Tabs defaultValue="aws" className="w-full flex flex-col">
-            <TabsList className="flex justify-start">
+            <TabsList className="flex justify-start container">
               {hasAwsStations && (
                 <TabsTrigger value="aws">Weather Stations</TabsTrigger>
               )}

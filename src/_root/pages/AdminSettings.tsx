@@ -7,7 +7,7 @@ import AddStationType from "./adminpages/AddStationType";
 import NotFound from "@/components/shared/NotFound";
 import { Card } from "@/components/ui/card";
 import StationList from "./adminpages/StationList";
-// import StationList from "./adminpages/StationList";
+import { UserControl } from "./adminpages/UserControl";
 
 const AdminSettings = () => {
   const { user } = useUserContext();
@@ -23,6 +23,7 @@ const AdminSettings = () => {
         <TabsTrigger value="stationType">Add Station Type</TabsTrigger>
         <TabsTrigger value="station">Station Registration</TabsTrigger>
         <TabsTrigger value="list">Station List</TabsTrigger>
+        <TabsTrigger value="users">User Control</TabsTrigger>
       </TabsList>
       <TabsContent value="account" className="container px-0">
         <Card>
@@ -44,8 +45,15 @@ const AdminSettings = () => {
           <StationRegistration />
         </Card>
       </TabsContent>
-      <TabsContent value="list" className="container">
-        <StationList />
+      <TabsContent value="list" className="container px-0">
+        <Card>
+          <StationList />
+        </Card>
+      </TabsContent>
+      <TabsContent value="users" className="container px-0">
+        <Card className="px-4">
+          <UserControl />
+        </Card>
       </TabsContent>
     </Tabs>
   ) : (

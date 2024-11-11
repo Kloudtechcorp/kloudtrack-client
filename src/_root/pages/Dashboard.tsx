@@ -38,7 +38,7 @@ const Dashboard = () => {
         </div>
       ) : (
         <Tabs defaultValue="AWS" className="w-full flex flex-col">
-          <TabsList className="flex justify-start">
+          <TabsList className="flex justify-start container ">
             {stationCategories.map(
               (category) =>
                 filteredStations[category.type].length > 0 && (

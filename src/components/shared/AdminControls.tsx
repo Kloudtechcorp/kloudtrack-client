@@ -23,7 +23,7 @@ const AdminControls = ({ theme, station, id }: AdminControlsProps) => (
   <div className="lg:flex gap-2 justify-end items-end hidden">
     <Sheet>
       <SheetTrigger asChild>
-        <Button className="button-icon">
+        <Button className="button-icon" variant="ghost">
           <EditIcon theme={theme} />
         </Button>
       </SheetTrigger>

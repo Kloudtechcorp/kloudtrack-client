@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
-import { useTheme } from "../theme-provider";
 import { HeaderProps } from "@/types";
 import { useUserContext } from "@/hooks/context/authContext";
 import { Skeleton } from "../ui/skeleton";
 
 const Header = ({ burgerMenu }: HeaderProps) => {
-  const { theme } = useTheme();
   const [data, setData] = useState(false);
   const [time, setTime] = useState("");
   const { user, isLoading } = useUserContext();
@@ -29,14 +26,14 @@ const Header = ({ burgerMenu }: HeaderProps) => {
   return (
     <>
       {isLoading ? (
-        <div className="w-full bg-white dark:bg-[#181819] p-2 h-20 flex flex-col text-center justify-center items-center gap-2">
+        <div className="w-full bg-white dark:bg-[#181819] p-2 h-16 flex flex-col text-center justify-center items-center gap-2">
           <Skeleton className="w-44 h-4" />
           <Skeleton className="w-52 h-5" />
           <Skeleton className="w-64 h-6" />
         </div>
       ) : (
-        <div className="w-full bg-white dark:bg-[#181819] px-2 h-20 flex text-center">
-          <div className="flex px-[1.25rem] gap-2">
+        <div className="w-full bg-white dark:bg-[#181819] px-2 h-16 flex text-center">
+          <div className="flex px-[1.25rem] gap-2 hover:cursor-pointer">
             <img
               src="/assets/icons/burger.svg"
               width={30}

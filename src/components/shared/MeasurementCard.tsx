@@ -5,7 +5,7 @@ const MeasurementCard: React.FC<{
   value: number;
   unit: string;
 }> = ({ label, value, unit }) => (
-  <Card className="w-full h-full">
+  <Card className="w-full h-full ">
     <CardContent className="px-0 p-0 h-full">
       <div className="text-center w-full flex flex-col h-full">
         <div className="border-b border-gray-200 w-full dark:bg-slate-800 py-1">

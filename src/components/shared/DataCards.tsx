@@ -139,7 +139,7 @@ const DataCards = ({
   }
   return (
     <div className={`grid grid-cols-3 w-full h-full gap-3 justify-center`}>
-      <Card className="w-full h-full aspect-[10/9]">
+      <Card className="cardMain">
         <CardContent className="px-0 p-0 h-full">
           <HeatIndex
             heatIndexval={currentweather.heatIndex}
@@ -148,7 +148,7 @@ const DataCards = ({
           />
         </CardContent>
       </Card>
-      <Card className="w-full h-full aspect-[10/9]">
+      <Card className="cardMain">
         <CardContent className="px-0 p-0 h-full">
           <div className="text-center w-full flex flex-col h-full">
             <div className="cardTitleDiv">
@@ -162,7 +162,7 @@ const DataCards = ({
           </div>
         </CardContent>
       </Card>
-      <Card className="w-full h-full aspect-[10/9]">
+      <Card className="cardMain">
         <CardContent className="px-0 p-0 h-full">
           <div className="text-center w-full flex flex-col h-full">
             <div className="cardTitleDiv">
@@ -176,7 +176,7 @@ const DataCards = ({
           </div>
         </CardContent>
       </Card>
-      <Card className="w-full h-full aspect-[10/9]">
+      <Card className="cardMain">
         <CardContent className="px-0 p-0 h-full">
           <div className="text-center w-full flex flex-col h-full">
             <div className="cardTitleDiv">
@@ -190,7 +190,7 @@ const DataCards = ({
           </div>
         </CardContent>
       </Card>
-      <Card className="w-full h-full aspect-[10/9]">
+      <Card className="cardMain">
         <CardContent className="px-0 p-0 h-full">
           <div className="text-center w-full flex flex-col h-full">
             <div className="cardTitleDiv">
@@ -204,7 +204,7 @@ const DataCards = ({
           </div>
         </CardContent>
       </Card>
-      <Card className="w-full h-full aspect-[10/9]">
+      <Card className="cardMain">
         <CardContent className="px-0 p-0 h-full">
           <div className="text-center w-full flex flex-col h-full">
             <div className="cardTitleDiv">
@@ -218,7 +218,7 @@ const DataCards = ({
           </div>
         </CardContent>
       </Card>
-      <Card className="w-full h-full aspect-[10/9]">
+      <Card className="cardMain">
         <CardContent className="px-0 p-0 h-full">
           <UVIndex
             uvIndexVal={currentweather.uvIndex}
@@ -227,7 +227,7 @@ const DataCards = ({
           />
         </CardContent>
       </Card>
-      <Card className="w-full h-full aspect-[10/9]">
+      <Card className="cardMain">
         <CardContent className="px-0 p-0 h-full">
           <div className="text-center w-full flex flex-col h-full">
             <div className="cardTitleDiv">
@@ -241,7 +241,7 @@ const DataCards = ({
           </div>
         </CardContent>
       </Card>
-      <Card className="w-full h-full aspect-[10/9]">
+      <Card className="cardMain">
         <CardContent className="px-0 p-0 h-full">
           <Precipitation
             precipitation={currentweather.precipitation}

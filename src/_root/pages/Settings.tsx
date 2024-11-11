@@ -19,13 +19,13 @@ const Settings = () => {
         </TabsList>
         <TabsContent
           value="change"
-          className="container w-full h-full my-0 bg-muted rounded-md p-2"
+          className="container w-full h-full my-0 rounded-md p-2"
         >
           <ChangePassword />
         </TabsContent>
         <TabsContent
           value="profile"
-          className="container w-full h-full my-0 bg-muted rounded-md p-2"
+          className="container w-full h-full my-0 rounded-md p-2"
         >
           <Profile />
         </TabsContent>

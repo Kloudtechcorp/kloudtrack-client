@@ -37,3 +37,18 @@ export type updateUserPasswordType = {
   password: string;
   confirmPassword: string;
 };
+
+export type updateStationType = {
+  stationName: string;
+  latitude: string;
+  longitude: string;
+  imageLink: string;
+};
+
+export type UpdateStationProps = {
+  name: string;
+  latitude: string;
+  longitude: string;
+  image: string;
+  id: number;
+};

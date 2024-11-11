@@ -139,6 +139,7 @@ export type clmsDashboardType = {
     municipality: string;
     province: string;
     image: string;
+    region: string;
   };
   data: stationCurrentCoastalLevelType;
 };
@@ -188,6 +189,7 @@ export type userProfileTypes = {
     apiKey: string;
     expiresAt: string | null;
     isActive: boolean;
+    title: string;
   }[];
 };
 

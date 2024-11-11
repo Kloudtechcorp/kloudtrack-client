@@ -30,6 +30,7 @@ import React from "react";
 
 const StationList = () => {
   const { data: stationList, isLoading, isError } = useGetStationList();
+  console.log(stationList);
 
   if (isLoading || !stationList) {
     return (

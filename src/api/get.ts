@@ -95,6 +95,7 @@ export const getStationList = async (): Promise<stationsListType[]> => {
     throw new Error("Error fetching station data");
   }
   const data = await response.json();
+  console.log(data);
   return data.stations || [];
 };
 

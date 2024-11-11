@@ -12,7 +12,6 @@ import { formatDateString } from "@/lib/utils";
 import { useGetUserProfile } from "@/hooks/react-query/queries";
 import { useGenerateApi } from "@/hooks/react-query/mutations";
 import { useUserContext } from "@/hooks/context/authContext";
-import { DataTable } from "@/components/shared/DataTable";
 import { columns } from "@/components/shared/Columns";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AddApiKey from "@/components/forms/AddApiKey";
@@ -81,7 +80,19 @@ const Profile = () => {
                   </div>
                 </div>
                 {profile.apiKeys ? (
-                  <DataTable columns={columns} data={profile.apiKeys} />
+                  profile.apiKeys.map((item) => (
+                    <div className="flex flex-row bg-red-200">
+                      <div className="text-black">{item.title}</div>
+                      <div>
+                        {item.expiresAt !== "Never" && item.expiresAt
+                          ? formatDateString(item.expiresAt, "long")
+                          : item.expiresAt}
+                      </div>
+                      <div>{item.isActive}</div>
+                      <div>{item.createdAt}</div>
+                      <div>{item.apiKey}</div>
+                    </div>
+                  ))
                 ) : (
                   <div>No api key generated</div>
                 )}

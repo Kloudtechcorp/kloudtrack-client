@@ -1,9 +1,10 @@
-import StationRegistration from "@/_root/pages/adminpages/StationRegistration";
 import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import EditIcon from "./EditIcon";
 import {
   AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -12,6 +13,7 @@ import {
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
 import DeleteIcon from "./DeleteIcon";
+import UpdateStation from "../forms/UpdateStation";
 
 type AdminControlsProps = {
   theme: string;
@@ -26,9 +28,10 @@ type AdminControlsProps = {
     image: string;
     region: string;
   };
+  id: number;
 };
 
-const AdminControls = ({ theme, station }: AdminControlsProps) => (
+const AdminControls = ({ theme, station, id }: AdminControlsProps) => (
   <div className="lg:flex gap-2 justify-end items-end hidden">
     <Sheet>
       <SheetTrigger asChild>
@@ -37,7 +40,13 @@ const AdminControls = ({ theme, station }: AdminControlsProps) => (
         </Button>
       </SheetTrigger>
       <SheetContent className="min-w-[720px]">
-        <StationRegistration action="UPDATE" station={station} />
+        <UpdateStation
+          id={id}
+          name={station.name}
+          latitude={station.latitude}
+          longitude={station.longitude}
+          image={station.image}
+        />
       </SheetContent>
     </Sheet>
     <AlertDialog>
@@ -55,15 +64,8 @@ const AdminControls = ({ theme, station }: AdminControlsProps) => (
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <Button variant="default">Cancel</Button>
-          <Button
-            variant="destructive"
-            onClick={() => {
-              console.log("delete");
-            }}
-          >
-            Continue
-          </Button>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction>Continue</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

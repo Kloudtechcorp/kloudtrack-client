@@ -89,7 +89,11 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
                 <NavigateIcon theme={theme} />
               </Button>
               {user.role === "ADMIN" && (
-                <AdminControls station={stationData.station} theme={theme} />
+                <AdminControls
+                  theme={theme}
+                  station={stationData.station}
+                  id={id}
+                />
               )}
             </div>
             <div className="flex flex-col pb-3 gap-1">

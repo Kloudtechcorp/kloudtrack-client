@@ -80,7 +80,11 @@ const ClmsCard: React.FC<{ id: number }> = ({ id }) => {
                 <NavigateIcon theme={theme} />
               </Button>
               {isAdmin && (
-                <AdminControls theme={theme} station={stationData.station} />
+                <AdminControls
+                  theme={theme}
+                  station={stationData.station}
+                  id={id}
+                />
               )}
             </div>
             <div className="flex flex-col pb-3 gap-1 h-full">

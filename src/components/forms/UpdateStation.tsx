@@ -12,89 +12,54 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import toast from "react-hot-toast";
-import { useEffect, useState } from "react";
-import { stationSchema } from "@/types/validation";
-import {
-  Select,
-  SelectContent,
-  SelectTrigger,
-  SelectValue,
-  SelectItem,
-} from "@/components/ui/select";
-import {
-  useGetStationTypes,
-  useGetStationRegions,
-  useGetStationProvinces,
-  useGetStationMunicipalities,
-  useGetStationBarangays,
-} from "@/hooks/react-query/queries";
-import { useCreateStation } from "@/hooks/react-query/mutations";
-import { stationStaticType } from "@/types";
+import { updateStationSchema } from "@/types/validation";
+import { toast } from "@/hooks/use-toast";
+import { UpdateStationProps } from "@/types/mutationTypes";
+import { useUpdateStation } from "@/hooks/react-query/mutations";
 
-type StationRegistrationProps = {
-  station?: {
-    name: string;
-    type: string;
-    barangay: string;
-    municipality: string;
-    province: string;
-    latitude: string;
-    longitude: string;
-    image: string;
-    region: string;
-  };
-};
-
-const StationRegistration = ({ station }: StationRegistrationProps) => {
-  const { data: stationTypes } = useGetStationTypes();
-  const { data: regions } = useGetStationRegions();
-
-  const [regionId, setRegionId] = useState<number | null>(null);
-  const [provinceId, setProvinceId] = useState<number | null>(null);
-  const [municipalityId, setMunicipalityId] = useState<number | null>(null);
-
-  const { data: provinces } = useGetStationProvinces(regionId || 0);
-  const { data: municipalities } = useGetStationMunicipalities(provinceId || 0);
-  const { data: barangays } = useGetStationBarangays(municipalityId || 0);
-
-  const { mutateAsync: createStation, isPending } = useCreateStation();
+const UpdateStation = ({
+  name,
+  latitude,
+  longitude,
+  image,
+  id,
+}: UpdateStationProps) => {
+  const { mutateAsync: updateStation, isPending } = useUpdateStation();
   const defaultValues = {
-    stationName: station?.name || "",
-    latitude: station?.latitude || "",
-    stationType: station?.type || "AWS",
-    longitude: station?.latitude || "",
-    region: station?.region || "",
-    psgc: station?.barangay || "",
-    municipality: station?.municipality || "",
-    province: station?.province || "",
-    imageLink: station?.image || "",
+    stationName: name || "",
+    latitude: latitude.toString() || "",
+    longitude: longitude.toString() || "",
+    imageLink: image || "",
   };
-  const form = useForm<z.infer<typeof stationSchema>>({
-    resolver: zodResolver(stationSchema),
+  const navigate = useNavigate();
+
+  const form = useForm<z.infer<typeof updateStationSchema>>({
+    resolver: zodResolver(updateStationSchema),
     defaultValues,
   });
-
-  const clearForm = () => {
+  const clearForms = () => {
     form.reset(defaultValues);
   };
-
-  const onSubmit = async (values: z.infer<typeof stationSchema>) => {
+  const onSubmit = async (values: z.infer<typeof updateStationSchema>) => {
     const updatedValues = {
-      ...values,
-      municipality: parseInt(values.municipality),
-      province: parseInt(values.province),
-      region: parseInt(values.region),
+      name: values.stationName,
+      longitude: values.longitude,
+      latitude: values.latitude,
+      image: values.imageLink,
+      id: id,
     };
-    createStation(updatedValues, {
+    updateStation(updatedValues, {
+      onSuccess: () => {
+        toast({
+          title: "Update Successful!",
+        });
+        navigate("/");
+      },
       onError: () => {
-        clearForm();
+        clearForms();
       },
     });
   };
-
-  console.log("Stations: ", stationTypes);
-  console.log("Regions: ", regions);
 
   return (
     <Form {...form}>
@@ -103,7 +68,7 @@ const StationRegistration = ({ station }: StationRegistrationProps) => {
 
         <span className="flex py-5 text-2xl gap-2 items-center">
           Update station
-          <span className="font-bold"> {station?.name}</span>
+          <span className="font-bold"> {name}</span>
         </span>
 
         <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -121,39 +86,7 @@ const StationRegistration = ({ station }: StationRegistrationProps) => {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="stationType"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Station Type</FormLabel>
-                  <Select
-                    onValueChange={(value) => field.onChange(value)}
-                    value={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a station type" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {stationTypes?.length ? (
-                        stationTypes.map((type) => (
-                          <SelectItem value={type.typeName} key={type.id}>
-                            {type.typeName}
-                          </SelectItem>
-                        ))
-                      ) : (
-                        <SelectItem value="none">
-                          No Station Type Found
-                        </SelectItem>
-                      )}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage className="shad-form_message" />
-                </FormItem>
-              )}
-            />
+
             <div className="flex flex-row gap-2 w-full">
               <FormField
                 control={form.control}
@@ -182,159 +115,6 @@ const StationRegistration = ({ station }: StationRegistrationProps) => {
                 )}
               />
             </div>
-
-            <FormField
-              control={form.control}
-              name="region"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Region</FormLabel>
-                  <Select
-                    onValueChange={(value) => {
-                      setRegionId(parseInt(value));
-                      setProvinceId(null);
-                      setMunicipalityId(null);
-                      field.onChange(value);
-                    }}
-                    value={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a region" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {regions?.length ? (
-                        regions.map((region) => (
-                          <SelectItem value={String(region.id)} key={region.id}>
-                            {region.region}
-                          </SelectItem>
-                        ))
-                      ) : (
-                        <SelectItem value="none">No Regions Found</SelectItem>
-                      )}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage className="shad-form_message" />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="province"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Province</FormLabel>
-                  <Select
-                    onValueChange={(value) => {
-                      setProvinceId(parseInt(value));
-                      setMunicipalityId(null);
-                      field.onChange(value);
-                    }}
-                    value={field.value}
-                    disabled={!regionId}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a province" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {provinces?.length ? (
-                        provinces.map((province) => (
-                          <SelectItem
-                            value={String(province.id)}
-                            key={province.id}
-                          >
-                            {province.province}
-                          </SelectItem>
-                        ))
-                      ) : (
-                        <SelectItem value="none">No Provinces Found</SelectItem>
-                      )}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage className="shad-form_message" />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="municipality"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Municipality</FormLabel>
-                  <Select
-                    onValueChange={(value) => {
-                      setMunicipalityId(parseInt(value));
-                      field.onChange(value);
-                    }}
-                    value={field.value}
-                    disabled={!provinceId}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a municipality" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {municipalities?.length ? (
-                        municipalities.map((municipality) => (
-                          <SelectItem
-                            value={String(municipality.id)}
-                            key={municipality.id}
-                          >
-                            {municipality.municipality}
-                          </SelectItem>
-                        ))
-                      ) : (
-                        <SelectItem value="none">
-                          No Municipalities Found
-                        </SelectItem>
-                      )}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage className="shad-form_message" />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="psgc"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Barangay</FormLabel>
-                  <Select
-                    onValueChange={(value) => {
-                      field.onChange(value);
-                    }}
-                    value={field.value}
-                    disabled={!municipalityId}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a barangay" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {barangays?.length ? (
-                        barangays.map((barangay) => (
-                          <SelectItem
-                            value={String(barangay.psgc)}
-                            key={barangay.psgc}
-                          >
-                            {barangay.barangay}
-                          </SelectItem>
-                        ))
-                      ) : (
-                        <SelectItem value="none">No Barangays Found</SelectItem>
-                      )}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage className="shad-form_message" />
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
               name="imageLink"
@@ -364,4 +144,4 @@ const StationRegistration = ({ station }: StationRegistrationProps) => {
   );
 };
 
-export default StationRegistration;
+export default UpdateStation;

@@ -6,6 +6,7 @@ import AddPsgc from "./adminpages/AddPsgc";
 import AddStationType from "./adminpages/AddStationType";
 import NotFound from "@/components/shared/NotFound";
 import { Card } from "@/components/ui/card";
+import StationList from "./adminpages/StationList";
 // import StationList from "./adminpages/StationList";
 
 const AdminSettings = () => {
@@ -21,7 +22,7 @@ const AdminSettings = () => {
         <TabsTrigger value="psgc">Add PSGC</TabsTrigger>
         <TabsTrigger value="stationType">Add Station Type</TabsTrigger>
         <TabsTrigger value="station">Station Registration</TabsTrigger>
-        {/* <TabsTrigger value="list">Station List</TabsTrigger> */}
+        <TabsTrigger value="list">Station List</TabsTrigger>
       </TabsList>
       <TabsContent value="account" className="container px-0">
         <Card>
@@ -40,12 +41,12 @@ const AdminSettings = () => {
       </TabsContent>
       <TabsContent value="station" className="container px-0">
         <Card>
-          <StationRegistration action="CREATE" />
+          <StationRegistration />
         </Card>
       </TabsContent>
-      {/* <TabsContent value="list" className="container">
+      <TabsContent value="list" className="container">
         <StationList />
-      </TabsContent> */}
+      </TabsContent>
     </Tabs>
   ) : (
     <div className="rounded-xl bg-[#F6F8FC] dark:bg-secondary w-full h-full">

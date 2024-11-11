@@ -40,6 +40,13 @@ export const stationSchema = z.object({
   imageLink: z.string({ required_error: "province is required" }),
 });
 
+export const updateStationSchema = z.object({
+  stationName: z.string({ required_error: "station name is required" }),
+  latitude: z.string({ required_error: "latitude is required" }),
+  longitude: z.string({ required_error: "longitude is required" }),
+  imageLink: z.string({ required_error: "province is required" }),
+});
+
 export const passwordSchema = z
   .object({
     currentPassword: z

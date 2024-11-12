@@ -18,7 +18,7 @@ export const triggerWarningToast = ({
   navigate,
   dashboardType,
 }: WarningToastProps) => {
-  let toastId: string;
+  let toastId: string | number;
 
   const toasterDetailsView = (
     <div className="flex bg-red-400 p-4 w-full">
@@ -38,7 +38,7 @@ export const triggerWarningToast = ({
         <Button
           className="flex top-2 right-4 bg-slate-500 h-4/5 align-middle"
           onClick={() => {
-            toast.dismiss(toastId);
+            toast.dismiss();
             navigate(`/${stationName}`);
           }}
         >

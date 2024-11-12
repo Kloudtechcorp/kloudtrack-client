@@ -58,7 +58,7 @@ export function UVIndex({
           message: `${warning.current}`,
           stationName: stationName,
           dashboardType: dashboardType,
-
+          colorClass: colorClass,
           navigate,
         });
         hasShownToastRef.current = true;
@@ -74,6 +74,7 @@ export function UVIndex({
           message: `${warning.current}`,
           stationName: stationName,
           dashboardType: dashboardType,
+          colorClass: colorClass,
           navigate,
         });
         hasShownToastRef.current = true;

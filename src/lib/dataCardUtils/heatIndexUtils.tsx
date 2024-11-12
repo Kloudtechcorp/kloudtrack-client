@@ -56,10 +56,10 @@ export function HeatIndex({
       if (!hasShownToastRef.current) {
         triggerWarningToast({
           title: `High heat Index detected at ${stationName}!`,
-
           message: `${warning.current}`,
           stationName: stationName,
           dashboardType: dashboardType,
+          colorClass: colorClass,
           navigate,
         });
         hasShownToastRef.current = true;
@@ -74,6 +74,7 @@ export function HeatIndex({
           message: `${warning.current}`,
           stationName: stationName,
           dashboardType: dashboardType,
+          colorClass: colorClass,
           navigate,
         });
 

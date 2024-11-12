@@ -50,7 +50,7 @@ export function Precipitation({
           message: `${warning.current}`,
           stationName: stationName,
           dashboardType: dashboardType,
-
+          colorClass: colorClass,
           navigate,
         });
 
@@ -68,7 +68,7 @@ export function Precipitation({
           message: `${warning.current}`,
           stationName: stationName,
           dashboardType: dashboardType,
-
+          colorClass: colorClass,
           navigate,
         });
 
@@ -87,7 +87,7 @@ export function Precipitation({
           message: `${warning.current}`,
           stationName: stationName,
           dashboardType: dashboardType,
-
+          colorClass: colorClass,
           navigate,
         });
 

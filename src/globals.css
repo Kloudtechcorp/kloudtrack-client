@@ -144,154 +144,6 @@
   }
 }
 
-.compass {
-  display: block;
-  width: var(--compass-size, 80px);
-  height: var(--compass-size, 80px);
-  border-radius: 100%;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-  position: relative;
-  color: #555;
-  text-shadow: 1px 1px 1px white;
-
-  &:before {
-    font-weight: bold;
-    position: absolute;
-    text-align: center;
-    /* content: "N"; */
-    font-size: calc(var(--compass-size) * 0.175);
-    /* Adjust based on size */
-    left: 25%;
-    width: 50%;
-    top: 2px;
-  }
-
-  .direction {
-    height: 100%;
-    width: 100%;
-    display: block;
-    background: #f2f6f5;
-    background: -moz-linear-gradient(top, #f2f6f5 0%, #cbd5d6 100%);
-    background: -webkit-gradient(linear,
-        left top,
-        left bottom,
-        color-stop(0%, #f2f6f5),
-        color-stop(100%, #cbd5d6));
-    background: -webkit-linear-gradient(top, #f2f6f5 0%, #cbd5d6 100%);
-    background: -o-linear-gradient(top, #f2f6f5 0%, #cbd5d6 100%);
-    border-radius: 100%;
-
-    p {
-      text-align: center;
-      margin: 0;
-      padding: 0;
-      position: absolute;
-      top: 45%;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      line-height: var(--compass-size);
-      display: block;
-      margin-top: calc(var(--compass-size) * -0.5625);
-      font-size: calc(var(--compass-size) * 0.35);
-      font-weight: bold;
-      color: black;
-
-      span {
-        display: block;
-        line-height: normal;
-        margin-top: calc(var(--compass-size) * -0.3);
-        font-size: calc(var(--compass-size) * 0.1375);
-        /* text-transform: uppercase; */
-        font-weight: normal;
-      }
-    }
-  }
-
-  .arrow {
-    width: 100%;
-    height: 100%;
-    display: block;
-    position: absolute;
-    top: 0;
-
-    &:after {
-      content: "";
-      width: 0;
-      height: 0;
-      border-left: calc(var(--compass-size) * 0.125) solid transparent;
-      border-right: calc(var(--compass-size) * 0.125) solid transparent;
-      border-bottom: calc(var(--compass-size) * 0.35) solid rgb(255, 208, 0);
-      position: absolute;
-      box-shadow: 0 0 10 rgba(0, 0, 0, 0.2);
-      top: calc(var(--compass-size) * -0.3);
-      left: 45%;
-      margin-left: calc(var(--compass-size) * -0.0625);
-      z-index: 99;
-    }
-
-    &.NNE {
-      transform: rotate(22.5deg);
-    }
-
-    &.NE {
-      transform: rotate(45deg);
-    }
-
-    &.ENE {
-      transform: rotate(67.5deg);
-    }
-
-    &.E {
-      transform: rotate(90deg);
-    }
-
-    &.ESE {
-      transform: rotate(112.5deg);
-    }
-
-    &.SE {
-      transform: rotate(135deg);
-    }
-
-    &.SSE {
-      transform: rotate(157.5deg);
-    }
-
-    &.S {
-      transform: rotate(180deg);
-    }
-
-    &.SSW {
-      transform: rotate(202.5deg);
-    }
-
-    &.SW {
-      transform: rotate(-135deg);
-    }
-
-    &.WSW {
-      transform: rotate(-114.5deg);
-    }
-
-    &.W {
-      transform: rotate(-90deg);
-    }
-
-    &.WNW {
-      transform: rotate(-69.5deg);
-    }
-
-    &.NW {
-      transform: rotate(-45deg);
-    }
-
-    &.NNW {
-      transform: rotate(-24.5deg);
-    }
-  }
-}
-
 .mainContainer {
   width: 100%;
   height: calc(100vh-5rem);
@@ -329,8 +181,15 @@
   @apply border-2 border-transparent ease-in-out duration-300;
 }
 
+.stationDetailsDiv {
+  @apply flex flex-col gap-3 justify-between w-1/2;
+}
+.stationDataDiv {
+  @apply flex items-center gap-2;
+}
+
 .cardMain {
-  @apply w-full h-full aspect-[3/2];
+  @apply w-full h-full aspect-[2/1];
 }
 
 .cardTitle {
@@ -338,9 +197,12 @@
 }
 
 .cardTitleDiv {
-  @apply border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1;
+  @apply w-full py-1;
 }
 
-.cardText {
-  @apply font-bold xl:text-4xl lg:text-3xl md:text-xl sm:text-sm;
+.weatherDataTitle {
+  @apply xl:text-xl lg:text-lg md:text-base sm:text-xs;
+}
+.weatherDataText {
+  @apply xl:text-4xl lg:text-3xl md:text-xl sm:text-sm flex flex-col font-bold;
 }

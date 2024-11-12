@@ -51,7 +51,7 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
   return (
     <Card className="cardContainer flex flex-row">
       <CardContent className="flex flex-col lg:flex-row w-full p-0 gap-2">
-        <div className="flex flex-col gap-3 justify-between w-1/2">
+        <div className="stationDetailsDiv">
           <div className="flex flex-col px-2 ">
             <div className="flex items-center">
               <CardTitle className="w-full">
@@ -88,7 +88,7 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
         </div>
         {stationData.data ? (
           <div className="flex flex-col gap-2 w-full">
-            <div className="flex items-center gap-2">
+            <div className="stationDataDiv">
               <span className="w-full font-medium text-lg ">
                 Current Weather Conditions as of{" "}
                 {formatDateString(stationData.data.recordedAt, "long")}

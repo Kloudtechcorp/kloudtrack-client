@@ -245,6 +245,7 @@ const Map = () => {
                   <img src={"/assets/icons/close.svg"} className="invert" />
                 </Button>
               </div>
+
               {(stationDetails.type === "AWS" && (
                 <AwsMapCard data={awsData} />
               )) ||

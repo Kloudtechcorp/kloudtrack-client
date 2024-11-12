@@ -1,4 +1,13 @@
-import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
+// variableGraph.tsx
+import {
+  CartesianGrid,
+  Line,
+  LineChart,
+  XAxis,
+  YAxis,
+  Bar,
+  BarChart,
+} from "recharts";
 import {
   ChartConfig,
   ChartContainer,
@@ -7,7 +16,6 @@ import {
 } from "@/components/ui/chart";
 import { TableGraphCardType } from "@/types/queryTypes";
 import PuffLoader from "react-spinners/PuffLoader";
-import { R } from "node_modules/@tanstack/react-query-devtools/build/modern/ReactQueryDevtools-Cn7cKi7o";
 import { useGetDataset } from "@/hooks/react-query/queries";
 
 const chartConfig = {
@@ -56,32 +64,55 @@ const VariableGraph = ({
   return (
     <div className="w-full rounded-lg p-1 border-[#545454] m-0 flex items-center justify-center">
       <ChartContainer config={chartConfig} className="h-60 w-full m-0 p-0">
-        <LineChart
-          accessibilityLayer
-          data={graphData}
-          margin={{
-            left: 2,
-            right: 12,
-          }}
-        >
-          <CartesianGrid vertical={false} />
-          <XAxis
-            dataKey="datetime"
-            tickLine={true}
-            axisLine={true}
-            tickMargin={10}
-            tickFormatter={(value) => sliceDetails(repeat, value)}
-          />
-          <YAxis />
-          <ChartTooltip cursor={true} content={<ChartTooltipContent />} />
-          <Line
-            dataKey="data"
-            type="natural"
-            stroke="var(--color-desktop)"
-            strokeWidth={3}
-            dot={true}
-          />
-        </LineChart>
+        {weatherData === "precipitation" ? (
+          <BarChart
+            accessibilityLayer
+            data={graphData}
+            margin={{
+              left: 2,
+              right: 12,
+            }}
+          >
+            <CartesianGrid vertical={false} />
+            <XAxis
+              dataKey="datetime"
+              tickLine={true}
+              axisLine={true}
+              tickMargin={10}
+              tickFormatter={(value) => sliceDetails(repeat, value)}
+            />
+            <YAxis />
+            <ChartTooltip cursor={true} content={<ChartTooltipContent />} />
+            <Bar dataKey="data" fill="#fbd008" />
+          </BarChart>
+        ) : (
+          <LineChart
+            accessibilityLayer
+            data={graphData}
+            margin={{
+              left: 2,
+              right: 12,
+            }}
+          >
+            <CartesianGrid vertical={false} />
+            <XAxis
+              dataKey="datetime"
+              tickLine={true}
+              axisLine={true}
+              tickMargin={10}
+              tickFormatter={(value) => sliceDetails(repeat, value)}
+            />
+            <YAxis />
+            <ChartTooltip cursor={true} content={<ChartTooltipContent />} />
+            <Line
+              dataKey="data"
+              type="linear"
+              stroke="#fbd008"
+              strokeWidth={3}
+              dot={true}
+            />
+          </LineChart>
+        )}
       </ChartContainer>
     </div>
   );

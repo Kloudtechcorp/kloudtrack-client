@@ -43,43 +43,13 @@ const ClmsCard: React.FC<{ id: number }> = ({ id }) => {
   return (
     <Card className="cardContainer flex flex-row">
       <CardContent className="flex flex-col lg:flex-row w-full p-0 gap-2">
-        <div className="flex flex-col justify-between w-full gap-3 px-2">
-          <div>
-            <CardTitle className="py-2">{stationData.station.name}</CardTitle>
-            <hr className="h-[0.25rem] bg-black" />
-            <div className="text-base md:text-lg xl:text-xl font-semibold">
-              {stationType(stationData.station.type)}
-            </div>
-            <div>{`${stationData.station.barangay}, ${stationData.station.municipality}, ${stationData.station.province}`}</div>
-            <div className="text-sm">
-              {stationData.station.latitude}, {stationData.station.longitude}
-            </div>
-          </div>
-          <div className="hidden lg:block h-full pb-3">
-            <img
-              src={stationData.station.image}
-              alt="Station"
-              className="rounded-md object-cover h-full flex self-center"
-            />
-          </div>
-        </div>
-
-        {!stationData.data ? (
-          <NoData />
-        ) : (
-          <div className="flex flex-col gap-2 w-full">
-            <div className="px-2 py-1 flex items-center gap-2">
-              <span className="w-full font-normal text-lg">
-                Current Weather Conditions as of{" "}
-                {formatDateString(stationData.data.recordedAt, "long")}
-              </span>
-              <Button
-                className="button-icon"
-                onClick={() => navigate(`/${stationData.station.name}`)}
-              >
-                <NavigateIcon theme={theme} />
-              </Button>
-              {isAdmin && (
+        <div className="stationDetailsDiv">
+          <div className="flex flex-col px-2 ">
+            <div className="flex items-center">
+              <CardTitle className="w-full">
+                {stationData.station.name}
+              </CardTitle>
+              {user.role === "ADMIN" && (
                 <AdminControls
                   theme={theme}
                   station={stationData.station}
@@ -87,18 +57,61 @@ const ClmsCard: React.FC<{ id: number }> = ({ id }) => {
                 />
               )}
             </div>
-            <div className="flex flex-col pb-3 gap-1 h-full">
-              <MeasurementCard
-                label="Distance"
-                value={stationData.data.distance}
-                unit="cm"
+            <hr className="h-[0.25rem] bg-black" />
+            <div className="flex flex-col">
+              <span className="text-base md:text-lg xl:text-xl font-semibold">
+                {stationType(stationData.station.type)}
+              </span>
+              <span className="text-base">{`${stationData.station.barangay}, ${stationData.station.municipality}, ${stationData.station.province}`}</span>
+              <span className="text-sm">
+                {stationData.station.latitude}, {stationData.station.longitude}
+              </span>
+            </div>
+          </div>
+          {stationData.station.image && (
+            <div className="h-full px-2 pb-3 hidden lg:block">
+              <img
+                src={stationData.station.image}
+                className="rounded-md object-cover h-full"
+                alt="Station"
               />
-              <div className="flex gap-2 w-full">
+            </div>
+          )}
+        </div>
+
+        {!stationData.data ? (
+          <div className="flex flex-col gap-2 w-full items-center justify-center">
+            <NoData />
+          </div>
+        ) : (
+          <div className="flex flex-col gap-2 w-full">
+            <div className="stationDataDiv">
+              <span className="w-full font-normal text-lg">
+                Current Weather Conditions as of{" "}
+                {formatDateString(stationData.data.recordedAt, "long")}
+              </span>
+              <Button
+                className="button-icon"
+                onClick={() => navigate(`/${stationData.station.name}`)}
+                variant="ghost"
+              >
+                <NavigateIcon theme={theme} />
+              </Button>
+            </div>
+            <div className="flex flex-col pb-3 gap-2 h-full w-full">
+              <div className="flex h-full w-full gap-2">
+                <MeasurementCard
+                  label="Distance"
+                  value={stationData.data.distance}
+                  unit="cm"
+                />
                 <MeasurementCard
                   label="Temperature"
                   value={stationData.data.temperature}
                   unit="C°"
                 />
+              </div>
+              <div className="flex h-full w-full gap-2">
                 <MeasurementCard
                   label="Air Pressure"
                   value={stationData.data.pressure}

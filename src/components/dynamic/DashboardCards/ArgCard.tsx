@@ -11,14 +11,13 @@ import NoData from "@/components/shared/NoData";
 import VariableGraph from "../VariableGraph";
 import NavigateIcon from "@/components/shared/NavigateIcon";
 import AdminControls from "@/components/shared/AdminControls";
-import MeasurementCard from "@/components/shared/MeasurementCard";
+import MeasurementCard2 from "@/components/shared/MeasurementCard2";
 
 const ArgCard: React.FC<{ id: number }> = ({ id }) => {
   const navigate = useNavigate();
   const { data: stationData, isLoading, isError } = useGetArgData(id);
   const { theme } = useTheme();
   const { user } = useUserContext();
-  const isAdmin = user.role === "ADMIN";
 
   if (isLoading || !stationData) {
     return (
@@ -49,27 +48,40 @@ const ArgCard: React.FC<{ id: number }> = ({ id }) => {
   return (
     <Card className="cardContainer flex flex-row">
       <CardContent className="flex flex-col lg:flex-row w-full p-0 gap-2">
-        <div className="flex flex-col gap-3 justify-between w-full px-2">
-          <div>
-            <CardTitle className="pt-3">{stationData.station.name}</CardTitle>
-            <hr className="h-[0.25rem] bg-black mt-4" />
+        <div className="stationDetailsDiv">
+          <div className="flex flex-col px-2 ">
+            <div className="flex items-center">
+              <CardTitle className="w-full">
+                {stationData.station.name}
+              </CardTitle>
+              {user.role === "ADMIN" && (
+                <AdminControls
+                  theme={theme}
+                  station={stationData.station}
+                  id={id}
+                />
+              )}
+            </div>
+            <hr className="h-[0.25rem] bg-black" />
             <div className="flex flex-col">
               <span className="text-base md:text-lg xl:text-xl font-semibold">
                 {stationType(stationData.station.type)}
               </span>
-              <span>{`${stationData.station.barangay}, ${stationData.station.municipality}, ${stationData.station.province}`}</span>
+              <span className="text-base">{`${stationData.station.barangay}, ${stationData.station.municipality}, ${stationData.station.province}`}</span>
               <span className="text-sm">
                 {stationData.station.latitude}, {stationData.station.longitude}
               </span>
             </div>
           </div>
-          <div className="h-full pb-3 hidden lg:block">
-            <img
-              src={stationData.station.image}
-              className="rounded-md object-cover h-full"
-              alt="Station"
-            />
-          </div>
+          {stationData.station.image && (
+            <div className="h-full px-2 pb-3 hidden lg:block">
+              <img
+                src={stationData.station.image}
+                className="rounded-md object-cover h-full"
+                alt="Station"
+              />
+            </div>
+          )}
         </div>
 
         {!stationData.data ? (
@@ -78,44 +90,33 @@ const ArgCard: React.FC<{ id: number }> = ({ id }) => {
           </div>
         ) : (
           <div className="flex flex-col gap-2 w-full">
-            <div className="px-2 py-1 flex items-center gap-2">
+            <div className="stationDataDiv">
               <span className="w-full font-normal text-lg">
                 Current Weather Conditions as of{" "}
                 {formatDateString(stationData.data.recordedAt, "long")}
               </span>
-              <div className="flex border rounded-md gap-1">
-                <Button
-                  className="button-icon"
-                  onClick={() => navigate(`/${stationData.station.name}`)}
-                  variant="ghost"
-                >
-                  <NavigateIcon theme={theme} />
-                </Button>
-                {isAdmin && (
-                  <AdminControls
-                    theme={theme}
-                    station={stationData.station}
-                    id={id}
-                  />
-                )}
-              </div>
+              <Button
+                className="button-icon"
+                onClick={() => navigate(`/${stationData.station.name}`)}
+                variant="ghost"
+              >
+                <NavigateIcon theme={theme} />
+              </Button>
             </div>
-            <Card>
-              <MeasurementCard
+            <Card className="flex flex-col">
+              <MeasurementCard2
                 label="Precipitation"
                 value={stationData.data.precipitation}
                 unit="mm"
               />
-              <div className="w-full h-full">
-                <VariableGraph
-                  stationId={id}
-                  weatherData="precipitation"
-                  repeat="minute"
-                  range={15}
-                  key={1}
-                  type={"arg"}
-                />
-              </div>
+              <VariableGraph
+                stationId={id}
+                weatherData="precipitation"
+                repeat="minute"
+                range={15}
+                key={1}
+                type={"arg"}
+              />
             </Card>
           </div>
         )}

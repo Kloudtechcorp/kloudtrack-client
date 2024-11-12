@@ -103,10 +103,8 @@ export function Precipitation({
 
   return (
     <div className="text-center w-full flex flex-col h-full">
-      <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-        <span className="font-medium xl:text-xl lg:text-lg md:text-base sm:text-xs">
-          Precipitation
-        </span>
+      <div className="cardTitleDiv">
+        <span className="weatherDataTitle">Precipitation</span>
       </div>
 
       <div className={`text-xl flex h-full items-center justify-center `}>
@@ -115,10 +113,10 @@ export function Precipitation({
             <TooltipTrigger asChild>
               <div className="font-medium text-xl flex h-full items-center flex-row justify-center gap-2 ">
                 <div className="flex flex-col  w-full">
-                  <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm flex flex-col">
+                  <span className="weatherDataText">
                     {(Math.round(precipitation * 100) / 100).toFixed(1)} mm
                   </span>
-                  <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm flex flex-col">
+                  <span className="weatherDataText">
                     {(Math.round(pastHourPrecip * 100) / 100).toFixed(1)} mm/hr
                   </span>
                 </div>

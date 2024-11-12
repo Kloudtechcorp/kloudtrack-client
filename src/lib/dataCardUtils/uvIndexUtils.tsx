@@ -89,10 +89,8 @@ export function UVIndex({
 
   return (
     <div className="text-center w-full flex flex-col h-full">
-      <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-        <span className="font-medium xl:text-xl lg:text-lg md:text-base sm:text-xs">
-          UV Index
-        </span>
+      <div className="cardTitleDiv">
+        <span className="weatherDataTitle">UV Index</span>
       </div>
 
       <div className={`text-xl flex h-full items-center justify-center `}>
@@ -100,7 +98,7 @@ export function UVIndex({
           <Tooltip>
             <TooltipTrigger asChild>
               <div className="font-medium flex items-center">
-                <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
+                <span className="weatherDataText">
                   {Math.round(uvIndexVal * 100) / 100}
                 </span>
                 {hasWarning.current && (

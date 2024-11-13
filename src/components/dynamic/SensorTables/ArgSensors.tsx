@@ -39,6 +39,7 @@ import {
 } from "@/hooks/react-query/queries";
 import { rainGaugeSensorsType } from "@/types";
 import { checkBadge } from "@/lib/helper";
+import { formatDateString } from "@/lib/utils";
 
 export function ArgSensors() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -73,13 +74,19 @@ export function ArgSensors() {
     },
     {
       accessorKey: "rainGauge",
-      header: "Rain Gauge",
+      header: "Slave",
       cell: ({ row }) => <div>{checkBadge(row.getValue("rainGauge"))}</div>,
     },
     {
       accessorKey: "recordedAt",
       header: "Date Recorded",
-      cell: ({ row }) => <div>{row.getValue("recordedAt")}</div>,
+      cell: ({ row }) => (
+        <div>
+          {row.getValue("recordedAt")
+            ? formatDateString(row.getValue("recordedAt"), "long")
+            : "No date"}
+        </div>
+      ),
     },
   ];
 

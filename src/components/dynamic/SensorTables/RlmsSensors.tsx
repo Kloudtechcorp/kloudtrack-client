@@ -36,6 +36,7 @@ import {
 import { useGetRlmsSensors } from "@/hooks/react-query/queries";
 import { riverLevelSensorsType } from "@/types";
 import { checkBadge } from "@/lib/helper";
+import { formatDateString } from "@/lib/utils";
 
 export function RlmsSensors() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -76,7 +77,13 @@ export function RlmsSensors() {
     {
       accessorKey: "recordedAt",
       header: "Date Recorded",
-      cell: ({ row }) => <div>{row.getValue("recordedAt")}</div>,
+      cell: ({ row }) => (
+        <div>
+          {row.getValue("recordedAt")
+            ? formatDateString(row.getValue("recordedAt"), "long")
+            : "No date"}
+        </div>
+      ),
     },
   ];
 

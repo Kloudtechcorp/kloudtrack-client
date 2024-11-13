@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useEffect, useCallback, useRef, useState } from "react";
 import {
   Tooltip,
   TooltipContent,
@@ -22,10 +22,14 @@ export function HeatIndex({
 
   const roundedHeatIndex = Math.round(heatIndexval * 100) / 100;
 
-  const [colorClass, setColorClass] = useState("");
-  // const [warning, setWarning] = useState<string | null>("aaaaa");
+  const colorClass = useRef<string>("");
+
+  const [hasWarning, setHasWarning] = useState<boolean>(false);
+  // const [hasShownToastRef, setHasShownToastRef] = useState<boolean>(false);
   const hasShownToastRef = useRef(false);
-  const hasWarning = useRef(false);
+
+
+
   const warning = useRef<string | null>("");
 
   const handleSetWarning = async (warningMessage: string) => {
@@ -33,23 +37,22 @@ export function HeatIndex({
   };
 
   const determineWarning = useCallback(() => {
+
     if (roundedHeatIndex < 27) {
-      setColorClass("text-green-500");
+      colorClass.current ="text-green-500";
       handleSetWarning("Caution: Stay hydrated!");
-      hasShownToastRef.current = false;
-      hasWarning.current = false;
+      hasShownToastRef.current = false;      setHasWarning(false);
     } else if (roundedHeatIndex >= 27 && roundedHeatIndex <= 32) {
-      setColorClass("text-green-500");
+      colorClass.current ="text-green-500";
       handleSetWarning("Caution: Stay hydrated");
-      hasShownToastRef.current = false;
-      hasWarning.current = false;
+      hasShownToastRef.current = false;      setHasWarning(false);
     } else if (roundedHeatIndex > 32 && roundedHeatIndex <= 41) {
-      setColorClass("text-[#ffff01]");
+      colorClass.current ="text-[#ffff01]";
       handleSetWarning("Extreme Caution: Avoid prolonged exertion!");
-      hasShownToastRef.current = false;
-      hasWarning.current = false;
+      hasShownToastRef.current = false;      setHasWarning(false);
     } else if (roundedHeatIndex > 41 && roundedHeatIndex <= 54) {
-      setColorClass("text-[#f79647]");
+      colorClass.current ="text-[#f79647]";
+
       handleSetWarning(
         "Danger: High risk of heat-related illnesses in " + stationName
       );
@@ -59,14 +62,14 @@ export function HeatIndex({
           message: `${warning.current}`,
           stationName: stationName,
           dashboardType: dashboardType,
-          colorClass: colorClass,
+          colorClass: colorClass.current,
           navigate,
         });
         hasShownToastRef.current = true;
-        hasWarning.current = true;
+        setHasWarning(true);
       }
     } else if (roundedHeatIndex > 54) {
-      setColorClass("text-[#ff3300]");
+      colorClass.current ="text-[#ff3300]";
       handleSetWarning("Extreme Danger: Heatstroke is imminent!");
       if (!hasShownToastRef.current) {
         triggerWarningToast({
@@ -74,15 +77,16 @@ export function HeatIndex({
           message: `${warning.current}`,
           stationName: stationName,
           dashboardType: dashboardType,
-          colorClass: colorClass,
+          colorClass: colorClass.current,
           navigate,
         });
 
         hasShownToastRef.current = true;
-        hasWarning.current = true;
+        setHasWarning(true);
+
       }
     }
-  }, [navigate, dashboardType, roundedHeatIndex, stationName]);
+  }, [roundedHeatIndex, stationName, dashboardType, navigate]);
 
   useEffect(() => {
     determineWarning();
@@ -102,8 +106,8 @@ export function HeatIndex({
                 <span className="weatherDataText">
                   {roundedHeatIndex} &deg;C
                 </span>
-                {hasWarning.current && (
-                  <AlertIcon className={`${colorClass}`} />
+                {hasWarning && (
+                  <AlertIcon className={`${colorClass.current}`} />
                 )}
               </div>
             </TooltipTrigger>

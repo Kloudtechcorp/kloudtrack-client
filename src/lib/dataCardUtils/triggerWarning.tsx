@@ -20,50 +20,55 @@ export const triggerWarningToast = ({
 }: WarningToastProps) => {
   let toastId: string | number;
 
+
+  console.log( "color class is " , colorClass);
   const toasterDetailsView = (
-    <div className="flex bg-red-400 p-4 w-full">
-      <div className="flex w-4/5 flex-col">
-        <span className={`bg-blue-400 ${colorClass} p-2 rounded`}>{title}</span>
-        <span className="bg-green-400 p-2 rounded">{message}</span>
-      </div>
-      <div className="flex flex-col w-1/5 bg-pink-200">
+    <div className="flex w-full h-full">
         <Button
-          className="flex justify-end top-2 right-4 bg-emerald-500 h-1/5"
+          className="flex justify-end h-1/5 bg-transparent text-primary absolute top-0 right-0 hover:bg-slate-200 mb-4"
           onClick={() => {
             toast.dismiss(toastId);
           }}
-        >
+        > 
           X
         </Button>
-        <Button
-          className="flex top-2 right-4 bg-slate-500 h-4/5 align-middle"
-          onClick={() => {
-            toast.dismiss();
-            navigate(`/${stationName}`);
-          }}
-        >
-          View
-        </Button>
+      <div className="flex w-4/5 flex-col">
+        <span className={`flex self-start ${colorClass}`}>{title}</span>
+        <span className="flex rounded self-start text-muted-foreground">{message}</span>
       </div>
+  
+
+        <div className="flex w-1/5">
+          <Button
+          className={`flex self-center bg-slate-200 text-primary border border-primary`}
+            onClick={() => {
+              toast.dismiss();
+              navigate(`/${stationName}`);
+            }}
+          >
+            View
+          </Button>
+        </div>
     </div>
   );
 
   const toasterDetailsNoView = (
-    <div className="flex bg-red-400 p-4 w-full">
+    <div className="flex w-full h-full">
       <div className="flex w-4/5 flex-col">
-        <span className={`bg-blue-400 ${colorClass} p-2 rounded`}>{title}</span>
-        <span className="bg-green-400 p-2 rounded">{message}</span>
+        <span className={`flex self-start ${colorClass}`}>{title}</span>
+        <span className="flex rounded self-start text-muted-foreground">{message}</span>
       </div>
-      <div className="flex flex-col w-1/5 bg-pink-200">
-        <Button
-          className="flex justify-end top-2 right-4 bg-emerald-500 h-1/5"
-          onClick={() => {
-            toast.dismiss(toastId);
-          }}
-        >
-          X
-        </Button>
-      </div>
+  
+        <div className="flex w-1/5  h-full item-center">
+          <Button
+          className={`flex self-center bg-slate-200 text-primary border border-primary`}
+            onClick={() => {
+              toast.dismiss(toastId);
+            }}
+          >
+            Close
+          </Button>
+        </div>
     </div>
   );
 

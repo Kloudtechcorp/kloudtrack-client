@@ -12,6 +12,12 @@ import VariableGraph from "../VariableGraph";
 import NavigateIcon from "@/components/shared/NavigateIcon";
 import AdminControls from "@/components/shared/AdminControls";
 import MeasurementCard2 from "@/components/shared/MeasurementCard2";
+import {
+  TooltipContent,
+  Tooltip,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const ArgCard: React.FC<{ id: number }> = ({ id }) => {
   const navigate = useNavigate();
@@ -95,15 +101,24 @@ const ArgCard: React.FC<{ id: number }> = ({ id }) => {
                 Current Weather Conditions as of{" "}
                 {formatDateString(stationData.data.recordedAt, "long")}
               </span>
-              <Button
-                className="button-icon"
-                onClick={() => navigate(`/${stationData.station.name}`)}
-                variant="ghost"
-              >
-                <NavigateIcon theme={theme} />
-              </Button>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      className="button-icon"
+                      onClick={() => navigate(`/${stationData.station.name}`)}
+                      variant="ghost"
+                    >
+                      <NavigateIcon theme={theme} />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Move to station</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
-            <Card className="flex flex-col">
+            <Card className="flex flex-col h-full mb-3">
               <MeasurementCard2
                 label="Precipitation"
                 value={stationData.data.precipitation}

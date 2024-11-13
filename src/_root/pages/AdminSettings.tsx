@@ -6,8 +6,8 @@ import AddPsgc from "./adminpages/AddPsgc";
 import AddStationType from "./adminpages/AddStationType";
 import NotFound from "@/components/shared/NotFound";
 import { Card } from "@/components/ui/card";
-import { UserControl } from "./adminpages/UserControl";
-import { StationList } from "./adminpages/StationList";
+import UserControl from "./adminpages/UserControl";
+import StationList from "./adminpages/StationList";
 
 const AdminSettings = () => {
   const { user } = useUserContext();
@@ -64,7 +64,7 @@ const AdminSettings = () => {
           </Card>
         </TabsContent>
         <TabsContent value="users" className="container px-0">
-          <Card className="px-4">
+          <Card>
             <UserControl />
           </Card>
         </TabsContent>

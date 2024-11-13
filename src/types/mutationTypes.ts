@@ -52,3 +52,8 @@ export type UpdateStationProps = {
   image: string;
   id: number;
 };
+
+export type updateUserGrantsProps = {
+  grantedStations: number[];
+  id: number;
+};

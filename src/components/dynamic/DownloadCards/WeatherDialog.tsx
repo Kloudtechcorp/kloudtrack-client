@@ -33,7 +33,7 @@ type WeatherDialogProps = {
 
 const WeatherDialog = ({ id, name }: WeatherDialogProps) => {
   const [selected, setSelected] = useState("7days");
-  const { mutateAsync: downloadData, isPending } = useWeatherDownloadData();
+  const { mutateAsync: downloadData } = useWeatherDownloadData();
   const now = new Date();
 
   const [date, setDate] = useState<DateRange | undefined>(
@@ -69,7 +69,7 @@ const WeatherDialog = ({ id, name }: WeatherDialogProps) => {
       item.windSpeed,
       item.gust,
     ]);
-    const csvRows = [headers.join(","), ...rows.map((row) => row.join(","))];
+    // const csvRows = [headers.join(","), ...rows.map((row) => row.join(","))];
     return [headers.join(","), ...rows.map((row) => row.join(","))].join("\n");
   };
 
@@ -97,7 +97,7 @@ const WeatherDialog = ({ id, name }: WeatherDialogProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="text-white dark:text-gray-200 text-xs md:text-sm lg:text-base h-6 ">
+        <Button className="text-xs md:text-sm lg:text-base " variant="default">
           Download Data
         </Button>
       </DialogTrigger>
@@ -175,10 +175,7 @@ const WeatherDialog = ({ id, name }: WeatherDialogProps) => {
                 />
               </div>
             </div>
-            <Button
-              type="submit"
-              className="cursor-pointer text-gray-950 hover:text-gray-200 bg-gray-200 w-full dark:bg-gray-500 dark:hover:bg-gray-700"
-            >
+            <Button type="submit" variant="default">
               Download CSV
             </Button>
           </form>

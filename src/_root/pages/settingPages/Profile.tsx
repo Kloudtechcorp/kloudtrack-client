@@ -10,9 +10,8 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatDateString } from "@/lib/utils";
 import { useGetUserProfile } from "@/hooks/react-query/queries";
-import { useDeleteApiKey, useGenerateApi } from "@/hooks/react-query/mutations";
+import { useDeleteApiKey } from "@/hooks/react-query/mutations";
 import { useUserContext } from "@/hooks/context/authContext";
-import { columns } from "@/components/shared/Columns";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AddApiKey from "@/components/forms/AddApiKey";
 import {
@@ -26,11 +25,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { deleteApiKey } from "@/api/delete";
 import DeleteIcon from "@/components/shared/DeleteIcon";
 import { useTheme } from "@/components/theme-provider";
 import CopyIcon from "@/components/shared/CopyIcon";
-import { ArrowUpDown } from "lucide-react";
 
 const Profile = () => {
   const { theme } = useTheme();
@@ -61,8 +58,8 @@ const Profile = () => {
           </div>
         ) : (
           <div>
-            <CardHeader className="px-7 flex flex-row justify-between">
-              <div>
+            <CardHeader className="flex flex-row justify-between ">
+              <div className="flex flex-col">
                 <CardTitle>Your Profile</CardTitle>
                 <CardDescription>
                   This section contains your username and api key.
@@ -71,7 +68,7 @@ const Profile = () => {
               {profile.apiKeys.length < 3 && profile.apiKeys.length > -1 && (
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button variant="outline">Add api key</Button>
+                    <Button variant="default">Add api key</Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px]">
                     <AddApiKey onSuccess={refetch} />
@@ -79,91 +76,96 @@ const Profile = () => {
                 </Dialog>
               )}
             </CardHeader>
+            <div className="w-[96%] h-px bg-black mx-auto"></div>
 
             <CardContent>
-              <div className="flex flex-col gap-5">
-                <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-2 py-2">
+                <div className="flex flex-col ">
                   <div className="flex flex-col w-full items-start">
                     <span className="text-md font-bold">Username</span>
-                    <div
-                      className="capitalize text-lg
-                        border border-transparent rounded-none py-0 "
-                    >
+                    <span className="capitalize text-lg">
                       {profile.username}
-                    </div>
-                    <span className="text-xs">
+                    </span>
+                    <span className="text-muted-foreground text-sm">
                       Your profile was created on{" "}
                       {formatDateString(profile.createdAt, "long")}
                     </span>
                   </div>
                 </div>
-                <span className="text-nowrap text-md font-bold">Api key:</span>
+                <span className="text-nowrap text-md font-bold">
+                  Authentication keys:
+                </span>
                 {profile.apiKeys ? (
                   profile.apiKeys.map((item) => (
                     <Card className="flex gap-2 p-5">
-                      <div className="flex flex-col">
-                        <div
-                          className="capitalize text-lg
-                        border border-transparent rounded-none"
-                        >
-                          {item.title}
+                      <div className="flex flex-row w-full ">
+                        <div className="w-20 flex justify-center">
+                          <div className="flex flex-col gap-2 justify-center">
+                            <div>
+                              <img
+                                src="/assets/icons/key.svg"
+                                width={50}
+                                className="dark:invert hidden md:block"
+                              />
+                            </div>
+                            <Card className="flex justify-center bg-transparent shadow-none rounded-md">
+                              API
+                            </Card>
+                          </div>
                         </div>
-                        <div className="flex flex-row gap-2 justify-between items-center text-center">
-                          <div
-                            className="capitalize text-lg
-                        border border-transparent rounded-none"
+                        <div className="w-full flex flex-col">
+                          <span className="capitalize font-medium text-lg">
+                            {item.title}
+                          </span>
+                          <span className="text-base">
+                            Token: {item.apiKey}
+                          </span>
+                          <span className="text-muted-foreground text-sm">
+                            Expires on {item.expiresAt}
+                          </span>
+                          <span className="text-muted-foreground text-sm">
+                            Generated on{" "}
+                            {formatDateString(item.createdAt, "long")}
+                          </span>
+                        </div>
+                        <div className="flex gap-2 flex-col">
+                          <Button
+                            onClick={() => {
+                              navigator.clipboard.writeText(item.apiKey);
+                            }}
                           >
-                            {item.apiKey}
-                          </div>
-                          <div className="flex gap-2 justify-end items-end">
-                            <Button
-                              onClick={() => {
-                                navigator.clipboard.writeText(item.apiKey);
-                              }}
-                            >
-                              <CopyIcon theme={theme} />
-                            </Button>
-                            <AlertDialog>
-                              <AlertDialogTrigger asChild>
-                                <Button>
-                                  <DeleteIcon theme={theme} />
-                                </Button>
-                              </AlertDialogTrigger>
-                              <AlertDialogContent>
-                                <AlertDialogHeader>
-                                  <AlertDialogTitle>
-                                    Are you absolutely sure?
-                                  </AlertDialogTitle>
-                                  <AlertDialogDescription>
-                                    This action cannot be undone. This will
-                                    permanently delete your api key.
-                                  </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                  <AlertDialogAction
-                                    onClick={() => {
-                                      deleteApiKey(item.id);
-                                      refetch();
-                                    }}
-                                  >
-                                    Continue
-                                  </AlertDialogAction>
-                                </AlertDialogFooter>
-                              </AlertDialogContent>
-                            </AlertDialog>
-                          </div>
+                            <CopyIcon theme={theme} />
+                          </Button>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button>
+                                <DeleteIcon theme={theme} />
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>
+                                  Are you absolutely sure?
+                                </AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  This action cannot be undone. This will
+                                  permanently delete your api key.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  onClick={() => {
+                                    deleteApiKey(item.id);
+                                    refetch();
+                                  }}
+                                >
+                                  Continue
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
                         </div>
-                        <div
-                          className="capitalize text-lg
-                        border border-transparent rounded-none"
-                        >
-                          {item.expiresAt}
-                        </div>
-                        <span className="text-xs">
-                          The API key was generated on{" "}
-                          {formatDateString(item.createdAt, "long")}
-                        </span>
                       </div>
                     </Card>
                   ))

@@ -2,6 +2,12 @@ import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import EditIcon from "./EditIcon";
 import UpdateStation from "../forms/UpdateStation";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
 
 type AdminControlsProps = {
   theme: string;
@@ -22,11 +28,20 @@ type AdminControlsProps = {
 const AdminControls = ({ theme, station, id }: AdminControlsProps) => (
   <div className="lg:flex gap-2 justify-end items-end hidden">
     <Sheet>
-      <SheetTrigger asChild>
-        <Button className="button-icon" variant="ghost">
-          <EditIcon theme={theme} />
-        </Button>
-      </SheetTrigger>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <SheetTrigger asChild>
+              <Button className="button-icon" variant="ghost">
+                <EditIcon theme={theme} />
+              </Button>
+            </SheetTrigger>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Edit station</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
       <SheetContent className="min-w-[720px]">
         <UpdateStation
           id={id}

@@ -113,7 +113,7 @@ export function Precipitation({
           <Tooltip>
             <TooltipTrigger asChild>
               <div className="font-medium text-xl flex h-full items-center flex-row justify-center gap-2 ">
-                <div className="flex flex-col  w-full">
+                <div className="flex flex-col w-full">
                   <span className="weatherDataText">
                     {(Math.round(precipitation * 100) / 100).toFixed(1)} mm
                   </span>

@@ -2,12 +2,6 @@ import React from "react";
 import { formatDateString } from "@/lib/utils";
 import { clmsDashboardType } from "@/types/queryTypes";
 import { Card, CardContent, CardDescription } from "@/components/ui/card";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 interface MapCardProps {
   data: clmsDashboardType | null;

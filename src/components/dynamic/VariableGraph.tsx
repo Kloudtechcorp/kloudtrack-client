@@ -1,4 +1,3 @@
-// variableGraph.tsx
 import {
   CartesianGrid,
   Line,
@@ -55,7 +54,7 @@ const VariableGraph = ({
   }
 
   const sliceDetails = (change: string, value: any) => {
-    if (change == "minute" || change == "hour") {
+    if (change === "minute" || change === "hour") {
       return value.slice(11, 16);
     }
     return value.slice(0, 10);
@@ -64,7 +63,7 @@ const VariableGraph = ({
   return (
     <div className="w-full rounded-lg p-1 border-[#545454] m-0 flex items-center justify-center">
       <ChartContainer config={chartConfig} className="h-60 w-full m-0 p-0">
-        {weatherData === "precipitation" ? (
+        {weatherData === "precipitation" || weatherData === "uvIndex" ? (
           <BarChart
             accessibilityLayer
             data={graphData}
@@ -83,7 +82,7 @@ const VariableGraph = ({
             />
             <YAxis />
             <ChartTooltip cursor={true} content={<ChartTooltipContent />} />
-            <Bar dataKey="data" fill="#fbd008" />
+            <Bar dataKey="data" fill={"#fbd008"} />
           </BarChart>
         ) : (
           <LineChart

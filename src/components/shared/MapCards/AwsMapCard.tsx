@@ -50,7 +50,11 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
                         />
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>Temperature is ...</p>
+                        <p className="tooltipContentDiv">
+                          The measurement of warmth or coldness in the
+                          atmosphere. Temperature is typically measured in
+                          degrees Celsius or Fahrenheit.
+                        </p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
@@ -84,7 +88,12 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
                               />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>Heat Index is ...</p>
+                              <p className="tooltipContentDiv">
+                                How hot it actually feels when humidity is
+                                factored into the air temperature. This combines
+                                temperature and moisture in the air to reflect
+                                the “real feel.”
+                              </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
@@ -114,7 +123,12 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
                               />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>Humidity is ...</p>
+                              <p className="tooltipContentDiv">
+                                The amount of moisture in the air. Higher
+                                humidity means more moisture, making it feel
+                                warmer and stickier. Low humidity can make the
+                                air feel drier.
+                              </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
@@ -144,7 +158,13 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
                               />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>Precipitation is ...</p>
+                              <p className="tooltipContentDiv">
+                                Any form of water, like rain, drizzle, snow, or
+                                hail, that falls from clouds. Precipitation
+                                levels tell us how much water is coming from the
+                                sky, which helps predict wet weather, storms, or
+                                dry days.
+                              </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
@@ -174,7 +194,12 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
                               />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>Air Pressure is ...</p>
+                              <p className="tooltipContentDiv">
+                                The force exerted by the air around us. High
+                                pressure usually brings clear, stable weather,
+                                while low pressure often signals rain, storms,
+                                or changing conditions.
+                              </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
@@ -204,7 +229,12 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
                               />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>Light Intensity is ...</p>
+                              <p className="tooltipContentDiv">
+                                The strength of sunlight at a specific time.
+                                High light intensity means bright, strong
+                                sunlight, which affects temperature and
+                                visibility.
+                              </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
@@ -234,7 +264,12 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
                               />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>Wind Direction is ...</p>
+                              <p className="tooltipContentDiv">
+                                The direction from which the wind is blowing.
+                                This information helps predict weather changes,
+                                as different wind directions bring different
+                                types of weather.
+                              </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
@@ -265,7 +300,11 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
                               />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>Wind Speed is ...</p>
+                              <p className="tooltipContentDiv">
+                                How fast the wind is blowing. Calm winds mean
+                                light breezes, while high speeds indicate strong
+                                winds or even storm conditions
+                              </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>

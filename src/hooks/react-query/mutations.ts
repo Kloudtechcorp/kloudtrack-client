@@ -7,6 +7,7 @@ import {
   createUserData,
   signInAccountType,
   UpdateStationProps,
+  updateUserGrantsProps,
   updateUserPasswordType,
 } from "@/types/mutationTypes";
 import {
@@ -23,7 +24,12 @@ import {
   signInAccount,
 } from "@/api/post";
 import { toast } from "@/hooks/use-toast";
-import { updateApiKey, updateStation, updateUserPassword } from "@/api/put";
+import {
+  updateApiKey,
+  updateStation,
+  updateUserGrants,
+  updateUserPassword,
+} from "@/api/put";
 import { deleteApiKey } from "@/api/delete";
 import { downloadParamsTypes } from "@/types/queryTypes";
 import { apiKeyType } from "@/types";
@@ -285,6 +291,24 @@ export const useRainGaugeDownloadData = () => {
       toast({
         title: "Download Successful!",
         description: "Rain Gauge Data Downloaded.",
+      });
+    },
+  });
+};
+
+export const useUpdateUserGrants = () => {
+  return useMutation({
+    mutationFn: (data: updateUserGrantsProps) => updateUserGrants(data),
+    onError: (error: Error) => {
+      toast({
+        title: "Error!",
+        description: error.message,
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Update Successful!",
+        description: "User stations grant updated.",
       });
     },
   });

@@ -12,6 +12,12 @@ import NoData from "@/components/shared/NoData";
 import NavigateIcon from "@/components/shared/NavigateIcon";
 import AdminControls from "@/components/shared/AdminControls";
 import { toast } from "sonner";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface AwsCardProps {
   id: number;
@@ -95,13 +101,23 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
                 Current Weather Conditions as of{" "}
                 {formatDateString(stationData.data.recordedAt, "long")}
               </span>
-              <Button
-                className="button-icon"
-                onClick={() => navigate(`/${stationData.station.name}`)}
-                variant="ghost"
-              >
-                <NavigateIcon theme={theme} />
-              </Button>
+
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      className="button-icon"
+                      onClick={() => navigate(`/${stationData.station.name}`)}
+                      variant="ghost"
+                    >
+                      <NavigateIcon theme={theme} />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Move to station</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
             <div className="flex flex-col pb-3 gap-1">
               <DataCards

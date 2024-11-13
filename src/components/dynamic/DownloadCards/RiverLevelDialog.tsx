@@ -33,7 +33,7 @@ type RiverLevelDialogProps = {
 
 const RiverLevelDialog = ({ id, name }: RiverLevelDialogProps) => {
   const [selected, setSelected] = useState("7days");
-  const { mutateAsync: downloadData, isPending } = useRiverLevelDownloadData();
+  const { mutateAsync: downloadData } = useRiverLevelDownloadData();
   const now = new Date();
 
   const [date, setDate] = useState<DateRange | undefined>(
@@ -74,10 +74,7 @@ const RiverLevelDialog = ({ id, name }: RiverLevelDialogProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          className="px-2 h-6 border border-transparent hover:bg-gray-200 rounded-none"
-        >
+        <Button className="text-xs md:text-sm lg:text-base " variant="default">
           Download Data
         </Button>
       </DialogTrigger>
@@ -155,10 +152,7 @@ const RiverLevelDialog = ({ id, name }: RiverLevelDialogProps) => {
                 />
               </div>
             </div>
-            <Button
-              type="submit"
-              className="cursor-pointer text-gray-950 hover:text-gray-200 bg-gray-200 w-full dark:bg-gray-500 dark:hover:bg-gray-700"
-            >
+            <Button type="submit" variant="default">
               Download CSV
             </Button>
           </form>

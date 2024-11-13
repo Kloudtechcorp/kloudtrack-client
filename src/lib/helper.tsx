@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 
 export const checkBME280 = (temp: number, humid: number, press: number) => {
-  if (temp === null || !humid === null || !press === null) {
+  if (temp === null || humid === null || press === null) {
     return (
       <Badge className="text-xs w-full justify-center" variant="destructive">
         Failed
@@ -115,7 +115,7 @@ export const checkUV = (uv: number) => {
 };
 
 export const checkSlave = (windSpeed: number, rain: number, gust: number) => {
-  if (windSpeed === null || !rain === null || !gust === null) {
+  if (windSpeed === null || rain === null || gust === null) {
     return (
       <Badge className="text-xs w-full justify-center" variant="destructive">
         Failed

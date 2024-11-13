@@ -107,12 +107,12 @@ export function Precipitation({
         <span className="weatherDataTitle">Precipitation</span>
       </div>
 
-      <div className={`text-xl flex h-full items-center justify-center `}>
+      <div className={`cardDataDiv `}>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="font-medium text-xl flex h-full items-center flex-row justify-center gap-2 ">
-                <div className="flex flex-col  w-full">
+              <div className="font-medium text-xl flex h-full items-center flex-row justify-center gap-2 w-full bg-red-200 ">
+                <div className="flex flex-col w-full bg-blue-200">
                   <span className="weatherDataText">
                     {(Math.round(precipitation * 100) / 100).toFixed(1)} mm
                   </span>
@@ -120,9 +120,11 @@ export function Precipitation({
                     {(Math.round(pastHourPrecip * 100) / 100).toFixed(1)} mm/hr
                   </span>
                 </div>
-                {hasWarning.current && (
-                  <AlertIcon className={`${colorClass} w-1/3`} />
-                )}
+                <div className="bg-green-200">
+                  {hasWarning.current && (
+                    <AlertIcon className={`${colorClass} size-16`} />
+                  )}
+                </div>
               </div>
             </TooltipTrigger>
             <TooltipContent side="top" align="center">

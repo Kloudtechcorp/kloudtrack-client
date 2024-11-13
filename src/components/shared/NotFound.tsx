@@ -5,17 +5,15 @@ export default function NotFound() {
   const router = useNavigate();
 
   return (
-    <div className="absolute left-1/2 top-1/2 mb-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center text-center  ">
-      <span className="bg-gradient-to-b from-[#fbd008] to-transparent bg-clip-text text-[10rem] font-extrabold leading-none text-transparent">
-        404
-      </span>
-      <h2 className="font-heading my-2 text-2xl font-bold">
-        Something&apos;s missing
-      </h2>
-      <p>
+    <div className="items-center justify-center text-center ">
+      <div className="flex flex-col notFoundTitle">
+        <span>404</span>
+        <span className="notFoundDesc">No Data Found</span>
+      </div>
+      <span className="notFoundText">
         Sorry, the page you are looking for doesn&apos;t exist or has been
         moved.
-      </p>
+      </span>
       <div className="mt-8 flex justify-center gap-2">
         <Button
           onClick={() => router(-1)}

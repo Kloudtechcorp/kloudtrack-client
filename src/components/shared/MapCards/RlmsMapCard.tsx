@@ -21,15 +21,7 @@ const RlmsMapCard: React.FC<MapCardProps> = ({ data, id }) => {
   if (!data || !data.data) {
     return (
       <div className="flex flex-col gap-2 w-full px-2">
-        <div className="items-center justify-center text-center flex flex-col gap-5">
-          <span className="bg-gradient-to-b from-[#fbd008] to-bg-transparent  bg-clip-text text-[7.5rem] font-extrabold leading-none text-transparent">
-            No Data Found
-          </span>
-          <h2 className="font-heading my-2 text-2xl font-bold">
-            Data from this station is not available. We're sorry for
-            inconvenience.
-          </h2>
-        </div>
+        <NoData />
       </div>
     );
   }

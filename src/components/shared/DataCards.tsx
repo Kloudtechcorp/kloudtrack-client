@@ -36,7 +36,7 @@ const DataCards = ({
                 <div className="cardTitleDiv">
                   <span className="weatherDataTitle">Temperature</span>
                 </div>
-                <div className="text-xl flex h-full items-center justify-center">
+                <div className="cardDataDiv">
                   <span className="weatherDataText">
                     {Math.round(currentweather.temperature * 100) / 100} &deg;C
                   </span>
@@ -50,7 +50,7 @@ const DataCards = ({
                 <div className="cardTitleDiv">
                   <span className="weatherDataTitle">Humidity</span>
                 </div>
-                <div className="text-xl flex h-full items-center justify-center">
+                <div className="cardDataDiv">
                   <span className="weatherDataText">
                     {Math.round(currentweather.humidity * 100) / 100} %
                   </span>
@@ -64,7 +64,7 @@ const DataCards = ({
                 <div className="cardTitleDiv">
                   <span className="weatherDataTitle">Pressure</span>
                 </div>
-                <div className="text-xl flex h-full items-center justify-center">
+                <div className="cardDataDiv">
                   <span className="weatherDataText">
                     {Math.round(currentweather.pressure * 100) / 100} mb
                   </span>
@@ -78,7 +78,7 @@ const DataCards = ({
                 <div className="cardTitleDiv">
                   <span className="weatherDataTitle">Wind Speed</span>
                 </div>
-                <div className="text-xl flex h-full items-center justify-center">
+                <div className="cardDataDiv">
                   <span className="weatherDataText">
                     {Math.round(currentweather.windSpeed * 100) / 100} kph
                   </span>
@@ -92,7 +92,7 @@ const DataCards = ({
                 <div className="cardTitleDiv">
                   <span className="weatherDataTitle">Wind Direction</span>
                 </div>
-                <div className="text-xl flex h-full items-center justify-center">
+                <div className="cardDataDiv">
                   <span className="weatherDataText">
                     {getWindDirectionLabel(currentweather.windDirection)}
                   </span>
@@ -115,7 +115,7 @@ const DataCards = ({
                 <div className="cardTitleDiv">
                   <span className="weatherDataTitle">Light</span>
                 </div>
-                <div className="text-xl flex h-full items-center justify-center">
+                <div className="cardDataDiv">
                   <span className="weatherDataText">
                     {Math.round(currentweather.light * 100) / 100} lux
                   </span>
@@ -168,7 +168,7 @@ const DataCards = ({
             <div className="cardTitleDiv">
               <span className="cardTitle">Humidity</span>
             </div>
-            <div className="text-xl flex h-full items-center justify-center">
+            <div className="cardDataDiv">
               <span className="weatherDataText">
                 {Math.round(currentweather.humidity * 100) / 100} %
               </span>
@@ -182,7 +182,7 @@ const DataCards = ({
             <div className="cardTitleDiv">
               <span className="weatherDataTitle">Pressure</span>
             </div>
-            <div className="text-xl flex h-full items-center justify-center">
+            <div className="cardDataDiv">
               <span className="weatherDataText">
                 {Math.round(currentweather.pressure * 100) / 100} mb
               </span>
@@ -210,7 +210,7 @@ const DataCards = ({
             <div className="cardTitleDiv">
               <span className="weatherDataTitle">Wind Direction</span>
             </div>
-            <div className="text-xl flex h-full items-center justify-center">
+            <div className="cardDataDiv">
               <span className="weatherDataText">
                 {getWindDirectionLabel(currentweather.windDirection)}
               </span>
@@ -233,7 +233,7 @@ const DataCards = ({
             <div className="cardTitleDiv">
               <span className="weatherDataTitle">Light</span>
             </div>
-            <div className="text-xl flex h-full items-center justify-center">
+            <div className="cardDataDiv">
               <span className="weatherDataText">
                 {Math.round(currentweather.light * 100) / 100} lux
               </span>

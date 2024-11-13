@@ -41,7 +41,12 @@ const MapCard: React.FC<MapCardProps> = ({ data }) => {
                         />
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>Temperature is ...</p>
+                        <p>
+                          Temperature tells us how hot or cold the air is.
+                          It&apos;s what you feel when you step outside. Higher
+                          temperatures mean warmer days, and lower ones mean
+                          cooler days.
+                        </p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
@@ -75,7 +80,12 @@ const MapCard: React.FC<MapCardProps> = ({ data }) => {
                               />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>Heat Index is ...</p>
+                              <p>
+                                The heat index measures how hot it feels when
+                                you add humidity to the actual air temperature.
+                                Even if the temperature isn&apos;t very high,
+                                high humidity can make it feel much hotter.
+                              </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
@@ -105,7 +115,11 @@ const MapCard: React.FC<MapCardProps> = ({ data }) => {
                               />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>Humidity is ...</p>
+                              <p>
+                                Humidity is how much moisture is in the air.
+                                When humidity is high, it feels warmer and
+                                sticky. When it&apos;s low, the air feels drier.
+                              </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
@@ -135,7 +149,13 @@ const MapCard: React.FC<MapCardProps> = ({ data }) => {
                               />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>Precipitation is ...</p>
+                              <p>
+                                Precipitation is any kind of water that falls
+                                from the sky, like rain or snow. In the
+                                Philippines, we mostly talk about rainfall,
+                                which is measured to tell us how much rain has
+                                fallen.
+                              </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
@@ -153,7 +173,7 @@ const MapCard: React.FC<MapCardProps> = ({ data }) => {
                           className="dark:invert hidden md:block"
                         />
                       </TableCell>
-                      <TableCell className="font-medium flex gap-1 items-center">
+                      <TableCell className="font-medium flex gap-1 items-center bg-red-200">
                         <span>Air Pressure</span>
                         <TooltipProvider>
                           <Tooltip>
@@ -165,7 +185,12 @@ const MapCard: React.FC<MapCardProps> = ({ data }) => {
                               />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>Air Pressure is ...</p>
+                              <p>
+                                Atmospheric pressure or air pressure is the
+                                weight of the air above us. High pressure
+                                usually means good weather, while low pressure
+                                often brings clouds and rain
+                              </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>

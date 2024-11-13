@@ -192,17 +192,44 @@
   @apply w-full h-full aspect-[2/1];
 }
 
-.cardTitle {
-  @apply xl:text-xl lg:text-lg md:text-base sm:text-xs;
-}
-
 .cardTitleDiv {
   @apply w-full py-1;
 }
 
+.cardDataDiv {
+  @apply text-xl flex h-full items-center justify-center;
+}
 .weatherDataTitle {
   @apply xl:text-xl lg:text-lg md:text-base sm:text-xs;
 }
 .weatherDataText {
   @apply xl:text-4xl lg:text-3xl md:text-xl sm:text-sm flex flex-col font-bold;
+}
+
+.weatherDataTitleDiv {
+  @apply text-center w-full flex flex-col h-full;
+}
+.weatherDataTextDiv {
+  @apply w-full py-1;
+}
+.notFoundTitle {
+  @apply bg-[#fbd008] to-transparent bg-clip-text text-[10rem] font-extrabold leading-none text-transparent;
+}
+
+.tooltipContentDiv {
+  @apply w-[28rem];
+}
+.notFoundDesc {
+  @apply font-bold text-3xl;
+}
+
+.notFoundText {
+  @apply text-xl;
+}
+
+.currentWeatherDiv {
+  @apply font-medium text-xs md:text-sm lg:text-base h-10 flex items-center;
+}
+.currentWeatherText {
+  @apply font-medium text-xs md:text-sm lg:text-base h-10 flex items-center;
 }

@@ -41,24 +41,20 @@ const ArgDataCard = ({ stationId }: ArgDataCardProps) => {
 
   return (
     <div className="flex flex-col w-full gap-2">
-      <div className="flex flex-col w-full px-2 gap-2">
+      <div className="flex  w-full px-2 gap-2">
         <div className="w-full gap-2 flex flex-col">
-          <div className="px-3 text-xs md:text-sm border lg:text-base">
+          <span className="currentWeatherText">
             Current Weather as of {formattedDate}
-          </div>
+          </span>
 
           <Card className="h-72">
             <CardContent className="px-0 p-0 h-full">
               <div className="text-center w-full flex flex-col h-full">
-                <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-                  <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-                    Precipitation
-                  </span>
+                <div className="cardTitleDiv">
+                  <span className="weatherDataTitle">Precipitation</span>
                 </div>
                 <div className="text-xl flex h-full items-center justify-center">
-                  <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
-                    {precipitation} mm
-                  </span>
+                  <span className="weatherDataText">{precipitation} mm</span>
                 </div>
               </div>
             </CardContent>
@@ -67,8 +63,8 @@ const ArgDataCard = ({ stationId }: ArgDataCardProps) => {
       </div>
 
       <div className="flex flex-col w-full gap-2">
-        <div className="flex w-full justify-start border px-3">
-          <span className="w-full font-bold">Weather Data Graphs</span>
+        <div className="flex w-full items-center ">
+          <span className="font-medium w-full">Weather Data Graphs</span>
           <RainGaugeDialog name={station.name} id={stationId} />
         </div>
 

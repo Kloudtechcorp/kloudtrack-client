@@ -102,7 +102,7 @@ export function UVIndex({
                   {Math.round(uvIndexVal * 100) / 100}
                 </span>
                 {hasWarning.current && (
-                  <AlertIcon className={`${colorClass}`} />
+                  <AlertIcon className={`${colorClass} size-12`} />
                 )}
               </div>
             </TooltipTrigger>

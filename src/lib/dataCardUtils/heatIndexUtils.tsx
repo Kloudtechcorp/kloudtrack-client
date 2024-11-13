@@ -94,7 +94,7 @@ export function HeatIndex({
         <span className="weatherDataTitle">Heat Index</span>
       </div>
 
-      <div className={`text-xl flex h-full items-center justify-center `}>
+      <div className={`cardDataDiv `}>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -103,7 +103,7 @@ export function HeatIndex({
                   {roundedHeatIndex} &deg;C
                 </span>
                 {hasWarning.current && (
-                  <AlertIcon className={`${colorClass}`} />
+                  <AlertIcon className={`${colorClass} size-12`} />
                 )}
               </div>
             </TooltipTrigger>

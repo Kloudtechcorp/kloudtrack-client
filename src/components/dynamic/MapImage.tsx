@@ -45,8 +45,9 @@ const MapImage: React.FC<MapImageProps> = ({
           </p>
         </span>
         <Button
-          className="w-1/3 text-white dark:text-gray-200 text-xs md:text-sm lg:text-base"
+          className="w-1/3 "
           onClick={() => navigate(`/${stationDetails.name}`)}
+          variant="default"
         >
           Monitoring Page
         </Button>

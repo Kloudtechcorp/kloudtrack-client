@@ -11,14 +11,18 @@ import { Button } from "@/components/ui/button";
 import NavigateIcon from "@/components/shared/NavigateIcon";
 import AdminControls from "@/components/shared/AdminControls";
 import MeasurementCard from "@/components/shared/MeasurementCard";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const ClmsCard: React.FC<{ id: number }> = ({ id }) => {
   const navigate = useNavigate();
   const { data: stationData, isLoading, isError } = useGetClmsData(id);
   const { theme } = useTheme();
   const { user } = useUserContext();
-
-  const isAdmin = user.role === "ADMIN";
 
   if (isLoading || !stationData) {
     return (
@@ -90,13 +94,22 @@ const ClmsCard: React.FC<{ id: number }> = ({ id }) => {
                 Current Weather Conditions as of{" "}
                 {formatDateString(stationData.data.recordedAt, "long")}
               </span>
-              <Button
-                className="button-icon"
-                onClick={() => navigate(`/${stationData.station.name}`)}
-                variant="ghost"
-              >
-                <NavigateIcon theme={theme} />
-              </Button>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      className="button-icon"
+                      onClick={() => navigate(`/${stationData.station.name}`)}
+                      variant="ghost"
+                    >
+                      <NavigateIcon theme={theme} />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Move to station</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
             <div className="flex flex-col pb-3 gap-2 h-full w-full">
               <div className="flex h-full w-full gap-2">

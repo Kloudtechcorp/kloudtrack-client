@@ -1,12 +1,17 @@
 const NavigateIcon: React.FC<{ theme: string }> = ({ theme }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    height="24px"
-    viewBox="0 -960 960 960"
-    width="24px"
-    fill={theme === "dark" ? "#FFFFFF" : "#000000"}
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    // fill={theme === "dark" ? "#FFFFFF" : "#000000"}
+    fill="none"
   >
-    <path d="M280-160v-360q0-33 23.5-56.5T360-600h328l-64-64 56-56 160 160-160 160-56-56 64-64H360v360h-80Z" />
+    <polygon points="3 11 22 2 13 21 11 13 3 11" />
   </svg>
 );
 

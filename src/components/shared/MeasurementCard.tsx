@@ -8,13 +8,11 @@ const MeasurementCard: React.FC<{
   <Card className="w-full h-full ">
     <CardContent className="px-0 p-0 h-full">
       <div className="text-center w-full flex flex-col h-full">
-        <div className="w-full dark:bg-slate-800 py-1">
-          <span className=" xl:text-xl lg:text-lg md:text-base sm:text-xs">
-            {label}
-          </span>
+        <div className="cardTitleDiv">
+          <span className="weatherDataTitle">{label}</span>
         </div>
-        <div className="text-xl flex h-full items-center justify-center">
-          <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm font-bold">
+        <div className="cardDataDiv">
+          <span className="weatherDataText">
             {Math.round(value * 100) / 100} {unit}
           </span>
         </div>

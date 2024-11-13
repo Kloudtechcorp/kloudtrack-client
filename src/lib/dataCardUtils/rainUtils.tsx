@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, {useEffect, useCallback, useRef, useState } from "react";
 import {
   Tooltip,
   TooltipContent,
@@ -22,10 +22,11 @@ export function Precipitation({
 }) {
   const navigate = useNavigate();
 
-  const [colorClass, setColorClass] = useState("");
-
+  const colorClass = useRef<string>("");
+  const [hasWarning, setHasWarning] = useState<boolean>(false);
+  // const [hasShownToastRef, setHasShownToastRef] = useState<boolean>(false);
   const hasShownToastRef = useRef(false);
-  const hasWarning = useRef(false);
+
   const warning = useRef<string | null>("");
 
   const handleSetWarning = async (warningMessage: string) => {
@@ -34,15 +35,15 @@ export function Precipitation({
 
   const determineWarning = useCallback(() => {
     if (pastHourPrecip > 2 && pastHourPrecip < 7.5) {
-      setColorClass("text-[#00ff01]");
+      colorClass.current ="text-[#00ff01]";
 
       handleSetWarning(`Light rain at ${stationName}.`);
       hasShownToastRef.current = false;
-      hasWarning.current = false;
+      setHasWarning(false);
     } else if (pastHourPrecip >= 7.5 && pastHourPrecip < 15) {
-      setColorClass("text-[#fbd007]");
+      colorClass.current ="text-[#fbd007]";
       handleSetWarning(
-        `Heavy rains are expected, flooding is possible at ${stationName}!`
+        "Heavy rains are expected, flooding is possibl!"
       );
       if (!hasShownToastRef.current) {
         triggerWarningToast({
@@ -50,17 +51,17 @@ export function Precipitation({
           message: `${warning.current}`,
           stationName: stationName,
           dashboardType: dashboardType,
-          colorClass: colorClass,
+          colorClass: colorClass.current,
           navigate,
         });
 
         hasShownToastRef.current = true;
-        hasWarning.current = true;
+        setHasWarning(true);
       }
     } else if (pastHourPrecip >= 15 && pastHourPrecip <= 30) {
-      setColorClass("text-[#ed761c]");
+      colorClass.current ="text-[#ed761c]";
       handleSetWarning(
-        `With intense rains, flooding is threatening, and the public is advised to be alert for possible evacuation at ${stationName}`
+        "With intense rains, flooding is threatening, and the public is advised to be alert for possible evacuation!"
       );
       if (!hasShownToastRef.current) {
         triggerWarningToast({
@@ -68,17 +69,17 @@ export function Precipitation({
           message: `${warning.current}`,
           stationName: stationName,
           dashboardType: dashboardType,
-          colorClass: colorClass,
+          colorClass: colorClass.current,
           navigate,
         });
 
         hasShownToastRef.current = true;
-        hasWarning.current = true;
+        setHasWarning(true);
       }
     } else if (pastHourPrecip > 30) {
-      setColorClass("text-[#ff3300] ");
+      colorClass.current ="text-[#ff3300] ";
       handleSetWarning(
-        `Torrential rains could cause serious flooding in some areas, so affected residents must evacuate as soon as possible at ${stationName}!`
+        "Torrential rains could cause serious flooding in some areas, so affected residents must evacuate as soon as possible!"
       );
 
       if (!hasShownToastRef.current) {
@@ -87,15 +88,15 @@ export function Precipitation({
           message: `${warning.current}`,
           stationName: stationName,
           dashboardType: dashboardType,
-          colorClass: colorClass,
+          colorClass: colorClass.current,
           navigate,
         });
 
         hasShownToastRef.current = true;
-        hasWarning.current = true;
+        setHasWarning(true);
       }
     }
-  }, [navigate, dashboardType, pastHourPrecip, stationName]);
+  }, [pastHourPrecip, stationName, hasShownToastRef, dashboardType, navigate]);
 
   useEffect(() => {
     determineWarning();
@@ -120,8 +121,8 @@ export function Precipitation({
                     {(Math.round(pastHourPrecip * 100) / 100).toFixed(1)} mm/hr
                   </span>
                 </div>
-                {hasWarning.current && (
-                  <AlertIcon className={`${colorClass}`} />
+                {hasWarning && (
+                  <AlertIcon className={`${colorClass.current} w-1/3`} />
                 )}
               </div>
             </TooltipTrigger>

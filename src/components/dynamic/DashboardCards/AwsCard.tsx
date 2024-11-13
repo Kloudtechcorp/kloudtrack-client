@@ -11,6 +11,7 @@ import { useTheme } from "../../theme-provider";
 import NoData from "@/components/shared/NoData";
 import NavigateIcon from "@/components/shared/NavigateIcon";
 import AdminControls from "@/components/shared/AdminControls";
+import { toast } from "sonner";
 import {
   Tooltip,
   TooltipContent,
@@ -28,6 +29,7 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
   const { data: stationData, isLoading, isError } = useGetAwsData2(id);
   const { theme } = useTheme();
 
+  toast.dismiss();
   if (isLoading || !stationData) {
     return (
       <Card className="cardContainer flex flex-row">

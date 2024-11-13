@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, {  useEffect, useCallback, useRef, useState } from "react";
 import {
   Tooltip,
   TooltipContent,
@@ -20,10 +20,12 @@ export function UVIndex({
 }) {
   const navigate = useNavigate();
 
-  const [colorClass, setColorClass] = useState("");
+  const [hasWarning, setHasWarning] = useState<boolean>(false);
+  // const [hasShownToastRef, setHasShownToastRef] = useState<boolean>(false);
   const hasShownToastRef = useRef(false);
-  const hasWarning = useRef(false);
+
   const warning = useRef<string | null>("");
+  const colorClass = useRef<string>("");
 
   const handleSetWarning = async (warningMessage: string) => {
     warning.current = warningMessage;
@@ -34,23 +36,25 @@ export function UVIndex({
         "Low danger from the sun's UV rays for the average person."
       );
       hasShownToastRef.current = false;
-      hasWarning.current = false;
+      colorClass.current ="text-primary";
+
+      setHasWarning(false);
     } else if (uvIndexVal >= 3 && uvIndexVal <= 5) {
-      setColorClass("text-[#fbfc04]");
+      colorClass.current ="text-[#fbfc04]";
       handleSetWarning("Moderate risk of harm from unprotected sun exposure.");
       hasShownToastRef.current = false;
-      hasWarning.current = false;
+      setHasWarning(false);
     } else if (uvIndexVal >= 6 && uvIndexVal <= 7) {
-      setColorClass("text-[#fa6801]");
+      colorClass.current ="text-[#fa6801]";
       handleSetWarning(
         "High risk of harm from unprotected sun exposure. Protection against skin and eye damage is needed!"
       );
       hasShownToastRef.current = false;
-      hasWarning.current = true;
+      setHasWarning(false);
     } else if (uvIndexVal >= 8 && uvIndexVal <= 10) {
-      setColorClass("text-[#fe0000] ");
+      colorClass.current ="text-[#fe0000]";
       handleSetWarning(
-        `Very high risk of harm from unprotected sun exposure. Take extra precautions because unprotected skin and eyes will be damaged and can burn quickly at ${stationName}!`
+        "Very high risk of harm from unprotected sun exposure. Take extra precautions because unprotected skin and eyes will be damaged and can burn quickly!"
       );
       if (!hasShownToastRef.current) {
         triggerWarningToast({
@@ -58,30 +62,31 @@ export function UVIndex({
           message: `${warning.current}`,
           stationName: stationName,
           dashboardType: dashboardType,
-          colorClass: colorClass,
+          colorClass: colorClass.current,
           navigate,
         });
-        hasShownToastRef.current = true;
-        hasWarning.current = true;
+        hasShownToastRef.current = false;
+        setHasWarning(true);
       }
     } else if (uvIndexVal > 10) {
-      setColorClass("text-[#83007e] ");
+      colorClass.current ="text-[#83007e]";
+
+      console.log("color class in uv is ", colorClass);
       handleSetWarning("Extreme Danger: Heatstroke is imminent!");
       if (!hasShownToastRef.current) {
         triggerWarningToast({
           title: `Extreme UV detected at ${stationName}!`,
-
           message: `${warning.current}`,
           stationName: stationName,
           dashboardType: dashboardType,
-          colorClass: colorClass,
+          colorClass: colorClass.current,
           navigate,
         });
         hasShownToastRef.current = true;
-        hasWarning.current = true;
+        setHasWarning(true);
       }
     }
-  }, [navigate, dashboardType, uvIndexVal, stationName]);
+  }, [uvIndexVal, stationName, dashboardType, navigate]);
 
   useEffect(() => {
     determineWarning();
@@ -101,8 +106,8 @@ export function UVIndex({
                 <span className="weatherDataText">
                   {Math.round(uvIndexVal * 100) / 100}
                 </span>
-                {hasWarning.current && (
-                  <AlertIcon className={`${colorClass}`} />
+                {hasWarning && (
+                  <AlertIcon className={`${colorClass.current}`} />
                 )}
               </div>
             </TooltipTrigger>

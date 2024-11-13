@@ -1,10 +1,6 @@
 import { useUserContext } from "@/hooks/context/authContext";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import AwsVariableCard from "@/components/dynamic/VariableCards/AwsVariableCard";
-import ArgVariableCard from "@/components/dynamic/VariableCards/ArgVariableCard";
-import ClmsVariableCard from "@/components/dynamic/VariableCards/ClmsVariableCard";
-import RlmsVariableCard from "@/components/dynamic/VariableCards/RlmsVariableCard";
 import { AwsSensors } from "@/components/dynamic/SensorTables/AwsSensors";
 import { ArgSensors } from "@/components/dynamic/SensorTables/ArgSensors";
 import { RlmsSensors } from "@/components/dynamic/SensorTables/RlmsSensors";
@@ -52,8 +48,14 @@ const StationList = () => {
     .map((item) => item.id);
 
   return (
-    <>
-      <div className="bg-[#F6F8FC] dark:bg-secondary w-full overflow-auto rounded-xl p-[1rem] custom-scrollbar">
+    <div className="px-5 w-full">
+      <span className="flex pt-5 font-bold text-lg">Station List</span>
+      <span className="flex pb-5 text-sm">
+        This page will show the list of stations per station type along with its
+        sensors.
+      </span>
+
+      <div className="w-full overflow-auto rounded-xl custom-scrollbar">
         {isLoading ? (
           <div className="flex flex-col gap-3 md:gap-5 w-full container p-2 h-full">
             <Skeleton className="w-full cardContainer dark:bg-primary" />
@@ -98,7 +100,7 @@ const StationList = () => {
           </Tabs>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

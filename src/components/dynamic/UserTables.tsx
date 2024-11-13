@@ -11,12 +11,22 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown } from "lucide-react";
+import {
+  ArrowUpDown,
+  ChevronDown,
+  EditIcon,
+  MoreHorizontal,
+} from "lucide-react";
+
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
@@ -28,12 +38,27 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetAwsSensors } from "@/hooks/react-query/queries";
-import { weatherSensorsType } from "@/types";
+import {
+  useGetArgSensors,
+  useGetRlmsSensors,
+  useGetUsers,
+} from "@/hooks/react-query/queries";
+import { rainGaugeSensorsType, userListType } from "@/types";
 import { checkBadge } from "@/lib/helper";
 import { formatDateString } from "@/lib/utils";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "../ui/dialog";
+import UpdateUser from "../forms/updateuser";
+import { DialogTrigger } from "@radix-ui/react-dialog";
 
-export function AwsSensors() {
+export function UserTables() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -41,78 +66,75 @@ export function AwsSensors() {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const { data: userList, isLoading, isError } = useGetUsers();
 
-  const { data: weatherData, isLoading, isError } = useGetAwsSensors();
-
-  const columns: ColumnDef<weatherSensorsType[number]>[] = [
+  const columns: ColumnDef<userListType[number]>[] = [
     {
-      accessorKey: "name",
+      accessorKey: "id",
+      header: "User ID",
+      cell: ({ row }) => <div>{row.getValue("id")}</div>,
+    },
+    {
+      accessorKey: "username",
       header: ({ column }) => (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Station Name
+          Username
           <ArrowUpDown />
         </Button>
       ),
-      cell: ({ row }) => <div>{row.getValue("name")}</div>,
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("username")}</div>
+      ),
     },
     {
-      accessorKey: "serial",
-      header: "Serial",
-      cell: ({ row }) => <div>{row.getValue("serial")}</div>,
+      accessorKey: "role",
+      header: "Role",
+      cell: ({ row }) => <div>{row.getValue("role")}</div>,
     },
     {
-      accessorKey: "BME280a",
-      header: "BME280-1",
-      cell: ({ row }) => <div>{checkBadge(row.getValue("BME280a"))}</div>,
-    },
-    {
-      accessorKey: "BME280b",
-      header: "BME280-2",
-      cell: ({ row }) => <div>{checkBadge(row.getValue("BME280b"))}</div>,
-    },
-    {
-      accessorKey: "BME280c",
-      header: "BME280-3",
-      cell: ({ row }) => <div>{checkBadge(row.getValue("BME280c"))}</div>,
-    },
-    {
-      accessorKey: "BH1750",
-      header: "BH1750",
-      cell: ({ row }) => <div>{checkBadge(row.getValue("BH1750"))}</div>,
-    },
-    {
-      accessorKey: "AS5600",
-      header: "AS5600",
-      cell: ({ row }) => <div>{checkBadge(row.getValue("AS5600"))}</div>,
-    },
-    {
-      accessorKey: "UV",
-      header: "UV",
-      cell: ({ row }) => <div>{checkBadge(row.getValue("UV"))}</div>,
-    },
-    {
-      accessorKey: "SLAVE",
-      header: "SLAVE",
-      cell: ({ row }) => <div>{checkBadge(row.getValue("SLAVE"))}</div>,
-    },
-    {
-      accessorKey: "recordedAt",
-      header: "Date Recorded",
+      accessorKey: "createdAt",
+      header: "Date Created",
       cell: ({ row }) => (
         <div>
-          {row.getValue("recordedAt")
-            ? formatDateString(row.getValue("recordedAt"), "long")
+          {row.getValue("createdAt")
+            ? formatDateString(row.getValue("createdAt"), "long")
             : "No date"}
         </div>
       ),
     },
+    {
+      id: "actions",
+      enableHiding: false,
+      cell: ({ row }) => {
+        const id = row.original.id;
+        const stations = row.original.stations;
+        return (
+          <Dialog>
+            {row.original.role !== "ADMIN" && (
+              <DialogTrigger>
+                <EditIcon />
+              </DialogTrigger>
+            )}
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Edit Station Privileges</DialogTitle>
+                <DialogDescription>
+                  Desselect or select station for stations granted for user.
+                </DialogDescription>
+              </DialogHeader>
+              <UpdateUser id={id} stationIds={stations} />
+            </DialogContent>
+          </Dialog>
+        );
+      },
+    },
   ];
 
   const table = useReactTable({
-    data: weatherData || [],
+    data: userList || [],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -134,18 +156,20 @@ export function AwsSensors() {
     return <div>Loading...</div>;
   }
 
-  if (!weatherData || isError) {
-    return <div>No weather Data found</div>;
+  if (!userList || isError) {
+    return <div>No user Data found</div>;
   }
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
+      <div className="flex items-center pb-4 pt-2 ">
         <Input
           placeholder="Filter Station Names..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          value={
+            (table.getColumn("username")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table.getColumn("username")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

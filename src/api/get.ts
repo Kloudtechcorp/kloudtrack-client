@@ -4,6 +4,7 @@ import {
   rainGaugeSensorsType,
   riverLevelSensorsType,
   stationStaticType,
+  userListType,
   UserType,
   weatherSensorsType,
 } from "@/types";
@@ -300,7 +301,7 @@ export const getCoastalSensors = async (): Promise<coastalSensorsType> => {
 
   if (!response.ok) {
     throw new Error(
-      data.message || "Failed to fetch sensor data in weather stations"
+      data.message || "Failed to fetch sensor data in coastal stations"
     );
   }
   return data;
@@ -315,7 +316,7 @@ export const getRainGaugeSensors = async (): Promise<rainGaugeSensorsType> => {
 
   if (!response.ok) {
     throw new Error(
-      data.message || "Failed to fetch sensor data in weather stations"
+      data.message || "Failed to fetch sensor data in rain gauge stations"
     );
   }
   return data;
@@ -331,8 +332,22 @@ export const getRiverLevelSensors =
 
     if (!response.ok) {
       throw new Error(
-        data.message || "Failed to fetch sensor data in weather stations"
+        data.message || "Failed to fetch sensor data in river level stations"
       );
     }
     return data;
   };
+
+export const getUserList = async (): Promise<userListType> => {
+  const response = await fetch(`${server}/admin/all-users`, {
+    method,
+    credentials: "include",
+  });
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch users");
+  }
+  console.log(data);
+  return data;
+};

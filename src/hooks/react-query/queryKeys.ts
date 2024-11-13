@@ -31,4 +31,7 @@ export enum QUERY_KEYS {
   GET_CLMS_SENSORS = "getClmsSensors",
   GET_RLMS_SENSORS = "getRlmsSensors",
   GET_ARG_SENSORS = "getArgSensors",
+
+  //users
+  GET_USER_LIST = "getUserList",
 }

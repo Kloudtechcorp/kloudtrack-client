@@ -50,14 +50,6 @@ export function ArgSensors() {
   const [rowSelection, setRowSelection] = React.useState({});
   const { data: rainGaugeData, isLoading, isError } = useGetArgSensors();
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!rainGaugeData || isError) {
-    return <div>No rainGauge Data found</div>;
-  }
-
   const columns: ColumnDef<rainGaugeSensorsType[number]>[] = [
     {
       accessorKey: "name",
@@ -109,6 +101,14 @@ export function ArgSensors() {
       rowSelection,
     },
   });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!rainGaugeData || isError) {
+    return <div>No rainGauge Data found</div>;
+  }
 
   return (
     <div className="w-full">

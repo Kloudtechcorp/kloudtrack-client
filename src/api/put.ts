@@ -1,6 +1,7 @@
 import {
   UpdateStationProps,
   updateStationType,
+  updateUserGrantsProps,
   updateUserPasswordType,
 } from "@/types/mutationTypes";
 
@@ -49,6 +50,29 @@ export const updateStation = async (
       imageLink: values.image,
     }),
   });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to update station details.");
+  }
+  return data;
+};
+
+export const updateUserGrants = async (
+  values: updateUserGrantsProps
+): Promise<{ message: string }> => {
+  const response = await fetch(
+    `${server}/admin/user/${values.id}/granted-stations`,
+    {
+      method,
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        grantedStations: values.grantedStations,
+      }),
+    }
+  );
   const data = await response.json();
   if (!response.ok) {
     throw new Error(data.message || "Failed to update station details.");

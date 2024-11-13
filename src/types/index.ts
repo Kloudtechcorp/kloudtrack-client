@@ -294,3 +294,13 @@ export type rainGaugeSensorsType = {
   rainGauge: string;
   recordedAt: string;
 }[];
+
+export type userListType = {
+  id: number;
+  username: string;
+  password: string;
+  role: string;
+  createdAt: string;
+  updatedAt: string | null;
+  stations: number[];
+}[];

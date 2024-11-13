@@ -43,6 +43,7 @@ import {
   getRainGaugeSensors,
   getRiverLevelSensors,
   getCoastalSensors,
+  getUserList,
 } from "@/api/get";
 import {
   coastalSensorsType,
@@ -50,6 +51,7 @@ import {
   rainGaugeSensorsType,
   riverLevelSensorsType,
   stationStaticType,
+  userListType,
   UserType,
   weatherSensorsType,
 } from "@/types";
@@ -267,13 +269,21 @@ export const useGetRlmsSensors = (): UseQueryResult<
     staleTime: 60000,
   });
 };
-export const useGetCoastalSensors = (): UseQueryResult<
+export const useGetClmsSensors = (): UseQueryResult<
   coastalSensorsType,
   Error
 > => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_CLMS_SENSORS],
     queryFn: () => getCoastalSensors(),
+    staleTime: 60000,
+  });
+};
+
+export const useGetUsers = (): UseQueryResult<userListType, Error> => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_USER_LIST],
+    queryFn: () => getUserList(),
     staleTime: 60000,
   });
 };

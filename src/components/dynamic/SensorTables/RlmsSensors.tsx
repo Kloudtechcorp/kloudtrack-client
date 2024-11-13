@@ -47,14 +47,6 @@ export function RlmsSensors() {
   const [rowSelection, setRowSelection] = React.useState({});
   const { data: riverData, isLoading, isError } = useGetRlmsSensors();
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!riverData || isError) {
-    return <div>No River Data found</div>;
-  }
-
   const columns: ColumnDef<riverLevelSensorsType[number]>[] = [
     {
       accessorKey: "name",
@@ -106,6 +98,14 @@ export function RlmsSensors() {
       rowSelection,
     },
   });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!riverData || isError) {
+    return <div>No River Data found</div>;
+  }
 
   return (
     <div className="w-full">

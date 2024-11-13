@@ -39,8 +39,20 @@ import {
   getDataset,
   getClmsData,
   getTableGraph,
+  getWeatherSensors,
+  getRainGaugeSensors,
+  getRiverLevelSensors,
+  getCoastalSensors,
 } from "@/api/get";
-import { formattedDataType, stationStaticType, UserType } from "@/types";
+import {
+  coastalSensorsType,
+  formattedDataType,
+  rainGaugeSensorsType,
+  riverLevelSensorsType,
+  stationStaticType,
+  UserType,
+  weatherSensorsType,
+} from "@/types";
 
 export const useGetAwsData = (
   id: number
@@ -220,6 +232,48 @@ export const useGetIsAuthenticated = (): UseQueryResult<boolean, Error> => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_IS_AUTHENTICATED],
     queryFn: () => getIsAuthenticated(),
+    staleTime: 60000,
+  });
+};
+
+export const useGetAwsSensors = (): UseQueryResult<
+  weatherSensorsType,
+  Error
+> => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_AWS_SENSORS],
+    queryFn: () => getWeatherSensors(),
+    staleTime: 60000,
+  });
+};
+
+export const useGetArgSensors = (): UseQueryResult<
+  rainGaugeSensorsType,
+  Error
+> => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_ARG_SENSORS],
+    queryFn: () => getRainGaugeSensors(),
+    staleTime: 60000,
+  });
+};
+export const useGetRlmsSensors = (): UseQueryResult<
+  riverLevelSensorsType,
+  Error
+> => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_RLMS_SENSORS],
+    queryFn: () => getRiverLevelSensors(),
+    staleTime: 60000,
+  });
+};
+export const useGetCoastalSensors = (): UseQueryResult<
+  coastalSensorsType,
+  Error
+> => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_CLMS_SENSORS],
+    queryFn: () => getCoastalSensors(),
     staleTime: 60000,
   });
 };

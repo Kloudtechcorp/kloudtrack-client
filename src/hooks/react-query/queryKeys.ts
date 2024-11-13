@@ -25,4 +25,10 @@ export enum QUERY_KEYS {
   GET_TABLE_GRAPH_DATA = "getTableGraphData",
   GET_DATASET = "getDataset",
   GET_DOWNLOAD_DATA = "getDownloadData",
+
+  //SENSORS
+  GET_AWS_SENSORS = "getAwsSensors",
+  GET_CLMS_SENSORS = "getClmsSensors",
+  GET_RLMS_SENSORS = "getRlmsSensors",
+  GET_ARG_SENSORS = "getArgSensors",
 }

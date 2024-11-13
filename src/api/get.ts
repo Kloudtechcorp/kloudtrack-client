@@ -1,4 +1,12 @@
-import { formattedDataType, stationStaticType, UserType } from "@/types";
+import {
+  coastalSensorsType,
+  formattedDataType,
+  rainGaugeSensorsType,
+  riverLevelSensorsType,
+  stationStaticType,
+  UserType,
+  weatherSensorsType,
+} from "@/types";
 import {
   stationBarangayType,
   stationsListType,
@@ -229,7 +237,6 @@ export const getTableGraph = async ({
   if (!response.ok) {
     throw new Error(data.message || "Failed to fetch table data");
   }
-  console.log(data);
   return data;
 };
 
@@ -267,3 +274,65 @@ export const getIsAuthenticated = async (): Promise<{
   }
   return data;
 };
+
+//=========================== CHECK SENSORS
+export const getWeatherSensors = async (): Promise<weatherSensorsType> => {
+  const response = await fetch(`${server}/weather/sensors`, {
+    method,
+    credentials: "include",
+  });
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.message || "Failed to fetch sensor data in weather stations"
+    );
+  }
+  return data;
+};
+
+export const getCoastalSensors = async (): Promise<coastalSensorsType> => {
+  const response = await fetch(`${server}/coastal/sensors`, {
+    method,
+    credentials: "include",
+  });
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.message || "Failed to fetch sensor data in weather stations"
+    );
+  }
+  return data;
+};
+
+export const getRainGaugeSensors = async (): Promise<rainGaugeSensorsType> => {
+  const response = await fetch(`${server}/raingauge/sensors`, {
+    method,
+    credentials: "include",
+  });
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.message || "Failed to fetch sensor data in weather stations"
+    );
+  }
+  return data;
+};
+
+export const getRiverLevelSensors =
+  async (): Promise<riverLevelSensorsType> => {
+    const response = await fetch(`${server}/riverlevel/sensors`, {
+      method,
+      credentials: "include",
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.message || "Failed to fetch sensor data in weather stations"
+      );
+    }
+    return data;
+  };

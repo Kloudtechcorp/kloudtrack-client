@@ -7,7 +7,7 @@ import AddStationType from "./adminpages/AddStationType";
 import NotFound from "@/components/shared/NotFound";
 import { Card } from "@/components/ui/card";
 import { UserControl } from "./adminpages/UserControl";
-import { StationList } from "./adminpages/StationList";
+import StationList from "./adminpages/StationList";
 
 const AdminSettings = () => {
   const { user } = useUserContext();

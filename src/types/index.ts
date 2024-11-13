@@ -249,3 +249,48 @@ export type formattedDataType = {
   datetime: any;
   data: number;
 }[];
+
+export type weatherSensorsType = {
+  id: number;
+  name: string;
+  serial: string;
+  BME280a: string;
+  BME280b: string;
+  BME280c: string;
+  BH1750: string;
+  AS5600: string;
+  UV: string;
+  SLAVE: string;
+  recordedAt: string;
+}[];
+
+export type coastalSensorsType = {
+  id: number;
+  name: string;
+  serial: string;
+  sensorStatuses: {
+    BME280: string;
+    sonic1: string;
+    sonic2: string;
+    sonic3: string;
+  };
+  recordedAt: string;
+}[];
+
+export type riverLevelSensorsType = {
+  id: number;
+  name: string;
+  serial: string;
+  message: string;
+  sonic: string;
+  recordedAt: string;
+}[];
+
+export type rainGaugeSensorsType = {
+  id: number;
+  name: string;
+  serial: string;
+  message: string;
+  rainGauge: string;
+  recordedAt: string;
+}[];

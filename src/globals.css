@@ -212,6 +212,7 @@
 .weatherDataTextDiv {
   @apply w-full py-1;
 }
+
 .notFoundTitle {
   @apply bg-[#fbd008] to-transparent bg-clip-text text-[10rem] font-extrabold leading-none text-transparent;
 }

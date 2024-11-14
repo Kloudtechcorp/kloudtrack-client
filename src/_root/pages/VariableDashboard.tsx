@@ -166,22 +166,22 @@ const VariableDashboard = () => {
                   />
                 </div>
                 <div className="border p-2 rounded-lg flex flex-col gap-2">
-                  <p>Past 12 Days</p>
+                  <p>Past 3 Days</p>
                   <VariableGraph
                     stationId={stationData.id}
-                    range={12}
+                    range={72}
                     weatherData={weatherData}
-                    repeat="day"
+                    repeat="hour"
                     type={stationData.type.toLowerCase()}
                   />
                 </div>
                 <div className="border p-2 rounded-lg flex flex-col gap-2">
-                  <p>Past 12 Weeks</p>
+                  <p>Past 7 Days</p>
                   <VariableGraph
                     stationId={stationData.id}
-                    range={12}
+                    range={168}
                     weatherData={weatherData}
-                    repeat="week"
+                    repeat="hour"
                     type={stationData.type.toLowerCase()}
                   />
                 </div>

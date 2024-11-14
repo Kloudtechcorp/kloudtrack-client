@@ -133,7 +133,7 @@ export const downloadWeatherData = async ({
   from,
   to,
 }: downloadParamsTypes): Promise<weatherDataTypes[]> => {
-  const response = await fetch(`${server}/coastal/download`, {
+  const response = await fetch(`${server}/weather/download`, {
     method,
     credentials: "include",
     headers: {
@@ -142,6 +142,7 @@ export const downloadWeatherData = async ({
     body: JSON.stringify({ name, from, to }),
   });
   const data = await response.json();
+  console.log(data);
   if (!response.ok) {
     throw new Error(data.message || "Failed to fetch data");
   }

@@ -168,7 +168,7 @@ const CoastalDialog = ({ id, name }: CoastalDialogProps) => {
               type="submit"
               className="cursor-pointer text-gray-950 hover:text-gray-200 bg-gray-200 w-full dark:bg-gray-500 dark:hover:bg-gray-700"
             >
-              Download CSV
+              {isPending ? "Loading..." : "Download CSV"}
             </Button>
           </form>
         </Form>

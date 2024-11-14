@@ -56,8 +56,11 @@ const VariableGraph = ({
   }
 
   const sliceDetails = (change: string, value: any) => {
-    if (change === "minute" || change === "hour") {
+    if (change === "minute") {
       return value.slice(11, 16);
+    }
+    if (change === "hour") {
+      return value.slice(0, 16);
     }
     return value.slice(0, 10);
   };

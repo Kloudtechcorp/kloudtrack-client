@@ -38,13 +38,11 @@ const ClmsDataCard: React.FC<MapCardProps> = ({ data }) => {
                 <Card className="w-full h-44">
                   <CardContent className="px-0 p-0 h-full">
                     <div className="text-center w-full flex flex-col h-full">
-                      <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-                        <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-                          Distance
-                        </span>
+                      <div className="weatherDataTextDiv">
+                        <span className="weatherDataTitle">Distance</span>
                       </div>
                       <div className="text-xl flex h-full items-center justify-center">
-                        <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
+                        <span className="weatherDataText">
                           {Math.round(data.data.distance * 100) / 100} cm
                         </span>
                       </div>
@@ -55,13 +53,11 @@ const ClmsDataCard: React.FC<MapCardProps> = ({ data }) => {
                   <Card className="w-full h-44">
                     <CardContent className="px-0 p-0 h-full">
                       <div className="text-center w-full flex flex-col h-full">
-                        <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-                          <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-                            Temperature
-                          </span>
+                        <div className="weatherDataTextDiv">
+                          <span className="weatherDataTitle">Temperature</span>
                         </div>
                         <div className="text-xl flex h-full items-center justify-center">
-                          <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
+                          <span className="weatherDataText">
                             {Math.round(data.data.temperature * 100) / 100}{" "}
                             C&deg;
                           </span>
@@ -72,13 +68,11 @@ const ClmsDataCard: React.FC<MapCardProps> = ({ data }) => {
                   <Card className="w-full h-44">
                     <CardContent className="px-0 p-0 h-full">
                       <div className="text-center w-full flex flex-col h-full">
-                        <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-                          <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-                            Air Pressure
-                          </span>
+                        <div className="weatherDataTextDiv">
+                          <span className="weatherDataTitle">Air Pressure</span>
                         </div>
                         <div className="text-xl flex h-full items-center justify-center">
-                          <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
+                          <span className="weatherDataText">
                             {Math.round(data.data.pressure * 100) / 100} mb
                           </span>
                         </div>
@@ -88,13 +82,11 @@ const ClmsDataCard: React.FC<MapCardProps> = ({ data }) => {
                   <Card className="w-full h-44">
                     <CardContent className="px-0 p-0 h-full">
                       <div className="text-center w-full flex flex-col h-full">
-                        <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
-                          <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
-                            Humidity
-                          </span>
+                        <div className="weatherDataTextDiv">
+                          <span className="weatherDataTitle">Humidity</span>
                         </div>
                         <div className="text-xl flex h-full items-center justify-center">
-                          <span className="xl:text-4xl lg:text-3xl md:text-xl sm:text-sm">
+                          <span className="weatherDataText">
                             {Math.round(data.data.humidity * 100) / 100} %
                           </span>
                         </div>

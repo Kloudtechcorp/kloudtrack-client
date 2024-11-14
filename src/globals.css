@@ -184,6 +184,7 @@
 .stationDetailsDiv {
   @apply flex flex-col gap-3 justify-between w-1/2;
 }
+
 .stationDataDiv {
   @apply flex items-center gap-2;
 }
@@ -199,9 +200,11 @@
 .cardDataDiv {
   @apply text-xl flex h-full items-center justify-center;
 }
+
 .weatherDataTitle {
   @apply xl:text-xl lg:text-lg md:text-base sm:text-xs;
 }
+
 .weatherDataText {
   @apply xl:text-4xl lg:text-3xl md:text-xl sm:text-sm flex flex-col font-bold;
 }
@@ -209,6 +212,7 @@
 .weatherDataTitleDiv {
   @apply text-center w-full flex flex-col h-full;
 }
+
 .weatherDataTextDiv {
   @apply w-full py-1;
 }
@@ -220,6 +224,7 @@
 .tooltipContentDiv {
   @apply w-[28rem];
 }
+
 .notFoundDesc {
   @apply font-bold text-3xl;
 }
@@ -231,6 +236,7 @@
 .currentWeatherDiv {
   @apply font-medium text-xs md:text-sm lg:text-base h-10 flex items-center;
 }
+
 .currentWeatherText {
   @apply font-medium text-xs md:text-sm lg:text-base h-10 flex items-center;
 }

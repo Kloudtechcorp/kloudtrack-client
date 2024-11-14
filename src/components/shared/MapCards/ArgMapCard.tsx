@@ -69,7 +69,7 @@ const ArgMapCard: React.FC<MapCardProps> = ({ data, id }) => {
                   <Card className="w-full h-full">
                     <CardContent className="px-0 p-0 h-full flex justify-center items-center">
                       <div className="text-center w-full flex flex-col h-full">
-                        <div className="border border-transparent border-b-gray-200 w-full dark:bg-slate-800 py-1">
+                        <div className="border border-transparent border-b-gray-200 w-full dark:bg-secondary py-1">
                           <span className="font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs">
                             Precipitation{" "}
                             <span className="text-sm">(last 15 minutes)</span>

@@ -78,9 +78,6 @@ const StationRegistration = () => {
     });
   };
 
-  console.log("Stations: ", stationTypes);
-  console.log("Regions: ", regions);
-
   return (
     <Form {...form}>
       <div className="px-5 w-full">

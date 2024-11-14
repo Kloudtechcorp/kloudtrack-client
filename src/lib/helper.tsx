@@ -1,7 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 
 export const checkBadge = (check: string) => {
-  console.log(check);
   if (check === "Failed") {
     return <Badge variant={"destructive"}>Failed</Badge>;
   } else if (check === "No Value") {

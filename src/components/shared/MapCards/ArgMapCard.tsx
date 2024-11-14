@@ -77,6 +77,7 @@ const ArgMapCard: React.FC<MapCardProps> = ({ data, id }) => {
                         </div>
                         <div className="text-xl flex h-full items-center justify-center pr-5 py-5 pl-0">
                           <VariableGraph
+                            type={data.station.type}
                             stationId={id}
                             weatherData={"precipitation"}
                             repeat={"minute"}

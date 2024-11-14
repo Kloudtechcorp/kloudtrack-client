@@ -29,8 +29,10 @@ const VariableGraph = ({
   weatherData,
   range,
   repeat,
+  type,
 }: TableGraphCardType) => {
   const stationDataParams: TableGraphCardType = {
+    type,
     stationId,
     weatherData,
     range,

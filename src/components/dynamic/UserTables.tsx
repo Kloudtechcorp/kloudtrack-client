@@ -55,8 +55,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "../ui/dialog";
-import UpdateUser from "../forms/updateuser";
 import { DialogTrigger } from "@radix-ui/react-dialog";
+import UpdateUser from "../forms/updateUser";
 
 export function UserTables() {
   const [sorting, setSorting] = React.useState<SortingState>([]);

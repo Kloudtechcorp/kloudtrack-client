@@ -1,4 +1,4 @@
-import React, {useEffect, useCallback, useRef, useState } from "react";
+import React, { useEffect, useCallback, useRef, useState } from "react";
 import {
   Tooltip,
   TooltipContent,
@@ -35,16 +35,14 @@ export function Precipitation({
 
   const determineWarning = useCallback(() => {
     if (pastHourPrecip > 2 && pastHourPrecip < 7.5) {
-      colorClass.current ="text-[#00ff01]";
+      colorClass.current = "text-[#00ff01]";
 
       handleSetWarning(`Light rain at ${stationName}.`);
       hasShownToastRef.current = false;
       setHasWarning(false);
     } else if (pastHourPrecip >= 7.5 && pastHourPrecip < 15) {
-      colorClass.current ="text-[#fbd007]";
-      handleSetWarning(
-        "Heavy rains are expected, flooding is possibl!"
-      );
+      colorClass.current = "text-[#fbd007]";
+      handleSetWarning("Heavy rains are expected, flooding is possibl!");
       if (!hasShownToastRef.current) {
         triggerWarningToast({
           title: `Heavy rainfall detected at ${stationName}!`,
@@ -59,7 +57,7 @@ export function Precipitation({
         setHasWarning(true);
       }
     } else if (pastHourPrecip >= 15 && pastHourPrecip <= 30) {
-      colorClass.current ="text-[#ed761c]";
+      colorClass.current = "text-[#ed761c]";
       handleSetWarning(
         "With intense rains, flooding is threatening, and the public is advised to be alert for possible evacuation!"
       );
@@ -77,7 +75,7 @@ export function Precipitation({
         setHasWarning(true);
       }
     } else if (pastHourPrecip > 30) {
-      colorClass.current ="text-[#ff3300] ";
+      colorClass.current = "text-[#ff3300] ";
       handleSetWarning(
         "Torrential rains could cause serious flooding in some areas, so affected residents must evacuate as soon as possible!"
       );

@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useGetStationNames } from "@/hooks/react-query/queries";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import PuffLoader from "react-spinners/PuffLoader";
 
@@ -18,15 +18,35 @@ const VariableDashboard = () => {
   const navigate = useNavigate();
   const { station } = useParams();
   const { state } = useLocation();
-
-  if (!station) {
-    return <div>No station found</div>;
-  }
   const {
     data: stationData,
     isError,
     isLoading,
-  } = useGetStationNames(station.toString());
+  } = useGetStationNames(station?.toString() || "");
+  const [weatherData, setWeatherData] = useState<string>("temperature");
+
+  useEffect(() => {
+    if (stationData) {
+      switch (stationData.type) {
+        case "ARG":
+          setWeatherData("precipitation");
+          break;
+        case "CLMS":
+          setWeatherData("temperature");
+          break;
+        case "RLMS":
+          setWeatherData("distance");
+          break;
+        default:
+          setWeatherData("temperature");
+          break;
+      }
+    }
+  }, [stationData]);
+
+  if (!station) {
+    return <div>No station found</div>;
+  }
 
   if (isError)
     return (
@@ -45,23 +65,6 @@ const VariableDashboard = () => {
         </CardContent>
       </Card>
     );
-
-  const [weatherData, setWeatherData] = useState<string>(() => {
-    if (!stationData) {
-      return "temperature";
-    }
-
-    switch (stationData.type) {
-      case "ARG":
-        return "precipitation";
-      case "CLMS":
-        return "temperature";
-      case "RLMS":
-        return "distance";
-      default:
-        return "temperature";
-    }
-  });
 
   return (
     <div className="mainContainer bg-[#F6F8FC] dark:bg-slate-950 overflow-auto custom-scrollbar">

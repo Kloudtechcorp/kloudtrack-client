@@ -16,6 +16,8 @@ import {
 import { TableGraphCardType } from "@/types/queryTypes";
 import PuffLoader from "react-spinners/PuffLoader";
 import { useGetDataset } from "@/hooks/react-query/queries";
+import { formattedDataType } from "@/types";
+import { formatDateString } from "@/lib/utils";
 
 const chartConfig = {
   desktop: {
@@ -65,13 +67,24 @@ const VariableGraph = ({
     return value.slice(0, 10);
   };
 
+  const getFormattedDataset = (
+    graphData: formattedDataType[]
+  ): formattedDataType[] => {
+    return graphData.map((item) => ({
+      ...item,
+      datetime: formatDateString(item.datetime, "short"),
+    }));
+  };
+
+  const updatedData = getFormattedDataset(graphData);
+
   return (
     <div className="w-full rounded-lg p-1 border-[#545454] m-0 flex items-center justify-center">
       <ChartContainer config={chartConfig} className="h-60 w-full m-0 p-0">
         {weatherData === "precipitation" || weatherData === "uvIndex" ? (
           <BarChart
             accessibilityLayer
-            data={graphData}
+            data={updatedData}
             margin={{
               left: 2,
               right: 12,
@@ -83,7 +96,6 @@ const VariableGraph = ({
               tickLine={true}
               axisLine={true}
               tickMargin={10}
-              tickFormatter={(value) => sliceDetails(repeat, value)}
             />
             <YAxis />
             <ChartTooltip cursor={true} content={<ChartTooltipContent />} />
@@ -92,7 +104,7 @@ const VariableGraph = ({
         ) : (
           <LineChart
             accessibilityLayer
-            data={graphData}
+            data={updatedData}
             margin={{
               left: 2,
               right: 12,
@@ -104,7 +116,6 @@ const VariableGraph = ({
               tickLine={true}
               axisLine={true}
               tickMargin={10}
-              tickFormatter={(value) => sliceDetails(repeat, value)}
             />
             <YAxis />
             <ChartTooltip cursor={true} content={<ChartTooltipContent />} />

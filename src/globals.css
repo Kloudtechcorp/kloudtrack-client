@@ -189,7 +189,7 @@
 }
 
 .cardMain {
-  @apply w-full h-full aspect-[2/1];
+  @apply w-full h-full aspect-[100/56];
 }
 
 .cardTitleDiv {

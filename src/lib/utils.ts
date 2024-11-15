@@ -18,8 +18,11 @@ export function formatDateString(
   const options: Intl.DateTimeFormatOptions = {
     month: month,
     day: "numeric",
-    year: "numeric",
   };
+
+  if (month !== "short") {
+    options.year = "numeric";
+  }
   const date = new Date(utcPlus8Now);
   const formattedDate = date.toLocaleDateString("en-US", options);
   const time = date.toLocaleTimeString([], {
@@ -27,7 +30,7 @@ export function formatDateString(
     minute: "numeric",
   });
 
-  return `${formattedDate} ${time}`;
+  return `${formattedDate} at ${time}`;
 }
 
 export const getNearestTimeIndex = (hours: number, minutes: number): number => {

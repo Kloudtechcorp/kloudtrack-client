@@ -86,33 +86,7 @@ const Himawari = () => {
     );
   };
 
-  useEffect(() => {
-    if (isCycling) {
-      intervalRef.current = setInterval(processImagesWithDelay, 500);
-    } else if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-    }
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, [isCycling, currentIndex]);
-
-  useEffect(() => {
-    setSliderValue([currentIndex]);
-  }, [currentIndex]);
-
-  useEffect(() => {
-    const newDynamicTimerArray = generateDynamicTimerArray();
-    setDynamicTimerArray(newDynamicTimerArray);
-  }, []);
-
   const handleSliderChange = (value: number[]) => {
-    if (isCycling) {
-      setIsCycling(false);
-    }
     setSliderValue(value);
     setCurrentIndex(value[0]);
     updateImage(value[0]);
@@ -145,7 +119,30 @@ const Himawari = () => {
     return `${formattedHours}:${formattedMinutes}`;
   };
 
+  
   useEffect(() => {
+    const newDynamicTimerArray = generateDynamicTimerArray();
+    setDynamicTimerArray(newDynamicTimerArray);
+  }, []);
+
+
+  useEffect(() => {
+    if (isCycling) {
+      intervalRef.current = setInterval(processImagesWithDelay, 500);
+    } else if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [isCycling, currentIndex]);
+
+
+  useEffect(() => {
+    setSliderValue([currentIndex]);
     updateImage(currentIndex);
   }, [bandSelect, currentIndex]);
 

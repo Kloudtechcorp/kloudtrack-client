@@ -27,30 +27,25 @@ const Himawari = () => {
   const [sliderValue, setSliderValue] = useState<number[]>([0]);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [lastValidImgUrl, setLastValidImgUrl] = useState<string | null>(null);
-
   const [bandSelect, setBandSelect] = useState<string>("snd");
-
   const [imageElement, setImageElement] = useState<string>(
     `https://www.data.jma.go.jp/mscweb/data/himawari/img/se2/se2_snd_${roundUpToNearest10Minutes(
       new Date()
     )}.jpg`
   );
+  const [dynamicTimerArray, setDynamicTimerArray] = useState<string[]>([]);
 
   const generateDynamicTimerArray = (): string[] => {
     const now = new Date();
     const currentHours = now.getUTCHours();
     const currentMinutes = now.getUTCMinutes();
-
     const nearestTimeIndex = getNearestTimeIndex(currentHours, currentMinutes);
     const startTimeIndex = nearestTimeIndex % timer.length;
-
     return [
       ...timer.slice(startTimeIndex),
       ...timer.slice(0, nearestTimeIndex + 1),
     ];
   };
-
-  const [dynamicTimerArray, setDynamicTimerArray] = useState<string[]>([]);
 
   const updateImage = async (index: number) => {
     const element = bandSelect;
@@ -92,22 +87,17 @@ const Himawari = () => {
     } else if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
+    setSliderValue([currentIndex]);
+    const newDynamicTimerArray = generateDynamicTimerArray();
+    setDynamicTimerArray(newDynamicTimerArray);
+    updateImage(currentIndex);
 
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isCycling, currentIndex]);
-
-  useEffect(() => {
-    setSliderValue([currentIndex]);
-  }, [currentIndex]);
-
-  useEffect(() => {
-    const newDynamicTimerArray = generateDynamicTimerArray();
-    setDynamicTimerArray(newDynamicTimerArray);
-  }, []);
+  }, [isCycling, currentIndex, bandSelect, currentIndex]);
 
   const handleSliderChange = (value: number[]) => {
     if (isCycling) {
@@ -120,7 +110,6 @@ const Himawari = () => {
 
   const handleBandChange = (band: string) => {
     setBandSelect(band);
-    console.log("Selected band is:", band);
   };
 
   const formatDisplayTime = (index: number): string => {
@@ -144,10 +133,6 @@ const Himawari = () => {
 
     return `${formattedHours}:${formattedMinutes}`;
   };
-
-  useEffect(() => {
-    updateImage(currentIndex);
-  }, [bandSelect, currentIndex]);
 
   return (
     <div className="flex w-full rounded-2xl dark:bg-secondary bg-white  ">

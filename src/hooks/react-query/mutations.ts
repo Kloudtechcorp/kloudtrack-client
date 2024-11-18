@@ -30,9 +30,10 @@ import {
   updateUserGrants,
   updateUserPassword,
 } from "@/api/put";
-import { deleteApiKey } from "@/api/delete";
+import { deleteApiKey, deleteStation } from "@/api/delete";
 import { downloadParamsTypes } from "@/types/queryTypes";
 import { apiKeyType } from "@/types";
+import { useNavigate } from "react-router-dom";
 
 //CREATE DATA
 export const useSignInAccount = () => {
@@ -220,6 +221,27 @@ export const useDeleteApiKey = (onSuccess: () => void) => {
         title: "Delete Successful!",
         description: "API Key Deleted.",
       });
+    },
+  });
+};
+
+export const useDeleteStation = () => {
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationFn: (id: number) => deleteStation(id),
+    onError: (error: Error) => {
+      toast({
+        title: "Error!",
+        description: error.message,
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Delete Successful!",
+        description: "Station Deleted.",
+      });
+      navigate("/");
     },
   });
 };

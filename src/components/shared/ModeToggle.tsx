@@ -9,9 +9,9 @@ export function ModeToggle({ expand }: ModeToggleProps) {
   return (
     <ToggleGroup
       type="single"
-      className={`flex flex-col gap-0 ${
+      className={`flex flex-row gap-0 ${
         expand && "flex-row"
-      } rounded-full bg-gray-200 dark:bg-gray-700`}
+      } rounded-full bg-gray-200 dark:bg-gray-800`}
       value={theme}
     >
       <ToggleGroupItem

@@ -20,10 +20,12 @@ export const triggerWarningToast = ({
 }: WarningToastProps) => {
   let toastId: string | number;
 
+  console.log("color class is ", colorClass);
   const toasterDetailsView = (
     <div className="flex w-full h-full">
       <Button
-        className="flex justify-end h-1/5 bg-transparent text-primary absolute top-0 right-0 hover:bg-slate-200 mb-4"
+        className="flex justify-end h-1/5 absolute top-1 right-1 mb-4"
+        variant="ghost"
         onClick={() => {
           toast.dismiss(toastId);
         }}
@@ -39,7 +41,8 @@ export const triggerWarningToast = ({
 
       <div className="flex w-1/5">
         <Button
-          className={`flex self-center bg-slate-200 text-primary border border-primary`}
+          className={`flex self-center`}
+          variant="default"
           onClick={() => {
             toast.dismiss();
             navigate(`/${stationName}`);
@@ -62,7 +65,8 @@ export const triggerWarningToast = ({
 
       <div className="flex w-1/5  h-full item-center">
         <Button
-          className={`flex self-center bg-slate-200 text-primary border border-primary`}
+          className={`flex self-center`}
+          variant="default"
           onClick={() => {
             toast.dismiss(toastId);
           }}

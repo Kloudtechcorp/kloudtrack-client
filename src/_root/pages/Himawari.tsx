@@ -136,11 +136,12 @@ const Himawari = () => {
 
   return (
     <div className="flex w-full rounded-2xl dark:bg-secondary bg-white  ">
-      <div className="w-full flex sm:flex-col lg:flex-row bg-[#F6F8FC] dark:bg-slate-950 rounded-2xl ">
+      <div className="w-full flex sm:flex-col lg:flex-row bg-[#F6F8FC] dark:bg-[#181819] rounded-2xl ">
         <div className="h-full w-2/3 flex flex-col relative">
+          {/* Slider */}
           <div className="rounded-full p-3 pr-6 bg-[#F6F8FC] dark:bg-black flex flex-row items-center gap-3 absolute top-5 left-5 w-2/3 text-nowrap ">
             <Button
-              className="bg-yellow-400 size-10 p-2 rounded-full"
+              className="bg-yellow-400 size-6 p-2 rounded-full"
               onClick={() => setIsCycling(!isCycling)}
             >
               {isCycling ? (
@@ -175,11 +176,11 @@ const Himawari = () => {
         </div>
 
         <div className="w-1/3 bg-secondary">
-          <div className="p-5">
-            <h2 className="lg:text-3xl sm:text-base font-bold">
+          <div className="p-5 ">
+            <h2 className="py-2 lg:text-3xl sm:text-base font-bold">
               Real-time Satellite View
             </h2>
-            <span className="p-1 lg:text-sm sm:text-xs">
+            <span className=" lg:text-sm sm:text-xs">
               <p>
                 Source: The True Color Reproduction (TCR) imagery from Himawari
                 Satellite is provided by Meteorological Satellite Center, Japan
@@ -194,24 +195,26 @@ const Himawari = () => {
               </p>
             </span>
 
-            <Select
-              onValueChange={(value) => {
-                handleBandChange(value);
-              }}
-              defaultValue={bandSelect}
-              value={bandSelect}
-            >
-              <SelectTrigger className="w-full p-2 rounded-lg bg-white dark:bg-black">
-                <SelectValue placeholder="Band" />
-              </SelectTrigger>
-              <SelectContent>
-                {band.map((item, index) => (
-                  <SelectItem value={item.value} key={index}>
-                    {item.title}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div className="py-4">
+              <Select
+                onValueChange={(value) => {
+                  handleBandChange(value);
+                }}
+                defaultValue={bandSelect}
+                value={bandSelect}
+              >
+                <SelectTrigger className="w-full p-2 rounded-lg bg-white dark:bg-black">
+                  <SelectValue placeholder="Band" />
+                </SelectTrigger>
+                <SelectContent>
+                  {band.map((item, index) => (
+                    <SelectItem value={item.value} key={index}>
+                      {item.title}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
             <HimawariDetails />
           </div>

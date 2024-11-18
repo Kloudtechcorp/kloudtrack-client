@@ -1,7 +1,7 @@
 import { stationCurrentWeatherType } from "@/types/queryTypes";
-import { Card, CardContent } from "../ui/card";
+import { Card, CardContent } from "../../ui/card";
 import { getWindDirectionLabel } from "@/lib/utils";
-import { HeatIndex } from "../../lib/dataCardUtils/heatIndexUtils";
+import { HeatIndex } from "../../../lib/dataCardUtils/heatIndexUtils";
 import { UVIndex } from "@/lib/dataCardUtils/uvIndexUtils";
 import { Precipitation } from "@/lib/dataCardUtils/rainUtils";
 

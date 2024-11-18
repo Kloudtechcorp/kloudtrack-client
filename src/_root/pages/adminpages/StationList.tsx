@@ -42,7 +42,7 @@ const StationList = () => {
         sensors.
       </span>
 
-      <div className="w-full overflow-auto rounded-xl custom-scrollbar">
+      <div className="w-full overflow-auto rounded-md custom-scrollbar">
         {isLoading ? (
           <div className="flex flex-col gap-3 md:gap-5 w-full container p-2 h-full">
             <Skeleton className="w-full cardContainer dark:bg-primary" />

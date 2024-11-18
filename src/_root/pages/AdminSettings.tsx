@@ -13,7 +13,7 @@ const AdminSettings = () => {
   const { user } = useUserContext();
 
   return user.role === "ADMIN" ? (
-    <div className="flex w-full h-full dark:bg-slate-950 bg-[#F6F8FC] p-2">
+    <div className="flex w-full h-full dark:bg-secondary bg-[#F6F8FC] p-2">
       <Tabs
         defaultValue="account"
         className="w-full flex lg:flex-row flex-col p-3 rounded-2xl gap-5 justify-center container"

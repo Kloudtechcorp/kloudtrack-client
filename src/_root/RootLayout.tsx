@@ -13,7 +13,7 @@ const RootLayout = () => {
   return (
     <div className="flex flex-col w-full">
       <Header burgerMenu={handleBurgerMenu} />
-      <div className="flex h-[calc(100vh-5rem)] w-full bg-red-200">
+      <div className="flex h-[calc(100vh-3.5rem)] w-full bg-red-200">
         <LeftSidebar expand={clicked} />
         <section className="flex-1 flex bg-white dark:bg-[#181819] w-full">
           <Outlet />

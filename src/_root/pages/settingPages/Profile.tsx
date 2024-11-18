@@ -25,9 +25,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import DeleteIcon from "@/components/shared/DeleteIcon";
 import { useTheme } from "@/components/theme-provider";
-import CopyIcon from "@/components/shared/CopyIcon";
+import CopyIcon from "@/components/shared/icons/CopyIcon";
+import DeleteIconProfile from "@/components/shared/icons/DeleteIconProfile";
 
 const Profile = () => {
   const { theme } = useTheme();
@@ -139,7 +139,7 @@ const Profile = () => {
                           <AlertDialog>
                             <AlertDialogTrigger asChild>
                               <Button>
-                                <DeleteIcon theme={theme} />
+                                <DeleteIconProfile theme={theme} />
                               </Button>
                             </AlertDialogTrigger>
                             <AlertDialogContent>

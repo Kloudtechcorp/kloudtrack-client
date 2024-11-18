@@ -10,7 +10,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState } from "react";
-// import { stationStaticType } from "@/types";
 import PuffLoader from "react-spinners/PuffLoader";
 import NotFound from "@/components/shared/NotFound";
 import AwsDataCard from "@/components/dynamic/DataDashboardCards.tsx/AwsDataCards";

@@ -13,7 +13,7 @@ export function formatDateString(
   month: "numeric" | "2-digit" | "long" | "short" | "narrow" | undefined
 ) {
   const now = new Date(dateString);
-  const utcPlus8Now = new Date(now.getTime() - 8 * 60 * 60 * 1000);
+  const utcPlus8Now = new Date(now.getTime() + 0 * 60 * 60 * 1000);
 
   const options: Intl.DateTimeFormatOptions = {
     month: month,

@@ -65,7 +65,7 @@ export function UVIndex({
           colorClass: colorClass.current,
           navigate,
         });
-        hasShownToastRef.current = false;
+        hasShownToastRef.current = true;
         setHasWarning(true);
       }
     } else if (uvIndexVal > 10) {

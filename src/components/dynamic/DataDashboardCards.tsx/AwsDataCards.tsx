@@ -7,6 +7,8 @@ import VariableGraph from "@/components/dynamic/VariableGraph";
 import PuffLoader from "react-spinners/PuffLoader";
 import NotFound from "@/components/shared/NotFound";
 import WeatherDialog from "@/components/dynamic/DownloadCards/WeatherDialog";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 type AwsDataCardProps = {
   stationId: number;
@@ -16,6 +18,13 @@ const AwsDataCard = ({ stationId }: AwsDataCardProps) => {
   const navigate = useNavigate();
   const { data: stationData, isError, isLoading } = useGetAwsData2(stationId);
 
+
+  useEffect(() => {
+    return () => {
+      toast.dismiss();
+    };
+  }, []);
+  
   if (isError || !stationData?.data) {
     return (
       <div className="w-full flex justify-center items-center h-full">

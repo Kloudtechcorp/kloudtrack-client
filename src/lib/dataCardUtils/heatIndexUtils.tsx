@@ -41,21 +41,27 @@ export function HeatIndex({
     if (roundedHeatIndex < 27) {
       colorClass.current ="text-green-500";
       handleSetWarning("Caution: Stay hydrated!");
-      hasShownToastRef.current = false;      setHasWarning(false);
+      hasShownToastRef.current = false;      
+      setHasWarning(false);
+
     } else if (roundedHeatIndex >= 27 && roundedHeatIndex <= 32) {
       colorClass.current ="text-green-500";
       handleSetWarning("Caution: Stay hydrated");
-      hasShownToastRef.current = false;      setHasWarning(false);
+      hasShownToastRef.current = false;     
+       setHasWarning(false);
+
     } else if (roundedHeatIndex > 32 && roundedHeatIndex <= 41) {
       colorClass.current ="text-[#ffff01]";
       handleSetWarning("Extreme Caution: Avoid prolonged exertion!");
-      hasShownToastRef.current = false;      setHasWarning(false);
+      hasShownToastRef.current = false;      
+      setHasWarning(false);
+
     } else if (roundedHeatIndex > 41 && roundedHeatIndex <= 54) {
       colorClass.current ="text-[#f79647]";
-
       handleSetWarning(
         "Danger: High risk of heat-related illnesses in " + stationName
       );
+
       if (!hasShownToastRef.current) {
         triggerWarningToast({
           title: `High heat Index detected at ${stationName}!`,
@@ -68,6 +74,7 @@ export function HeatIndex({
         hasShownToastRef.current = true;
         setHasWarning(true);
       }
+      
     } else if (roundedHeatIndex > 54) {
       colorClass.current ="text-[#ff3300]";
       handleSetWarning("Extreme Danger: Heatstroke is imminent!");

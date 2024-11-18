@@ -223,18 +223,19 @@ const Map = () => {
           </Select>
         </div>
         {isLoading && (
-          <div className="bg-white dark:bg-gray-950 shadow-lg rounded-lg lg:top-0 lg:right-0 xs:bottom-0 xs:top-48 w-1/2 xs:max-w-screen-sm flex justify-center items-center">
+          <div className="bg-white dark:bg-secondary shadow-lg rounded-lg lg:top-0 lg:right-0 xs:bottom-0 xs:top-48 w-1/2 xs:max-w-screen-sm flex justify-center items-center">
             <PuffLoader color={"#545454"} size={500} />
           </div>
         )}
         {stationDetails && (
           <div
-            className={`bg-white dark:bg-gray-950 shadow-lg rounded-lg lg:top-0 lg:right-0 xs:bottom-0 xs:top-48 w-full h-1/2 md:w-1/2 md:h-full overflow-auto`}
+            className={`bg-white dark:bg-secondary shadow-lg rounded-lg lg:top-0 lg:right-0 xs:bottom-0 xs:top-48 w-full h-1/2 md:w-1/2 md:h-full overflow-auto`}
           >
             <div className=" flex flex-col sm:flex-row md:flex-col">
               <MapImage stationDetails={stationDetails} />
-              <div className="absolute right-2 py-2">
+              <div className="absolute right-5 py-2">
                 <Button
+                  variant="default"
                   onClick={() => {
                     setStationDetails(null);
                     setAwsData(null);
@@ -242,7 +243,10 @@ const Map = () => {
                     setRlmsData(null);
                   }}
                 >
-                  <img src={"/assets/icons/close.svg"} className="invert" />
+                  <img
+                    src={"/assets/icons/close.svg"}
+                    className="invert dark:invert-0"
+                  />
                 </Button>
               </div>
 

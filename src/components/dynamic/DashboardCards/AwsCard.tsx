@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, CardContent, CardTitle } from "../../ui/card";
 import { Button } from "../../ui/button";
 import PuffLoader from "react-spinners/PuffLoader";
@@ -29,7 +29,12 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
   const { data: stationData, isLoading, isError } = useGetAwsData2(id);
   const { theme } = useTheme();
 
-  toast.dismiss();
+  useEffect(() => {
+    return () => {
+      toast.dismiss();
+    };
+  }, []);
+
   if (isLoading || !stationData) {
     return (
       <Card className="cardContainer flex flex-row">

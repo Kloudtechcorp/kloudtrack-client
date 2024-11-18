@@ -81,28 +81,7 @@ const Himawari = () => {
     );
   };
 
-  useEffect(() => {
-    if (isCycling) {
-      intervalRef.current = setInterval(processImagesWithDelay, 500);
-    } else if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-    }
-    setSliderValue([currentIndex]);
-    const newDynamicTimerArray = generateDynamicTimerArray();
-    setDynamicTimerArray(newDynamicTimerArray);
-    updateImage(currentIndex);
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, [isCycling, currentIndex, bandSelect, currentIndex]);
-
   const handleSliderChange = (value: number[]) => {
-    if (isCycling) {
-      setIsCycling(false);
-    }
     setSliderValue(value);
     setCurrentIndex(value[0]);
     updateImage(value[0]);
@@ -133,6 +112,33 @@ const Himawari = () => {
 
     return `${formattedHours}:${formattedMinutes}`;
   };
+
+  
+  useEffect(() => {
+    const newDynamicTimerArray = generateDynamicTimerArray();
+    setDynamicTimerArray(newDynamicTimerArray);
+  }, []);
+
+
+  useEffect(() => {
+    if (isCycling) {
+      intervalRef.current = setInterval(processImagesWithDelay, 500);
+    } else if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [isCycling, currentIndex]);
+
+
+  useEffect(() => {
+    setSliderValue([currentIndex]);
+    updateImage(currentIndex);
+  }, [bandSelect, currentIndex]);
 
   return (
     <div className="flex w-full rounded-2xl dark:bg-secondary bg-white  ">

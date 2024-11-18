@@ -12,7 +12,6 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import toast from "react-hot-toast";
 import { useState } from "react";
 import { psgcValidation } from "@/types/validation";
 import {
@@ -24,7 +23,6 @@ import {
 } from "@/components/ui/select";
 import { barangays, municipalities, provinces, regions } from "@/lib/psgc";
 import { useAddPsgc } from "@/hooks/react-query/mutations";
-import { Card } from "@/components/ui/card";
 
 const defaultValues = {
   psgc: "",

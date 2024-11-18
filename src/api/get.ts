@@ -104,7 +104,6 @@ export const getStationList = async (): Promise<stationsListType[]> => {
     throw new Error("Error fetching station data");
   }
   const data = await response.json();
-  console.log(data);
   return data.stations || [];
 };
 
@@ -143,7 +142,7 @@ export const getStationProvinces = async (
   });
   if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
   const data = await response.json();
-  return data.province;
+  return data.provinces;
 };
 
 //=========================== GET DATA FOR MUNICIPALITIES
@@ -157,7 +156,7 @@ export const getStationMunicipalities = async (
   if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
   const data = await response.json();
 
-  return data.municipality;
+  return data.municipalities;
 };
 
 //=========================== GET DATA FOR BARANGAYS
@@ -171,7 +170,7 @@ export const getStationBarangays = async (
   if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
   const data = await response.json();
 
-  return data.barangay;
+  return data.barangays;
 };
 
 //=========================== GET DATA FOR USER PROFILE DATA
@@ -186,7 +185,6 @@ export const getUserProfile = async (
   if (!response.ok) {
     throw new Error(data.message || "Failed to fetch profile");
   }
-  console.log(data.profile);
   return data.profile;
 };
 
@@ -348,6 +346,5 @@ export const getUserList = async (): Promise<userListType> => {
   if (!response.ok) {
     throw new Error(data.message || "Failed to fetch users");
   }
-  console.log(data);
   return data;
 };

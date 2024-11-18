@@ -25,6 +25,7 @@ import { weatherDataTypes } from "@/types/queryTypes";
 import { formatDateString, getDateRange } from "@/lib/utils";
 import toast from "react-hot-toast";
 import { useWeatherDownloadData } from "@/hooks/react-query/mutations";
+import PuffLoader from "react-spinners/PuffLoader";
 
 type WeatherDialogProps = {
   id: number;
@@ -33,7 +34,7 @@ type WeatherDialogProps = {
 
 const WeatherDialog = ({ id, name }: WeatherDialogProps) => {
   const [selected, setSelected] = useState("7days");
-  const { mutateAsync: downloadData } = useWeatherDownloadData();
+  const { mutateAsync: downloadData, isPending } = useWeatherDownloadData();
   const now = new Date();
 
   const [date, setDate] = useState<DateRange | undefined>(
@@ -83,6 +84,7 @@ const WeatherDialog = ({ id, name }: WeatherDialogProps) => {
     downloadData(updatedData, {
       onSuccess: (data) => {
         const csvData = generateCSVData(data);
+        console.log(csvData);
         const blob = new Blob([csvData], { type: "text/csv" });
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
@@ -176,7 +178,7 @@ const WeatherDialog = ({ id, name }: WeatherDialogProps) => {
               </div>
             </div>
             <Button type="submit" variant="default">
-              Download CSV
+              {isPending ? "Loading..." : "Download CSV"}
             </Button>
           </form>
         </Form>

@@ -16,6 +16,8 @@ import {
 import { TableGraphCardType } from "@/types/queryTypes";
 import PuffLoader from "react-spinners/PuffLoader";
 import { useGetDataset } from "@/hooks/react-query/queries";
+import { formattedDataType } from "@/types";
+import { formatDateString } from "@/lib/utils";
 
 const chartConfig = {
   desktop: {
@@ -29,8 +31,10 @@ const VariableGraph = ({
   weatherData,
   range,
   repeat,
+  type,
 }: TableGraphCardType) => {
   const stationDataParams: TableGraphCardType = {
+    type,
     stationId,
     weatherData,
     range,
@@ -54,11 +58,25 @@ const VariableGraph = ({
   }
 
   const sliceDetails = (change: string, value: any) => {
-    if (change === "minute" || change === "hour") {
+    if (change === "minute") {
       return value.slice(11, 16);
+    }
+    if (change === "hour") {
+      return value.slice(0, 16);
     }
     return value.slice(0, 10);
   };
+
+  const getFormattedDataset = (
+    graphData: formattedDataType[]
+  ): formattedDataType[] => {
+    return graphData.map((item) => ({
+      ...item,
+      datetime: formatDateString(item.datetime, "short"),
+    }));
+  };
+
+  const updatedData = getFormattedDataset(graphData);
 
   return (
     <div className="w-full rounded-lg p-1 border-[#545454] m-0 flex items-center justify-center">
@@ -66,7 +84,7 @@ const VariableGraph = ({
         {weatherData === "precipitation" || weatherData === "uvIndex" ? (
           <BarChart
             accessibilityLayer
-            data={graphData}
+            data={updatedData}
             margin={{
               left: 2,
               right: 12,
@@ -78,7 +96,6 @@ const VariableGraph = ({
               tickLine={true}
               axisLine={true}
               tickMargin={10}
-              tickFormatter={(value) => sliceDetails(repeat, value)}
             />
             <YAxis />
             <ChartTooltip cursor={true} content={<ChartTooltipContent />} />
@@ -87,7 +104,7 @@ const VariableGraph = ({
         ) : (
           <LineChart
             accessibilityLayer
-            data={graphData}
+            data={updatedData}
             margin={{
               left: 2,
               right: 12,
@@ -99,7 +116,6 @@ const VariableGraph = ({
               tickLine={true}
               axisLine={true}
               tickMargin={10}
-              tickFormatter={(value) => sliceDetails(repeat, value)}
             />
             <YAxis />
             <ChartTooltip cursor={true} content={<ChartTooltipContent />} />

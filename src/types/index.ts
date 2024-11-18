@@ -248,7 +248,7 @@ export type stationStaticType = {
 export type formattedDataType = {
   datetime: any;
   data: number;
-}[];
+};
 
 export type weatherSensorsType = {
   id: number;

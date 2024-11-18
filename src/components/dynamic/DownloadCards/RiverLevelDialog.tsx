@@ -33,7 +33,7 @@ type RiverLevelDialogProps = {
 
 const RiverLevelDialog = ({ id, name }: RiverLevelDialogProps) => {
   const [selected, setSelected] = useState("7days");
-  const { mutateAsync: downloadData } = useRiverLevelDownloadData();
+  const { mutateAsync: downloadData, isPending } = useRiverLevelDownloadData();
   const now = new Date();
 
   const [date, setDate] = useState<DateRange | undefined>(
@@ -153,7 +153,7 @@ const RiverLevelDialog = ({ id, name }: RiverLevelDialogProps) => {
               </div>
             </div>
             <Button type="submit" variant="default">
-              Download CSV
+              {isPending ? "Loading..." : "Download CSV"}
             </Button>
           </form>
         </Form>

@@ -108,7 +108,7 @@
   }
 
   .marker-aws {
-    background-image: url("assets/icons/pointer-aws.svg");
+    background-image: url("/assets/icons/pointer-aws.svg");
     background-size: cover;
     width: 50px;
     height: 50px;
@@ -117,7 +117,7 @@
   }
 
   .marker-arg {
-    background-image: url("assets/icons/pointer-arg.svg");
+    background-image: url("/assets/icons/pointer-arg.svg");
     background-size: cover;
     width: 50px;
     height: 50px;
@@ -126,7 +126,7 @@
   }
 
   .marker-rlms {
-    background-image: url("assets/icons/pointer-rlms.svg");
+    background-image: url("/assets/icons/pointer-rlms.svg");
     background-size: cover;
     width: 50px;
     height: 50px;
@@ -135,7 +135,7 @@
   }
 
   .marker-clms {
-    background-image: url("assets/icons/pointer-clms.svg");
+    background-image: url("/assets/icons/pointer-clms.svg");
     background-size: cover;
     width: 50px;
     height: 50px;
@@ -190,7 +190,7 @@
 }
 
 .cardMain {
-  @apply w-full h-full aspect-[2/1];
+  @apply w-full h-full aspect-[100/56];
 }
 
 .cardTitleDiv {

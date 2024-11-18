@@ -33,7 +33,7 @@ type RainGaugeDialogProps = {
 
 const RainGaugeDialog = ({ id, name }: RainGaugeDialogProps) => {
   const [selected, setSelected] = useState("7days");
-  const { mutateAsync: downloadData } = useRainGaugeDownloadData();
+  const { mutateAsync: downloadData, isPending } = useRainGaugeDownloadData();
   const now = new Date();
 
   const [date, setDate] = useState<DateRange | undefined>(
@@ -153,7 +153,7 @@ const RainGaugeDialog = ({ id, name }: RainGaugeDialogProps) => {
               </div>
             </div>
             <Button type="submit" variant="default">
-              Download CSV
+              {isPending ? "Loading..." : "Download CSV"}
             </Button>
           </form>
         </Form>

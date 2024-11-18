@@ -186,6 +186,7 @@ export const useGetUserProfile = (
     queryKey: [QUERY_KEYS.GET_USER_PROFILE, userId],
     queryFn: () => getUserProfile(userId),
     staleTime: 60000,
+    refetchInterval: 1000,
   });
 };
 

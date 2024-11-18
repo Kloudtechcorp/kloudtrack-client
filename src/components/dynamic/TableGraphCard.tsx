@@ -142,6 +142,7 @@ const TableGraphCard = ({
       </div>
       <div className="border rounded-lg w-full items-center h-full grow p-1 flex">
         <VariableGrapht
+          type={type}
           stationId={stationId}
           range={range}
           weatherData={weatherData}

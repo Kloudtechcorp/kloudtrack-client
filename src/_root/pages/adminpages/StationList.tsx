@@ -34,19 +34,6 @@ const StationList = () => {
     (station) => station.type === "CLMS"
   );
 
-  const awsIds = user.stations
-    .filter((item) => item.type === "AWS")
-    .map((item) => item.id);
-  const argIds = user.stations
-    .filter((item) => item.type === "ARG")
-    .map((item) => item.id);
-  const clmsIds = user.stations
-    .filter((item) => item.type === "CLMS")
-    .map((item) => item.id);
-  const rlmsIds = user.stations
-    .filter((item) => item.type === "RLMS")
-    .map((item) => item.id);
-
   return (
     <div className="px-5 w-full">
       <span className="flex pt-5 font-bold text-lg">Station List</span>

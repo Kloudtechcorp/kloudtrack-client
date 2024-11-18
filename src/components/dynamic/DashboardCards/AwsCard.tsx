@@ -47,7 +47,7 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
     );
   }
 
-  if (isError || !stationData.data || !stationData.station) {
+  if (isError || !stationData.station) {
     return (
       <Card className="cardContainer flex flex-row">
         <CardContent className="flex flex-col lg:flex-row w-full p-0 gap-2">
@@ -64,8 +64,8 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
   return (
     <Card className="cardContainer flex flex-row">
       <CardContent className="flex flex-col lg:flex-row w-full p-0 gap-2">
-        <div className="stationDetailsDiv">
-          <div className="flex flex-col px-2 ">
+        <div className="stationDetailsDiv px-2 pb-2">
+          <div className="flex flex-col">
             <div className="flex items-center">
               <CardTitle className="w-full">
                 {stationData.station.name}
@@ -90,11 +90,11 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
             </div>
           </div>
           {stationData.station.image && (
-            <div className="h-full px-2 pb-3 hidden lg:block">
+            <div className="hidden lg:block">
               <img
                 src={stationData.station.image}
-                className="rounded-md object-cover h-full"
-                alt="Station"
+                className="rounded-md object-cover aspect-square h-full w-full"
+                alt="Station image"
               />
             </div>
           )}

@@ -222,7 +222,7 @@
 }
 
 .tooltipContentDiv {
-  @apply w-[28rem];
+  @apply w-full text-xs;
 }
 
 .notFoundDesc {
@@ -239,4 +239,8 @@
 
 .currentWeatherText {
   @apply font-medium text-xs md:text-sm lg:text-base h-10 flex items-center;
+}
+
+.cardDashboard {
+  @apply w-full h-[8rem];
 }

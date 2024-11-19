@@ -11,7 +11,7 @@ export function ModeToggle({ expand }: ModeToggleProps) {
       type="single"
       className={`flex flex-row gap-0 ${
         expand && "flex-row"
-      } rounded-full bg-gray-200 dark:bg-gray-800`}
+      } rounded-full bg-gray-200 dark:bg-gray-800 h-8`}
       value={theme}
     >
       <ToggleGroupItem
@@ -22,7 +22,7 @@ export function ModeToggle({ expand }: ModeToggleProps) {
           setTheme(selectedTheme);
         }}
       >
-        <Sun className="h-4 w-4" />
+        <Sun className="size-3" />
       </ToggleGroupItem>
       <ToggleGroupItem
         value="dark"
@@ -32,7 +32,7 @@ export function ModeToggle({ expand }: ModeToggleProps) {
           setTheme(selectedTheme);
         }}
       >
-        <Moon className="h-4 w-4" />
+        <Moon className="size-3" />
       </ToggleGroupItem>
     </ToggleGroup>
   );

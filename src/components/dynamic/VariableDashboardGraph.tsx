@@ -26,7 +26,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const VariableGraph = ({
+const VariableDashboardGraph = ({
   stationId,
   weatherData,
   range,
@@ -56,16 +56,6 @@ const VariableGraph = ({
       </div>
     );
   }
-
-  // const sliceDetails = (change: string, value: any) => {
-  //   if (change === "minute") {
-  //     return value.slice(11, 16);
-  //   }
-  //   if (change === "hour") {
-  //     return value.slice(0, 16);
-  //   }
-  //   return value.slice(0, 10);
-  // };
 
   const getFormattedDataset = (
     graphData: formattedDataType[]
@@ -133,4 +123,4 @@ const VariableGraph = ({
   );
 };
 
-export default VariableGraph;
+export default VariableDashboardGraph;

@@ -1,4 +1,4 @@
-import VariableGraph from "@/components/dynamic/VariableGraph";
+import VariableDashboardGraph from "@/components/dynamic/VariableDashboardGraph";
 import NotFound from "@/components/shared/NotFound";
 import VerticalCards from "@/components/shared/VerticalCards";
 import { Card, CardContent } from "@/components/ui/card";
@@ -11,13 +11,12 @@ import {
 } from "@/components/ui/select";
 import { useGetStationNames } from "@/hooks/react-query/queries";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PuffLoader from "react-spinners/PuffLoader";
 
 const VariableDashboard = () => {
   const navigate = useNavigate();
   const { station } = useParams();
-  const { state } = useLocation();
   const {
     data: stationData,
     isError,
@@ -67,11 +66,11 @@ const VariableDashboard = () => {
     );
 
   return (
-    <div className="mainContainer bg-[#F6F8FC] dark:bg-slate-950 overflow-auto custom-scrollbar">
+    <div className="mainContainer bg-[#F6F8FC] dark:bg-secondary overflow-auto custom-scrollbar">
       <div className="container p-2">
         <Card className="cardContainer">
           <CardContent className="h-full flex flex-col gap-2">
-            <div className="flex items-center gap-5 justify-between pb-2">
+            <div className="flex items-center gap-5 justify-between ">
               <div className="flex gap-2">
                 <img
                   src="/assets/icons/back.svg"
@@ -156,11 +155,10 @@ const VariableDashboard = () => {
                 repeat="minute"
                 type={stationData.type.toLowerCase()}
               />
-              <hr className="h-[55rem] my-auto w-[0.1rem] bg-blue-200 hidden md:block" />
-              <div className="w-full flex flex-col gap-5 py-5">
+              <div className="w-full flex flex-col gap-5 ">
                 <div className="border p-2 rounded-lg flex flex-col gap-2">
-                  <p>Past 12 Hours</p>
-                  <VariableGraph
+                  <p className="font-semibold">Past 12 Hours</p>
+                  <VariableDashboardGraph
                     stationId={stationData.id}
                     range={12}
                     weatherData={weatherData}
@@ -169,8 +167,8 @@ const VariableDashboard = () => {
                   />
                 </div>
                 <div className="border p-2 rounded-lg flex flex-col gap-2">
-                  <p>Past 3 Days</p>
-                  <VariableGraph
+                  <p className="font-semibold">Past 3 Days</p>
+                  <VariableDashboardGraph
                     stationId={stationData.id}
                     range={72}
                     weatherData={weatherData}
@@ -179,8 +177,8 @@ const VariableDashboard = () => {
                   />
                 </div>
                 <div className="border p-2 rounded-lg flex flex-col gap-2">
-                  <p>Past 7 Days</p>
-                  <VariableGraph
+                  <p className="font-semibold">Past 7 Days</p>
+                  <VariableDashboardGraph
                     stationId={stationData.id}
                     range={168}
                     weatherData={weatherData}

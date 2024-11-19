@@ -134,11 +134,15 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
             </div>
           </div>
         ) : (
-          <div className="flex flex-col gap-2 w-full">
-            <div className="flex flex-col pb-3 gap-1 items-center justify-center">
-              <NoData />
-            </div>
-          </div>
+          <Card className="cardContainer flex flex-row">
+            <CardContent className="flex flex-col lg:flex-row w-full p-0 gap-2">
+              <div className="flex flex-col gap-2 w-full">
+                <div className="flex flex-col pb-3 gap-1 relative h-full items-center justify-center">
+                  <NoData />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         )}
       </CardContent>
     </Card>

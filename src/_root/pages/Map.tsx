@@ -34,6 +34,7 @@ import ClmsMapCard from "@/components/shared/MapCards/ClmsMapCard";
 import RlmsMapCard from "@/components/shared/MapCards/RlmsMapCard";
 import { useTheme } from "@/components/theme-provider";
 import { useUserContext } from "@/hooks/context/authContext";
+import MapLegend from "@/components/shared/MapCards/MapLegend";
 
 const Map = () => {
   const { user } = useUserContext();
@@ -204,6 +205,7 @@ const Map = () => {
     <>
       <div className="flex flex-col md:flex-row w-full">
         <div ref={mapContainer} className="h-full w-full rounded-l-2xl">
+          <MapLegend />
           <Select
             onValueChange={(value) => {
               setMapboxStyle(value);

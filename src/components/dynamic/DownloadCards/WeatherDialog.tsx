@@ -51,7 +51,7 @@ const WeatherDialog = ({ id, name }: WeatherDialogProps) => {
       "Air Pressure",
       "Precipitation",
       "Light",
-      "UV Intensity",
+      "UV Index",
       "Wind Direction",
       "Wind Speed",
       "Gust",
@@ -84,7 +84,6 @@ const WeatherDialog = ({ id, name }: WeatherDialogProps) => {
     downloadData(updatedData, {
       onSuccess: (data) => {
         const csvData = generateCSVData(data);
-        console.log(csvData);
         const blob = new Blob([csvData], { type: "text/csv" });
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);

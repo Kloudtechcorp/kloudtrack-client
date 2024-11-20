@@ -65,7 +65,7 @@ export type UserType = {
   role: string;
   stations:
     | {
-        id: number;
+        id: string;
         type: string;
         name: string;
       }[]

@@ -142,7 +142,6 @@ export const downloadWeatherData = async ({
     body: JSON.stringify({ name, from, to }),
   });
   const data = await response.json();
-  console.log(data);
   if (!response.ok) {
     throw new Error(data.message || "Failed to fetch data");
   }

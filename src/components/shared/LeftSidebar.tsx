@@ -11,7 +11,16 @@ import { INITIAL_USER, useUserContext } from "@/hooks/context/authContext";
 import { useHandleLogout } from "@/hooks/react-query/mutations";
 import toast from "react-hot-toast";
 import BugIcon from "./icons/BugIcon";
-import FormIcon from "./icons/formIcon";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+
+// import FormIcon from "./icons/formIcon";
 
 const LeftSidebar = ({ expand }: SidebarProps) => {
   const navigate = useNavigate();
@@ -99,27 +108,40 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
         </div>
 
         <div className="w-full flex flex-col justify-end items-center gap-3 ">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <div
-                  className={`flex gap-4 items-center py-4   ${
-                    expand ? "justify-start px-4" : "justify-center"
-                  }`}
-                >
-                  <BugIcon theme={""} />
-                  <span className={expand ? "block" : "hidden"}>
-                    Bug Report
-                  </span>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Logout</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Sheet>
+            <SheetTrigger>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <div
+                      className={`flex gap-4 items-center py-4   ${
+                        expand ? "justify-start px-4" : "justify-center"
+                      }`}
+                    >
+                      <BugIcon theme={""} />
+                      <span className={expand ? "block" : "hidden"}>
+                        Bug Report
+                      </span>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Report a Bug</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </SheetTrigger>
+            <SheetContent className="min-w-[720px]" side={"left"}>
+              <SheetHeader>
+                <SheetTitle>Report a Bug</SheetTitle>
+                <SheetDescription>
+                  This action cannot be undone. This will permanently delete
+                  your account and remove your data from our servers.
+                </SheetDescription>
+              </SheetHeader>
+            </SheetContent>
+          </Sheet>
 
-          <TooltipProvider>
+          {/* <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
                 <div
@@ -137,7 +159,7 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
                 <p>Logout</p>
               </TooltipContent>
             </Tooltip>
-          </TooltipProvider>
+          </TooltipProvider> */}
 
           {/* <ModeToggle expand={expand} /> */}
 

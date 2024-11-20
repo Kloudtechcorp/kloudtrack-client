@@ -47,12 +47,12 @@ const Himawari = () => {
     ];
   };
 
-  const updateImage = async (index: number) => {
+  const updateImage = async () => {
     const element = bandSelect;
     if (element) {
       const { hour: imgHour, minute: imgMinute } = convertUTCtoLocal(
-        parseInt(dynamicTimerArray[index].slice(0, 2)),
-        parseInt(dynamicTimerArray[index].slice(2, 4))
+        parseInt(dynamicTimerArray[currentIndex].slice(0, 2)),
+        parseInt(dynamicTimerArray[currentIndex].slice(2, 4))
       );
       const imgName =
         "https://www.data.jma.go.jp/mscweb/data/himawari/img/se2/se2_" +
@@ -74,17 +74,16 @@ const Himawari = () => {
 
   const processImagesWithDelay = async () => {
     if (!isCycling) return;
-    await updateImage(currentIndex);
     await delay(500);
     setCurrentIndex((prevIndex) =>
       prevIndex + 1 < dynamicTimerArray.length - 1 ? prevIndex + 1 : 0
     );
   };
 
-  const handleSliderChange = (value: number[]) => {
+  const handleSliderChange = async (value: number[]) => {
     setSliderValue(value);
     setCurrentIndex(value[0]);
-    updateImage(value[0]);
+    await updateImage();
   };
 
   const handleBandChange = (band: string) => {
@@ -132,12 +131,12 @@ const Himawari = () => {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isCycling, currentIndex]);
+  }, [isCycling]);
 
 
   useEffect(() => {
     setSliderValue([currentIndex]);
-    updateImage(currentIndex);
+    updateImage();
   }, [bandSelect, currentIndex]);
 
   return (

@@ -42,8 +42,8 @@ const Himawari = () => {
     const nearestTimeIndex = getNearestTimeIndex(currentHours, currentMinutes);
     const startTimeIndex = nearestTimeIndex % timer.length;
     return [
-      ...timer.slice(startTimeIndex),
-      ...timer.slice(0, nearestTimeIndex + 1),
+      ...timer.slice(startTimeIndex - 1),
+      ...timer.slice(0, nearestTimeIndex -1),
     ];
   };
 
@@ -112,6 +112,7 @@ const Himawari = () => {
     return `${formattedHours}:${formattedMinutes}`;
   };
 
+  updateImage();
   
   useEffect(() => {
     const newDynamicTimerArray = generateDynamicTimerArray();
@@ -193,6 +194,8 @@ const Himawari = () => {
                 <a
                   className="text-blue-500"
                   href="https://www.data.jma.go.jp/mscweb/data/himawari/sat_img.php?area=se2"
+                 target="_blank"
+                 rel="noopener noreferrer"     
                 >
                   Real Time Imagery Website
                 </a>

@@ -18,7 +18,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-const ClmsCard: React.FC<{ id: number }> = ({ id }) => {
+const ClmsCard: React.FC<{ id: string }> = ({ id }) => {
   const navigate = useNavigate();
   const { data: stationData, isLoading, isError } = useGetClmsData(id);
   const { theme } = useTheme();
@@ -76,7 +76,7 @@ const ClmsCard: React.FC<{ id: number }> = ({ id }) => {
             <div className="h-full px-2 pb-3 hidden lg:block">
               <img
                 src={stationData.station.image}
-                className="rounded-md object-cover h-full"
+                className="rounded-md object-cover aspect-square h-full w-full"
                 alt="Station"
               />
             </div>

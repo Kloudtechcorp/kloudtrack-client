@@ -27,7 +27,7 @@ import toast from "react-hot-toast";
 import { useRainGaugeDownloadData } from "@/hooks/react-query/mutations";
 
 type RainGaugeDialogProps = {
-  id: number;
+  id: string;
   name: string;
 };
 

@@ -6,9 +6,9 @@ const BugIcon: React.FC<{ theme: string }> = ({ theme }) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
   >
     <path d="m8 2 1.88 1.88" />
     <path d="M14.12 3.88 16 2" />

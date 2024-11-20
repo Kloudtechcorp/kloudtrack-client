@@ -27,7 +27,7 @@ import toast from "react-hot-toast";
 import { useCoastalDownloadData } from "@/hooks/react-query/mutations";
 
 type CoastalDialogProps = {
-  id: number;
+  id: string;
   name: string;
 };
 

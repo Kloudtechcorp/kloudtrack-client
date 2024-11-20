@@ -241,7 +241,7 @@ export type stationStaticType = {
   province: string;
   latitude: number;
   longitude: number;
-  id: number;
+  id: string;
   image: string;
 };
 

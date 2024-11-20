@@ -5,7 +5,7 @@ import PuffLoader from "react-spinners/PuffLoader";
 import { useNavigate } from "react-router-dom";
 import { useGetAwsData2 } from "../../../hooks/react-query/queries";
 import { formatDateString, stationType } from "@/lib/utils";
-import DataCards from "../../shared/icons/DataCards";
+import DataCards from "../../shared/DataCards";
 import { useUserContext } from "@/hooks/context/authContext";
 import { useTheme } from "../../theme-provider";
 import NoData from "@/components/shared/NoData";
@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/tooltip";
 
 interface AwsCardProps {
-  id: number;
+  id: string;
 }
 
 const AwsCard: React.FC<AwsCardProps> = ({ id }) => {

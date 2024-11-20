@@ -37,7 +37,7 @@ type AdminControlsProps = {
     image: string;
     region: string;
   };
-  id: number;
+  id: string;
 };
 
 const AdminControls = ({ theme, station, id }: AdminControlsProps) => {

@@ -209,7 +209,7 @@ export const useUpdateStation = () => {
 //DELETE
 export const useDeleteApiKey = (onSuccess: () => void) => {
   return useMutation({
-    mutationFn: (id: number) => deleteApiKey(id),
+    mutationFn: (id: string) => deleteApiKey(id),
     onError: (error: Error) => {
       toast({
         title: "Error!",
@@ -229,7 +229,7 @@ export const useDeleteStation = () => {
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: (id: number) => deleteStation(id),
+    mutationFn: (id: string) => deleteStation(id),
     onError: (error: Error) => {
       toast({
         title: "Error!",

@@ -19,7 +19,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-const ArgCard: React.FC<{ id: number }> = ({ id }) => {
+const ArgCard: React.FC<{ id: string }> = ({ id }) => {
   const navigate = useNavigate();
   const { data: stationData, isLoading, isError } = useGetArgData(id);
   const { theme } = useTheme();
@@ -83,7 +83,7 @@ const ArgCard: React.FC<{ id: number }> = ({ id }) => {
             <div className="h-full px-2 pb-3 hidden lg:block">
               <img
                 src={stationData.station.image}
-                className="rounded-md object-cover h-full"
+                className="rounded-md object-cover aspect-square h-full w-full"
                 alt="Station"
               />
             </div>

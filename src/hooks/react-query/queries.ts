@@ -57,7 +57,7 @@ import {
 } from "@/types";
 
 export const useGetAwsData = (
-  id: number
+  id: string
 ): UseQueryResult<awsDashboardType, Error> => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_AWS_DATA, id],
@@ -69,7 +69,7 @@ export const useGetAwsData = (
 };
 
 export const useGetAwsData2 = (
-  id: number
+  id: string
 ): UseQueryResult<awsDashboardType2, Error> => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_AWS_DATA2, id],
@@ -81,7 +81,7 @@ export const useGetAwsData2 = (
 };
 
 export const useGetArgData = (
-  id: number
+  id: string
 ): UseQueryResult<argDashboardType, Error> => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_ARG_DATA, id],
@@ -93,7 +93,7 @@ export const useGetArgData = (
 };
 
 export const useGetRlmsData = (
-  id: number
+  id: string
 ): UseQueryResult<rlmsDashboardType, Error> => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_RLMS_DATA, id],
@@ -105,7 +105,7 @@ export const useGetRlmsData = (
 };
 
 export const useGetClmsData = (
-  id: number
+  id: string
 ): UseQueryResult<clmsDashboardType, Error> => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_CLMS_DATA, id],

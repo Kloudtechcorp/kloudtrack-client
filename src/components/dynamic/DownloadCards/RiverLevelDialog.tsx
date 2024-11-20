@@ -27,7 +27,7 @@ import toast from "react-hot-toast";
 import { useRiverLevelDownloadData } from "@/hooks/react-query/mutations";
 
 type RiverLevelDialogProps = {
-  id: number;
+  id: string;
   name: string;
 };
 

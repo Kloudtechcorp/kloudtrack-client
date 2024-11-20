@@ -28,7 +28,7 @@ import { useWeatherDownloadData } from "@/hooks/react-query/mutations";
 import PuffLoader from "react-spinners/PuffLoader";
 
 type WeatherDialogProps = {
-  id: number;
+  id: string;
   name: string;
 };
 

@@ -8,7 +8,7 @@ import NotFound from "@/components/shared/NotFound";
 import RainGaugeDialog from "../DownloadCards/RainGaugeDialog";
 
 type ArgDataCardProps = {
-  stationId: number;
+  stationId: string;
 };
 
 const ArgDataCard = ({ stationId }: ArgDataCardProps) => {

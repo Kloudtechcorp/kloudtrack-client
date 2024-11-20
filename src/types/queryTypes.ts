@@ -196,7 +196,7 @@ export type userProfileTypes = {
 
 export type TableGraphCardType = {
   type: string;
-  stationId: number;
+  stationId: string;
   weatherData: string;
   range: number;
   repeat: "minute" | "halfhour" | "hour" | "day" | "week";

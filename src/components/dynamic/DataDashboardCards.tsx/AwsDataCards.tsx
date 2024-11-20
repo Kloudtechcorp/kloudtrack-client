@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import DataCards from "@/components/shared/icons/DataCards";
+import DataCards from "@/components/shared/DataCards";
 import { useGetAwsData2 } from "@/hooks/react-query/queries";
 import { formatDateString } from "@/lib/utils";
 import VariableGraph from "@/components/dynamic/VariableGraph";
@@ -11,7 +11,7 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 
 type AwsDataCardProps = {
-  stationId: number;
+  stationId: string;
 };
 
 const AwsDataCard = ({ stationId }: AwsDataCardProps) => {

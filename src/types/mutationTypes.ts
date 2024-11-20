@@ -50,7 +50,7 @@ export type UpdateStationProps = {
   latitude: string;
   longitude: string;
   image: string;
-  id: number;
+  id: string;
 };
 
 export type updateUserGrantsProps = {

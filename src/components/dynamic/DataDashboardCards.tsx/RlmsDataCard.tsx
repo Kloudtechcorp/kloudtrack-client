@@ -8,7 +8,7 @@ import NotFound from "@/components/shared/NotFound";
 import RiverLevelDialog from "../DownloadCards/RiverLevelDialog";
 
 type RlmsDataCardProps = {
-  stationId: number;
+  stationId: string;
 };
 
 const RlmsDataCard = ({ stationId }: RlmsDataCardProps) => {

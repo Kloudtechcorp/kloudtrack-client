@@ -35,7 +35,7 @@ const DataDashboard = () => {
         <NotFound />
       </div>
     );
-  if (isLoading || !stationData || !stationData)
+  if (isLoading || !stationData)
     return (
       <Card className="cardContainer flex flex-row">
         <CardContent className="flex flex-row w-full p-0 gap-2">
@@ -45,7 +45,6 @@ const DataDashboard = () => {
         </CardContent>
       </Card>
     );
-
   return (
     <div className="w-full bg-[#F6F8FC] dark:bg-secondary rounded-xl p-[1rem] custom-scrollbar overflow-auto">
       <div className="container p-1">

@@ -5,9 +5,9 @@ const DeleteIcon: React.FC<{ theme: string }> = ({ theme }) => (
     height="24"
     viewBox="0 0 24 24"
     stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
     fill={theme === "dark" ? "#000000" : "#FFFFFF"}
   >
     <path d="M3 6h18" />

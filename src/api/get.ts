@@ -31,7 +31,7 @@ const method: string = "GET";
 const server = import.meta.env.VITE_SERVER;
 
 //=========================== GET DATA FOR DASHBOARD
-export const getAwsData = async (id: number): Promise<awsDashboardType> => {
+export const getAwsData = async (id: string): Promise<awsDashboardType> => {
   const response = await fetch(`${server}/weather/station/${id}`, {
     method,
     credentials: "include",
@@ -43,7 +43,7 @@ export const getAwsData = async (id: number): Promise<awsDashboardType> => {
   return data;
 };
 
-export const getAwsData2 = async (id: number): Promise<awsDashboardType2> => {
+export const getAwsData2 = async (id: string): Promise<awsDashboardType2> => {
   const response = await fetch(`${server}/weather/v2/station/${id}`, {
     method,
     credentials: "include",
@@ -56,7 +56,7 @@ export const getAwsData2 = async (id: number): Promise<awsDashboardType2> => {
 };
 
 //=========================== GET DATA FOR DASHBOARD
-export const getArgData = async (id: number): Promise<argDashboardType> => {
+export const getArgData = async (id: string): Promise<argDashboardType> => {
   const response = await fetch(`${server}/raingauge/station/${id}`, {
     method,
     credentials: "include",
@@ -69,7 +69,7 @@ export const getArgData = async (id: number): Promise<argDashboardType> => {
 };
 
 //=========================== GET DATA FOR DASHBOARD
-export const getRlmsData = async (id: number): Promise<rlmsDashboardType> => {
+export const getRlmsData = async (id: string): Promise<rlmsDashboardType> => {
   const response = await fetch(`${server}/riverlevel/station/${id}`, {
     method,
     credentials: "include",
@@ -82,7 +82,7 @@ export const getRlmsData = async (id: number): Promise<rlmsDashboardType> => {
 };
 
 //=========================== GET DATA FOR DASHBOARD
-export const getClmsData = async (id: number): Promise<clmsDashboardType> => {
+export const getClmsData = async (id: string): Promise<clmsDashboardType> => {
   const response = await fetch(`${server}/coastal/station/${id}`, {
     method,
     credentials: "include",

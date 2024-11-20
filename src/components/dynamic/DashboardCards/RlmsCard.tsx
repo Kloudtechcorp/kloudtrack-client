@@ -19,7 +19,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-const RlmsCard: React.FC<{ id: number }> = ({ id }) => {
+const RlmsCard: React.FC<{ id: string }> = ({ id }) => {
   const navigate = useNavigate();
   const { theme } = useTheme();
   const { user } = useUserContext();
@@ -81,7 +81,7 @@ const RlmsCard: React.FC<{ id: number }> = ({ id }) => {
             <div className="h-full px-2 pb-3 hidden lg:block">
               <img
                 src={stationData.station.image}
-                className="rounded-md object-cover h-full"
+                className="rounded-md object-cover aspect-square h-full w-full"
                 alt="Station"
               />
             </div>

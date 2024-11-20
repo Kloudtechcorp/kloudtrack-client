@@ -8,7 +8,7 @@ import NotFound from "@/components/shared/NotFound";
 import CoastalDialog from "../DownloadCards/CoastalDialog";
 
 type ClmsDataCardProps = {
-  stationId: number;
+  stationId: string;
 };
 
 const ClmsDataCard = ({ stationId }: ClmsDataCardProps) => {

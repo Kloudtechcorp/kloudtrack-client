@@ -19,6 +19,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { BugReport } from "../forms/bugReport";
 
 // import FormIcon from "./icons/formIcon";
 
@@ -130,13 +131,10 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
                 </Tooltip>
               </TooltipProvider>
             </SheetTrigger>
-            <SheetContent className="min-w-[720px]" side={"left"}>
+            <SheetContent side={"left"}>
               <SheetHeader>
-                <SheetTitle>Report a Bug</SheetTitle>
-                <SheetDescription>
-                  This action cannot be undone. This will permanently delete
-                  your account and remove your data from our servers.
-                </SheetDescription>
+                <SheetTitle>Report a Bug!</SheetTitle>
+                <BugReport />
               </SheetHeader>
             </SheetContent>
           </Sheet>

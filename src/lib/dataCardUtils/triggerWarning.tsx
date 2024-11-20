@@ -32,14 +32,14 @@ export const triggerWarningToast = ({
       >
         X
       </Button>
-      <div className="flex w-4/5 flex-col">
+      <div className="flex w-4/5 flex-col ">
         <span className={`flex self-start ${colorClass}`}>{title}</span>
         <span className="flex rounded self-start text-muted-foreground">
           {message}
         </span>
       </div>
 
-      <div className="flex w-1/5">
+      <div className="flex w-1/5 ml-4">
         <Button
           className={`flex self-center`}
           variant="default"
@@ -63,7 +63,7 @@ export const triggerWarningToast = ({
         </span>
       </div>
 
-      <div className="flex w-1/5  h-full item-center">
+      <div className="flex w-1/5 ml-4 justify-center items-center ">
         <Button
           className={`flex self-center`}
           variant="default"

@@ -64,7 +64,7 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
                 </span>
               </div>
 
-              <div className="p-2 mt-4 flex border rounded-xl">
+              <div className="p-2 mt-4 flex border rounded-lg">
                 <Table>
                   <TableBody>
                     <TableRow>

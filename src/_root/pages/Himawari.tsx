@@ -43,7 +43,7 @@ const Himawari = () => {
     const startTimeIndex = nearestTimeIndex % timer.length;
     return [
       ...timer.slice(startTimeIndex - 1),
-      ...timer.slice(0, nearestTimeIndex -1),
+      ...timer.slice(0, nearestTimeIndex - 1),
     ];
   };
 
@@ -113,12 +113,11 @@ const Himawari = () => {
   };
 
   updateImage();
-  
+
   useEffect(() => {
     const newDynamicTimerArray = generateDynamicTimerArray();
     setDynamicTimerArray(newDynamicTimerArray);
   }, []);
-
 
   useEffect(() => {
     if (isCycling) {
@@ -134,7 +133,6 @@ const Himawari = () => {
     };
   }, [isCycling]);
 
-
   useEffect(() => {
     setSliderValue([currentIndex]);
     updateImage();
@@ -147,7 +145,7 @@ const Himawari = () => {
           {/* Slider */}
           <div className="rounded-full p-3 pr-6 bg-[#F6F8FC] dark:bg-black flex flex-row items-center gap-3 absolute top-5 left-5 w-2/3 text-nowrap ">
             <Button
-              className="bg-yellow-400 size-6 p-2 rounded-full"
+              className="bg-yellow-400 size-8 p-2 rounded-full"
               onClick={() => setIsCycling(!isCycling)}
             >
               {isCycling ? (
@@ -194,8 +192,8 @@ const Himawari = () => {
                 <a
                   className="text-blue-500"
                   href="https://www.data.jma.go.jp/mscweb/data/himawari/sat_img.php?area=se2"
-                 target="_blank"
-                 rel="noopener noreferrer"     
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Real Time Imagery Website
                 </a>

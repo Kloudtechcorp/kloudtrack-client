@@ -1,5 +1,5 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { ModeToggle } from "./ModeToggle";
+// import { ModeToggle } from "./ModeToggle";
 import {
   Tooltip,
   TooltipContent,
@@ -14,7 +14,6 @@ import BugIcon from "./icons/BugIcon";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -34,27 +33,32 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
       imgUrl: "/assets/icons/dashboard.svg",
       route: "/",
       label: "Dashboard",
+      tooltip: "Dashboard",
     },
     {
       imgUrl: "/assets/icons/map.svg",
       route: "/map",
       label: "Map",
+      tooltip: "Map",
     },
     {
       imgUrl: "/assets/icons/graphs.svg",
       route: "/graphs",
       label: "Graphs",
+      tooltip: "Graphs",
     },
     {
       imgUrl: "/assets/icons/satellite.svg",
       route: "/satellite",
       label: "Satellite",
+      tooltip: "Satellite",
     },
 
     {
       imgUrl: "/assets/icons/settings.svg",
       route: "/settings",
       label: "Settings",
+      tooltip: "Settings",
     },
 
     user.role === "ADMIN"
@@ -62,6 +66,7 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
           imgUrl: "/assets/icons/adminProtected.svg",
           route: "/admin-settings",
           label: "Admin",
+          tooltip: "Admin Settings",
         }
       : null,
   ];
@@ -87,21 +92,33 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
                       : "hover:bg-gray-200 dark:hover:bg-gray-800"
                   } rounded-sm `}
                 >
-                  <NavLink
-                    to={link.route}
-                    className={`flex gap-4 items-center py-3  ${
-                      expand ? "justify-start px-4" : "justify-center"
-                    }`}
-                  >
-                    <img src={link.imgUrl} className={`dark:invert size-4 `} />{" "}
-                    <div
-                      className={`ease-in-out transition-all delay-300 duration-300 ${
-                        expand ? "block" : "hidden"
-                      }`}
-                    >
-                      {link.label}
-                    </div>
-                  </NavLink>
+                  <div className="flex justify-center  ">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <NavLink
+                            to={link.route}
+                            className={`flex gap-4 items-center py-3  ${
+                              expand ? "justify-start px-4" : "justify-center"
+                            }`}
+                          >
+                            <img
+                              src={link.imgUrl}
+                              className={`dark:invert size-4 `}
+                            />{" "}
+                            <div
+                              className={`ease-in-out transition-all delay-300 duration-300 ${
+                                expand ? "block" : "hidden"
+                              }`}
+                            >
+                              {link.label}
+                            </div>
+                          </NavLink>
+                        </TooltipTrigger>
+                        <TooltipContent>{link.tooltip}</TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
                 </li>
               );
             })}

@@ -39,6 +39,7 @@ const TableGraphCard = ({
         <div className="flex flex-col gap-2 w-full">
           <div className="flex flex-col pb-3 gap-1 relative h-full items-center justify-center">
             <NoData />
+            <div className="w-full h-full border-b-2 p-2 gap-1  "></div>
           </div>
         </div>
       </div>
@@ -62,77 +63,69 @@ const TableGraphCard = ({
   }
   return (
     <div className="w-full h-full border-b-2 flex flex-col md:flex-row pb-2 p-1 gap-1">
-      <div className="grow w-full h-full md:w-1/2 rounded-lg p-1">
-        <Table className="border border-[#545454]">
+      <div className="grow w-full h-full md:w-1/2  border rounded-lg">
+        <Table>
           <TableHeader>
-            <TableRow className="border dark:bg-slate-800  border-[#545454]">
-              <TableHead className="p-2 border border-[#545454] text-center text-black dark:text-white font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs !h-12 ">
+            <TableRow className="">
+              <TableHead className="text-center border-r-[1px] text-black dark:text-white font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs !h-12 ">
                 Information
               </TableHead>
-              <TableHead className="p-2 border border-[#545454] text-black dark:text-white font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs text-center">
+              <TableHead className="text-center text-black dark:text-white font-bold xl:text-xl lg:text-lg md:text-base sm:text-xs !h-12  ">
                 Measurement
               </TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody className="text-center">
+          <TableBody className="text-center ">
             <TableRow>
-              <TableCell className="border border-[#545454] p-1 ">
-                Station Name
-              </TableCell>
-              <TableCell className="border border-[#545454]">
-                {stationData.station.name}
-              </TableCell>
+              <TableCell className="p-1 border-r-[1px]">Station Name</TableCell>
+              <TableCell className="">{stationData.station.name}</TableCell>
             </TableRow>
 
             <TableRow>
-              <TableCell className="border border-[#545454] p-1">
+              <TableCell className="p-1 border-r-[1px]">
                 Date Recorded
               </TableCell>
-              <TableCell className="border border-[#545454]">
+              <TableCell className="">
                 {formatDateString(stationData.recordedAt, "long")}
               </TableCell>
             </TableRow>
 
             <TableRow>
-              <TableCell className="border border-[#545454] p-1">
-                Current
-              </TableCell>
-              <TableCell className="border border-[#545454]">
+              <TableCell className="p-1 border-r-[1px]">Current</TableCell>
+              <TableCell className="">
                 {Math.round(stationData.currentData * 100) / 100}{" "}
                 {weatherUnit(weatherData)}
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell className="border border-[#545454] p-1">
-                Location
-              </TableCell>
-              <TableCell className="border border-[#545454]">
+              <TableCell className="p-1 border-r-[1px]">Location</TableCell>
+              <TableCell className="">
                 {`${stationData.station.barangay}, ${stationData.station.municipality}, ${stationData.station.province}`}
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell className="border border-[#545454] p-1">
+              <TableCell className="p-1 border-r-[1px]">
                 Highest (12-Hours)
               </TableCell>
-              <TableCell className="border border-[#545454]">
+              <TableCell className="">
                 {Math.round(stationData.max * 100) / 100}{" "}
                 {weatherUnit(weatherData)}
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell className="border border-[#545454] p-1">
+              <TableCell className="p-1 border-r-[1px]">
                 Lowest (12-Hours)
               </TableCell>
-              <TableCell className="border border-[#545454]">
+              <TableCell className="">
                 {Math.round(stationData.min * 100) / 100}{" "}
                 {weatherUnit(weatherData)}
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell className="border border-[#545454] p-1">
+              <TableCell className="p-1 border-r-[1px]">
                 Past (6-Hours)
               </TableCell>
-              <TableCell className="border border-[#545454]">
+              <TableCell className="">
                 {Math.round(stationData.average * 100) / 100}{" "}
                 {weatherUnit(weatherData)}
               </TableCell>

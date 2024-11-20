@@ -52,10 +52,7 @@ const ArgMapCard: React.FC<MapCardProps> = ({ data, id }) => {
                       </TooltipTrigger>
                       <TooltipContent>
                         <p>
-                          Any form of water, like rain, drizzle, snow, or hail,
-                          that falls from clouds. Precipitation levels tell us
-                          how much water is coming from the sky, which helps
-                          predict wet weather, storms, or dry days.
+                          Water falling from the sky, like rain, snow, or hail.
                         </p>
                       </TooltipContent>
                     </Tooltip>

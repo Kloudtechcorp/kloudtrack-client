@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { HeaderProps } from "@/types";
 import { useUserContext } from "@/hooks/context/authContext";
 import { Skeleton } from "../ui/skeleton";
+import { ModeToggle } from "./ModeToggle";
 
 const Header = ({ burgerMenu }: HeaderProps) => {
   const [data, setData] = useState(false);
@@ -26,17 +27,17 @@ const Header = ({ burgerMenu }: HeaderProps) => {
   return (
     <>
       {isLoading ? (
-        <div className="w-full bg-white dark:bg-[#181819] p-2 h-16 flex flex-col text-center justify-center items-center gap-2">
+        <div className="w-full bg-white dark:bg-[#181819] p-2 h-[3.5rem] flex flex-col text-center justify-center items-center gap-2">
           <Skeleton className="w-44 h-4" />
           <Skeleton className="w-52 h-5" />
           <Skeleton className="w-64 h-6" />
         </div>
       ) : (
-        <div className="w-full bg-white dark:bg-[#181819] px-2 h-16 flex text-center">
-          <div className="flex px-[1.25rem] gap-2 hover:cursor-pointer">
+        <div className="w-full bg-white dark:bg-[#181819] px-2 h-[3.5rem] flex text-center items-center">
+          <div className="flex px-[0.6rem] hover:cursor-pointer">
             <img
               src="/assets/icons/burger.svg"
-              width={30}
+              width={24}
               onClick={handleClick}
               className="dark:invert hidden md:block"
             />
@@ -44,11 +45,14 @@ const Header = ({ burgerMenu }: HeaderProps) => {
 
           <div className="items-center flex w-full flex-row justify-center">
             <div className="flex flex-col text-center">
-              <span className="text-3xl font-bold capitalize">
+              <span className="text-2xl font-bold capitalize">
                 {user.username}
               </span>
-              <span>{time}</span>
+              <span className="text-sm">{time}</span>
             </div>
+          </div>
+          <div className="">
+            <ModeToggle expand={false} />
           </div>
         </div>
       )}

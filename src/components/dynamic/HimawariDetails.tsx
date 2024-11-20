@@ -2,7 +2,7 @@ import React from "react";
 
 const HimawariDetails = () => {
   return (
-    <div className="p-2 py-20 lg:text-l xs:text-xs text-gray-500 self-end gap-2">
+    <div className="lg:text-l md:text-base xs:text-xs text-gray-500  gap-2 ">
       <span className="font-bold">About Himawari 8/9</span>
       <p className="lg:text-sm text-justify indent-8 sm:text-xs">
         The Himawari satellite series was developed and operated by the Japan

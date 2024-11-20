@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import DataCards from "@/components/shared/DataCards";
+import DataCards from "@/components/shared/icons/DataCards";
 import { useGetAwsData2 } from "@/hooks/react-query/queries";
 import { formatDateString } from "@/lib/utils";
 import VariableGraph from "@/components/dynamic/VariableGraph";
@@ -18,13 +18,12 @@ const AwsDataCard = ({ stationId }: AwsDataCardProps) => {
   const navigate = useNavigate();
   const { data: stationData, isError, isLoading } = useGetAwsData2(stationId);
 
-
   useEffect(() => {
     return () => {
       toast.dismiss();
     };
   }, []);
-  
+
   if (isError || !stationData?.data) {
     return (
       <div className="w-full flex justify-center items-center h-full">

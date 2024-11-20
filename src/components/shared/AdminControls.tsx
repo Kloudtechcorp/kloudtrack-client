@@ -1,6 +1,6 @@
 import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
-import EditIcon from "./EditIcon";
+import EditIcon from "./icons/EditIcon";
 import UpdateStation from "../forms/UpdateStation";
 import {
   Tooltip,
@@ -19,7 +19,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import DeleteIcon from "./DeleteIcon";
+import DeleteIcon from "./icons/DeleteIcon";
 import { useDeleteStation } from "@/hooks/react-query/mutations";
 import { useUserContext } from "@/hooks/context/authContext";
 import { useNavigate } from "react-router-dom";

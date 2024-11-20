@@ -9,7 +9,7 @@ import { useUserContext } from "@/hooks/context/authContext";
 import { useTheme } from "../../theme-provider";
 import NoData from "@/components/shared/NoData";
 import VariableGraph from "../VariableGraph";
-import NavigateIcon from "@/components/shared/NavigateIcon";
+import NavigateIcon from "@/components/shared/icons/NavigateIcon";
 import AdminControls from "@/components/shared/AdminControls";
 import MeasurementCard2 from "@/components/shared/MeasurementCard2";
 import {

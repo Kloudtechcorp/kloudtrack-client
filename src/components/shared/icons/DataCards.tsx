@@ -1,7 +1,7 @@
 import { stationCurrentWeatherType } from "@/types/queryTypes";
-import { Card, CardContent } from "../ui/card";
+import { Card, CardContent } from "../../ui/card";
 import { getWindDirectionLabel } from "@/lib/utils";
-import { HeatIndex } from "../../lib/dataCardUtils/heatIndexUtils";
+import { HeatIndex } from "../../../lib/dataCardUtils/heatIndexUtils";
 import { UVIndex } from "@/lib/dataCardUtils/uvIndexUtils";
 import { Precipitation } from "@/lib/dataCardUtils/rainUtils";
 
@@ -20,7 +20,7 @@ const DataCards = ({
   if (type === "DATADASHBOARD") {
     return (
       <div className="flex flex-col gap-2">
-        <Card className="w-full h-[10.5rem]">
+        <Card className="cardDashboard">
           <CardContent className="px-0 p-0 h-full">
             <HeatIndex
               heatIndexval={currentweather.heatIndex}
@@ -30,7 +30,7 @@ const DataCards = ({
           </CardContent>
         </Card>
         <div className={`grid grid-cols-2 w-full h-full gap-3 justify-center`}>
-          <Card className="w-full h-[10.5rem]">
+          <Card className="cardDashboard">
             <CardContent className="px-0 p-0 h-full">
               <div className="text-center w-full flex flex-col h-full">
                 <div className="cardTitleDiv">
@@ -44,7 +44,7 @@ const DataCards = ({
               </div>
             </CardContent>
           </Card>
-          <Card className="w-full h-[10.5rem]">
+          <Card className="cardDashboard">
             <CardContent className="px-0 p-0 h-full">
               <div className="text-center w-full flex flex-col h-full">
                 <div className="cardTitleDiv">
@@ -58,7 +58,7 @@ const DataCards = ({
               </div>
             </CardContent>
           </Card>
-          <Card className="w-full h-[10.5rem]">
+          <Card className="cardDashboard">
             <CardContent className="px-0 p-0 h-full">
               <div className="text-center w-full flex flex-col h-full">
                 <div className="cardTitleDiv">
@@ -72,7 +72,7 @@ const DataCards = ({
               </div>
             </CardContent>
           </Card>
-          <Card className="w-full h-[10.5rem]">
+          <Card className="cardDashboard">
             <CardContent className="px-0 p-0 h-full">
               <div className="text-center w-full flex flex-col h-full">
                 <div className="cardTitleDiv">
@@ -86,7 +86,7 @@ const DataCards = ({
               </div>
             </CardContent>
           </Card>
-          <Card className="w-full h-[10.5rem]">
+          <Card className="cardDashboard">
             <CardContent className="px-0 p-0 h-full">
               <div className="text-center w-full flex flex-col h-full">
                 <div className="cardTitleDiv">
@@ -100,7 +100,7 @@ const DataCards = ({
               </div>
             </CardContent>
           </Card>
-          <Card className="w-full h-[10.5rem]">
+          <Card className="cardDashboard">
             <CardContent className="px-0 p-0 h-full">
               <UVIndex
                 uvIndexVal={currentweather.uvIndex}
@@ -109,7 +109,7 @@ const DataCards = ({
               />
             </CardContent>
           </Card>
-          <Card className="w-full h-[10.5rem]">
+          <Card className="cardDashboard">
             <CardContent className="px-0 p-0 h-full">
               <div className="text-center w-full flex flex-col h-full">
                 <div className="cardTitleDiv">
@@ -123,7 +123,7 @@ const DataCards = ({
               </div>
             </CardContent>
           </Card>
-          <Card className="w-full h-[10.5rem]">
+          <Card className="cardDashboard">
             <CardContent className="px-0 p-0 h-full">
               <Precipitation
                 precipitation={currentweather.precipitation}
@@ -166,7 +166,7 @@ const DataCards = ({
         <CardContent className="px-0 p-0 h-full">
           <div className="text-center w-full flex flex-col h-full">
             <div className="cardTitleDiv">
-              <span className="cardTitle">Humidity</span>
+              <span className="weatherDataTitle">Humidity</span>
             </div>
             <div className="cardDataDiv">
               <span className="weatherDataText">

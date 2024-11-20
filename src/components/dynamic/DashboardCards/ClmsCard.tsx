@@ -8,7 +8,7 @@ import { useTheme } from "../../theme-provider";
 import NoData from "@/components/shared/NoData";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import NavigateIcon from "@/components/shared/NavigateIcon";
+import NavigateIcon from "@/components/shared/icons/NavigateIcon";
 import AdminControls from "@/components/shared/AdminControls";
 import MeasurementCard from "@/components/shared/MeasurementCard";
 import {

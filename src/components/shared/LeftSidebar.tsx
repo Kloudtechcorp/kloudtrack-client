@@ -10,6 +10,8 @@ import { SidebarProps } from "@/types";
 import { INITIAL_USER, useUserContext } from "@/hooks/context/authContext";
 import { useHandleLogout } from "@/hooks/react-query/mutations";
 import toast from "react-hot-toast";
+import BugIcon from "./icons/BugIcon";
+import FormIcon from "./icons/formIcon";
 
 const LeftSidebar = ({ expand }: SidebarProps) => {
   const navigate = useNavigate();
@@ -57,7 +59,7 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
   return (
     <nav
       className={`bg-white dark:bg-[#181819] ease-in-out duration-300 hidden md:flex ${
-        expand ? "w-44" : "w-[4.5rem]"
+        expand ? "w-44" : "w-[3.5rem]"
       }`}
     >
       <div className="flex flex-col gap-7 justify-between w-full">
@@ -71,9 +73,9 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
                   key={key}
                   className={` ${
                     isActive
-                      ? "border-l-yellow-400 border-l-4 bg-accent "
-                      : "hover:bg-gray-200 dark:hover:bg-gray-600"
-                  } rounded-md`}
+                      ? "border-b-yellow-400 border-b-4 bg-accent "
+                      : "hover:bg-gray-200 dark:hover:bg-gray-800"
+                  } rounded-sm `}
                 >
                   <NavLink
                     to={link.route}
@@ -81,7 +83,7 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
                       expand ? "justify-start px-4" : "justify-center"
                     }`}
                   >
-                    <img src={link.imgUrl} className={`dark:invert `} />{" "}
+                    <img src={link.imgUrl} className={`dark:invert size-4 `} />{" "}
                     <div
                       className={`ease-in-out transition-all delay-300 duration-300 ${
                         expand ? "block" : "hidden"
@@ -96,16 +98,56 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
           </ul>
         </div>
 
-        <div className="w-full flex flex-col justify-end items-center gap-3 py-3">
-          <ModeToggle expand={expand} />
+        <div className="w-full flex flex-col justify-end items-center gap-3 ">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <div
+                  className={`flex gap-4 items-center py-4   ${
+                    expand ? "justify-start px-4" : "justify-center"
+                  }`}
+                >
+                  <BugIcon theme={""} />
+                  <span className={expand ? "block" : "hidden"}>
+                    Bug Report
+                  </span>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Logout</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
 
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
-                <div className="flex gap-3">
+                <div
+                  className={`flex gap-4 items-center ${
+                    expand ? "justify-start px-4 " : "justify-center"
+                  }`}
+                >
+                  <FormIcon theme={""} />
+                  <span className={expand ? "block" : "hidden"}>
+                    Feedback Form
+                  </span>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Logout</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
+          {/* <ModeToggle expand={expand} /> */}
+
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <div className="flex gap-3 py-4 ">
                   <img
                     src="/assets/icons/logout.svg"
-                    className="bg-white dark:bg-transparent dark:invert w-full"
+                    className="bg-white dark:bg-transparent dark:invert w-full size-5"
                     onClick={() => {
                       handleLogout();
                       setIsAuthenticated(false);

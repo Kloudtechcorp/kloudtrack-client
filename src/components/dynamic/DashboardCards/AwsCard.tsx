@@ -5,11 +5,11 @@ import PuffLoader from "react-spinners/PuffLoader";
 import { useNavigate } from "react-router-dom";
 import { useGetAwsData2 } from "../../../hooks/react-query/queries";
 import { formatDateString, stationType } from "@/lib/utils";
-import DataCards from "../../shared/DataCards";
+import DataCards from "../../shared/icons/DataCards";
 import { useUserContext } from "@/hooks/context/authContext";
 import { useTheme } from "../../theme-provider";
 import NoData from "@/components/shared/NoData";
-import NavigateIcon from "@/components/shared/NavigateIcon";
+import NavigateIcon from "@/components/shared/icons/NavigateIcon";
 import AdminControls from "@/components/shared/AdminControls";
 import { toast } from "sonner";
 import {
@@ -134,11 +134,15 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
             </div>
           </div>
         ) : (
-          <div className="flex flex-col gap-2 w-full">
-            <div className="flex flex-col pb-3 gap-1 items-center justify-center">
-              <NoData />
-            </div>
-          </div>
+          <Card className="cardContainer flex flex-row">
+            <CardContent className="flex flex-col lg:flex-row w-full p-0 gap-2">
+              <div className="flex flex-col gap-2 w-full">
+                <div className="flex flex-col pb-3 gap-1 relative h-full items-center justify-center">
+                  <NoData />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         )}
       </CardContent>
     </Card>

@@ -145,7 +145,7 @@ const Himawari = () => {
           {/* Slider */}
           <div className="rounded-full p-3 pr-6 bg-[#F6F8FC] dark:bg-black flex flex-row items-center gap-3 absolute top-5 left-5 w-2/3 text-nowrap ">
             <Button
-              className="bg-yellow-400 size-8 p-2 rounded-full"
+              className="bg-yellow-400 size-8 p-2 rounded-full hover:bg-black/25 dark:hover:bg-white/25"
               onClick={() => setIsCycling(!isCycling)}
             >
               {isCycling ? (

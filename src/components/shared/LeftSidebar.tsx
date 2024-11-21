@@ -9,7 +9,7 @@ import {
 import { SidebarProps } from "@/types";
 import { INITIAL_USER, useUserContext } from "@/hooks/context/authContext";
 import { useHandleLogout } from "@/hooks/react-query/mutations";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 import BugIcon from "./icons/BugIcon";
 import {
   Sheet,
@@ -86,7 +86,7 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
                   className={` ${
                     isActive
                       ? "border-b-yellow-400 border-b-4 bg-accent"
-                      : "hover:bg-gray-200 dark:hover:bg-gray-800"
+                      : "hover:bg-black/5 dark:hover:bg-white/5"
                   } rounded-sm `}
                 >
                   <div className={clicked ? `flex` : `flex justify-center`}>

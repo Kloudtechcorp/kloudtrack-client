@@ -65,7 +65,7 @@ const Signin = () => {
       ) : (
         <>
           {isLoading ? (
-            <div className="w-full h-full flex justify-center items-center relative">
+            <div className="w-full h-full flex justify-center items-center relative bgColor">
               <HashLoader
                 color={"#fbd008"}
                 size={150}
@@ -79,7 +79,7 @@ const Signin = () => {
             </div>
           ) : (
             <Form {...form}>
-              <div className=" w-full h-full items-center flex flex-col justify-center gap-5">
+              <div className=" w-full h-full items-center flex flex-col justify-center gap-5 bg-secondary">
                 <svg
                   className="h-14 absolute top-5"
                   xmlns="http://www.w3.org/2000/svg"
@@ -103,7 +103,7 @@ const Signin = () => {
                   />
                 </svg>
 
-                <div className="font-Courier py-4 px-6 pb-6 rounded-md w-[40rem] max-w-full bgColor border dark:bg-secondary">
+                <div className="font-Courier py-4 px-6 pb-6 rounded-md w-[40rem] max-w-full bgColor border">
                   <div className="pb-6">
                     <p className="leading-7 ">
                       Welcome to Kloudtrack by Kloudtech, your official weather

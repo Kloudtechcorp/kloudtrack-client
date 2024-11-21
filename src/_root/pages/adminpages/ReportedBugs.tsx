@@ -17,9 +17,10 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { updateBugReport } from "@/api/put";
 import { useUpdateBug } from "@/hooks/react-query/mutations";
+import { Skeleton } from "@/components/ui/skeleton";
+import NoDataOptions from "@/components/shared/NoDataOptions";
+import { Button } from "@/components/ui/button";
 
 const ReportedBugs = () => {
   const {
@@ -30,11 +31,20 @@ const ReportedBugs = () => {
   } = useGetBugReports();
   const { mutateAsync: updateBugReport, isPending } = useUpdateBug(refetch);
   if (isLoading) {
-    return <div>...loading</div>;
+    return (
+      <div className="flex flex-col gap-3 md:gap-5 w-full container p-2 py-4">
+        <Skeleton className="w-full !h-6 cardContainer dark:bg-secondary" />
+        <Skeleton className="w-full !h-64 cardContainer dark:bg-secondary" />
+      </div>
+    );
   }
 
   if (isError || !getBugReports) {
-    return <div>...Error</div>;
+    return (
+      <div className="py-4">
+        <NoDataOptions />
+      </div>
+    );
   }
 
   return (
@@ -56,34 +66,38 @@ const ReportedBugs = () => {
                     <span
                       className={
                         item.status === "RESOLVED"
-                          ? `bg-red-300 px-2`
-                          : `bg-green-300 px-2`
+                          ? `bg-green-500 px-2 rounded-full text-sm self-center dark:text-black`
+                          : `bg-red-500 px-2 rounded-full text-sm self-center dark:text-black`
                       }
                     >
                       {item.status}
                     </span>
                   </div>
                   <span className="text-sm text-start">
-                    submitted by {!item.user ? "Anonymous" : item.user.username}
+                    Submitted by{" "}
+                    <span className="underline">
+                      {!item.user ? "Anonymous" : item.user.username}
+                    </span>{" "}
+                    at{" "}
+                    <span className="">
+                      {formatDateString(item.createdAt, "long")}
+                    </span>
                   </span>
                 </div>
               </div>
             </AccordionTrigger>
             <AccordionContent>
               <div className="flex flex-col w-full gap-2">
-                <span className="text-xs">
-                  {formatDateString(item.createdAt, "long")} using{" "}
-                  {item.metadata}
-                </span>
-                <span className="min-h-36">{item.description}</span>
-                <div className="flex gap-2">
+                <span className="text-xs">Browser: {item.metadata}</span>
+                <span className="min-h-36 text-base">{item.description}</span>
+                <div className="flex gap-2  justify-end">
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
-                      <span className="hover:underline hover:cursor-pointer">
+                      <Button>
                         {item.status === "RESOLVED"
                           ? "Open this issue again?"
                           : "Mark as resolved?"}
-                      </span>
+                      </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>

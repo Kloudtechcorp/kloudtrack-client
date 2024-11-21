@@ -42,17 +42,17 @@ const Himawari = () => {
     const nearestTimeIndex = getNearestTimeIndex(currentHours, currentMinutes);
     const startTimeIndex = nearestTimeIndex % timer.length;
     return [
-      ...timer.slice(startTimeIndex),
-      ...timer.slice(0, nearestTimeIndex + 1),
+      ...timer.slice(startTimeIndex - 1),
+      ...timer.slice(0, nearestTimeIndex - 1),
     ];
   };
 
-  const updateImage = async (index: number) => {
+  const updateImage = async () => {
     const element = bandSelect;
     if (element) {
       const { hour: imgHour, minute: imgMinute } = convertUTCtoLocal(
-        parseInt(dynamicTimerArray[index].slice(0, 2)),
-        parseInt(dynamicTimerArray[index].slice(2, 4))
+        parseInt(dynamicTimerArray[currentIndex].slice(0, 2)),
+        parseInt(dynamicTimerArray[currentIndex].slice(2, 4))
       );
       const imgName =
         "https://www.data.jma.go.jp/mscweb/data/himawari/img/se2/se2_" +
@@ -74,17 +74,16 @@ const Himawari = () => {
 
   const processImagesWithDelay = async () => {
     if (!isCycling) return;
-    await updateImage(currentIndex);
     await delay(500);
     setCurrentIndex((prevIndex) =>
       prevIndex + 1 < dynamicTimerArray.length - 1 ? prevIndex + 1 : 0
     );
   };
 
-  const handleSliderChange = (value: number[]) => {
+  const handleSliderChange = async (value: number[]) => {
     setSliderValue(value);
     setCurrentIndex(value[0]);
-    updateImage(value[0]);
+    await updateImage();
   };
 
   const handleBandChange = (band: string) => {
@@ -113,12 +112,12 @@ const Himawari = () => {
     return `${formattedHours}:${formattedMinutes}`;
   };
 
-  
+  updateImage();
+
   useEffect(() => {
     const newDynamicTimerArray = generateDynamicTimerArray();
     setDynamicTimerArray(newDynamicTimerArray);
   }, []);
-
 
   useEffect(() => {
     if (isCycling) {
@@ -132,12 +131,11 @@ const Himawari = () => {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isCycling, currentIndex]);
-
+  }, [isCycling]);
 
   useEffect(() => {
     setSliderValue([currentIndex]);
-    updateImage(currentIndex);
+    updateImage();
   }, [bandSelect, currentIndex]);
 
   return (
@@ -147,7 +145,7 @@ const Himawari = () => {
           {/* Slider */}
           <div className="rounded-full p-3 pr-6 bg-[#F6F8FC] dark:bg-black flex flex-row items-center gap-3 absolute top-5 left-5 w-2/3 text-nowrap ">
             <Button
-              className="bg-yellow-400 size-6 p-2 rounded-full"
+              className="bg-yellow-400 size-8 p-2 rounded-full"
               onClick={() => setIsCycling(!isCycling)}
             >
               {isCycling ? (
@@ -194,6 +192,8 @@ const Himawari = () => {
                 <a
                   className="text-blue-500"
                   href="https://www.data.jma.go.jp/mscweb/data/himawari/sat_img.php?area=se2"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Real Time Imagery Website
                 </a>

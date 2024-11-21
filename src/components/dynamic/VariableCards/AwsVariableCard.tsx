@@ -1,4 +1,4 @@
-import VerticalCards from "@/components/shared/VerticalCards";
+// import VerticalCards from "@/components/shared/VerticalCards";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Select,

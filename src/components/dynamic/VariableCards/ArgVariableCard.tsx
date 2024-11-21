@@ -9,7 +9,7 @@ import {
 import React, { useState } from "react";
 import TableGraphCard from "../TableGraphCard";
 
-const ArgVariableCard: React.FC<{ id: number[] }> = ({ id }) => {
+const ArgVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
   const [weatherData, setWeatherData] = useState("precipitation");
 
   return (

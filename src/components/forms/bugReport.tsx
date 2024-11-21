@@ -17,33 +17,22 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "../ui/textarea";
-
-const FormSchema = z.object({
-  title: z.string().min(2, {
-    message: "Title is required",
-  }),
-  description: z.string().min(2, {
-    message: "Description is required.",
-  }),
-});
+import { bugSchema } from "@/types/validation";
+import { useReportBug } from "@/hooks/react-query/mutations";
 
 export function BugReport() {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const { mutateAsync: reportBug } = useReportBug();
+  const form = useForm<z.infer<typeof bugSchema>>({
+    resolver: zodResolver(bugSchema),
     defaultValues: {
       title: "",
+      description: "",
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+  function onSubmit(data: z.infer<typeof bugSchema>) {
+    const updatedData = { ...data, metadata: navigator.userAgent };
+    reportBug(updatedData);
   }
 
   return (

@@ -2,6 +2,7 @@ import {
   coastalSensorsType,
   formattedDataType,
   rainGaugeSensorsType,
+  reportedBugType,
   riverLevelSensorsType,
   stationStaticType,
   userListType,
@@ -347,4 +348,17 @@ export const getUserList = async (): Promise<userListType> => {
     throw new Error(data.message || "Failed to fetch users");
   }
   return data;
+};
+
+export const getBugReports = async (): Promise<reportedBugType[]> => {
+  const response = await fetch(`${server}/admin/reports`, {
+    method,
+    credentials: "include",
+  });
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch users");
+  }
+  return data.data;
 };

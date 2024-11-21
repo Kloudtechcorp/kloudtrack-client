@@ -10,7 +10,7 @@ import {
 import React, { useState } from "react";
 import TableGraphCard from "../TableGraphCard";
 
-const AwsVariableCard: React.FC<{ id: number[] }> = ({ id }) => {
+const AwsVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
   const [weatherData, setWeatherData] = useState("temperature");
 
   return (

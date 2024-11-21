@@ -1,3 +1,4 @@
+import { bugUpdateType } from "@/types";
 import {
   UpdateStationProps,
   updateStationType,
@@ -76,6 +77,27 @@ export const updateUserGrants = async (
   const data = await response.json();
   if (!response.ok) {
     throw new Error(data.message || "Failed to update station details.");
+  }
+  return data;
+};
+
+export const updateBugReport = async (
+  values: bugUpdateType
+): Promise<{ message: string }> => {
+  const response = await fetch(`${server}/admin/reports`, {
+    method,
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      id: values.id,
+      status: values.status,
+    }),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to update bug report.");
   }
   return data;
 };

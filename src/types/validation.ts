@@ -67,3 +67,12 @@ export const passwordSchema = z
 export const downloadSchema = z.object({
   type: z.string({ required_error: "type is required" }),
 });
+
+export const bugSchema = z.object({
+  title: z.string().min(2, {
+    message: "Title is required",
+  }),
+  description: z.string().min(2, {
+    message: "Description is required.",
+  }),
+});

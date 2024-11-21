@@ -5,6 +5,7 @@ import {
   addStationTypeType,
   createStationType,
   createUserData,
+  reportBugType,
   signInAccountType,
   UpdateStationProps,
   updateUserGrantsProps,
@@ -21,19 +22,23 @@ import {
   downloadWeatherData,
   generateApi,
   handleLogout,
+  reportBug,
   signInAccount,
 } from "@/api/post";
 import { toast } from "@/hooks/use-toast";
 import {
   updateApiKey,
+  updateBugReport,
   updateStation,
   updateUserGrants,
   updateUserPassword,
 } from "@/api/put";
 import { deleteApiKey, deleteStation } from "@/api/delete";
 import { downloadParamsTypes } from "@/types/queryTypes";
-import { apiKeyType } from "@/types";
+import { apiKeyType, bugUpdateType } from "@/types";
 import { useNavigate } from "react-router-dom";
+import { bugSchema } from "@/types/validation";
+import { z } from "zod";
 
 //CREATE DATA
 export const useSignInAccount = () => {
@@ -331,6 +336,42 @@ export const useUpdateUserGrants = () => {
       toast({
         title: "Update Successful!",
         description: "User stations grant updated.",
+      });
+    },
+  });
+};
+
+export const useReportBug = () => {
+  return useMutation({
+    mutationFn: (data: reportBugType) => reportBug(data),
+    onError: (error: Error) => {
+      toast({
+        title: "Error!",
+        description: error.message,
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Report Successful!",
+        description: "Bug Reported.",
+      });
+    },
+  });
+};
+
+export const useUpdateBug = (onSuccess: () => void) => {
+  return useMutation({
+    mutationFn: (data: bugUpdateType) => updateBugReport(data),
+    onError: (error: Error) => {
+      toast({
+        title: "Error!",
+        description: error.message,
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Update Successful!",
+        description: "Bug Updated.",
       });
     },
   });

@@ -4,6 +4,7 @@ import {
   addStationTypeType,
   createStationType,
   createUserData,
+  reportBugType,
   signInAccountType,
 } from "@/types/mutationTypes";
 import {
@@ -13,6 +14,8 @@ import {
   riverLevelDataTypes,
   weatherDataTypes,
 } from "@/types/queryTypes";
+import { bugSchema } from "@/types/validation";
+import { z } from "zod";
 
 const method: string = "POST";
 const server = import.meta.env.VITE_SERVER;
@@ -204,6 +207,26 @@ export const downloadRainGaugeData = async ({
   const data = await response.json();
   if (!response.ok) {
     throw new Error(data.message || "Failed to fetch data");
+  }
+  return data;
+};
+
+export const reportBug = async ({
+  title,
+  description,
+  metadata,
+}: reportBugType): Promise<rainGaugeDataTypes[]> => {
+  const response = await fetch(`${server}/user/bug`, {
+    method,
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ title, description, metadata }),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to send bug report.");
   }
   return data;
 };

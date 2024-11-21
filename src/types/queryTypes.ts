@@ -270,7 +270,7 @@ export type downloadableDataTypes = {
 };
 
 export type tablesType = {
-  stationId: number;
+  stationId: string;
   weatherData: string;
   range: number;
   repeat: "minute" | "halfhour" | "hour" | "day" | "week";

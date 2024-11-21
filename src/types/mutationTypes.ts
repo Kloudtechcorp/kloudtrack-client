@@ -57,3 +57,9 @@ export type updateUserGrantsProps = {
   grantedStations: number[];
   id: number;
 };
+
+export type reportBugType = {
+  title: string;
+  description: string;
+  metadata: string;
+};

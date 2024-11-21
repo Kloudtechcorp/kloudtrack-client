@@ -34,4 +34,7 @@ export enum QUERY_KEYS {
 
   //users
   GET_USER_LIST = "getUserList",
+
+  //
+  GET_BUG_REPORTS = "getBugReports",
 }

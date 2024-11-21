@@ -304,3 +304,21 @@ export type userListType = {
   updatedAt: string | null;
   stations: number[];
 }[];
+
+export type reportedBugType = {
+  id: number;
+  user: {
+    id: number;
+    username: string;
+  } | null;
+  createdAt: string;
+  title: string;
+  description: string;
+  metadata: string;
+  status: "OPEN" | "IN_PROGRESS" | "RESOLVED" | "CLOSED";
+};
+
+export type bugUpdateType = {
+  id: number;
+  status: string;
+};

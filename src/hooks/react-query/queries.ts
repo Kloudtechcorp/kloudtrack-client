@@ -44,11 +44,13 @@ import {
   getRiverLevelSensors,
   getCoastalSensors,
   getUserList,
+  getBugReports,
 } from "@/api/get";
 import {
   coastalSensorsType,
   formattedDataType,
   rainGaugeSensorsType,
+  reportedBugType,
   riverLevelSensorsType,
   stationStaticType,
   userListType,
@@ -286,5 +288,16 @@ export const useGetUsers = (): UseQueryResult<userListType, Error> => {
     queryKey: [QUERY_KEYS.GET_USER_LIST],
     queryFn: () => getUserList(),
     staleTime: 60000,
+  });
+};
+
+export const useGetBugReports = (): UseQueryResult<
+  reportedBugType[],
+  Error
+> => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_BUG_REPORTS],
+    queryFn: () => getBugReports(),
+    staleTime: 5000,
   });
 };

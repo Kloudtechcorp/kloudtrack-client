@@ -8,6 +8,7 @@ import NotFound from "@/components/shared/NotFound";
 import { Card } from "@/components/ui/card";
 import UserControl from "./adminpages/UserControl";
 import StationList from "./adminpages/StationList";
+import ReportedBugs from "./adminpages/ReportedBugs";
 
 const AdminSettings = () => {
   const { user } = useUserContext();
@@ -36,6 +37,9 @@ const AdminSettings = () => {
           </TabsTrigger>
           <TabsTrigger value="users" className="w-full">
             User Control
+          </TabsTrigger>
+          <TabsTrigger value="bugs" className="w-full">
+            Bug Reports
           </TabsTrigger>
         </TabsList>
         <TabsContent value="account" className="container px-0">
@@ -66,6 +70,11 @@ const AdminSettings = () => {
         <TabsContent value="users" className="container px-0">
           <Card>
             <UserControl />
+          </Card>
+        </TabsContent>
+        <TabsContent value="bugs" className="container px-0">
+          <Card>
+            <ReportedBugs />
           </Card>
         </TabsContent>
       </Tabs>

@@ -94,7 +94,7 @@ const Map = () => {
         container: mapContainer.current,
         style: mapboxStyle,
         center: [120.4818, 14.6417],
-        zoom: 11,
+        zoom: 10,
         maxZoom: 15,
         minZoom: 8,
         accessToken: import.meta.env.VITE_MAPBOX_TOKEN,
@@ -136,8 +136,17 @@ const Map = () => {
               .setLngLat([lng, lat])
               .addTo(map);
 
-            const popup = new mapboxgl.Popup({ offset: 25, closeButton: false})
-              .setHTML(`<p>${stationInfo.name} at ${stationInfo.barangay}</p>`);
+            const popup = new mapboxgl.Popup({
+              offset: 25,
+              closeButton: false,
+            }).setHTML(`
+              <div class="${
+                theme === "dark" ? "bg-black text-white" : "bg-white text-black"
+              } p-4 rounded-md ">
+                <p class="font-semibold text-sm">${stationInfo.name}</p>
+                <p class="text-sm text-gray-500">${stationInfo.barangay}</p>
+              </div>
+            `);
 
             marker.getElement().addEventListener("click", async () => {
               setIsLoading(true);
@@ -187,7 +196,7 @@ const Map = () => {
             });
 
             el.addEventListener("mouseenter", () => {
-              marker.setPopup(popup).togglePopup(); 
+              marker.setPopup(popup).togglePopup();
               el.style.width = "75px";
               el.style.height = "75px";
               el.style;

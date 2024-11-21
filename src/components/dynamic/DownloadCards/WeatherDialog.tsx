@@ -25,7 +25,6 @@ import { weatherDataTypes } from "@/types/queryTypes";
 import { formatDateString, getDateRange } from "@/lib/utils";
 import toast from "react-hot-toast";
 import { useWeatherDownloadData } from "@/hooks/react-query/mutations";
-import PuffLoader from "react-spinners/PuffLoader";
 
 type WeatherDialogProps = {
   id: string;

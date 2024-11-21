@@ -66,8 +66,8 @@ const ReportedBugs = () => {
                     <span
                       className={
                         item.status === "RESOLVED"
-                          ? `bg-green-500 px-2 rounded-full text-sm self-center dark:text-black`
-                          : `bg-red-500 px-2 rounded-full text-sm self-center dark:text-black`
+                          ? ` bg-green-500 px-3 py-1 rounded-full text-sm self-center text-white `
+                          : ` bg-red-500 px-3 py-1 rounded-full text-sm self-center text-white `
                       }
                     >
                       {item.status}
@@ -90,13 +90,13 @@ const ReportedBugs = () => {
               <div className="flex flex-col w-full gap-2">
                 <span className="text-xs">Browser: {item.metadata}</span>
                 <span className="min-h-36 text-base">{item.description}</span>
-                <div className="flex gap-2  justify-end">
+                <div className="flex gap-2">
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
-                      <Button>
+                      <Button variant="outline">
                         {item.status === "RESOLVED"
-                          ? "Open this issue again?"
-                          : "Mark as resolved?"}
+                          ? "😭 Open this issue again"
+                          : "✔ Mark as resolved"}
                       </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>

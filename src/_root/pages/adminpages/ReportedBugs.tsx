@@ -91,8 +91,9 @@ const ReportedBugs = () => {
                           Did you resolve this issue?
                         </AlertDialogTitle>
                         <AlertDialogDescription>
-                          This means the issue has been fixed by the developer.
-                          Be grateful.
+                          {item.status === "RESOLVED"
+                            ? "This means the issue has not been resolved, or it emerge again. Devs please do your thing!"
+                            : "This means the issue has been fixed by the developer. Be grateful."}
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>

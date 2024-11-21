@@ -136,6 +136,9 @@ const Map = () => {
               .setLngLat([lng, lat])
               .addTo(map);
 
+            const popup = new mapboxgl.Popup({ offset: 25, closeButton: false})
+              .setHTML(`<p>${stationInfo.name} at ${stationInfo.barangay}</p>`);
+
             marker.getElement().addEventListener("click", async () => {
               setIsLoading(true);
               setStationDetails(null);
@@ -184,15 +187,18 @@ const Map = () => {
             });
 
             el.addEventListener("mouseenter", () => {
+              marker.setPopup(popup).togglePopup(); 
               el.style.width = "75px";
               el.style.height = "75px";
               el.style;
             });
 
             el.addEventListener("mouseleave", () => {
+              marker.togglePopup();
               el.style.width = "50px";
               el.style.height = "50px";
             });
+
             markerList.push(marker);
           });
       });

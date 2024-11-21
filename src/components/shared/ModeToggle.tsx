@@ -11,12 +11,12 @@ export function ModeToggle({ expand }: ModeToggleProps) {
       type="single"
       className={`flex flex-row gap-0 ${
         expand && "flex-row"
-      } rounded-full bg-gray-200 dark:bg-gray-800 h-8`}
+      } rounded-sm bg-black/5 dark:bg-white/5 h-8 `}
       value={theme}
     >
       <ToggleGroupItem
         value="light"
-        className="rounded-full "
+        className="rounded-md border-b-4 border-[#fbd008] dark:border-none"
         onClick={() => {
           const selectedTheme = theme === "light" ? "dark" : "light";
           setTheme(selectedTheme);
@@ -26,7 +26,7 @@ export function ModeToggle({ expand }: ModeToggleProps) {
       </ToggleGroupItem>
       <ToggleGroupItem
         value="dark"
-        className="rounded-full"
+        className="rounded-md dark:border-b-4 dark:border-[#fbd008]"
         onClick={() => {
           const selectedTheme = theme === "dark" ? "light" : "dark";
           setTheme(selectedTheme);

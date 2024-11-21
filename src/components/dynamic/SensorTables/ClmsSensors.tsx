@@ -29,9 +29,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useGetClmsSensors } from "@/hooks/react-query/queries";
-import { coastalSensorsType, weatherSensorsType } from "@/types";
+import { coastalSensorsType } from "@/types";
 import { checkBadge } from "@/lib/helper";
 import { formatDateString } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
+import NoDataOptions from "@/components/shared/NoDataOptions";
 
 export function ClmsSensors() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -113,11 +115,20 @@ export function ClmsSensors() {
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex flex-col gap-3 md:gap-5 w-full container p-2 py-4">
+        <Skeleton className="w-full !h-6 cardContainer dark:bg-secondary" />
+        <Skeleton className="w-full !h-64 cardContainer dark:bg-secondary" />
+      </div>
+    );
   }
 
   if (!coastalData || isError) {
-    return <div>No weather Data found</div>;
+    return (
+      <div className="py-4">
+        <NoDataOptions />
+      </div>
+    );
   }
 
   return (

@@ -248,3 +248,9 @@
 .bgColor {
   @apply bg-[#fdfdfd] dark:bg-[#181818];
 }
+
+.mapboxgl-popup-content {
+  background: transparent !important; /* Removes the background */
+  box-shadow: none !important; /* Removes any shadow */
+  padding: 0 !important; /* Removes default padding */
+}

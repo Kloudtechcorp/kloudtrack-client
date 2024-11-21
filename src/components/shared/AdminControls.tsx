@@ -21,8 +21,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import DeleteIcon from "./icons/DeleteIcon";
 import { useDeleteStation } from "@/hooks/react-query/mutations";
-import { useUserContext } from "@/hooks/context/authContext";
-import { useNavigate } from "react-router-dom";
 
 type AdminControlsProps = {
   theme: string;

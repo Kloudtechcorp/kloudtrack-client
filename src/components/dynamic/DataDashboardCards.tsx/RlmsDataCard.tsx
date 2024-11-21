@@ -73,7 +73,7 @@ const RlmsDataCard = ({ stationId }: RlmsDataCardProps) => {
         </div>
         <div className="flex flex-col gap-2 overflow-y-auto cursor-pointer">
           <div
-            className="flex flex-col gap-1 border p-1 rounded-lg hover:bg-yellow-100/25 dark:hover:bg-gray-900"
+            className="flex flex-col gap-1 border p-1 rounded-lg hover:bg-black/5 dark:hover:bg-white/5"
             onClick={() =>
               navigate(`/${station.name}/data-analysis`, {
                 state: { variable: "distance" },

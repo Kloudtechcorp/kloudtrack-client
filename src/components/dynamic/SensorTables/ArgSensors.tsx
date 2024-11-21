@@ -11,17 +11,13 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, ChevronDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
@@ -33,13 +29,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  useGetArgSensors,
-  useGetRlmsSensors,
-} from "@/hooks/react-query/queries";
+import { useGetArgSensors } from "@/hooks/react-query/queries";
 import { rainGaugeSensorsType } from "@/types";
 import { checkBadge } from "@/lib/helper";
 import { formatDateString } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
+import NoDataOptions from "@/components/shared/NoDataOptions";
 
 export function ArgSensors() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -107,11 +102,20 @@ export function ArgSensors() {
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex flex-col gap-3 md:gap-5 w-full container p-2 py-4">
+        <Skeleton className="w-full !h-6 cardContainer dark:bg-secondary" />
+        <Skeleton className="w-full !h-64 cardContainer dark:bg-secondary" />
+      </div>
+    );
   }
 
   if (!rainGaugeData || isError) {
-    return <div>No rainGauge Data found</div>;
+    return (
+      <div className="py-4">
+        <NoDataOptions />
+      </div>
+    );
   }
 
   return (

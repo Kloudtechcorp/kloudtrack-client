@@ -11,22 +11,13 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import {
-  ArrowUpDown,
-  ChevronDown,
-  EditIcon,
-  MoreHorizontal,
-} from "lucide-react";
+import { ArrowUpDown, ChevronDown, EditIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
@@ -38,25 +29,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  useGetArgSensors,
-  useGetRlmsSensors,
-  useGetUsers,
-} from "@/hooks/react-query/queries";
-import { rainGaugeSensorsType, userListType } from "@/types";
-import { checkBadge } from "@/lib/helper";
+import { useGetUsers } from "@/hooks/react-query/queries";
+import { userListType } from "@/types";
 import { formatDateString } from "@/lib/utils";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "../ui/dialog";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import UpdateUser from "../forms/updateUser";
+import { Skeleton } from "../ui/skeleton";
 
 export function UserTables() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -150,7 +135,12 @@ export function UserTables() {
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex flex-col gap-3 md:gap-5 w-full container p-2 py-4">
+        <Skeleton className="w-full !h-6 cardContainer dark:bg-secondary" />
+        <Skeleton className="w-full !h-64 cardContainer dark:bg-secondary" />
+      </div>
+    );
   }
 
   if (!userList || isError) {

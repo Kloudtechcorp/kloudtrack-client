@@ -79,7 +79,7 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
     >
       <div className="flex flex-col gap-7 justify-between w-full">
         <div className="flex flex-col justify-center h-2/3">
-          <ul className="flex flex-col gap-4 justify-center p-[1rem]">
+          <ul className="flex flex-col gap-4 justify-center px-2 py-4">
             {sidebarItems.map((link, key) => {
               if (!link) return null;
               const isActive = pathname === link.route;
@@ -88,7 +88,7 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
                   key={key}
                   className={` ${
                     isActive
-                      ? "border-b-yellow-400 border-b-4 bg-accent "
+                      ? "border-b-yellow-400 border-b-4 bg-accent"
                       : "hover:bg-gray-200 dark:hover:bg-gray-800"
                   } rounded-sm `}
                 >

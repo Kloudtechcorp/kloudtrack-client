@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -24,7 +23,6 @@ import {
 } from "@/components/ui/select";
 import { useUserContext } from "@/hooks/context/authContext";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Card } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 const defaultValues = {
@@ -83,7 +81,7 @@ const UserCreation = () => {
     setPasswordCriteria(criteria);
   };
 
-  const isPasswordValid = Object.values(passwordCriteria).every(Boolean);
+  // const isPasswordValid = Object.values(passwordCriteria).every(Boolean);
 
   return (
     <Form {...form}>
@@ -211,61 +209,64 @@ const UserCreation = () => {
               )}
             />
 
-            {form.watch("role") === "USER" && (
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant="outline">Stations Granted</Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[460px] pt-3">
-                  <span className="font-medium">Station Access</span>
-                  <FormField
-                    control={form.control}
-                    name="grantedStations"
-                    render={() => (
-                      <FormItem>
-                        {user.stations.map((item) => (
-                          <FormField
-                            key={item.id}
-                            control={form.control}
-                            name="grantedStations"
-                            render={({ field }) => (
-                              <FormItem className="flex flex-row space-x-2 space-y-0 justify-items-center">
-                                <FormControl>
-                                  <Checkbox
-                                    checked={field.value?.includes(item.id)}
-                                    onCheckedChange={(checked) => {
-                                      return checked
-                                        ? field.onChange([
-                                            ...field.value,
-                                            item.id,
-                                          ])
-                                        : field.onChange(
-                                            field.value?.filter(
-                                              (value) => value !== item.id
-                                            )
-                                          );
-                                    }}
-                                  />
-                                </FormControl>
-                                <FormLabel className="font-normal">
-                                  {item.name}
-                                </FormLabel>
-                              </FormItem>
-                            )}
-                          />
-                        ))}
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </DialogContent>
-              </Dialog>
-            )}
+            <div className="my-4">
+              {form.watch("role") === "USER" && (
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="outline">Stations Granted</Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[460px] pt-3">
+                    <span className="font-medium">Station Access</span>
+                    <FormField
+                      control={form.control}
+                      name="grantedStations"
+                      render={() => (
+                        <FormItem>
+                          {user.stations.map((item) => (
+                            <FormField
+                              key={item.id}
+                              control={form.control}
+                              name="grantedStations"
+                              render={({ field }) => (
+                                <FormItem className="flex flex-row space-x-2 space-y-0 justify-items-center">
+                                  <FormControl>
+                                    <Checkbox
+                                      checked={field.value?.includes(item.id)}
+                                      onCheckedChange={(checked) => {
+                                        return checked
+                                          ? field.onChange([
+                                              ...field.value,
+                                              item.id,
+                                            ])
+                                          : field.onChange(
+                                              field.value?.filter(
+                                                (value) => value !== item.id
+                                              )
+                                            );
+                                      }}
+                                    />
+                                  </FormControl>
+                                  <FormLabel className="font-normal">
+                                    {item.name}
+                                  </FormLabel>
+                                </FormItem>
+                              )}
+                            />
+                          ))}
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </DialogContent>
+                </Dialog>
+              )}
+            </div>
           </>
           <div className="w-full flex justify-end">
             <Button
               type="submit"
-              className={`my-5 dark:bg-blue-200`}
+              className="my-5"
+              variant="default"
               // disabled={!isPasswordValid}
             >
               {isPending ? "Loading..." : "Submit"}

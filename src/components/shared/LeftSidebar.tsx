@@ -73,7 +73,7 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
 
   return (
     <nav
-      className={`bg-white dark:bg-[#181819] ease-in-out duration-300 hidden md:flex ${
+      className={`bgColor ease-in-out duration-300 hidden md:flex ${
         expand ? "w-44" : "w-[3.5rem]"
       }`}
     >
@@ -92,7 +92,7 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
                       : "hover:bg-gray-200 dark:hover:bg-gray-800"
                   } rounded-sm `}
                 >
-                  <div className="flex justify-center  ">
+                  <div className={`flex  ${expand ? "" : "justify-center"}`}>
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger>

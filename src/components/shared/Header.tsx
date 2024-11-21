@@ -27,13 +27,13 @@ const Header = ({ burgerMenu }: HeaderProps) => {
   return (
     <>
       {isLoading ? (
-        <div className="w-full bg-white dark:bg-[#181819] p-2 h-[3.5rem] flex flex-col text-center justify-center items-center gap-2">
+        <div className="w-full bgColor p-2 h-[3.5rem] flex flex-col text-center justify-center items-center gap-2">
           <Skeleton className="w-44 h-4" />
           <Skeleton className="w-52 h-5" />
           <Skeleton className="w-64 h-6" />
         </div>
       ) : (
-        <div className="w-full bg-white dark:bg-[#181819] px-2 h-[3.5rem] flex text-center items-center">
+        <div className="w-full bgColor px-2 h-[3.5rem] flex text-center items-center">
           <div className="flex px-[0.6rem] hover:cursor-pointer">
             <img
               src="/assets/icons/burger.svg"

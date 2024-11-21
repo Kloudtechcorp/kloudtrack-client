@@ -1,8 +1,8 @@
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import LeftSidebar from "../components/shared/LeftSidebar";
 import Header from "@/components/shared/Header";
 import { useState } from "react";
-import { useUserContext } from "@/hooks/context/authContext";
+// import { useUserContext } from "@/hooks/context/authContext";
 
 const RootLayout = () => {
   const [clicked, setClicked] = useState(false);

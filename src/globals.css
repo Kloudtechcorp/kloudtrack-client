@@ -244,3 +244,7 @@
 .cardDashboard {
   @apply w-full h-[8rem];
 }
+
+.bgColor {
+  @apply bg-[#fdfdfd] dark:bg-[#181818];
+}

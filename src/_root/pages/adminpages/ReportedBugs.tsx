@@ -79,11 +79,28 @@ const ReportedBugs = () => {
                 <div className="flex gap-2">
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
-                      <span className="hover:underline hover:cursor-pointer">
-                        {item.status === "RESOLVED"
-                          ? "Open this issue again?"
-                          : "Mark as resolved?"}
-                      </span>
+                    <span className="hover:underline hover:cursor-pointer flex items-center space-x-2">
+                      {item.status === "RESOLVED" ? (
+                        <>
+                          <img
+                            src="https://cdn.discordapp.com/emojis/817726838419882004.webp?size=128" 
+                            alt="Open Issue Icon"
+                            className="w-[64px] h-[64px]"
+                          />
+                          <span>Open this issue again?</span>
+                        </>
+                      ) : (
+                        <>
+                          <img
+                            src="https://cdn.discordapp.com/emojis/655901839627124757.webp?size=128"
+                            alt="Resolved Icon"
+                            className="w-[64px] h-[64px]"
+                          />
+                          <span>Mark as resolved?</span>
+                        </>
+                      )}
+                    </span>
+
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>

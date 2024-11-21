@@ -80,7 +80,9 @@ const ReportedBugs = () => {
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <span className="hover:underline hover:cursor-pointer">
-                        Mark as resolved?
+                        {item.status === "RESOLVED"
+                          ? "Open this issue again?"
+                          : "Mark as resolved?"}
                       </span>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
@@ -97,7 +99,13 @@ const ReportedBugs = () => {
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                         <AlertDialogAction
                           onClick={() => {
-                            const data = { id: item.id, status: "RESOLVED" };
+                            const data = {
+                              id: item.id,
+                              status:
+                                item.status === "RESOLVED"
+                                  ? "OPEN"
+                                  : "RESOLVED",
+                            };
                             updateBugReport(data);
                           }}
                         >

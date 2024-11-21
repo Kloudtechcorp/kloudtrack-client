@@ -4,9 +4,10 @@ import { HeaderProps } from "@/types";
 import { useUserContext } from "@/hooks/context/authContext";
 import { Skeleton } from "../ui/skeleton";
 import { ModeToggle } from "./ModeToggle";
+import { Twirl as Hamburger } from "hamburger-react";
 
 const Header = ({ burgerMenu }: HeaderProps) => {
-  const [data, setData] = useState(false);
+  const [data, setData] = useState(true);
   const [time, setTime] = useState("");
   const { user, isLoading } = useUserContext();
 
@@ -33,14 +34,9 @@ const Header = ({ burgerMenu }: HeaderProps) => {
           <Skeleton className="w-64 h-6" />
         </div>
       ) : (
-        <div className="w-full bg-white dark:bg-[#181819] px-2 h-[3.5rem] flex text-center items-center">
-          <div className="flex px-[0.6rem] hover:cursor-pointer">
-            <img
-              src="/assets/icons/burger.svg"
-              width={24}
-              onClick={handleClick}
-              className="dark:invert hidden md:block"
-            />
+        <div className="w-full bg-white dark:bg-[#181819] px-1 h-[3.5rem] flex text-center items-center">
+          <div className="flex hover:cursor-pointer">
+            <Hamburger size={20} toggled={data} toggle={handleClick} />
           </div>
 
           <div className="items-center flex w-full flex-row justify-center">

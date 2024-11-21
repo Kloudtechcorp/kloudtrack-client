@@ -74,12 +74,12 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
   return (
     <nav
       className={`bg-white dark:bg-[#181819] ease-in-out duration-300 hidden md:flex ${
-        expand ? "w-44" : "w-[3.5rem]"
+        !expand ? "w-44" : "w-[3.5rem]"
       }`}
     >
       <div className="flex flex-col gap-7 justify-between w-full">
         <div className="flex flex-col justify-center h-2/3">
-          <ul className="flex flex-col gap-4 justify-center px-2 py-4">
+          <ul className="flex flex-col gap-4 justify-start px-2 py-4">
             {sidebarItems.map((link, key) => {
               if (!link) return null;
               const isActive = pathname === link.route;
@@ -92,23 +92,23 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
                       : "hover:bg-gray-200 dark:hover:bg-gray-800"
                   } rounded-sm `}
                 >
-                  <div className="flex justify-center  ">
+                  <div className={!expand ? `flex` : `flex justify-center`}>
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger>
                           <NavLink
                             to={link.route}
                             className={`flex gap-4 items-center py-3  ${
-                              expand ? "justify-start px-4" : "justify-center"
+                              !expand ? "justify-center px-4" : "justify-start "
                             }`}
                           >
                             <img
                               src={link.imgUrl}
-                              className={`dark:invert size-4 `}
-                            />{" "}
+                              className={`dark:invert size-4`}
+                            />
                             <div
                               className={`ease-in-out transition-all delay-300 duration-300 ${
-                                expand ? "block" : "hidden"
+                                !expand ? "block" : "hidden"
                               }`}
                             >
                               {link.label}
@@ -133,11 +133,11 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
                   <TooltipTrigger>
                     <div
                       className={`flex gap-4 items-center py-4   ${
-                        expand ? "justify-start px-4" : "justify-center"
+                        !expand ? "justify-start px-4" : "justify-center"
                       }`}
                     >
                       <BugIcon theme={""} />
-                      <span className={expand ? "block" : "hidden"}>
+                      <span className={!expand ? "block" : "hidden"}>
                         Bug Report
                       </span>
                     </div>
@@ -156,28 +156,6 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
             </SheetContent>
           </Sheet>
 
-          {/* <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <div
-                  className={`flex gap-4 items-center ${
-                    expand ? "justify-start px-4 " : "justify-center"
-                  }`}
-                >
-                  <FormIcon theme={""} />
-                  <span className={expand ? "block" : "hidden"}>
-                    Feedback Form
-                  </span>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Logout</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider> */}
-
-          {/* <ModeToggle expand={expand} /> */}
-
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
@@ -193,7 +171,7 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
                       toast.success("Logout Successfull!");
                     }}
                   />
-                  <span className={expand ? "block" : "hidden"}>Logout</span>
+                  <span className={!expand ? "block" : "hidden"}>Logout</span>
                 </div>
               </TooltipTrigger>
               <TooltipContent>

@@ -20,7 +20,6 @@ export const triggerWarningToast = ({
 }: WarningToastProps) => {
   let toastId: string | number;
 
-  console.log("color class is ", colorClass);
   const toasterDetailsView = (
     <div className="flex w-full h-full">
       <Button

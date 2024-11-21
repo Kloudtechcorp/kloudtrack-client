@@ -20,9 +20,7 @@ import {
 } from "@/components/ui/sheet";
 import { BugReport } from "../forms/bugReport";
 
-// import FormIcon from "./icons/formIcon";
-
-const LeftSidebar = ({ expand }: SidebarProps) => {
+const LeftSidebar = ({ clicked }: SidebarProps) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { setUser, user, setIsAuthenticated } = useUserContext();
@@ -70,11 +68,10 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
         }
       : null,
   ];
-
   return (
     <nav
       className={`bg-white dark:bg-[#181819] ease-in-out duration-300 hidden md:flex ${
-        !expand ? "w-44" : "w-[3.5rem]"
+        clicked ? "w-44" : "w-[3.5rem]"
       }`}
     >
       <div className="flex flex-col gap-7 justify-between w-full">
@@ -92,14 +89,14 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
                       : "hover:bg-gray-200 dark:hover:bg-gray-800"
                   } rounded-sm `}
                 >
-                  <div className={!expand ? `flex` : `flex justify-center`}>
+                  <div className={clicked ? `flex` : `flex justify-center`}>
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger>
                           <NavLink
                             to={link.route}
                             className={`flex gap-4 items-center py-3  ${
-                              !expand ? "justify-center px-4" : "justify-start "
+                              clicked ? "justify-start px-4" : "justify-center"
                             }`}
                           >
                             <img
@@ -108,7 +105,7 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
                             />
                             <div
                               className={`ease-in-out transition-all delay-300 duration-300 ${
-                                !expand ? "block" : "hidden"
+                                clicked ? "block" : "hidden"
                               }`}
                             >
                               {link.label}
@@ -133,11 +130,11 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
                   <TooltipTrigger>
                     <div
                       className={`flex gap-4 items-center py-4   ${
-                        !expand ? "justify-start px-4" : "justify-center"
+                        clicked ? "justify-start px-4" : "justify-center"
                       }`}
                     >
                       <BugIcon theme={""} />
-                      <span className={!expand ? "block" : "hidden"}>
+                      <span className={clicked ? "block" : "hidden"}>
                         Bug Report
                       </span>
                     </div>
@@ -164,14 +161,13 @@ const LeftSidebar = ({ expand }: SidebarProps) => {
                     src="/assets/icons/logout.svg"
                     className="bg-white dark:bg-transparent dark:invert w-full size-5"
                     onClick={() => {
-                      handleLogout();
                       setIsAuthenticated(false);
                       setUser(INITIAL_USER);
                       navigate("/signin");
-                      toast.success("Logout Successfull!");
+                      handleLogout();
                     }}
                   />
-                  <span className={!expand ? "block" : "hidden"}>Logout</span>
+                  <span className={clicked ? "block" : "hidden"}>Logout</span>
                 </div>
               </TooltipTrigger>
               <TooltipContent>

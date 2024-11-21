@@ -245,27 +245,6 @@
   @apply w-full h-[8rem];
 }
 
-.hamburger {
-  display: block;
-  text-align: center;
-}
-svg {
-  cursor: pointer;
-}
-.frstbar,
-.scndbar,
-.thrdbar {
-  transition: all 0.35s linear;
-  transform: rotate(0deg);
-  transform-origin: 0% 50%;
-}
-#burgericon.open .frstbar {
-  transform: rotate(45deg);
-}
-#burgericon.open .thrdbar {
-  transform: rotate(-45deg);
-}
-#burgericon.open .scndbar {
-  width: 0;
-  opacity: 0;
+.bgColor {
+  @apply bg-[#fdfdfd] dark:bg-[#181818];
 }

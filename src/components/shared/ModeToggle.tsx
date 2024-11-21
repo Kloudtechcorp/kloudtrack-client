@@ -16,7 +16,7 @@ export function ModeToggle({ expand }: ModeToggleProps) {
     >
       <ToggleGroupItem
         value="light"
-        className="rounded-full"
+        className="rounded-full "
         onClick={() => {
           const selectedTheme = theme === "light" ? "dark" : "light";
           setTheme(selectedTheme);

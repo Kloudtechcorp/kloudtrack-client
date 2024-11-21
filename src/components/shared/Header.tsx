@@ -7,7 +7,7 @@ import { ModeToggle } from "./ModeToggle";
 import { Twirl as Hamburger } from "hamburger-react";
 
 const Header = ({ burgerMenu }: HeaderProps) => {
-  const [data, setData] = useState(true);
+  const [clicked, setClicked] = useState(false);
   const [time, setTime] = useState("");
   const { user, isLoading } = useUserContext();
 
@@ -21,14 +21,14 @@ const Header = ({ burgerMenu }: HeaderProps) => {
   }, []);
 
   const handleClick = () => {
-    setData(!data);
-    burgerMenu(data);
+    setClicked(!clicked);
+    burgerMenu(!clicked);
   };
 
   return (
     <>
       {isLoading ? (
-        <div className="w-full bg-white dark:bg-[#181819] p-2 h-[3.5rem] flex flex-col text-center justify-center items-center gap-2">
+        <div className="w-full bgColor p-2 h-[3.5rem] flex flex-col text-center justify-center items-center gap-2">
           <Skeleton className="w-44 h-4" />
           <Skeleton className="w-52 h-5" />
           <Skeleton className="w-64 h-6" />
@@ -36,9 +36,8 @@ const Header = ({ burgerMenu }: HeaderProps) => {
       ) : (
         <div className="w-full bg-white dark:bg-[#181819] px-1 h-[3.5rem] flex text-center items-center">
           <div className="flex hover:cursor-pointer">
-            <Hamburger size={20} toggled={data} toggle={handleClick} />
+            <Hamburger size={20} toggled={clicked} toggle={handleClick} />
           </div>
-
           <div className="items-center flex w-full flex-row justify-center">
             <div className="flex flex-col text-center">
               <span className="text-2xl font-bold capitalize">
@@ -47,7 +46,7 @@ const Header = ({ burgerMenu }: HeaderProps) => {
               <span className="text-sm">{time}</span>
             </div>
           </div>
-          <div className="">
+          <div>
             <ModeToggle expand={false} />
           </div>
         </div>

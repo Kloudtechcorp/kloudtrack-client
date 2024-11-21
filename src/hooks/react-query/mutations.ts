@@ -153,6 +153,12 @@ export const useHandleLogout = () => {
         description: error.message,
       });
     },
+    onSuccess: () => {
+      toast({
+        title: "Logout Successful!",
+        description: "Login again to access the dashboard.",
+      });
+    },
   });
 };
 

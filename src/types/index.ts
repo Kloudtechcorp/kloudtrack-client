@@ -3,7 +3,7 @@ export type HeaderProps = {
 };
 
 export type SidebarProps = {
-  expand: boolean;
+  clicked: boolean;
 };
 
 export type ModeToggleProps = {

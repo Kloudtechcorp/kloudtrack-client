@@ -23,7 +23,7 @@ export default function NotFound() {
         >
           Go back
         </Button>
-        <Button onClick={() => router("/dashboard")} variant="ghost" size="lg">
+        <Button onClick={() => router("/")} variant="ghost" size="lg">
           Back to Home
         </Button>
       </div>

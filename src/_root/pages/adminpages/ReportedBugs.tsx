@@ -30,7 +30,7 @@ const ReportedBugs = () => {
     refetch,
   } = useGetBugReports();
   const { mutateAsync: updateBugReport, isPending } = useUpdateBug(refetch);
-
+  const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState<"ALL" | "OPEN" | "RESOLVED">("ALL");
 
   if (isLoading) {
@@ -51,8 +51,13 @@ const ReportedBugs = () => {
   }
 
   const filteredBugReports = getBugReports.filter((item) => {
-    if (filter === "ALL") return true;
-    return item.status === filter;
+    const matchesStatus =
+      filter === "ALL" || item.status.toLowerCase() === filter.toLowerCase();
+    const matchesSearch =
+      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.description.toLowerCase().includes(searchQuery.toLowerCase());
+
+    return matchesStatus && matchesSearch;
   });
 
   return (
@@ -85,6 +90,13 @@ const ReportedBugs = () => {
         This page will show the list of bugs reported by the users.
       </span>
 
+      <input
+        type="text"
+        placeholder="Search Bugs..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="flex p-2 border rounded-md w-full"
+      />
       {filteredBugReports.length === 0 ? (
         <div>No bugs found under the selected filter.</div>
       ) : (

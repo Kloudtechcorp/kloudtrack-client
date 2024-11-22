@@ -13,7 +13,6 @@ import { useHandleLogout } from "@/hooks/react-query/mutations";
 import BugIcon from "./icons/BugIcon";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
@@ -76,6 +75,7 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
   const closeSheet = () => {
     setSheetOpen(false);
   };
+
   return (
     <nav
       className={`bg-white dark:bg-[#181819] ease-in-out duration-300 hidden md:flex py-2 ${

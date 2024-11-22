@@ -148,6 +148,7 @@ export function ArgSensors() {
                     onCheckedChange={(value) =>
                       column.toggleVisibility(!!value)
                     }
+                    onSelect={(event) => event.preventDefault()}
                   >
                     {column.id}
                   </DropdownMenuCheckboxItem>

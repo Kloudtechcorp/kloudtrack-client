@@ -161,6 +161,7 @@ export function ClmsSensors() {
                     onCheckedChange={(value) =>
                       column.toggleVisibility(!!value)
                     }
+                    onSelect={(event) => event.preventDefault()}
                   >
                     {column.id}
                   </DropdownMenuCheckboxItem>

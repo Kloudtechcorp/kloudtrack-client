@@ -169,7 +169,7 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
             <Tooltip>
               <TooltipTrigger className="w-full">
                 <div
-                  className={`flex gap-4 items-center py-3 px-2 rounded-sm hover:bg-black/5 dark:hover:bg-white/5 ${
+                  className={`flex gap-4 items-center py-3 px-2 rounded-sm hover:bg-black/5 dark:hover:bg-black/5 dark:invert ${
                     clicked ? "justify-start" : "justify-center"
                   }`}
                 >
@@ -182,7 +182,11 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
                       handleLogout();
                     }}
                   />
-                  <span className={clicked ? "block" : "hidden"}>Logout</span>
+                  <span
+                    className={`dark:invert ${clicked ? "block" : "hidden"}`}
+                  >
+                    Logout
+                  </span>
                 </div>
               </TooltipTrigger>
               <TooltipContent>

@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { passwordSchema } from "@/types/validation";
+import { checkPasswordStrength } from "@/lib/utils";
 import {
   useHandleLogout,
   useUpdateUserPassword,
@@ -75,17 +76,6 @@ const ChangePassword = () => {
     specialChar: false,
   });
 
-  const checkPasswordStrength = (password: string) => {
-    const criteria = {
-      length: password.length >= 8,
-      uppercase: /[A-Z]/.test(password),
-      lowercase: /[a-z]/.test(password),
-      digit: /[0-9]/.test(password),
-      specialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password),
-    };
-    setPasswordCriteria(criteria);
-  };
-
   const isPasswordValid = Object.values(passwordCriteria).every(Boolean);
 
   return (
@@ -128,7 +118,9 @@ const ChangePassword = () => {
                         placeholder="Enter new password"
                         onChange={(e) => {
                           field.onChange(e);
-                          checkPasswordStrength(e.target.value); // Check password as the user types
+                          setPasswordCriteria(
+                            checkPasswordStrength(e.target.value)
+                          );
                         }}
                       />
                     </FormControl>

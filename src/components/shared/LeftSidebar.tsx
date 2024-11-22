@@ -13,6 +13,7 @@ import { useHandleLogout } from "@/hooks/react-query/mutations";
 import BugIcon from "./icons/BugIcon";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
@@ -20,12 +21,14 @@ import {
 } from "@/components/ui/sheet";
 import { BugReport } from "../forms/bugReport";
 import { LogOut } from "lucide-react";
+import { useState } from "react";
 
 const LeftSidebar = ({ clicked }: SidebarProps) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { setUser, user, setIsAuthenticated } = useUserContext();
   const { mutate: handleLogout } = useHandleLogout();
+  const [isSheetOpen, setSheetOpen] = useState(false);
 
   const sidebarItems = [
     {
@@ -69,6 +72,10 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
         }
       : null,
   ];
+
+  const closeSheet = () => {
+    setSheetOpen(false);
+  };
   return (
     <nav
       className={`bg-white dark:bg-[#181819] ease-in-out duration-300 hidden md:flex py-2 ${
@@ -128,7 +135,7 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
             clicked ? "items-start px-4" : "items-center px-2"
           } gap-3 `}
         >
-          <Sheet>
+          <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger>
               <TooltipProvider>
                 <Tooltip>
@@ -153,7 +160,7 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
             <SheetContent side={"left"}>
               <SheetHeader>
                 <SheetTitle>Report a Bug!</SheetTitle>
-                <BugReport />
+                <BugReport onClose={closeSheet} />
               </SheetHeader>
             </SheetContent>
           </Sheet>

@@ -3,8 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -20,7 +18,7 @@ import { Textarea } from "../ui/textarea";
 import { bugSchema } from "@/types/validation";
 import { useReportBug } from "@/hooks/react-query/mutations";
 
-export function BugReport() {
+export function BugReport({ onClose }: { onClose: () => void }) {
   const { mutateAsync: reportBug } = useReportBug();
   const form = useForm<z.infer<typeof bugSchema>>({
     resolver: zodResolver(bugSchema),
@@ -30,9 +28,10 @@ export function BugReport() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof bugSchema>) {
+  async function onSubmit(data: z.infer<typeof bugSchema>) {
     const updatedData = { ...data, metadata: navigator.userAgent };
-    reportBug(updatedData);
+    await reportBug(updatedData);
+    onClose();
   }
 
   return (

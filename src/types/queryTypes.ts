@@ -276,3 +276,18 @@ export type tablesType = {
   repeat: "minute" | "halfhour" | "hour" | "day" | "week";
   type: string;
 };
+
+export type detailedStationProps = {
+  id: number;
+  typeId: number;
+  stationName: string;
+  psgc: string;
+  latitude: number;
+  longitude: number;
+  municipalityId: number;
+  provinceId: number;
+  regionId: number;
+  serial: string;
+  imageLink: string | null;
+  createdAt: Date;
+};

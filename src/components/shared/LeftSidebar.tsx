@@ -19,6 +19,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { BugReport } from "../forms/bugReport";
+import { LogOut } from "lucide-react";
 
 const LeftSidebar = ({ clicked }: SidebarProps) => {
   const navigate = useNavigate();
@@ -70,12 +71,12 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
   ];
   return (
     <nav
-      className={`bg-white dark:bg-[#181819] ease-in-out duration-300 hidden md:flex ${
+      className={`bg-white dark:bg-[#181819] ease-in-out duration-300 hidden md:flex py-2 ${
         clicked ? "w-44" : "w-[3.5rem]"
       }`}
     >
-      <div className="flex flex-col gap-7 justify-between w-full">
-        <div className="flex flex-col justify-center h-2/3">
+      <div className="flex flex-col gap-7 w-full">
+        <div className="flex flex-col justify-start h-full">
           <ul className="flex flex-col gap-4 justify-start px-2 py-4">
             {sidebarItems.map((link, key) => {
               if (!link) return null;
@@ -122,16 +123,20 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
           </ul>
         </div>
 
-        <div className="w-full flex flex-col justify-end items-center gap-3 ">
+        <div
+          className={`w-full flex flex-col justify-end${
+            clicked ? "items-start px-4" : "items-center px-2"
+          } gap-3 `}
+        >
           <Sheet>
             <SheetTrigger>
               <TooltipProvider>
                 <Tooltip>
-                  <TooltipTrigger>
+                  <TooltipTrigger className="w-full">
                     <div
-                      className={`flex gap-4 items-center py-4   ${
-                        clicked ? "justify-start px-4" : "justify-center"
-                      }`}
+                      className={`flex gap-4 items-center ${
+                        clicked ? "justify-start" : "justify-center"
+                      } py-3 px-2 rounded-sm hover:bg-black/5 dark:hover:bg-white/5`}
                     >
                       <BugIcon theme={""} />
                       <span className={clicked ? "block" : "hidden"}>
@@ -155,11 +160,14 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
 
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger>
-                <div className="flex gap-3 py-4 ">
-                  <img
-                    src="/assets/icons/logout.svg"
-                    className="bg-white dark:bg-transparent dark:invert w-full size-5"
+              <TooltipTrigger className="w-full">
+                <div
+                  className={`flex gap-4 items-center py-3 px-2 rounded-sm hover:bg-black/5 dark:hover:bg-white/5 ${
+                    clicked ? "justify-start" : "justify-center"
+                  }`}
+                >
+                  <LogOut
+                    className="dark:bg-transparent dark:invert size-5"
                     onClick={() => {
                       setIsAuthenticated(false);
                       setUser(INITIAL_USER);

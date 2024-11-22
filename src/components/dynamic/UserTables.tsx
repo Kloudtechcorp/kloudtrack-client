@@ -151,7 +151,7 @@ export function UserTables() {
     <div className="w-full">
       <div className="flex items-center pb-4 pt-2 ">
         <Input
-          placeholder="Filter Station Names..."
+          placeholder="Filter usernames..."
           value={
             (table.getColumn("username")?.getFilterValue() as string) ?? ""
           }

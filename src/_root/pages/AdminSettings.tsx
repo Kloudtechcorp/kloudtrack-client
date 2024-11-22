@@ -17,9 +17,9 @@ const AdminSettings = () => {
     <div className="flex w-full h-full dark:bg-secondary bg-[#F6F8FC] p-2">
       <Tabs
         defaultValue="account"
-        className="w-full flex lg:flex-row flex-col p-3 rounded-2xl gap-5 justify-center container"
+        className="w-full flex flex-col p-3 rounded-2xl gap-5 "
       >
-        <TabsList className="flex flex-col justify-start gap-3 w-full lg:w-1/5 h-72 p-5 container">
+        <TabsList className="flex flex-row justify-start gap-3 w-full p-5 container">
           <TabsTrigger value="account" className="w-full">
             Account Creation
           </TabsTrigger>

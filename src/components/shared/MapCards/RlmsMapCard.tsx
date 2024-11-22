@@ -14,7 +14,7 @@ import VariableGraph from "@/components/dynamic/VariableGraph";
 
 interface MapCardProps {
   data: rlmsDashboardType | null;
-  id: number;
+  id: string;
 }
 
 const RlmsMapCard: React.FC<MapCardProps> = ({ data, id }) => {

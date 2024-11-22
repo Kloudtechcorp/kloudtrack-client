@@ -44,6 +44,10 @@ export const updateStationSchema = z.object({
   stationName: z.string({ required_error: "station name is required" }),
   latitude: z.string({ required_error: "latitude is required" }),
   longitude: z.string({ required_error: "longitude is required" }),
+  psgc: z.string({ required_error: "psgc id is required" }),
+  municipality: z.string({ required_error: "municipality id is required" }),
+  province: z.string({ required_error: "province is required" }),
+  region: z.string({ required_error: "region is required" }),
   imageLink: z.string({ required_error: "province is required" }),
 });
 

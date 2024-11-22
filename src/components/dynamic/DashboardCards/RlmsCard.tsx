@@ -58,13 +58,6 @@ const RlmsCard: React.FC<{ id: string }> = ({ id }) => {
               <CardTitle className="w-full">
                 {stationData.station.name}
               </CardTitle>
-              {user.role === "ADMIN" && (
-                <AdminControls
-                  theme={theme}
-                  station={stationData.station}
-                  id={id}
-                />
-              )}
             </div>
             <hr className="h-[0.25rem] bg-black" />
             <div className="flex flex-col">

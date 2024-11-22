@@ -8,6 +8,7 @@ import {
   awsDashboardType2,
   clmsDashboardType,
   coastalDataTypes,
+  detailedStationProps,
   hourlyDataTypes,
   rlmsDashboardType,
   stationBarangayType,
@@ -45,6 +46,7 @@ import {
   getCoastalSensors,
   getUserList,
   getBugReports,
+  getStationDetailed,
 } from "@/api/get";
 import {
   coastalSensorsType,
@@ -155,7 +157,7 @@ export const useGetStationProvinces = (
   regionId: number
 ): UseQueryResult<stationProvinceType[], Error> => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_STATION_PROVINCES],
+    queryKey: [QUERY_KEYS.GET_STATION_PROVINCES, regionId],
     queryFn: () => getStationProvinces(regionId),
     enabled: !!regionId,
   });
@@ -165,7 +167,7 @@ export const useGetStationMunicipalities = (
   provinceId: number
 ): UseQueryResult<stationMunicipalityType[], Error> => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_STATION_MUNICIPALITIES],
+    queryKey: [QUERY_KEYS.GET_STATION_MUNICIPALITIES, provinceId],
     queryFn: () => getStationMunicipalities(provinceId),
     enabled: !!provinceId,
   });
@@ -175,7 +177,7 @@ export const useGetStationBarangays = (
   municipalityId: number
 ): UseQueryResult<stationBarangayType[], Error> => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_STATION_BARANGAYS],
+    queryKey: [QUERY_KEYS.GET_STATION_BARANGAYS, municipalityId],
     queryFn: () => getStationBarangays(municipalityId),
     enabled: !!municipalityId,
   });
@@ -287,7 +289,8 @@ export const useGetUsers = (): UseQueryResult<userListType, Error> => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_USER_LIST],
     queryFn: () => getUserList(),
-    staleTime: 60000,
+    staleTime: 5000,
+    refetchInterval: 5000,
   });
 };
 
@@ -299,5 +302,17 @@ export const useGetBugReports = (): UseQueryResult<
     queryKey: [QUERY_KEYS.GET_BUG_REPORTS],
     queryFn: () => getBugReports(),
     staleTime: 5000,
+    refetchInterval: 5000,
+  });
+};
+
+export const useGetStationDetailed = (
+  id: string
+): UseQueryResult<detailedStationProps, Error> => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_BUG_REPORTS],
+    queryFn: () => getStationDetailed(id),
+    staleTime: 5000,
+    refetchInterval: 5000,
   });
 };

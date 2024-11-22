@@ -14,7 +14,7 @@ import VariableGraph from "@/components/dynamic/VariableGraph";
 
 interface MapCardProps {
   data: argDashboardType | null;
-  id: number;
+  id: string;
 }
 
 const ArgMapCard: React.FC<MapCardProps> = ({ data, id }) => {

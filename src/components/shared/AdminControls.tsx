@@ -21,24 +21,13 @@ import {
 } from "@/components/ui/alert-dialog";
 import DeleteIcon from "./icons/DeleteIcon";
 import { useDeleteStation } from "@/hooks/react-query/mutations";
+import { Edit, Trash2 } from "lucide-react";
 
 type AdminControlsProps = {
-  theme: string;
-  station: {
-    name: string;
-    type: string;
-    latitude: string;
-    longitude: string;
-    barangay: string;
-    municipality: string;
-    province: string;
-    image: string;
-    region: string;
-  };
   id: string;
 };
 
-const AdminControls = ({ theme, station, id }: AdminControlsProps) => {
+const AdminControls = ({ id }: AdminControlsProps) => {
   const { mutateAsync: deleteStation } = useDeleteStation();
 
   return (
@@ -49,7 +38,7 @@ const AdminControls = ({ theme, station, id }: AdminControlsProps) => {
             <TooltipTrigger asChild>
               <SheetTrigger asChild>
                 <Button className="button-icon" variant="ghost">
-                  <EditIcon theme={theme} />
+                  <Edit className="h-4 w-4" />
                 </Button>
               </SheetTrigger>
             </TooltipTrigger>
@@ -59,19 +48,13 @@ const AdminControls = ({ theme, station, id }: AdminControlsProps) => {
           </Tooltip>
         </TooltipProvider>
         <SheetContent className="min-w-[720px]">
-          <UpdateStation
-            id={id}
-            name={station.name}
-            latitude={station.latitude}
-            longitude={station.longitude}
-            image={station.image}
-          />
+          <UpdateStation id={id} />
         </SheetContent>
       </Sheet>
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button className="button-icon" variant="ghost">
-            <DeleteIcon theme={theme} />
+            <Trash2 className="h-4 w-4" />
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>

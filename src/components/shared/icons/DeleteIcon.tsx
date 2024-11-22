@@ -1,4 +1,4 @@
-const DeleteIcon: React.FC<{ theme: string }> = ({ theme }) => (
+const DeleteIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -8,7 +8,6 @@ const DeleteIcon: React.FC<{ theme: string }> = ({ theme }) => (
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
-    // fill={theme === "dark" ? "#000000" : "#FFFFFF"}
     fill="none"
   >
     <path d="M3 6h18" />

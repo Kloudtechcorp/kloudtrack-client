@@ -34,9 +34,9 @@ const Header = ({ burgerMenu }: HeaderProps) => {
           <Skeleton className="w-64 h-6" />
         </div>
       ) : (
-        <div className="w-full bg-white dark:bg-[#181819] p-2 h-[3.5rem] flex text-center items-center">
+        <div className="w-full bg-white dark:bg-[#181819] p-1 h-[3.5rem] flex text-center items-center">
           <div className="flex hover:cursor-pointer">
-            <Hamburger size={20} toggled={clicked} toggle={handleClick} />
+            <Hamburger size={18} toggled={clicked} toggle={handleClick} />
           </div>
           <div className="items-center flex w-full flex-row justify-center">
             <div className="flex flex-col text-center">

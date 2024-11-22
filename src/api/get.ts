@@ -26,6 +26,7 @@ import {
   rlmsDashboardType,
   clmsDashboardType,
   tablesType,
+  detailedStationProps,
 } from "@/types/queryTypes";
 
 const method: string = "GET";
@@ -361,4 +362,19 @@ export const getBugReports = async (): Promise<reportedBugType[]> => {
     throw new Error(data.message || "Failed to fetch users");
   }
   return data.data;
+};
+
+//=========================== GET DATA station
+export const getStationDetailed = async (
+  id: string
+): Promise<detailedStationProps[]> => {
+  const response = await fetch(`${server}/admin/station/${id}`, {
+    method,
+    credentials: "include",
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to detailed data of a station");
+  }
+  return data;
 };

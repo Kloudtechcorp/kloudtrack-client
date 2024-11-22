@@ -70,13 +70,6 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
               <CardTitle className="w-full">
                 {stationData.station.name}
               </CardTitle>
-              {user.role === "ADMIN" && (
-                <AdminControls
-                  theme={theme}
-                  station={stationData.station}
-                  id={id}
-                />
-              )}
             </div>
             <hr className="h-[0.25rem] bg-black" />
             <div className="flex flex-col">
@@ -102,7 +95,7 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
         {stationData.data ? (
           <div className="flex flex-col gap-2 w-full">
             <div className="stationDataDiv">
-              <span className="w-full font-medium text-lg ">
+              <span className="w-full font-normal text-lg">
                 Current Weather Conditions as of{" "}
                 {formatDateString(stationData.data.recordedAt, "long")}
               </span>

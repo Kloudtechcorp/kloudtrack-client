@@ -54,7 +54,7 @@ export type UpdateStationProps = {
 };
 
 export type updateUserGrantsProps = {
-  grantedStations: number[];
+  grantedStations: string[];
   id: number;
 };
 

@@ -251,7 +251,7 @@ export type formattedDataType = {
 };
 
 export type weatherSensorsType = {
-  id: number;
+  id: string;
   name: string;
   serial: string;
   BME280a: string;
@@ -265,7 +265,7 @@ export type weatherSensorsType = {
 }[];
 
 export type coastalSensorsType = {
-  id: number;
+  id: string;
   name: string;
   serial: string;
   sensorStatuses: {
@@ -278,7 +278,7 @@ export type coastalSensorsType = {
 }[];
 
 export type riverLevelSensorsType = {
-  id: number;
+  id: string;
   name: string;
   serial: string;
   message: string;
@@ -287,7 +287,7 @@ export type riverLevelSensorsType = {
 }[];
 
 export type rainGaugeSensorsType = {
-  id: number;
+  id: string;
   name: string;
   serial: string;
   message: string;
@@ -302,7 +302,7 @@ export type userListType = {
   role: string;
   createdAt: string;
   updatedAt: string | null;
-  stations: number[];
+  stations: string[];
 }[];
 
 export type reportedBugType = {

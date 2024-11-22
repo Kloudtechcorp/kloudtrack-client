@@ -18,16 +18,15 @@ import { useUserContext } from "@/hooks/context/authContext";
 import { Checkbox } from "@/components/ui/checkbox";
 
 export const userStationValidation = z.object({
-  grantedStations: z.array(z.number()),
+  grantedStations: z.array(z.string()),
 });
 
 type updateUsersProps = {
   id: number;
-  stationIds: number[];
+  stationIds: string[];
 };
 
 const UpdateUser = ({ id, stationIds }: updateUsersProps) => {
-  console.log(id, stationIds);
   const { user } = useUserContext();
   const { mutate: updateUser, isPending } = useUpdateUserGrants();
   const form = useForm<z.infer<typeof userStationValidation>>({

@@ -172,16 +172,14 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
                   className={`flex gap-4 items-center py-3 px-2 rounded-sm hover:bg-black/5 dark:hover:bg-black/5 dark:invert ${
                     clicked ? "justify-start" : "justify-center"
                   }`}
+                  onClick={() => {
+                    setIsAuthenticated(false);
+                    setUser(INITIAL_USER);
+                    navigate("/signin");
+                    handleLogout();
+                  }}
                 >
-                  <LogOut
-                    className="dark:bg-transparent dark:invert size-5"
-                    onClick={() => {
-                      setIsAuthenticated(false);
-                      setUser(INITIAL_USER);
-                      navigate("/signin");
-                      handleLogout();
-                    }}
-                  />
+                  <LogOut className="dark:bg-transparent dark:invert size-5" />
                   <span
                     className={`dark:invert ${clicked ? "block" : "hidden"}`}
                   >

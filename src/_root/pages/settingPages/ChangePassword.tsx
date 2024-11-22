@@ -11,13 +11,12 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { passwordSchema, userValidation } from "@/types/validation";
+import { passwordSchema } from "@/types/validation";
 import {
   useHandleLogout,
   useUpdateUserPassword,
 } from "@/hooks/react-query/mutations";
 import { useState } from "react";
-import { handleLogout } from "@/api/post";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { INITIAL_USER, useUserContext } from "@/hooks/context/authContext";
@@ -34,7 +33,7 @@ const ChangePassword = () => {
   const { mutateAsync: updateUserPassword, isPending } =
     useUpdateUserPassword();
   const { mutate: handleLogout } = useHandleLogout();
-  const { setUser, user, setIsAuthenticated } = useUserContext();
+  const { setUser, setIsAuthenticated } = useUserContext();
 
   const form = useForm<z.infer<typeof passwordSchema>>({
     resolver: zodResolver(passwordSchema),

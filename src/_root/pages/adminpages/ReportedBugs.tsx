@@ -66,8 +66,8 @@ const ReportedBugs = () => {
                     <span
                       className={
                         item.status === "RESOLVED"
-                          ? `bg-green-500 px-2 rounded-full text-sm self-center dark:text-black`
-                          : `bg-red-500 px-2 rounded-full text-sm self-center dark:text-black`
+                          ? ` bg-green-500 px-3 py-1 rounded-full text-sm self-center text-white `
+                          : ` bg-red-500 px-3 py-1 rounded-full text-sm self-center text-white `
                       }
                     >
                       {item.status}
@@ -90,14 +90,31 @@ const ReportedBugs = () => {
               <div className="flex flex-col w-full gap-2">
                 <span className="text-xs">Browser: {item.metadata}</span>
                 <span className="min-h-36 text-base">{item.description}</span>
-                <div className="flex gap-2  justify-end">
+                <div className="flex gap-2">
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
-                      <Button>
-                        {item.status === "RESOLVED"
-                          ? "Open this issue again?"
-                          : "Mark as resolved?"}
-                      </Button>
+                    <span className="hover:underline hover:cursor-pointer flex items-center space-x-2">
+                      {item.status === "RESOLVED" ? (
+                        <>
+                          <img
+                            src="https://cdn.discordapp.com/emojis/817726838419882004.webp?size=128" 
+                            alt="Open Issue Icon"
+                            className="w-[64px] h-[64px]"
+                          />
+                          <span>Open this issue again?</span>
+                        </>
+                      ) : (
+                        <>
+                          <img
+                            src="https://cdn.discordapp.com/emojis/655901839627124757.webp?size=128"
+                            alt="Resolved Icon"
+                            className="w-[64px] h-[64px]"
+                          />
+                          <span>Mark as resolved?</span>
+                        </>
+                      )}
+                    </span>
+
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>

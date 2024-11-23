@@ -1,8 +1,14 @@
+"use client";
+
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { QUERY_KEYS } from "./queryKeys";
 import {
   argDashboardType,
   awsDashboardType,
+  awsDashboardType2,
+  clmsDashboardType,
+  coastalDataTypes,
+  detailedStationProps,
   hourlyDataTypes,
   rlmsDashboardType,
   stationBarangayType,
@@ -13,33 +19,65 @@ import {
   stationRegionType,
   stationsListType,
   TableGraphCardType,
+  tablesType,
   userProfileTypes,
 } from "@/types/queryTypes";
 import {
   getArgData,
   getAwsData,
-  getHourlyDataset,
+  getAwsData2,
   getIsAuthenticated,
   getRlmsData,
   getStationBarangays,
   getStationList,
   getStationMunicipalities,
-  getStationNames,
+  getStationData,
   getStationProvinces,
   getStationRegions,
   getStationTypes,
-  getTableGraphData,
   getUserProfile,
   getUserSession,
+  getDataset,
+  getClmsData,
+  getTableGraph,
+  getWeatherSensors,
+  getRainGaugeSensors,
+  getRiverLevelSensors,
+  getCoastalSensors,
+  getUserList,
+  getBugReports,
+  getStationDetailed,
 } from "@/api/get";
-import { stationStaticType, UserType } from "@/types";
+import {
+  coastalSensorsType,
+  formattedDataType,
+  rainGaugeSensorsType,
+  reportedBugType,
+  riverLevelSensorsType,
+  stationStaticType,
+  userListType,
+  UserType,
+  weatherSensorsType,
+} from "@/types";
 
 export const useGetAwsData = (
-  name: string
+  id: string
 ): UseQueryResult<awsDashboardType, Error> => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_AWS_DATA, name],
-    queryFn: () => getAwsData(name),
+    queryKey: [QUERY_KEYS.GET_AWS_DATA, id],
+    queryFn: () => getAwsData(id),
+    refetchInterval: 5000,
+    retry: 1,
+    staleTime: 30000,
+  });
+};
+
+export const useGetAwsData2 = (
+  id: string
+): UseQueryResult<awsDashboardType2, Error> => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_AWS_DATA2, id],
+    queryFn: () => getAwsData2(id),
     refetchInterval: 5000,
     retry: 1,
     staleTime: 30000,
@@ -47,11 +85,11 @@ export const useGetAwsData = (
 };
 
 export const useGetArgData = (
-  name: string
+  id: string
 ): UseQueryResult<argDashboardType, Error> => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_ARG_DATA, name],
-    queryFn: () => getArgData(name),
+    queryKey: [QUERY_KEYS.GET_ARG_DATA, id],
+    queryFn: () => getArgData(id),
     refetchInterval: 5000,
     retry: 1,
     staleTime: 30000,
@@ -59,11 +97,23 @@ export const useGetArgData = (
 };
 
 export const useGetRlmsData = (
-  name: string
+  id: string
 ): UseQueryResult<rlmsDashboardType, Error> => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_RLMS_DATA, name],
-    queryFn: () => getRlmsData(name),
+    queryKey: [QUERY_KEYS.GET_RLMS_DATA, id],
+    queryFn: () => getRlmsData(id),
+    refetchInterval: 5000,
+    retry: 1,
+    staleTime: 30000,
+  });
+};
+
+export const useGetClmsData = (
+  id: string
+): UseQueryResult<clmsDashboardType, Error> => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_CLMS_DATA, id],
+    queryFn: () => getClmsData(id),
     refetchInterval: 5000,
     retry: 1,
     staleTime: 30000,
@@ -107,7 +157,7 @@ export const useGetStationProvinces = (
   regionId: number
 ): UseQueryResult<stationProvinceType[], Error> => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_STATION_PROVINCES],
+    queryKey: [QUERY_KEYS.GET_STATION_PROVINCES, regionId],
     queryFn: () => getStationProvinces(regionId),
     enabled: !!regionId,
   });
@@ -117,7 +167,7 @@ export const useGetStationMunicipalities = (
   provinceId: number
 ): UseQueryResult<stationMunicipalityType[], Error> => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_STATION_MUNICIPALITIES],
+    queryKey: [QUERY_KEYS.GET_STATION_MUNICIPALITIES, provinceId],
     queryFn: () => getStationMunicipalities(provinceId),
     enabled: !!provinceId,
   });
@@ -127,20 +177,20 @@ export const useGetStationBarangays = (
   municipalityId: number
 ): UseQueryResult<stationBarangayType[], Error> => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_STATION_BARANGAYS],
+    queryKey: [QUERY_KEYS.GET_STATION_BARANGAYS, municipalityId],
     queryFn: () => getStationBarangays(municipalityId),
     enabled: !!municipalityId,
   });
 };
 
-export const useGetUserProfile = (): UseQueryResult<
-  userProfileTypes,
-  Error
-> => {
+export const useGetUserProfile = (
+  userId: number
+): UseQueryResult<userProfileTypes, Error> => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_USER_PROFILE],
-    queryFn: () => getUserProfile(),
+    queryKey: [QUERY_KEYS.GET_USER_PROFILE, userId],
+    queryFn: () => getUserProfile(userId),
     staleTime: 60000,
+    refetchInterval: 1000,
   });
 };
 
@@ -152,34 +202,33 @@ export const useGetUserSession = (): UseQueryResult<UserType, Error> => {
   });
 };
 
-export const useGetStationNames = (): UseQueryResult<
-  stationStaticType[],
-  Error
-> => {
+export const useGetStationNames = (
+  stationName: string
+): UseQueryResult<stationStaticType, Error> => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_STATION_NAMES],
-    queryFn: () => getStationNames(),
+    queryKey: [QUERY_KEYS.GET_STATION_NAMES, stationName],
+    queryFn: () => getStationData(stationName),
     staleTime: 60000,
   });
 };
 
 export const useGetTableGraphData = (
-  graphData: TableGraphCardType
+  graphData: tablesType
 ): UseQueryResult<stationComputedTypes, Error> => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_TABLE_GRAPH_DATA, graphData],
-    queryFn: () => getTableGraphData(graphData),
+    queryFn: () => getTableGraph(graphData),
     refetchInterval: 60000,
     staleTime: 60000,
   });
 };
 
-export const useGetHourlyDataset = (
+export const useGetDataset = (
   graphData: TableGraphCardType
-): UseQueryResult<hourlyDataTypes[], Error> => {
+): UseQueryResult<formattedDataType[], Error> => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_HOURLY_DATASET, graphData],
-    queryFn: () => getHourlyDataset(graphData),
+    queryKey: [QUERY_KEYS.GET_DATASET, graphData],
+    queryFn: () => getDataset(graphData),
     refetchInterval: 60000,
     staleTime: 60000,
     refetchOnWindowFocus: true,
@@ -191,5 +240,79 @@ export const useGetIsAuthenticated = (): UseQueryResult<boolean, Error> => {
     queryKey: [QUERY_KEYS.GET_IS_AUTHENTICATED],
     queryFn: () => getIsAuthenticated(),
     staleTime: 60000,
+  });
+};
+
+export const useGetAwsSensors = (): UseQueryResult<
+  weatherSensorsType,
+  Error
+> => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_AWS_SENSORS],
+    queryFn: () => getWeatherSensors(),
+    staleTime: 60000,
+  });
+};
+
+export const useGetArgSensors = (): UseQueryResult<
+  rainGaugeSensorsType,
+  Error
+> => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_ARG_SENSORS],
+    queryFn: () => getRainGaugeSensors(),
+    staleTime: 60000,
+  });
+};
+export const useGetRlmsSensors = (): UseQueryResult<
+  riverLevelSensorsType,
+  Error
+> => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_RLMS_SENSORS],
+    queryFn: () => getRiverLevelSensors(),
+    staleTime: 60000,
+  });
+};
+export const useGetClmsSensors = (): UseQueryResult<
+  coastalSensorsType,
+  Error
+> => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_CLMS_SENSORS],
+    queryFn: () => getCoastalSensors(),
+    staleTime: 60000,
+  });
+};
+
+export const useGetUsers = (): UseQueryResult<userListType, Error> => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_USER_LIST],
+    queryFn: () => getUserList(),
+    staleTime: 5000,
+    refetchInterval: 5000,
+  });
+};
+
+export const useGetBugReports = (): UseQueryResult<
+  reportedBugType[],
+  Error
+> => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_BUG_REPORTS],
+    queryFn: () => getBugReports(),
+    staleTime: 5000,
+    refetchInterval: 5000,
+  });
+};
+
+export const useGetStationDetailed = (
+  id: string
+): UseQueryResult<detailedStationProps, Error> => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_BUG_REPORTS],
+    queryFn: () => getStationDetailed(id),
+    staleTime: 5000,
+    refetchInterval: 5000,
   });
 };

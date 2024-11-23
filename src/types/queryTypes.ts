@@ -69,15 +69,79 @@ export type stationsListType = {
 };
 
 export type awsDashboardType = {
-  currentweather: stationCurrentWeatherType;
+  station: {
+    name: string;
+    type: string;
+    latitude: string;
+    longitude: string;
+    barangay: string;
+    municipality: string;
+    province: string;
+    image: string;
+    region: string;
+  };
+  data: stationCurrentWeatherType;
+};
+
+export type awsDashboardType2 = {
+  station: {
+    name: string;
+    type: string;
+    latitude: string;
+    longitude: string;
+    barangay: string;
+    municipality: string;
+    province: string;
+    image: string;
+    region: string;
+  };
+  data: stationCurrentWeatherType;
+  pastHourPrecip: number;
 };
 
 export type argDashboardType = {
-  raingaugedata: stationCurrentRainType;
+  station: {
+    name: string;
+    type: string;
+    latitude: string;
+    longitude: string;
+    barangay: string;
+    municipality: string;
+    province: string;
+    image: string;
+    region: string;
+  };
+  data: stationCurrentRainType;
 };
 
 export type rlmsDashboardType = {
-  riverleveldata: stationCurrentRiverLevelType;
+  station: {
+    name: string;
+    type: string;
+    latitude: string;
+    longitude: string;
+    barangay: string;
+    municipality: string;
+    province: string;
+    image: string;
+    region: string;
+  };
+  data: stationCurrentRiverLevelType;
+};
+
+export type clmsDashboardType = {
+  station: {
+    name: string;
+    type: string;
+    latitude: string;
+    longitude: string;
+    barangay: string;
+    municipality: string;
+    province: string;
+    image: string;
+    region: string;
+  };
+  data: stationCurrentCoastalLevelType;
 };
 
 export type stationCurrentWeatherType = {
@@ -94,6 +158,7 @@ export type stationCurrentWeatherType = {
   precipitation: number;
   gust: number;
   batteryVoltage: number;
+  pastHourPrecip: number;
 };
 
 export type stationCurrentRainType = {
@@ -105,50 +170,54 @@ export type stationCurrentRiverLevelType = {
   recordedAt: string;
   distance: number;
 };
+export type stationCurrentCoastalLevelType = {
+  recordedAt: string;
+  humidity: number;
+  pressure: number;
+  temperature: number;
+  distance: number;
+};
 
 export type userProfileTypes = {
-  username: string;
   createdAt: string;
-  updatedAt: string;
+  username: string;
+  updatedAt: string | null;
+  role: string;
   apiKeys: {
-    apiKey: string;
     createdAt: string;
-    updatedAt: string;
-  };
+    updatedAt: string | null;
+    apiKey: string;
+    expiresAt: string | null;
+    isActive: boolean;
+    title: string;
+    id: number;
+  }[];
 };
 
 export type TableGraphCardType = {
-  stationName: string;
+  type: string;
+  stationId: string;
   weatherData: string;
   range: number;
-  repeat: "minute" | "hour" | "day" | "week" | "12-hours" | "48-hours";
+  repeat: "minute" | "halfhour" | "hour" | "day" | "week";
 };
 
 export type stationComputedTypes = {
-  info: {
-    barangay: {
-      barangay: string;
-    };
-    municipality: {
-      municipality: string;
-    };
-    province: {
-      province: string;
-    };
-    region: {
-      region: string;
-    };
-    stationType: {
-      typeName: string;
-    };
-    stationName: string;
-    currentweather: { recordedAt: string; data: number }[];
-    data: [number];
-  };
   max: number;
   min: number;
   average: number;
-  currentData: { current: number; past1min: number };
+  currentData: number;
+  past1minute: number;
+  recordedAt: string;
+  station: {
+    name: string;
+    type: string;
+    latitude: number;
+    longitude: number;
+    barangay: string;
+    municipality: string;
+    province: string;
+  };
 };
 
 export type hourlyDataTypes = {
@@ -178,6 +247,47 @@ export type weatherDataTypes = {
   uvIndex: number;
 };
 
+export type coastalDataTypes = {
+  recordedAt: string;
+  temperature: number;
+  humidity: number;
+  pressure: number;
+  distance: number;
+};
+
+export type riverLevelDataTypes = {
+  recordedAt: string;
+  distance: number;
+};
+
+export type rainGaugeDataTypes = {
+  recordedAt: string;
+  precipitation: number;
+};
+
 export type downloadableDataTypes = {
   weatherdata: weatherDataTypes[];
+};
+
+export type tablesType = {
+  stationId: string;
+  weatherData: string;
+  range: number;
+  repeat: "minute" | "halfhour" | "hour" | "day" | "week";
+  type: string;
+};
+
+export type detailedStationProps = {
+  id: number;
+  typeId: number;
+  stationName: string;
+  psgc: string;
+  latitude: number;
+  longitude: number;
+  municipalityId: number;
+  provinceId: number;
+  regionId: number;
+  serial: string;
+  imageLink: string | null;
+  createdAt: Date;
 };

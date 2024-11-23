@@ -3,7 +3,7 @@ export type HeaderProps = {
 };
 
 export type SidebarProps = {
-  expand: boolean;
+  clicked: boolean;
 };
 
 export type ModeToggleProps = {
@@ -54,11 +54,22 @@ export type dataProps = {
   T2: number | null;
   recordedAt: string;
 };
+export type apiKeyType = {
+  expiresAt: Date | null;
+  title: string;
+};
 
 export type UserType = {
-  id: number | null;
+  id: number;
   username: string;
   role: string;
+  stations:
+    | {
+        id: string;
+        type: string;
+        name: string;
+      }[]
+    | [];
 };
 
 export type UserCreate = {
@@ -223,28 +234,91 @@ export type profileType = {
 };
 
 export type stationStaticType = {
-  stationName: string;
-  isActive: boolean;
-  imageLink: string;
-  latitude: string;
-  longitude: string;
-  stationType: {
-    typeName: string;
+  name: string;
+  type: string;
+  barangay: string;
+  municipality: string;
+  province: string;
+  latitude: number;
+  longitude: number;
+  id: string;
+  image: string;
+};
+
+export type formattedDataType = {
+  datetime: any;
+  data: number;
+};
+
+export type weatherSensorsType = {
+  id: string;
+  name: string;
+  serial: string;
+  BME280a: string;
+  BME280b: string;
+  BME280c: string;
+  BH1750: string;
+  AS5600: string;
+  UV: string;
+  SLAVE: string;
+  recordedAt: string;
+}[];
+
+export type coastalSensorsType = {
+  id: string;
+  name: string;
+  serial: string;
+  sensorStatuses: {
+    BME280: string;
+    sonic1: string;
+    sonic2: string;
+    sonic3: string;
   };
-  region: {
+  recordedAt: string;
+}[];
+
+export type riverLevelSensorsType = {
+  id: string;
+  name: string;
+  serial: string;
+  message: string;
+  sonic: string;
+  recordedAt: string;
+}[];
+
+export type rainGaugeSensorsType = {
+  id: string;
+  name: string;
+  serial: string;
+  message: string;
+  rainGauge: string;
+  recordedAt: string;
+}[];
+
+export type userListType = {
+  id: number;
+  username: string;
+  password: string;
+  role: string;
+  createdAt: string;
+  updatedAt: string | null;
+  stations: string[];
+}[];
+
+export type reportedBugType = {
+  id: number;
+  user: {
     id: number;
-    region: string;
-  };
-  province: {
-    id: number;
-    province: string;
-  };
-  municipality: {
-    id: number;
-    municipality: string;
-  };
-  barangay: {
-    barangay: string;
-    psgc: string;
-  };
+    username: string;
+  } | null;
+  createdAt: string;
+  title: string;
+  description: string;
+  metadata: string;
+  status: "OPEN" | "IN_PROGRESS" | "RESOLVED" | "CLOSED";
+};
+
+export type bugUpdateType = {
+  id: number;
+  status: string;
 };

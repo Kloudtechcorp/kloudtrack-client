@@ -14,7 +14,7 @@ export type addStationTypeType = {
 
 export type createStationType = {
   stationName: string;
-  stationType: "AWS" | "TC" | "CLMS" | "RLMS" | "ARG";
+  stationType: string;
   latitude: string;
   longitude: string;
   psgc: string;
@@ -28,6 +28,7 @@ export type createUserData = {
   username: string;
   role: string;
   password: string;
+  grantedStations: number[];
 };
 
 //Update Data types
@@ -35,4 +36,30 @@ export type updateUserPasswordType = {
   currentPassword: string;
   password: string;
   confirmPassword: string;
+};
+
+export type updateStationType = {
+  stationName: string;
+  latitude: string;
+  longitude: string;
+  imageLink: string;
+};
+
+export type UpdateStationProps = {
+  name: string;
+  latitude: string;
+  longitude: string;
+  image: string;
+  id: string;
+};
+
+export type updateUserGrantsProps = {
+  grantedStations: string[];
+  id: number;
+};
+
+export type reportBugType = {
+  title: string;
+  description: string;
+  metadata: string;
 };

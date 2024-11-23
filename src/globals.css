@@ -5,32 +5,32 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 0 0% 3.9%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 3.9%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 0 0% 3.9%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
 
-    --accent: 25 100% 100%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
 
     --radius: 0.5rem;
 
@@ -39,42 +39,58 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
-    --background: 0 0% 5%;
-    --foreground: 210 40% 98%;
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 254 10% 9%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
 
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
 
@@ -92,178 +108,39 @@
   }
 
   .marker-aws {
-    background-image: url("assets/icons/pointer-aws.svg");
+    background-image: url("/assets/icons/pointer-aws.svg");
     background-size: cover;
     width: 50px;
     height: 50px;
     border-radius: 50%;
     cursor: pointer;
   }
+
   .marker-arg {
-    background-image: url("assets/icons/pointer-arg.svg");
+    background-image: url("/assets/icons/pointer-arg.svg");
     background-size: cover;
     width: 50px;
     height: 50px;
     border-radius: 50%;
     cursor: pointer;
   }
+
   .marker-rlms {
-    background-image: url("assets/icons/pointer-rlms.svg");
+    background-image: url("/assets/icons/pointer-rlms.svg");
     background-size: cover;
     width: 50px;
     height: 50px;
     border-radius: 50%;
     cursor: pointer;
   }
-}
 
-.compass {
-  display: block;
-  width: var(--compass-size, 80px);
-  height: var(--compass-size, 80px);
-  border-radius: 100%;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-  position: relative;
-  color: #555;
-  text-shadow: 1px 1px 1px white;
-
-  &:before {
-    font-weight: bold;
-    position: absolute;
-    text-align: center;
-    /* content: "N"; */
-    font-size: calc(var(--compass-size) * 0.175);
-    /* Adjust based on size */
-    left: 25%;
-    width: 50%;
-    top: 2px;
-  }
-
-  .direction {
-    height: 100%;
-    width: 100%;
-    display: block;
-    background: #f2f6f5;
-    background: -moz-linear-gradient(top, #f2f6f5 0%, #cbd5d6 100%);
-    background: -webkit-gradient(
-      linear,
-      left top,
-      left bottom,
-      color-stop(0%, #f2f6f5),
-      color-stop(100%, #cbd5d6)
-    );
-    background: -webkit-linear-gradient(top, #f2f6f5 0%, #cbd5d6 100%);
-    background: -o-linear-gradient(top, #f2f6f5 0%, #cbd5d6 100%);
-    border-radius: 100%;
-
-    p {
-      text-align: center;
-      margin: 0;
-      padding: 0;
-      position: absolute;
-      top: 45%;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      line-height: var(--compass-size);
-      display: block;
-      margin-top: calc(var(--compass-size) * -0.5625);
-      font-size: calc(var(--compass-size) * 0.35);
-      font-weight: bold;
-      color: black;
-
-      span {
-        display: block;
-        line-height: normal;
-        margin-top: calc(var(--compass-size) * -0.3);
-        font-size: calc(var(--compass-size) * 0.1375);
-        /* text-transform: uppercase; */
-        font-weight: normal;
-      }
-    }
-  }
-
-  .arrow {
-    width: 100%;
-    height: 100%;
-    display: block;
-    position: absolute;
-    top: 0;
-
-    &:after {
-      content: "";
-      width: 0;
-      height: 0;
-      border-left: calc(var(--compass-size) * 0.125) solid transparent;
-      border-right: calc(var(--compass-size) * 0.125) solid transparent;
-      border-bottom: calc(var(--compass-size) * 0.35) solid rgb(255, 208, 0);
-      position: absolute;
-      box-shadow: 0 0 10 rgba(0, 0, 0, 0.2);
-      top: calc(var(--compass-size) * -0.3);
-      left: 45%;
-      margin-left: calc(var(--compass-size) * -0.0625);
-      z-index: 99;
-    }
-
-    &.NNE {
-      transform: rotate(22.5deg);
-    }
-
-    &.NE {
-      transform: rotate(45deg);
-    }
-
-    &.ENE {
-      transform: rotate(67.5deg);
-    }
-
-    &.E {
-      transform: rotate(90deg);
-    }
-
-    &.ESE {
-      transform: rotate(112.5deg);
-    }
-
-    &.SE {
-      transform: rotate(135deg);
-    }
-
-    &.SSE {
-      transform: rotate(157.5deg);
-    }
-
-    &.S {
-      transform: rotate(180deg);
-    }
-
-    &.SSW {
-      transform: rotate(202.5deg);
-    }
-
-    &.SW {
-      transform: rotate(-135deg);
-    }
-
-    &.WSW {
-      transform: rotate(-114.5deg);
-    }
-
-    &.W {
-      transform: rotate(-90deg);
-    }
-
-    &.WNW {
-      transform: rotate(-69.5deg);
-    }
-
-    &.NW {
-      transform: rotate(-45deg);
-    }
-
-    &.NNW {
-      transform: rotate(-24.5deg);
-    }
+  .marker-clms {
+    background-image: url("/assets/icons/pointer-clms.svg");
+    background-size: cover;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
   }
 }
 
@@ -301,5 +178,79 @@
 }
 
 .button-icon {
-  @apply bg-transparent hover:bg-transparent border-2 border-transparent  hover:border-black dark:hover:border-white ease-in-out duration-300;
+  @apply border-2 border-transparent ease-in-out duration-300;
+}
+
+.stationDetailsDiv {
+  @apply flex flex-col gap-3 justify-between w-1/2;
+}
+
+.stationDataDiv {
+  @apply flex items-center gap-2;
+}
+
+.cardMain {
+  @apply w-full h-full aspect-[100/56];
+}
+
+.cardTitleDiv {
+  @apply w-full py-1;
+}
+
+.cardDataDiv {
+  @apply text-xl flex h-full items-center justify-center;
+}
+
+.weatherDataTitle {
+  @apply xl:text-xl lg:text-lg md:text-base sm:text-xs;
+}
+
+.weatherDataText {
+  @apply xl:text-4xl lg:text-3xl md:text-xl sm:text-sm flex flex-col font-bold;
+}
+
+.weatherDataTitleDiv {
+  @apply text-center w-full flex flex-col h-full;
+}
+
+.weatherDataTextDiv {
+  @apply w-full py-1;
+}
+
+.notFoundTitle {
+  @apply bg-[#fbd008] to-transparent bg-clip-text text-[10rem] font-extrabold leading-none text-transparent;
+}
+
+.tooltipContentDiv {
+  @apply w-full text-xs;
+}
+
+.notFoundDesc {
+  @apply font-bold text-3xl;
+}
+
+.notFoundText {
+  @apply text-xl;
+}
+
+.currentWeatherDiv {
+  @apply font-medium text-xs md:text-sm lg:text-base h-10 flex items-center;
+}
+
+.currentWeatherText {
+  @apply font-medium text-xs md:text-sm lg:text-base h-10 flex items-center;
+}
+
+.cardDashboard {
+  @apply w-full h-[8rem];
+}
+
+.bgColor {
+  @apply bg-[#fdfdfd] dark:bg-[#181818];
+}
+
+.mapboxgl-popup-content {
+  background: transparent !important; /* Removes the background */
+  box-shadow: none !important; /* Removes any shadow */
+  padding: 0 !important; /* Removes default padding */
 }

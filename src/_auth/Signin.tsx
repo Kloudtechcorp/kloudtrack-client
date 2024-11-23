@@ -1,4 +1,4 @@
-import { useTheme } from "@/components/theme-provider";
+// import { useTheme } from "@/components/theme-provider";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -22,7 +22,7 @@ import { useState } from "react";
 
 const Signin = () => {
   const navigate = useNavigate();
-  const { theme } = useTheme();
+  // const { theme } = useTheme();
   const { isAuthenticated, checkAuthUser } = useUserContext();
   const [isLoading, setIsLoading] = useState(false);
   const { mutateAsync: signInAccount } = useSignInAccount();
@@ -51,7 +51,7 @@ const Signin = () => {
       } else {
         toast.error("Login failed. Please try again.");
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast.error("Username or password not found");
     } finally {
       setIsLoading(false);
@@ -65,7 +65,7 @@ const Signin = () => {
       ) : (
         <>
           {isLoading ? (
-            <div className="w-full h-full flex justify-center items-center relative">
+            <div className="w-full h-full flex justify-center items-center relative bgColor">
               <HashLoader
                 color={"#fbd008"}
                 size={150}
@@ -79,7 +79,7 @@ const Signin = () => {
             </div>
           ) : (
             <Form {...form}>
-              <div className=" w-full h-full items-center flex flex-col justify-center gap-5">
+              <div className=" w-full h-full items-center flex flex-col justify-center gap-5 bg-secondary">
                 <svg
                   className="h-14 absolute top-5"
                   xmlns="http://www.w3.org/2000/svg"
@@ -103,46 +103,29 @@ const Signin = () => {
                   />
                 </svg>
 
-                <div className="font-Courier py-4 px-6 pb-6 rounded-lg w-[40rem] max-w-full bg-[#F6F8FC] dark:bg-gray-800">
-                  <p className="leading-7 text-gray-400">
-                    Welcome to Kloudtrack by Kloudtech, your official weather
-                    monitoring hub! 🌤️ <br></br>
-                    If you landed here by mistake, head over to our{" "}
-                    <a
-                      className="text-blue-400 hover:text-blue-300 dark:text-blue-400 dark:hover:text-blue-300 "
-                      href="http://kloudtrack.kloudtechsea.com"
-                    >
-                      public website
-                    </a>
-                    . <br></br>
-                    Otherwise, let's dive into some weather tracking fun!
-                    <br></br>
-                  </p>
-                  <br></br>
+                <div className="font-Courier py-4 px-6 pb-6 rounded-md w-[40rem] max-w-full bgColor border">
+                  <div className="pb-6">
+                    <p className="leading-7 ">
+                      Welcome to Kloudtrack by Kloudtech, your official weather
+                      monitoring hub! 🌤️ <br></br>
+                      If you landed here by mistake, head over to our{" "}
+                      <a
+                        className="text-blue-400 hover:text-blue-300 dark:text-blue-400 dark:hover:text-blue-300 "
+                        href="http://kloudtrack.kloudtechsea.com"
+                      >
+                        public website
+                      </a>
+                      . <br></br>
+                      Otherwise, let's dive into some weather tracking fun!
+                    </p>
+                  </div>
 
-                  <span className="text-blue-500">
-                    Enter your e-mail/username to begin*{" "}
-                  </span>
                   <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className="flex flex-col gap-1 w-full mt-1"
+                    className="flex flex-col gap-4 w-full "
                   >
-                    <div className="pt-2 flex flex-row items-center gap-3">
-                      <svg
-                        width="1rem"
-                        height="1rem"
-                        viewBox="0 0 24.00 24.00"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          className="stroke-red-500"
-                          d="M0 12H18M18 12L13 7M18 12L13 17"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        ></path>
-                      </svg>
+                    <div className="gap-1 flex flex-col">
+                      <span className="text-blue-500">Username </span>
                       <div className="w-full">
                         <FormField
                           control={form.control}
@@ -163,24 +146,9 @@ const Signin = () => {
                         />
                       </div>
                     </div>
-                    <br></br>
-                    <span className="text-blue-500">Input your password* </span>
-                    <div className="pt-2 flex flex-row items-center gap-3">
-                      <svg
-                        width="1rem"
-                        height="1rem"
-                        viewBox="0 0 24.00 24.00"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          className="stroke-red-500"
-                          d="M0 12H18M18 12L13 7M18 12L13 17"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        ></path>
-                      </svg>
+
+                    <div className="gap-1 flex flex-col">
+                      <span className="text-blue-500">Password</span>
                       <div className="w-full">
                         <FormField
                           control={form.control}
@@ -200,13 +168,13 @@ const Signin = () => {
                           )}
                         />
                       </div>
-                      <Button
-                        // onClick={() => navigate("/dashboard")}
-                        className="rounded-lg bg-gray-200 text-gray-700 "
-                      >
-                        Continue
-                      </Button>
                     </div>
+                    <Button
+                      // onClick={() => navigate("/dashboard")}
+                      variant="default"
+                    >
+                      Continue
+                    </Button>
                   </form>
                 </div>
               </div>

@@ -22,7 +22,7 @@ const MapCard: React.FC<MapCardProps> = ({ data }) => {
         <Card className="">
           <CardDescription className="p-2 text-xs md:text-sm">
             Current weather data recorded as of{" "}
-            {formatDateString(data.currentweather.recordedAt, "long")}
+            {formatDateString(data.data.recordedAt, "long")}
           </CardDescription>
           <CardContent>
             <div className="">
@@ -41,13 +41,18 @@ const MapCard: React.FC<MapCardProps> = ({ data }) => {
                         />
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>Temperature is ...</p>
+                        <p>
+                          Temperature tells us how hot or cold the air is.
+                          It&apos;s what you feel when you step outside. Higher
+                          temperatures mean warmer days, and lower ones mean
+                          cooler days.
+                        </p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
                 </div>
                 <span className="font-medium text-4xl md:text-7xl text-center">
-                  {Math.round(data.currentweather.heatIndex * 100) / 100}
+                  {Math.round(data.data.heatIndex * 100) / 100}
                   <span className="text-3xl md:text-5xl">°C</span>
                 </span>
               </div>
@@ -75,14 +80,18 @@ const MapCard: React.FC<MapCardProps> = ({ data }) => {
                               />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>Heat Index is ...</p>
+                              <p>
+                                The heat index measures how hot it feels when
+                                you add humidity to the actual air temperature.
+                                Even if the temperature isn&apos;t very high,
+                                high humidity can make it feel much hotter.
+                              </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
                       </TableCell>
                       <TableCell className="font-bold">
-                        {Math.round(data.currentweather.heatIndex * 100) / 100}{" "}
-                        °C
+                        {Math.round(data.data.heatIndex * 100) / 100} °C
                       </TableCell>
                     </TableRow>
 
@@ -106,13 +115,17 @@ const MapCard: React.FC<MapCardProps> = ({ data }) => {
                               />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>Humidity is ...</p>
+                              <p>
+                                Humidity is how much moisture is in the air.
+                                When humidity is high, it feels warmer and
+                                sticky. When it&apos;s low, the air feels drier.
+                              </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
                       </TableCell>
                       <TableCell className="font-bold">
-                        {Math.round(data.currentweather.humidity * 100) / 100} %
+                        {Math.round(data.data.humidity * 100) / 100} %
                       </TableCell>
                     </TableRow>
 
@@ -136,15 +149,19 @@ const MapCard: React.FC<MapCardProps> = ({ data }) => {
                               />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>Precipitation is ...</p>
+                              <p>
+                                Precipitation is any kind of water that falls
+                                from the sky, like rain or snow. In the
+                                Philippines, we mostly talk about rainfall,
+                                which is measured to tell us how much rain has
+                                fallen.
+                              </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
                       </TableCell>
                       <TableCell className="font-bold text-sm">
-                        {Math.round(data.currentweather.precipitation * 100) /
-                          100}{" "}
-                        mm/hr
+                        {Math.round(data.data.precipitation * 100) / 100} mm/hr
                       </TableCell>
                     </TableRow>
 
@@ -156,7 +173,7 @@ const MapCard: React.FC<MapCardProps> = ({ data }) => {
                           className="dark:invert hidden md:block"
                         />
                       </TableCell>
-                      <TableCell className="font-medium flex gap-1 items-center">
+                      <TableCell className="font-medium flex gap-1 items-center bg-red-200">
                         <span>Air Pressure</span>
                         <TooltipProvider>
                           <Tooltip>
@@ -168,13 +185,18 @@ const MapCard: React.FC<MapCardProps> = ({ data }) => {
                               />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>Air Pressure is ...</p>
+                              <p>
+                                Atmospheric pressure or air pressure is the
+                                weight of the air above us. High pressure
+                                usually means good weather, while low pressure
+                                often brings clouds and rain
+                              </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
                       </TableCell>
                       <TableCell className="font-bold">
-                        {data.currentweather.pressure} mb
+                        {data.data.pressure} mb
                       </TableCell>
                     </TableRow>
 
@@ -204,7 +226,7 @@ const MapCard: React.FC<MapCardProps> = ({ data }) => {
                         </TooltipProvider>
                       </TableCell>
                       <TableCell className="font-bold text-sm">
-                        {Math.round(data.currentweather.light * 100) / 100} lux
+                        {Math.round(data.data.light * 100) / 100} lux
                       </TableCell>
                     </TableRow>
 
@@ -234,11 +256,8 @@ const MapCard: React.FC<MapCardProps> = ({ data }) => {
                         </TooltipProvider>
                       </TableCell>
                       <TableCell className="font-bold text-sm">
-                        {Math.round(data.currentweather.windDirection * 100) /
-                          100}{" "}
-                        {getWindDirectionLabel(
-                          data.currentweather.windDirection
-                        )}
+                        {Math.round(data.data.windDirection * 100) / 100}{" "}
+                        {getWindDirectionLabel(data.data.windDirection)}
                       </TableCell>
                     </TableRow>
 
@@ -268,8 +287,7 @@ const MapCard: React.FC<MapCardProps> = ({ data }) => {
                         </TooltipProvider>
                       </TableCell>
                       <TableCell className="font-bold text-sm">
-                        {Math.round(data.currentweather.windSpeed * 100) / 100}{" "}
-                        km/h
+                        {Math.round(data.data.windSpeed * 100) / 100} km/h
                       </TableCell>
                     </TableRow>
                   </TableBody>

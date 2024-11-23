@@ -4,7 +4,7 @@ import Profile from "./settingPages/Profile";
 
 const Settings = () => {
   return (
-    <div className="flex w-full h-full dark:bg-slate-950 bg-[#F6F8FC] p-2">
+    <div className="flex w-full h-full dark:bg-secondary bg-[#F6F8FC] p-2">
       <Tabs
         defaultValue="profile"
         className="w-full flex lg:flex-row flex-col p-3 rounded-2xl gap-5 justify-center container"
@@ -19,13 +19,13 @@ const Settings = () => {
         </TabsList>
         <TabsContent
           value="change"
-          className="container w-full h-full my-0 bg-muted rounded-md p-2"
+          className="container w-full h-full my-0 rounded-md p-2"
         >
           <ChangePassword />
         </TabsContent>
         <TabsContent
           value="profile"
-          className="container w-full h-full my-0 bg-muted rounded-md p-2"
+          className="container w-full h-full my-0 rounded-md p-2"
         >
           <Profile />
         </TabsContent>

@@ -9,30 +9,30 @@ export function ModeToggle({ expand }: ModeToggleProps) {
   return (
     <ToggleGroup
       type="single"
-      className={`flex flex-col gap-0 ${
+      className={`flex flex-row gap-0 ${
         expand && "flex-row"
-      } rounded-full bg-gray-200 dark:bg-gray-700`}
+      } rounded-sm bg-black/5 dark:bg-white/5 h-8 `}
       value={theme}
     >
       <ToggleGroupItem
         value="light"
-        className="rounded-full"
+        className="rounded-md border-b-4 border-[#fbd008] dark:border-none"
         onClick={() => {
           const selectedTheme = theme === "light" ? "dark" : "light";
           setTheme(selectedTheme);
         }}
       >
-        <Sun className="h-4 w-4" />
+        <Sun className="size-3" />
       </ToggleGroupItem>
       <ToggleGroupItem
         value="dark"
-        className="rounded-full"
+        className="rounded-md dark:border-b-4 dark:border-[#fbd008]"
         onClick={() => {
           const selectedTheme = theme === "dark" ? "light" : "dark";
           setTheme(selectedTheme);
         }}
       >
-        <Moon className="h-4 w-4" />
+        <Moon className="size-3" />
       </ToggleGroupItem>
     </ToggleGroup>
   );

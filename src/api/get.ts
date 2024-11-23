@@ -1,4 +1,14 @@
-import { stationStaticType, UserType } from "@/types";
+import {
+  coastalSensorsType,
+  formattedDataType,
+  rainGaugeSensorsType,
+  reportedBugType,
+  riverLevelSensorsType,
+  stationStaticType,
+  userListType,
+  UserType,
+  weatherSensorsType,
+} from "@/types";
 import {
   stationBarangayType,
   stationsListType,
@@ -10,22 +20,21 @@ import {
   TableGraphCardType,
   stationComputedTypes,
   hourlyDataTypes,
-  downloadParamsTypes,
-  downloadableDataTypes,
-  stationCurrentRainType,
-  stationCurrentRiverLevelType,
-  stationCurrentWeatherType,
   awsDashboardType,
+  awsDashboardType2,
   argDashboardType,
   rlmsDashboardType,
+  clmsDashboardType,
+  tablesType,
+  detailedStationProps,
 } from "@/types/queryTypes";
 
 const method: string = "GET";
 const server = import.meta.env.VITE_SERVER;
 
 //=========================== GET DATA FOR DASHBOARD
-export const getAwsData = async (name: string): Promise<awsDashboardType> => {
-  const response = await fetch(`${server}/weather/station/${name}`, {
+export const getAwsData = async (id: string): Promise<awsDashboardType> => {
+  const response = await fetch(`${server}/weather/station/${id}`, {
     method,
     credentials: "include",
   });
@@ -33,12 +42,24 @@ export const getAwsData = async (name: string): Promise<awsDashboardType> => {
     throw new Error("Error fetching station data");
   }
   const data = await response.json();
-  return data.data;
+  return data;
+};
+
+export const getAwsData2 = async (id: string): Promise<awsDashboardType2> => {
+  const response = await fetch(`${server}/weather/v2/station/${id}`, {
+    method,
+    credentials: "include",
+  });
+  if (!response.ok) {
+    throw new Error("Error fetching station data");
+  }
+  const data = await response.json();
+  return data;
 };
 
 //=========================== GET DATA FOR DASHBOARD
-export const getArgData = async (name: string): Promise<argDashboardType> => {
-  const response = await fetch(`${server}/raingauge/station/${name}`, {
+export const getArgData = async (id: string): Promise<argDashboardType> => {
+  const response = await fetch(`${server}/raingauge/station/${id}`, {
     method,
     credentials: "include",
   });
@@ -46,12 +67,12 @@ export const getArgData = async (name: string): Promise<argDashboardType> => {
     throw new Error("Error fetching station data");
   }
   const data = await response.json();
-  return data.data;
+  return data;
 };
 
 //=========================== GET DATA FOR DASHBOARD
-export const getRlmsData = async (name: string): Promise<rlmsDashboardType> => {
-  const response = await fetch(`${server}/riverlevel/station/${name}`, {
+export const getRlmsData = async (id: string): Promise<rlmsDashboardType> => {
+  const response = await fetch(`${server}/riverlevel/station/${id}`, {
     method,
     credentials: "include",
   });
@@ -59,7 +80,20 @@ export const getRlmsData = async (name: string): Promise<rlmsDashboardType> => {
     throw new Error("Error fetching station data");
   }
   const data = await response.json();
-  return data.data;
+  return data;
+};
+
+//=========================== GET DATA FOR DASHBOARD
+export const getClmsData = async (id: string): Promise<clmsDashboardType> => {
+  const response = await fetch(`${server}/coastal/station/${id}`, {
+    method,
+    credentials: "include",
+  });
+  if (!response.ok) {
+    throw new Error("Error fetching station data");
+  }
+  const data = await response.json();
+  return data;
 };
 
 //=========================== GET DATA FOR STATIONS ALONG WITH ITS SENSORS
@@ -77,7 +111,7 @@ export const getStationList = async (): Promise<stationsListType[]> => {
 
 //=========================== GET DATA FOR STATION TYPES
 export const getStationTypes = async (): Promise<stationNamesType[]> => {
-  const response = await fetch(`${server}/admin/get-station-types`, {
+  const response = await fetch(`${server}/admin/station-types`, {
     method,
     credentials: "include",
   });
@@ -91,65 +125,61 @@ export const getStationTypes = async (): Promise<stationNamesType[]> => {
 
 //=========================== GET DATA FOR REGIONS
 export const getStationRegions = async (): Promise<stationRegionType[]> => {
-  const response = await fetch(`${server}/admin/get-region`, {
+  const response = await fetch(`${server}/admin/regions`, {
     method,
     credentials: "include",
   });
   if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
   const data = await response.json();
-  return data.region;
+  return data.regions;
 };
 
 //=========================== GET DATA FOR PROVINCES
 export const getStationProvinces = async (
   regionId: number
 ): Promise<stationProvinceType[]> => {
-  const response = await fetch(`${server}/admin/get-province/${regionId}`, {
+  const response = await fetch(`${server}/admin/provinces/${regionId}`, {
     method,
     credentials: "include",
   });
   if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
   const data = await response.json();
-  return data.province;
+  return data.provinces;
 };
 
 //=========================== GET DATA FOR MUNICIPALITIES
 export const getStationMunicipalities = async (
   provinceId: number
 ): Promise<stationMunicipalityType[]> => {
-  const response = await fetch(
-    `${server}/admin/get-municipality/${provinceId}`,
-    {
-      method,
-      credentials: "include",
-    }
-  );
+  const response = await fetch(`${server}/admin/municipalities/${provinceId}`, {
+    method,
+    credentials: "include",
+  });
   if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
   const data = await response.json();
 
-  return data.municipality;
+  return data.municipalities;
 };
 
 //=========================== GET DATA FOR BARANGAYS
 export const getStationBarangays = async (
   municipalityId: number
 ): Promise<stationBarangayType[]> => {
-  const response = await fetch(
-    `${server}/admin/get-barangay/${municipalityId}`,
-    {
-      method,
-      credentials: "include",
-    }
-  );
+  const response = await fetch(`${server}/admin/barangays/${municipalityId}`, {
+    method,
+    credentials: "include",
+  });
   if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
   const data = await response.json();
 
-  return data.barangay;
+  return data.barangays;
 };
 
 //=========================== GET DATA FOR USER PROFILE DATA
-export const getUserProfile = async (): Promise<userProfileTypes> => {
-  const response = await fetch(`${server}/user/get-profile`, {
+export const getUserProfile = async (
+  userId: number
+): Promise<userProfileTypes> => {
+  const response = await fetch(`${server}/user/profile/${userId}`, {
     method,
     credentials: "include",
   });
@@ -157,12 +187,12 @@ export const getUserProfile = async (): Promise<userProfileTypes> => {
   if (!response.ok) {
     throw new Error(data.message || "Failed to fetch profile");
   }
-  return data.userApi;
+  return data.profile;
 };
 
 //=========================== GET DATA FOR USER SESSION
 export const getUserSession = async (): Promise<UserType> => {
-  const response = await fetch(`${server}/user/session`, {
+  const response = await fetch(`${server}/user/auth/account`, {
     method,
     credentials: "include",
   });
@@ -170,12 +200,14 @@ export const getUserSession = async (): Promise<UserType> => {
   if (!response.ok) {
     throw new Error(data.message || "Failed to fetch user session");
   }
-  return data.token;
+  return data.profile;
 };
 
 //=========================== GET DATA FOR EACH STATION
-export const getStationNames = async (): Promise<stationStaticType[]> => {
-  const response = await fetch(`${server}/station-names/Bataan`, {
+export const getStationData = async (
+  stationName: string
+): Promise<stationStaticType> => {
+  const response = await fetch(`${server}/user/stations/${stationName}`, {
     method,
     credentials: "include",
   });
@@ -187,15 +219,16 @@ export const getStationNames = async (): Promise<stationStaticType[]> => {
   return data.data;
 };
 
-//=========================== GET DATA FOR GRAHPHS
-export const getTableGraphData = async ({
-  stationName,
+//=========================== GET AWS DATA FOR GRAHPHS
+export const getTableGraph = async ({
+  stationId,
   weatherData,
   repeat,
   range,
-}: TableGraphCardType): Promise<stationComputedTypes> => {
+  type,
+}: tablesType): Promise<stationComputedTypes> => {
   const response = await fetch(
-    `${server}/weather/analysis?variable=${weatherData}&range=${range}&name=${stationName}&repeat=${repeat}`,
+    `${server}/${type}/analysis/${stationId}?variable=${weatherData}&range=${range}&repeat=${repeat}`,
     {
       method,
       credentials: "include",
@@ -209,14 +242,14 @@ export const getTableGraphData = async ({
 };
 
 //=========================== GET DATA FOR HOURLY DATASET
-export const getHourlyDataset = async ({
-  stationName,
+export const getDataset = async ({
+  stationId,
   weatherData,
   range,
   repeat,
-}: TableGraphCardType): Promise<hourlyDataTypes[]> => {
+}: TableGraphCardType): Promise<formattedDataType[]> => {
   const response = await fetch(
-    `${server}/weather/hourly-dataset/v2?variable=${weatherData}&range=${range}&name=${stationName}&repeat=${repeat}`,
+    `${server}/dataset/dynamic/${stationId}?variable=${weatherData}&range=${range}&repeat=${repeat}`,
     {
       method,
       credentials: "include",
@@ -226,17 +259,122 @@ export const getHourlyDataset = async ({
   if (!response.ok) {
     throw new Error(data.message || "Failed to fetch graph data");
   }
-  return data;
+  return data.data;
 };
 
 //=========================== CHECK IF USER IS AUTHENTICATED
-export const getIsAuthenticated = async (): Promise<boolean> => {
-  const response = await fetch(`${server}/user/is-auth`, {
+export const getIsAuthenticated = async (): Promise<{
+  isAuthenticated: boolean;
+}> => {
+  const response = await fetch(`${server}/user/auth/session`, {
     credentials: "include",
   });
   const data = await response.json();
   if (!response.ok) {
-    return false;
+    return data;
+  }
+  return data;
+};
+
+//=========================== CHECK SENSORS
+export const getWeatherSensors = async (): Promise<weatherSensorsType> => {
+  const response = await fetch(`${server}/weather/sensors`, {
+    method,
+    credentials: "include",
+  });
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.message || "Failed to fetch sensor data in weather stations"
+    );
+  }
+  return data;
+};
+
+export const getCoastalSensors = async (): Promise<coastalSensorsType> => {
+  const response = await fetch(`${server}/coastal/sensors`, {
+    method,
+    credentials: "include",
+  });
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.message || "Failed to fetch sensor data in coastal stations"
+    );
+  }
+  return data;
+};
+
+export const getRainGaugeSensors = async (): Promise<rainGaugeSensorsType> => {
+  const response = await fetch(`${server}/raingauge/sensors`, {
+    method,
+    credentials: "include",
+  });
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.message || "Failed to fetch sensor data in rain gauge stations"
+    );
+  }
+  return data;
+};
+
+export const getRiverLevelSensors =
+  async (): Promise<riverLevelSensorsType> => {
+    const response = await fetch(`${server}/riverlevel/sensors`, {
+      method,
+      credentials: "include",
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.message || "Failed to fetch sensor data in river level stations"
+      );
+    }
+    return data;
+  };
+
+export const getUserList = async (): Promise<userListType> => {
+  const response = await fetch(`${server}/admin/all-users`, {
+    method,
+    credentials: "include",
+  });
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch users");
+  }
+  return data;
+};
+
+export const getBugReports = async (): Promise<reportedBugType[]> => {
+  const response = await fetch(`${server}/admin/reports`, {
+    method,
+    credentials: "include",
+  });
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch users");
+  }
+  return data.data;
+};
+
+//=========================== GET DATA station
+export const getStationDetailed = async (
+  id: string
+): Promise<detailedStationProps[]> => {
+  const response = await fetch(`${server}/admin/station/${id}`, {
+    method,
+    credentials: "include",
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to detailed data of a station");
   }
   return data;
 };

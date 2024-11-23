@@ -1,8 +1,11 @@
 export enum QUERY_KEYS {
   //Station
   GET_AWS_DATA = "getAwsData",
+  GET_AWS_DATA2 = "getAwsData2",
+
   GET_ARG_DATA = "getArgData",
   GET_RLMS_DATA = "getRlmsData",
+  GET_CLMS_DATA = "getClmsData",
 
   GET_STATION_LIST = "getStationList",
   GET_STATION_TYPES = "getStationTypes",
@@ -20,6 +23,18 @@ export enum QUERY_KEYS {
   //Weather Data
   GET_CURRENT_WEATHER = "getCurrentWeather",
   GET_TABLE_GRAPH_DATA = "getTableGraphData",
-  GET_HOURLY_DATASET = "getHourlyDataset",
+  GET_DATASET = "getDataset",
   GET_DOWNLOAD_DATA = "getDownloadData",
+
+  //SENSORS
+  GET_AWS_SENSORS = "getAwsSensors",
+  GET_CLMS_SENSORS = "getClmsSensors",
+  GET_RLMS_SENSORS = "getRlmsSensors",
+  GET_ARG_SENSORS = "getArgSensors",
+
+  //users
+  GET_USER_LIST = "getUserList",
+
+  //
+  GET_BUG_REPORTS = "getBugReports",
 }

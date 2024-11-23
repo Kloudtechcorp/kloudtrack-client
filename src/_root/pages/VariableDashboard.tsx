@@ -1,7 +1,6 @@
-// import StationSelect from "@/components/test/stationSelect";
-import VariableGraph from "@/components/dynamic/VariableGraph";
+import VariableDashboardGraph from "@/components/dynamic/VariableDashboardGraph";
+import NotFound from "@/components/shared/NotFound";
 import VerticalCards from "@/components/shared/VerticalCards";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Select,
@@ -10,50 +9,68 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useStationContext } from "@/hooks/context/stationContext";
-import { stationStaticType } from "@/types";
-import { useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useGetStationNames } from "@/hooks/react-query/queries";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import PuffLoader from "react-spinners/PuffLoader";
 
 const VariableDashboard = () => {
   const navigate = useNavigate();
   const { station } = useParams();
-  const { stationNames, isLoading } = useStationContext();
-  const { state } = useLocation();
+  const {
+    data: stationData,
+    isError,
+    isLoading,
+  } = useGetStationNames(station?.toString() || "");
+  const [weatherData, setWeatherData] = useState<string>("temperature");
 
-  const [weatherData, setWeatherData] = useState(
-    state && state.variable ? state.variable : "temperature"
-  );
+  useEffect(() => {
+    if (stationData) {
+      switch (stationData.type) {
+        case "ARG":
+          setWeatherData("precipitation");
+          break;
+        case "CLMS":
+          setWeatherData("temperature");
+          break;
+        case "RLMS":
+          setWeatherData("distance");
+          break;
+        default:
+          setWeatherData("temperature");
+          break;
+      }
+    }
+  }, [stationData]);
 
-  const filteredStations = stationNames.find(
-    (stationItem: stationStaticType) => stationItem.stationName === station
-  );
   if (!station) {
-    return <div>Station parameter not found.</div>;
-  }
-  if (!filteredStations) {
-    return <div>Station not found.</div>;
+    return <div>No station found</div>;
   }
 
-  if (isLoading) {
+  if (isError)
     return (
-      <div className="mainContainer bg-[#F6F8FC] dark:bg-slate-950">
-        <div className=" flex flex-col gap-2 container ">
-          <Skeleton className="h-60 w-full" />
-          <Skeleton className="h-60 w-full" />
-          <Skeleton className="h-60 w-full" />
-        </div>
+      <div className="w-full flex justify-center items-center h-full">
+        <NotFound />
       </div>
     );
-  }
+
+  if (isLoading || !stationData || !stationData)
+    return (
+      <Card className="cardContainer flex flex-row">
+        <CardContent className="flex flex-row w-full p-0 gap-2">
+          <div className="flex flex-col gap-3 justify-center items-center w-full">
+            <PuffLoader color={"#545454"} size={500} />
+          </div>
+        </CardContent>
+      </Card>
+    );
 
   return (
-    <div className="mainContainer bg-[#F6F8FC] dark:bg-slate-950 overflow-auto custom-scrollbar">
+    <div className="mainContainer bg-[#F6F8FC] dark:bg-secondary overflow-auto custom-scrollbar">
       <div className="container p-2">
         <Card className="cardContainer">
           <CardContent className="h-full flex flex-col gap-2">
-            <div className="flex items-center gap-5 justify-between pb-2">
+            <div className="flex items-center gap-5 justify-between ">
               <div className="flex gap-2">
                 <img
                   src="/assets/icons/back.svg"
@@ -62,69 +79,111 @@ const VariableDashboard = () => {
                 />
 
                 <div className="flex flex-col leading-3">
-                  <h1 className="capitalize text-2xl font-bold ">
-                    {filteredStations.stationName}
-                  </h1>
-                  <p>
-                    {filteredStations.latitude}, {filteredStations.longitude}
-                  </p>
+                  <h1 className="capitalize text-2xl font-bold ">{station}</h1>
                 </div>
               </div>
-              <Select
-                defaultValue={weatherData}
-                onValueChange={(value) => setWeatherData(value)}
-              >
-                <SelectTrigger className="w-[200px]">
-                  <SelectValue placeholder="Variable" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="temperature">Temperature</SelectItem>
-                  <SelectItem value="humidity">Humidity</SelectItem>
-                  <SelectItem value="heatIndex">Heat Index</SelectItem>
-                  <SelectItem value="pressure">Air Pressure</SelectItem>
-                  <SelectItem value="precipitation">Precipitation</SelectItem>
-                  <SelectItem value="uvIndex">UV Index</SelectItem>
-                  {/* <SelectItem value="irradiance">Irradiance</SelectItem> */}
-                  <SelectItem value="light">Light Intensity</SelectItem>
-                  {/* <SelectItem value="batteryVoltage">Battery Level</SelectItem> */}
-                </SelectContent>
-              </Select>
+              {(stationData.type === "AWS" && (
+                <Select
+                  defaultValue={weatherData}
+                  onValueChange={(value) => setWeatherData(value)}
+                >
+                  <SelectTrigger className="w-[200px]">
+                    <SelectValue placeholder="Variable" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="temperature">Temperature</SelectItem>
+                    <SelectItem value="humidity">Humidity</SelectItem>
+                    <SelectItem value="heatIndex">Heat Index</SelectItem>
+                    <SelectItem value="pressure">Air Pressure</SelectItem>
+                    <SelectItem value="precipitation">Precipitation</SelectItem>
+                    <SelectItem value="uvIndex">UV Index</SelectItem>
+                    <SelectItem value="light">Light Intensity</SelectItem>
+                  </SelectContent>
+                </Select>
+              )) ||
+                (stationData.type === "ARG" && (
+                  <Select
+                    defaultValue={weatherData}
+                    onValueChange={(value) => setWeatherData(value)}
+                  >
+                    <SelectTrigger className="w-[200px]">
+                      <SelectValue placeholder="Variable" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="precipitation">
+                        Precipitation
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                )) ||
+                (stationData.type === "RLMS" && (
+                  <Select
+                    defaultValue={weatherData}
+                    onValueChange={(value) => setWeatherData(value)}
+                  >
+                    <SelectTrigger className="w-[200px]">
+                      <SelectValue placeholder="Variable" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="distance">Distance</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )) ||
+                (stationData.type === "CLMS" && (
+                  <Select
+                    defaultValue={weatherData}
+                    onValueChange={(value) => setWeatherData(value)}
+                  >
+                    <SelectTrigger className="w-[200px]">
+                      <SelectValue placeholder="Variable" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="temperature">Temperature</SelectItem>
+                      <SelectItem value="humidity">Humidity</SelectItem>
+                      <SelectItem value="pressure">Air Pressure</SelectItem>
+                      <SelectItem value="distance">Distance</SelectItem>
+                    </SelectContent>
+                  </Select>
+                ))}
             </div>
 
             <div className="flex gap-4">
               <VerticalCards
-                stationName={filteredStations.stationName}
+                stationId={stationData.id}
                 range={24}
                 weatherData={weatherData}
                 repeat="minute"
+                type={stationData.type.toLowerCase()}
               />
-              <hr className="h-[55rem] my-auto w-[0.1rem] bg-blue-200 hidden md:block" />
-              <div className="w-full flex flex-col gap-5 py-5">
+              <div className="w-full flex flex-col gap-5 ">
                 <div className="border p-2 rounded-lg flex flex-col gap-2">
-                  <p>Past 12 Hours</p>
-                  <VariableGraph
-                    stationName={filteredStations.stationName}
+                  <p className="font-semibold">Past 12 Hours</p>
+                  <VariableDashboardGraph
+                    stationId={stationData.id}
                     range={12}
                     weatherData={weatherData}
                     repeat="hour"
+                    type={stationData.type.toLowerCase()}
                   />
                 </div>
                 <div className="border p-2 rounded-lg flex flex-col gap-2">
-                  <p>Past 12 Days</p>
-                  <VariableGraph
-                    stationName={filteredStations.stationName}
-                    range={12}
+                  <p className="font-semibold">Past 3 Days</p>
+                  <VariableDashboardGraph
+                    stationId={stationData.id}
+                    range={72}
                     weatherData={weatherData}
-                    repeat="day"
+                    repeat="hour"
+                    type={stationData.type.toLowerCase()}
                   />
                 </div>
                 <div className="border p-2 rounded-lg flex flex-col gap-2">
-                  <p>Past 12 Weeks</p>
-                  <VariableGraph
-                    stationName={filteredStations.stationName}
-                    range={12}
+                  <p className="font-semibold">Past 7 Days</p>
+                  <VariableDashboardGraph
+                    stationId={stationData.id}
+                    range={168}
                     weatherData={weatherData}
-                    repeat="week"
+                    repeat="hour"
+                    type={stationData.type.toLowerCase()}
                   />
                 </div>
               </div>

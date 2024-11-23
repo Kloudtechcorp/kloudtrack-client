@@ -10,25 +10,17 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import NoData from "../NoData";
+import NoData from "@/components/shared/NoData";
 
 interface MapCardProps {
   data: awsDashboardType | null;
 }
 
 const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
-  if (!data || !data.currentweather) {
+  if (!data || !data.data) {
     return (
       <div className="flex flex-col gap-2 w-full px-2">
-        <div className="items-center justify-center text-center flex flex-col gap-5">
-          <span className="bg-gradient-to-b from-[#fbd008] to-bg-transparent  bg-clip-text text-[7.5rem] font-extrabold leading-none text-transparent">
-            No Data Found
-          </span>
-          <h2 className="font-heading my-2 text-2xl font-bold">
-            Data from this station is not available. We're sorry for
-            inconvenience.
-          </h2>
-        </div>
+        <NoData />
       </div>
     );
   }
@@ -39,7 +31,7 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
         <Card className="">
           <CardDescription className="p-2 text-xs md:text-sm">
             Current weather data recorded as of{" "}
-            {formatDateString(data.currentweather.recordedAt, "long")}
+            {formatDateString(data.data.recordedAt, "long")}
           </CardDescription>
           <CardContent>
             <div className="">
@@ -58,18 +50,21 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
                         />
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>Temperature is ...</p>
+                        <p className="tooltipContentDiv">
+                          How hot or cold the air is, measured in Celsius or
+                          Fahrenheit.
+                        </p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
                 </div>
                 <span className="font-medium text-4xl md:text-7xl text-center">
-                  {Math.round(data.currentweather.heatIndex * 100) / 100}
+                  {Math.round(data.data.temperature * 100) / 100}
                   <span className="text-3xl md:text-5xl">°C</span>
                 </span>
               </div>
 
-              <div className="p-2 mt-4 flex border rounded-xl">
+              <div className="p-2 mt-4 flex border rounded-lg">
                 <Table>
                   <TableBody>
                     <TableRow>
@@ -92,14 +87,16 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
                               />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>Heat Index is ...</p>
+                              <p className="tooltipContentDiv">
+                                How hot it feels when humidity is added to the
+                                temperature.
+                              </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
                       </TableCell>
                       <TableCell className="font-bold">
-                        {Math.round(data.currentweather.heatIndex * 100) / 100}{" "}
-                        °C
+                        {Math.round(data.data.heatIndex * 100) / 100} °C
                       </TableCell>
                     </TableRow>
 
@@ -123,13 +120,16 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
                               />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>Humidity is ...</p>
+                              <p className="tooltipContentDiv">
+                                The amount of moisture in the air; high humidity
+                                feels sticky, low feels dry.
+                              </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
                       </TableCell>
                       <TableCell className="font-bold">
-                        {Math.round(data.currentweather.humidity * 100) / 100} %
+                        {Math.round(data.data.humidity * 100) / 100} %
                       </TableCell>
                     </TableRow>
 
@@ -153,15 +153,15 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
                               />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>Precipitation is ...</p>
+                              <p className="tooltipContentDiv">
+                                Water falling from the sky, like rain.
+                              </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
                       </TableCell>
                       <TableCell className="font-bold text-sm">
-                        {Math.round(data.currentweather.precipitation * 100) /
-                          100}{" "}
-                        mm/hr
+                        {Math.round(data.data.precipitation * 100) / 100} mm/hr
                       </TableCell>
                     </TableRow>
 
@@ -185,13 +185,16 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
                               />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>Air Pressure is ...</p>
+                              <p className="tooltipContentDiv">
+                                The weight of air; high pressure means clear
+                                weather, low pressure means rain or storms.
+                              </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
                       </TableCell>
                       <TableCell className="font-bold">
-                        {data.currentweather.pressure} mb
+                        {data.data.pressure} mb
                       </TableCell>
                     </TableRow>
 
@@ -215,13 +218,16 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
                               />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>Light Intensity is ...</p>
+                              <p className="tooltipContentDiv">
+                                How bright the sunlight is, affecting visibility
+                                and UV exposure.
+                              </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
                       </TableCell>
                       <TableCell className="font-bold text-sm">
-                        {Math.round(data.currentweather.light * 100) / 100} lux
+                        {Math.round(data.data.light * 100) / 100} lux
                       </TableCell>
                     </TableRow>
 
@@ -245,17 +251,17 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
                               />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>Wind Direction is ...</p>
+                              <p className="tooltipContentDiv">
+                                The direction the wind is coming from, which can
+                                signal weather changes.
+                              </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
                       </TableCell>
                       <TableCell className="font-bold text-sm">
-                        {Math.round(data.currentweather.windDirection * 100) /
-                          100}{" "}
-                        {getWindDirectionLabel(
-                          data.currentweather.windDirection
-                        )}
+                        {Math.round(data.data.windDirection * 100) / 100}{" "}
+                        {getWindDirectionLabel(data.data.windDirection)}
                       </TableCell>
                     </TableRow>
 
@@ -279,14 +285,16 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
                               />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>Wind Speed is ...</p>
+                              <p className="tooltipContentDiv">
+                                How fast the wind is blowing, from light breezes
+                                to strong gusts.
+                              </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
                       </TableCell>
                       <TableCell className="font-bold text-sm">
-                        {Math.round(data.currentweather.windSpeed * 100) / 100}{" "}
-                        km/h
+                        {Math.round(data.data.windSpeed * 100) / 100} km/h
                       </TableCell>
                     </TableRow>
                   </TableBody>

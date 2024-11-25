@@ -21,6 +21,9 @@ import {
 import { useUpdateBug } from "@/hooks/react-query/mutations";
 import { Skeleton } from "@/components/ui/skeleton";
 import NoDataOptions from "@/components/shared/NoDataOptions";
+import { Input } from "@/components/ui/input";
+import NoBugsOptions from "@/components/shared/NoBugsFound";
+
 
 const ReportedBugs = () => {
   const {
@@ -90,19 +93,23 @@ const ReportedBugs = () => {
         This page will show the list of bugs reported by the users.
       </span>
 
-      <input
+
+      <Input
         type="text"
         placeholder="Search Bugs..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        className="flex p-2 border rounded-md w-full"
+        className="flex p-2 border rounded-md w-full mb-2"
       />
+
       {filteredBugReports.length === 0 ? (
-        <div>No bugs found under the selected filter.</div>
+        <div className="py-4">
+        <NoBugsOptions />
+      </div>
       ) : (
-        <div className="overflow-y-auto max-h-[80vh]">
+        <div className="overflow-y-auto max-h-[67vh]">
           {filteredBugReports.map((item) => (
-            <Accordion type="single" collapsible key={item.id}>
+            <Accordion className="mr-2" type="single" collapsible key={item.id}>
               <AccordionItem value={`item-${item.id}`}>
                 <AccordionTrigger className="hover:none">
                   <div className="flex justify-between w-full">

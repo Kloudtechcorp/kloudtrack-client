@@ -49,6 +49,10 @@ export const updateStation = async (
       latitude: values.latitude,
       longitude: values.longitude,
       imageLink: values.image,
+      psgc: values.psgc,
+      province: values.province,
+      region: values.region,
+      municipality: values.municipality,
     }),
   });
   const data = await response.json();

@@ -118,15 +118,15 @@ export function AwsSensors() {
         </div>
       ),
     },
-    // {
-    //   header: "Actions",
-    //   id: "actions",
-    //   enableHiding: false,
-    //   cell: ({ row }) => {
-    //     const data = row.original;
-    //     return <AdminControls id={data.id} />;
-    //   },
-    // },
+    {
+      header: "Actions",
+      id: "actions",
+      enableHiding: false,
+      cell: ({ row }) => {
+        const data = row.original;
+        return <AdminControls id={data.id} />;
+      },
+    },
   ];
 
   const table = useReactTable({

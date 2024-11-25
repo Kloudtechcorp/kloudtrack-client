@@ -153,12 +153,6 @@ export const useHandleLogout = () => {
         description: error.message,
       });
     },
-    onSuccess: () => {
-      toast({
-        title: "Logout Successful!",
-        description: "Login again to access the dashboard.",
-      });
-    },
   });
 };
 
@@ -220,7 +214,7 @@ export const useUpdateStation = () => {
 //DELETE
 export const useDeleteApiKey = (onSuccess: () => void) => {
   return useMutation({
-    mutationFn: (id: string) => deleteApiKey(id),
+    mutationFn: (id: number) => deleteApiKey(id),
     onError: (error: Error) => {
       toast({
         title: "Error!",

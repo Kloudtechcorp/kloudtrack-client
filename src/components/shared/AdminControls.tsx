@@ -1,6 +1,11 @@
 import { Button } from "../ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
-import EditIcon from "./icons/EditIcon";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetTitle,
+  SheetTrigger,
+} from "../ui/sheet";
 import UpdateStation from "../forms/UpdateStation";
 import {
   Tooltip,
@@ -19,7 +24,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import DeleteIcon from "./icons/DeleteIcon";
 import { useDeleteStation } from "@/hooks/react-query/mutations";
 import { Edit, Trash2 } from "lucide-react";
 
@@ -37,9 +41,11 @@ const AdminControls = ({ id }: AdminControlsProps) => {
           <Tooltip>
             <TooltipTrigger asChild>
               <SheetTrigger asChild>
-                <Button className="button-icon" variant="ghost">
-                  <Edit className="h-4 w-4" />
-                </Button>
+                <SheetTitle>
+                  <Button className="button-icon" variant="ghost">
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                </SheetTitle>
               </SheetTrigger>
             </TooltipTrigger>
             <TooltipContent>
@@ -48,6 +54,9 @@ const AdminControls = ({ id }: AdminControlsProps) => {
           </Tooltip>
         </TooltipProvider>
         <SheetContent className="min-w-[720px]">
+          <SheetDescription>
+            Update an information for a station.
+          </SheetDescription>
           <UpdateStation id={id} />
         </SheetContent>
       </Sheet>

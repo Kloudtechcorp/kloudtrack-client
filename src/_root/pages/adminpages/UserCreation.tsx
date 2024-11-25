@@ -23,7 +23,16 @@ import {
 } from "@/components/ui/select";
 import { useUserContext } from "@/hooks/context/authContext";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const defaultValues = {
   username: "",
@@ -42,13 +51,6 @@ const UserCreation = () => {
 
   const clearForms = () => {
     form.reset(defaultValues);
-    setPasswordCriteria({
-      length: false,
-      uppercase: false,
-      lowercase: false,
-      digit: false,
-      specialChar: false,
-    });
   };
 
   const onSubmit = (values: z.infer<typeof userValidation>) => {
@@ -61,27 +63,6 @@ const UserCreation = () => {
       },
     });
   };
-
-  const [passwordCriteria, setPasswordCriteria] = useState({
-    length: false,
-    uppercase: false,
-    lowercase: false,
-    digit: false,
-    specialChar: false,
-  });
-
-  const checkPasswordStrength = (password: string) => {
-    const criteria = {
-      length: password.length >= 8,
-      uppercase: /[A-Z]/.test(password),
-      lowercase: /[a-z]/.test(password),
-      digit: /[0-9]/.test(password),
-      specialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password),
-    };
-    setPasswordCriteria(criteria);
-  };
-
-  // const isPasswordValid = Object.values(passwordCriteria).every(Boolean);
 
   return (
     <Form {...form}>
@@ -146,65 +127,9 @@ const UserCreation = () => {
                       {...field}
                       onChange={(e) => {
                         field.onChange(e);
-                        checkPasswordStrength(e.target.value);
                       }}
                     />
                   </FormControl>
-
-                  <div className="text-sm pb-2 px-1">
-                    <ul>
-                      <li
-                        className={
-                          passwordCriteria.length
-                            ? "text-green-500"
-                            : "text-red-500"
-                        }
-                      >
-                        {passwordCriteria.length ? "✔" : "✘"} Must be a minimum
-                        of 8 characters.
-                      </li>
-                      <li
-                        className={
-                          passwordCriteria.uppercase
-                            ? "text-green-500"
-                            : "text-red-500"
-                        }
-                      >
-                        {passwordCriteria.uppercase ? "✔" : "✘"} Must contain at
-                        least one uppercase letter.
-                      </li>
-                      <li
-                        className={
-                          passwordCriteria.lowercase
-                            ? "text-green-500"
-                            : "text-red-500"
-                        }
-                      >
-                        {passwordCriteria.lowercase ? "✔" : "✘"} Must contain at
-                        least one lowercase letter.
-                      </li>
-                      <li
-                        className={
-                          passwordCriteria.digit
-                            ? "text-green-500"
-                            : "text-red-500"
-                        }
-                      >
-                        {passwordCriteria.digit ? "✔" : "✘"} Must contain at
-                        least one digit.
-                      </li>
-                      <li
-                        className={
-                          passwordCriteria.specialChar
-                            ? "text-green-500"
-                            : "text-red-500"
-                        }
-                      >
-                        {passwordCriteria.specialChar ? "✔" : "✘"} Must contain
-                        at least one special character.
-                      </li>
-                    </ul>
-                  </div>
                 </FormItem>
               )}
             />
@@ -213,62 +138,65 @@ const UserCreation = () => {
               {form.watch("role") === "USER" && (
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button variant="outline">Stations Granted</Button>
+                    <Button variant="outline">Granted Stations</Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[460px] pt-3">
-                    <span className="font-medium">Station Access</span>
-                    <FormField
-                      control={form.control}
-                      name="grantedStations"
-                      render={() => (
-                        <FormItem>
-                          {user.stations.map((item) => (
-                            <FormField
-                              key={item.id}
-                              control={form.control}
-                              name="grantedStations"
-                              render={({ field }) => (
-                                <FormItem className="flex flex-row space-x-2 space-y-0 justify-items-center">
-                                  <FormControl>
-                                    <Checkbox
-                                      checked={field.value?.includes(item.id)}
-                                      onCheckedChange={(checked) => {
-                                        return checked
-                                          ? field.onChange([
-                                              ...field.value,
-                                              item.id,
-                                            ])
-                                          : field.onChange(
-                                              field.value?.filter(
-                                                (value) => value !== item.id
-                                              )
-                                            );
-                                      }}
-                                    />
-                                  </FormControl>
-                                  <FormLabel className="font-normal">
-                                    {item.name}
-                                  </FormLabel>
-                                </FormItem>
-                              )}
-                            />
-                          ))}
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                    <DialogTitle className="font-medium">
+                      Station Access
+                    </DialogTitle>
+                    <DialogDescription>
+                      Select stations in which this user should have access.
+                    </DialogDescription>
+                    <Separator />
+                    <ScrollArea className="h-[250px] w-full rounded-sm border p-1">
+                      <FormField
+                        control={form.control}
+                        name="grantedStations"
+                        render={() => (
+                          <FormItem>
+                            {user.stations.map((item) => (
+                              <FormField
+                                key={item.id}
+                                control={form.control}
+                                name="grantedStations"
+                                render={({ field }) => (
+                                  <FormItem className="flex flex-row space-x-2 space-y-0 justify-items-center">
+                                    <FormControl>
+                                      <Checkbox
+                                        checked={field.value?.includes(item.id)}
+                                        onCheckedChange={(checked) => {
+                                          return checked
+                                            ? field.onChange([
+                                                ...field.value,
+                                                item.id,
+                                              ])
+                                            : field.onChange(
+                                                field.value?.filter(
+                                                  (value) => value !== item.id
+                                                )
+                                              );
+                                        }}
+                                      />
+                                    </FormControl>
+                                    <FormLabel className="font-normal">
+                                      {item.name}
+                                    </FormLabel>
+                                  </FormItem>
+                                )}
+                              />
+                            ))}
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </ScrollArea>
                   </DialogContent>
                 </Dialog>
               )}
             </div>
           </>
           <div className="w-full flex justify-end">
-            <Button
-              type="submit"
-              className="my-5"
-              variant="default"
-              // disabled={!isPasswordValid}
-            >
+            <Button type="submit" className="my-5" variant="default">
               {isPending ? "Loading..." : "Submit"}
             </Button>
           </div>

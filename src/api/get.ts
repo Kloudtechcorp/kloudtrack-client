@@ -278,7 +278,7 @@ export const getIsAuthenticated = async (): Promise<{
 
 //=========================== CHECK SENSORS
 export const getWeatherSensors = async (): Promise<weatherSensorsType> => {
-  const response = await fetch(`${server}/weather/sensors`, {
+  const response = await fetch(`${server}/admin/weather/sensors`, {
     method,
     credentials: "include",
   });
@@ -293,7 +293,7 @@ export const getWeatherSensors = async (): Promise<weatherSensorsType> => {
 };
 
 export const getCoastalSensors = async (): Promise<coastalSensorsType> => {
-  const response = await fetch(`${server}/coastal/sensors`, {
+  const response = await fetch(`${server}/admin/coastal/sensors`, {
     method,
     credentials: "include",
   });
@@ -308,7 +308,7 @@ export const getCoastalSensors = async (): Promise<coastalSensorsType> => {
 };
 
 export const getRainGaugeSensors = async (): Promise<rainGaugeSensorsType> => {
-  const response = await fetch(`${server}/raingauge/sensors`, {
+  const response = await fetch(`${server}/admin/raingauge/sensors`, {
     method,
     credentials: "include",
   });
@@ -324,7 +324,7 @@ export const getRainGaugeSensors = async (): Promise<rainGaugeSensorsType> => {
 
 export const getRiverLevelSensors =
   async (): Promise<riverLevelSensorsType> => {
-    const response = await fetch(`${server}/riverlevel/sensors`, {
+    const response = await fetch(`${server}/admin/riverlevel/sensors`, {
       method,
       credentials: "include",
     });

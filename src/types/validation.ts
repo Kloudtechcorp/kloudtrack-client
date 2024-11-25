@@ -7,14 +7,32 @@ export const login = z.object({
     .min(8, { message: "Must be a minimum of 8 characters." }),
 });
 
-export const userValidation = z.object({
-  username: z.string().min(2),
-  password: z
-    .string()
-    .min(8, { message: "Must be a minimum of 8 characters." }),
-  role: z.string(),
-  grantedStations: z.array(z.number()),
-});
+export const userValidation = z
+  .object({
+    username: z.string().min(2),
+    password: z
+      .string()
+      .min(8, { message: "Must be a minimum of 8 characters." }),
+    role: z.string(),
+    grantedStations: z.array(z.string()),
+  })
+  .superRefine(({ password }, ctx) => {
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const hasSpecialChar = /[`!@#$%^&*()_\-+=\[\]{};':"\\|,.<>\/?~ ]/.test(
+      password
+    );
+
+    if (!hasUppercase || !hasLowercase || !hasNumber || !hasSpecialChar) {
+      ctx.addIssue({
+        code: "custom",
+        message:
+          "Password must include at least one uppercase letter, one lowercase letter, one number, and one special character.",
+        path: ["password"],
+      });
+    }
+  });
 
 export const psgcValidation = z.object({
   psgc: z.string({ required_error: "Enter a valid psgc" }),
@@ -66,6 +84,23 @@ export const passwordSchema = z
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
     path: ["confirmPassword"],
+  })
+  .superRefine(({ password }, ctx) => {
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const hasSpecialChar = /[`!@#$%^&*()_\-+=\[\]{};':"\\|,.<>\/?~ ]/.test(
+      password
+    );
+
+    if (!hasUppercase || !hasLowercase || !hasNumber || !hasSpecialChar) {
+      ctx.addIssue({
+        code: "custom",
+        message:
+          "Password must include at least one uppercase letter, one lowercase letter, one number, and one special character.",
+        path: ["password"],
+      });
+    }
   });
 
 export const downloadSchema = z.object({

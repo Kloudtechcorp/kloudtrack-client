@@ -28,7 +28,7 @@ export type createUserData = {
   username: string;
   role: string;
   password: string;
-  grantedStations: number[];
+  grantedStations: string[];
 };
 
 //Update Data types
@@ -51,6 +51,10 @@ export type UpdateStationProps = {
   longitude: string;
   image: string;
   id: string;
+  province: number;
+  region: number;
+  psgc: string;
+  municipality: number;
 };
 
 export type updateUserGrantsProps = {

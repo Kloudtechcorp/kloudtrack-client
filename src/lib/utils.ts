@@ -269,5 +269,16 @@ export const checkPasswordStrength = (password: string) => {
     digit: /[0-9]/.test(password),
     specialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password),
   };
-  return(criteria);
+  return criteria;
+};
+
+export const checkStationType = (type: string): string => {
+  if (type === "ARG") {
+    return "Automated Rain Gauge";
+  } else if (type === "RLMS") {
+    return "River Level Monitoring System";
+  } else if (type === "CLMS") {
+    return "Coastal Livel Monitoring System";
+  }
+  return "Automated Weather Station";
 };

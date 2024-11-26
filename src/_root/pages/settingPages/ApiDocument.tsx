@@ -45,7 +45,6 @@ const ApiDocument = () => {
   fetch("https://app.kloudtechsea.com/api/v2/get/stations", {
     method: "GET",
     headers: {
-      "Content-Type": "application/json",
       "kloudtrack-api-key": your-api-key-here, // Include the API key in the headers
     },
   })
@@ -69,7 +68,6 @@ fetchStations();
               </div>
               <pre className="bg-gray-200 dark:bg-slate-900 p-2 rounded text-sm">
                 {`curl -X GET "https://app.kloudtechsea.com/api/v2/get/stations" 
-     -H "Content-Type: application/json" 
      -H "kloudtrack-api-key: your-api-key-here" // Include the API key in the headers
 `}
               </pre>
@@ -178,7 +176,6 @@ fetchStations();
   fetch("https://app.kloudtechsea.com/api/v2/get/station/:name", {
     method: "GET",
     headers: {
-      "Content-Type": "application/json",
       "kloudtrack-api-key": your-api-key-here, // Include the API key in the headers
     },
   })
@@ -202,7 +199,6 @@ fetchStations();
               </div>
               <pre className="bg-gray-200 dark:bg-slate-900 p-2 rounded text-sm">
                 {`curl -X GET "https://app.kloudtechsea.com/api/v2/get/station/:name" 
-     -H "Content-Type: application/json" 
      -H "kloudtrack-api-key: your-api-key-here" // Include the API key in the headers
 `}
               </pre>

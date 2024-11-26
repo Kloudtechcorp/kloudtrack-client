@@ -20,6 +20,7 @@ function App() {
       <main className="flex h-screen w-full">
         <Routes>
           <Route path="/signin" element={<Signin />} />
+
           <Route element={<RootLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="/map" element={<Map />} />

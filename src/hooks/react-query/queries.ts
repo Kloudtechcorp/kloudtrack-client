@@ -240,6 +240,7 @@ export const useGetIsAuthenticated = (): UseQueryResult<boolean, Error> => {
     queryKey: [QUERY_KEYS.GET_IS_AUTHENTICATED],
     queryFn: () => getIsAuthenticated(),
     staleTime: 60000,
+    refetchInterval: 5000,
   });
 };
 
@@ -251,6 +252,7 @@ export const useGetAwsSensors = (): UseQueryResult<
     queryKey: [QUERY_KEYS.GET_AWS_SENSORS],
     queryFn: () => getWeatherSensors(),
     staleTime: 60000,
+    refetchInterval: 5000,
   });
 };
 
@@ -262,6 +264,7 @@ export const useGetArgSensors = (): UseQueryResult<
     queryKey: [QUERY_KEYS.GET_ARG_SENSORS],
     queryFn: () => getRainGaugeSensors(),
     staleTime: 60000,
+    refetchInterval: 5000,
   });
 };
 export const useGetRlmsSensors = (): UseQueryResult<
@@ -272,6 +275,7 @@ export const useGetRlmsSensors = (): UseQueryResult<
     queryKey: [QUERY_KEYS.GET_RLMS_SENSORS],
     queryFn: () => getRiverLevelSensors(),
     staleTime: 60000,
+    refetchInterval: 5000,
   });
 };
 export const useGetClmsSensors = (): UseQueryResult<
@@ -282,6 +286,7 @@ export const useGetClmsSensors = (): UseQueryResult<
     queryKey: [QUERY_KEYS.GET_CLMS_SENSORS],
     queryFn: () => getCoastalSensors(),
     staleTime: 60000,
+    refetchInterval: 5000,
   });
 };
 

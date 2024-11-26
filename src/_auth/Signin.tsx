@@ -13,12 +13,12 @@ import { Input } from "@/components/ui/input";
 import { login } from "@/types/validation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import toast from "react-hot-toast";
 import { useUserContext } from "@/hooks/context/authContext";
 import HashLoader from "react-spinners/PacmanLoader";
 import PuffLoader from "react-spinners/PuffLoader";
 import { useSignInAccount } from "@/hooks/react-query/mutations";
 import { useState } from "react";
+import { toast } from "@/hooks/use-toast";
 
 const Signin = () => {
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ const Signin = () => {
       const session = await signInAccount(values);
 
       if (!session) {
-        toast.error("Login failed. Please try again.");
+        toast({ title: "Login failed. Please try again." });
       }
       const isLoggedIn = await checkAuthUser();
 
@@ -49,10 +49,10 @@ const Signin = () => {
         form.reset();
         navigate("/");
       } else {
-        toast.error("Login failed. Please try again.");
+        toast({ title: "Login failed. Please try again." });
       }
     } catch (error: unknown) {
-      toast.error("Username or password not found");
+      toast({ title: "Username or password not found" });
     } finally {
       setIsLoading(false);
     }

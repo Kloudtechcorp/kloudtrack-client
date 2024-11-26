@@ -54,6 +54,7 @@ const UserCreation = () => {
   };
 
   const onSubmit = (values: z.infer<typeof userValidation>) => {
+    console.log(values);
     createUser(values, {
       onSuccess: () => {
         clearForms();

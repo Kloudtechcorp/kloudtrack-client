@@ -224,6 +224,10 @@ const Map = () => {
           <Select
             onValueChange={(value) => {
               setMapboxStyle(value);
+              setStationDetails(null);
+              setAwsData(null);
+              setArgData(null);
+              setRlmsData(null);
             }}
             defaultValue={mapboxStyle}
           >

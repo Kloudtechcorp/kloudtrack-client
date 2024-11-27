@@ -111,11 +111,7 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
                               src={link.imgUrl}
                               className={`dark:invert size-4`}
                             />
-                            <div
-                              className={`ease-in-out transition-all delay-300 duration-300 ${
-                                clicked ? "block" : "hidden"
-                              }`}
-                            >
+                            <div className={`${clicked ? "block" : "hidden"}`}>
                               {link.label}
                             </div>
                           </NavLink>

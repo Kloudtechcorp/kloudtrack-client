@@ -120,7 +120,7 @@ export function ArgSensors() {
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
+      <div className="flex items-center py-4 pl-2">
         <Input
           placeholder="Filter Station Names..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}

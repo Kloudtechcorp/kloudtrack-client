@@ -7,6 +7,7 @@ import VariableGraph from "@/components/dynamic/VariableGraph";
 import PuffLoader from "react-spinners/PuffLoader";
 import NotFound from "@/components/shared/NotFound";
 import WeatherDialog from "@/components/dynamic/DownloadCards/WeatherDialog";
+import WeatherDialog2 from "@/components/dynamic/DownloadCards/WeatherDialog2";
 import { useEffect } from "react";
 import { toast } from "sonner";
 
@@ -73,6 +74,9 @@ const AwsDataCard = ({ stationId }: AwsDataCardProps) => {
         <div className="flex w-full items-center ">
           <span className="font-medium w-full">Weather Data Graphs</span>
           <WeatherDialog name={station.name} id={stationId} />
+
+          {/* Replaces Data Download (t1-3, h1-h3, p1-p3) */}
+          {/* <WeatherDialog2 name={station.name} id={stationId} /> */}
         </div>
         <div className="flex flex-col gap-2 overflow-y-auto cursor-pointer">
           {weatherVariables.map(({ label, variable }) => (

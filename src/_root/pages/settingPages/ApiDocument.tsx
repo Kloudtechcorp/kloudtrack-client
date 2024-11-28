@@ -9,7 +9,7 @@ const ApiDocument = () => {
       <p className="mb-4">
         <strong>Base Url:</strong>{" "}
         <code className="bg-gray-100 dark:bg-gray-900 p-1 rounded">
-          https://app.kloudtechsea.com/api/v2
+          https://app.kloudtechsea.com/api/v1
         </code>
       </p>
       <div className="px-6 h-full">
@@ -37,12 +37,12 @@ const ApiDocument = () => {
               Example Usage
             </h3>
             <div className="bg-secondary p-4 rounded">
-              <div className="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9 bg-token-sidebar-surface-primary dark:bg-token-main-surface-secondary select-none">
+              <div className="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md border bg-token-sidebar-surface-primary dark:bg-token-main-surface-secondary select-none">
                 Javascript
               </div>
               <pre className="bg-gray-200 dark:bg-slate-900 p-2 rounded text-sm">
                 {`function fetchStations() {
-  fetch("https://app.kloudtechsea.com/api/v2/get/stations", {
+  fetch("https://app.kloudtechsea.com/api/v1/get/stations", {
     method: "GET",
     headers: {
       "kloudtrack-api-key": your-api-key-here, // Include the API key in the headers
@@ -50,7 +50,7 @@ const ApiDocument = () => {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log("Stations Data:", data);
+        {/* Use the data fetched according to your needs */}
     })
     .catch((error) => {
       console.error("Error:", error); 
@@ -63,11 +63,11 @@ fetchStations();
             </div>
 
             <div className="bg-secondary p-4 rounded">
-              <div className="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9 bg-token-sidebar-surface-primary dark:bg-token-main-surface-secondary select-none">
+              <div className="flex items-center text-token-text-secondary border px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9 bg-token-sidebar-surface-primary dark:bg-token-main-surface-secondary select-none">
                 curl
               </div>
               <pre className="bg-gray-200 dark:bg-slate-900 p-2 rounded text-sm">
-                {`curl -X GET "https://app.kloudtechsea.com/api/v2/get/stations" 
+                {`curl -X GET "https://app.kloudtechsea.com/api/v1/get/stations" 
      -H "kloudtrack-api-key: your-api-key-here" // Include the API key in the headers
 `}
               </pre>
@@ -79,7 +79,7 @@ fetchStations();
               <p>
                 <strong>200 OK:</strong>
               </p>
-              <pre className="bg-gray-100 dark:bg-slate-900 p-2 rounded text-sm">
+              <pre className="bg-gray-200 dark:bg-slate-900 p-2 rounded text-sm">
                 {`{
   "Automated Weather Stations": [
     {
@@ -134,7 +134,19 @@ fetchStations();
 }`}
               </pre>
               <p className="mt-2">
-                <strong>400 Bad Request:</strong> Invalid or missing API key.
+                <strong>400 Bad Request:</strong> The station type is invalid or
+                unrecognized.
+              </p>
+              <p className="mt-2">
+                <strong>401 Unauthorized:</strong> Invalid or missing API key.
+              </p>
+              <p className="mt-2">
+                <strong>404 Not Found:</strong> No stations available for the
+                user.
+              </p>
+              <p className="mt-2">
+                <strong>500 Internal Server Error:</strong> Error while fetching
+                station data.
               </p>
             </div>
           </div>
@@ -168,12 +180,12 @@ fetchStations();
               </li>
             </ul>
             <div className="bg-secondary p-4 rounded">
-              <div className="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9 bg-token-sidebar-surface-primary dark:bg-token-main-surface-secondary select-none">
+              <div className="flex items-center text-token-text-secondary px-4 py-2 border text-xs font-sans justify-between rounded-t-md h-9 bg-token-sidebar-surface-primary dark:bg-token-main-surface-secondary select-none">
                 Javascript
               </div>
               <pre className="bg-gray-200 dark:bg-slate-900 p-2 rounded text-sm">
                 {`function fetchStations() {
-  fetch("https://app.kloudtechsea.com/api/v2/get/station/:name", {
+  fetch("https://app.kloudtechsea.com/api/v1/get/station/:name", {
     method: "GET",
     headers: {
       "kloudtrack-api-key": your-api-key-here, // Include the API key in the headers
@@ -181,7 +193,7 @@ fetchStations();
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log("Stations Data:", data);
+        {/* Use the data fetched according to your needs */}
     })
     .catch((error) => {
       console.error("Error:", error); 
@@ -194,11 +206,11 @@ fetchStations();
             </div>
 
             <div className="bg-secondary p-4 rounded">
-              <div className="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9 bg-token-sidebar-surface-primary dark:bg-token-main-surface-secondary select-none">
+              <div className="flex items-center border text-token-text-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9 bg-token-sidebar-surface-primary dark:bg-token-main-surface-secondary select-none">
                 curl
               </div>
               <pre className="bg-gray-200 dark:bg-slate-900 p-2 rounded text-sm">
-                {`curl -X GET "https://app.kloudtechsea.com/api/v2/get/station/:name" 
+                {`curl -X GET "https://app.kloudtechsea.com/api/v1/get/station/:name" 
      -H "kloudtrack-api-key: your-api-key-here" // Include the API key in the headers
 `}
               </pre>
@@ -210,7 +222,7 @@ fetchStations();
               <p>
                 <strong>200 OK:</strong>
               </p>
-              <pre className="bg-gray-100 dark:bg-gray-900 p-2 rounded text-sm">
+              <pre className="bg-gray-200 dark:bg-gray-900 p-2 rounded text-sm">
                 {`{
   "name": "Station A",
   "type": "AWS",
@@ -233,10 +245,25 @@ fetchStations();
     "windDirection": "N",
     "uvIndex": 7
   }
-              }`}
+}`}
               </pre>
               <p className="mt-2">
-                <strong>403 Forbidden:</strong> User does not have access.
+                <strong>400 Bad Request:</strong> The station type is invalid or
+                unrecognized.
+              </p>
+              <p className="mt-2">
+                <strong>401 Unauthorized:</strong> Invalid or missing API key.
+              </p>
+              <p className="mt-2">
+                <strong>403 Forbidden:</strong> The user does not have
+                permission to access the station.
+              </p>
+              <p className="mt-2">
+                <strong>404 Not Found:</strong> Station not found.
+              </p>
+              <p className="mt-2">
+                <strong>500 Internal Server Error:</strong> Error while fetching
+                station data.
               </p>
             </div>
           </div>

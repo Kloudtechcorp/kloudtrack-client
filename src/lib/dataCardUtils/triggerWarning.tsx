@@ -23,7 +23,7 @@ export const triggerWarningToast = ({
   const toasterDetailsView = (
     <div className="flex w-full h-full">
       <Button
-        className="flex justify-end h-1/5 absolute top-1 right-1 mb-4"
+        className="flex justify-end h-1/5 absolute top-1 right-1"
         variant="ghost"
         onClick={() => {
           toast.dismiss(toastId);
@@ -38,7 +38,7 @@ export const triggerWarningToast = ({
         </span>
       </div>
 
-      <div className="flex w-1/5 ml-4">
+      <div className="triggerButtonDiv">
         <Button
           className={`flex self-center`}
           variant="default"
@@ -62,7 +62,7 @@ export const triggerWarningToast = ({
         </span>
       </div>
 
-      <div className="flex w-1/5 ml-4 justify-center items-center ">
+      <div className="triggerButtonDiv ">
         <Button
           className={`flex self-center`}
           variant="default"

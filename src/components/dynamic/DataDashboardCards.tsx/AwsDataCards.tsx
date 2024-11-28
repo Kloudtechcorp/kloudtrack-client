@@ -7,7 +7,7 @@ import VariableGraph from "@/components/dynamic/VariableGraph";
 import PuffLoader from "react-spinners/PuffLoader";
 import NotFound from "@/components/shared/NotFound";
 import WeatherDialog from "@/components/dynamic/DownloadCards/WeatherDialog";
-import WeatherDialog2 from "@/components/dynamic/DownloadCards/WeatherDialog2";
+// import WeatherDialog2 from "@/components/dynamic/DownloadCards/WeatherDialog2";
 import { useEffect } from "react";
 import { toast } from "sonner";
 

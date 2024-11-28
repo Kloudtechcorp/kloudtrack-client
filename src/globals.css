@@ -250,9 +250,12 @@
 }
 
 .mapboxgl-popup-content {
-  background: transparent !important; /* Removes the background */
-  box-shadow: none !important; /* Removes any shadow */
-  padding: 0 !important; /* Removes default padding */
+  background: transparent !important;
+  /* Removes the background */
+  box-shadow: none !important;
+  /* Removes any shadow */
+  padding: 0 !important;
+  /* Removes default padding */
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -262,6 +265,12 @@
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.triggerButtonDiv {
+  @apply flex w-1/5 ml-4 mt-1 justify-center items-center;
 }

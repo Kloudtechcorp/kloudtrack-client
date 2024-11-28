@@ -42,7 +42,7 @@ const Header = ({ burgerMenu }: HeaderProps) => {
             <span className="size-12">
               <img src={"/public/assets/pd-icons/pdrrmo-logo.png"} />
             </span>
-            <div className="flex flex-col text-center">
+            <div className="flex flex-col text-center mx-4">
               <span className="text-2xl font-bold capitalize">
                 {user.username}
               </span>

@@ -35,6 +35,7 @@ import { checkBadge } from "@/lib/helper";
 import { formatDateString } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import NoDataOptions from "@/components/shared/NoDataOptions";
+import AdminControls from "@/components/shared/AdminControls";
 
 export function ArgSensors() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -82,6 +83,15 @@ export function ArgSensors() {
         </div>
       ),
     },
+    {
+      header: () => <div className="text-center">Actions</div>,
+      id: "actions",
+      enableHiding: false,
+      cell: ({ row }) => {
+        const data = row.original;
+        return <AdminControls id={data.id} />;
+      },
+    },
   ];
 
   const table = useReactTable({
@@ -120,7 +130,7 @@ export function ArgSensors() {
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
+      <div className="flex items-center py-4 pl-2">
         <Input
           placeholder="Filter Station Names..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}

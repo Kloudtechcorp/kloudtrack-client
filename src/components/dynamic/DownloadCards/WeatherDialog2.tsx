@@ -21,41 +21,54 @@ import {
   FormLabel,
 } from "../../ui/form";
 import { RadioGroup, RadioGroupItem } from "../../ui/radio-group";
-import { coastalDataTypes } from "@/types/queryTypes";
+import { weatherDataSensors, weatherDataTypes } from "@/types/queryTypes";
 import { formatDateString, getDateRange } from "@/lib/utils";
 import toast from "react-hot-toast";
-import { useCoastalDownloadData } from "@/hooks/react-query/mutations";
+import { useWeatherDownloadSensorsData } from "@/hooks/react-query/mutations";
 
-type CoastalDialogProps = {
+type WeatherDialog2Props = {
   id: string;
   name: string;
 };
 
-const CoastalDialog = ({ id, name }: CoastalDialogProps) => {
+const WeatherDialog2 = ({ id, name }: WeatherDialog2Props) => {
   const [selected, setSelected] = useState("7days");
-  const { mutateAsync: downloadData, isPending } = useCoastalDownloadData();
+  const { mutateAsync: downloadData, isPending } =
+    useWeatherDownloadSensorsData();
   const now = new Date();
 
   const [date, setDate] = useState<DateRange | undefined>(
     getDateRange(selected, now)
   );
 
-  const generateCSVData = (data: coastalDataTypes[]): string => {
+  const generateCSVData = (data: weatherDataSensors[]): string => {
     if (!data || data.length === 0) return "";
     const headers = [
       "Date Recorded",
-      "Temperature",
-      "Humidity",
-      "Air Pressure",
-      "Distance",
+      "T1",
+      "T2",
+      "T3",
+      "H1",
+      "H2",
+      "H3",
+      "P1",
+      "P2",
+      "P3",
     ];
+
     const rows = data.map((item) => [
       formatDateString(item.recordedAt, "numeric"),
-      item.temperature,
-      item.humidity,
-      item.pressure,
-      item.distance,
+      item.T1,
+      item.T2,
+      item.T3,
+      item.H1,
+      item.H2,
+      item.H3,
+      item.P1,
+      item.P2,
+      item.P3,
     ]);
+    // const csvRows = [headers.join(","), ...rows.map((row) => row.join(","))];
     return [headers.join(","), ...rows.map((row) => row.join(","))].join("\n");
   };
 
@@ -171,4 +184,4 @@ const CoastalDialog = ({ id, name }: CoastalDialogProps) => {
   );
 };
 
-export default CoastalDialog;
+export default WeatherDialog2;

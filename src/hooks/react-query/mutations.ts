@@ -20,6 +20,7 @@ import {
   downloadRainGaugeData,
   downloadRiverLevelData,
   downloadWeatherData,
+  downloadWeatherDataSensors,
   generateApi,
   handleLogout,
   reportBug,
@@ -254,6 +255,24 @@ export const useDeleteStation = () => {
 export const useWeatherDownloadData = () => {
   return useMutation({
     mutationFn: (data: downloadParamsTypes) => downloadWeatherData(data),
+    onError: (error: Error) => {
+      toast({
+        title: "Error!",
+        description: error.message,
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Download Successful!",
+        description: "Weather Data Downloaded.",
+      });
+    },
+  });
+};
+
+export const useWeatherDownloadSensorsData = () => {
+  return useMutation({
+    mutationFn: (data: downloadParamsTypes) => downloadWeatherDataSensors(data),
     onError: (error: Error) => {
       toast({
         title: "Error!",

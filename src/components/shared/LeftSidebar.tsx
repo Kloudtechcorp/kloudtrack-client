@@ -89,20 +89,22 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
               if (!link) return null;
               const isActive = pathname === link.route;
               return (
-                <li
-                  key={key}
-                  className={` ${
-                    isActive
-                      ? "border-b-yellow-400 border-b-4 bg-accent"
-                      : "hover:bg-black/5 dark:hover:bg-white/5"
-                  } rounded-sm `}
-                >
-                  <div className={clicked ? `flex` : `flex justify-center`}>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <NavLink
-                            to={link.route}
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <li
+                        key={key}
+                        className={` ${
+                          isActive
+                            ? "border-b-yellow-400 border-b-4 bg-accent"
+                            : "hover:bg-black/5 dark:hover:bg-white/5"
+                        } rounded-sm `}
+                      >
+                        <NavLink
+                          to={link.route}
+                          className={clicked ? `flex` : `flex justify-center`}
+                        >
+                          <div
                             className={`flex gap-4 items-center py-3  ${
                               clicked ? "justify-start px-4" : "justify-center"
                             }`}
@@ -114,13 +116,13 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
                             <div className={`${clicked ? "block" : "hidden"}`}>
                               {link.label}
                             </div>
-                          </NavLink>
-                        </TooltipTrigger>
-                        <TooltipContent>{link.tooltip}</TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </div>
-                </li>
+                          </div>
+                        </NavLink>
+                      </li>
+                    </TooltipTrigger>
+                    <TooltipContent>{link.tooltip}</TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               );
             })}
           </ul>

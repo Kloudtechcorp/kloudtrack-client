@@ -83,10 +83,7 @@ const CoastalDialog = ({ id, name }: CoastalDialogProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          className="px-2 h-6 border border-transparent hover:bg-gray-200 rounded-none"
-        >
+        <Button className="text-xs md:text-sm lg:text-base " variant="default">
           Download Data
         </Button>
       </DialogTrigger>
@@ -164,10 +161,7 @@ const CoastalDialog = ({ id, name }: CoastalDialogProps) => {
                 />
               </div>
             </div>
-            <Button
-              type="submit"
-              className="cursor-pointer text-gray-950 hover:text-gray-200 bg-gray-200 w-full dark:bg-gray-500 dark:hover:bg-gray-700"
-            >
+            <Button type="submit" variant="default">
               {isPending ? "Loading..." : "Download CSV"}
             </Button>
           </form>

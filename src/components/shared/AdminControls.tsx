@@ -35,7 +35,7 @@ const AdminControls = ({ id }: AdminControlsProps) => {
   const { mutateAsync: deleteStation } = useDeleteStation();
 
   return (
-    <div className="lg:flex gap-2 justify-end items-end hidden">
+    <div className="lg:flex gap-2 justify-center items-center hidden">
       <Sheet>
         <TooltipProvider>
           <Tooltip>

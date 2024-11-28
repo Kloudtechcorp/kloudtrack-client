@@ -119,7 +119,7 @@ export function AwsSensors() {
       ),
     },
     {
-      header: "Actions",
+      header: () => <div className="text-center">Actions</div>,
       id: "actions",
       enableHiding: false,
       cell: ({ row }) => {

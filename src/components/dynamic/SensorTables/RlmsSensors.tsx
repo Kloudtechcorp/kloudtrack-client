@@ -34,6 +34,7 @@ import { checkBadge } from "@/lib/helper";
 import { formatDateString } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import NoDataOptions from "@/components/shared/NoDataOptions";
+import AdminControls from "@/components/shared/AdminControls";
 
 export function RlmsSensors() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -80,6 +81,15 @@ export function RlmsSensors() {
             : "No date"}
         </div>
       ),
+    },
+    {
+      header: () => <div className="text-center">Actions</div>,
+      id: "actions",
+      enableHiding: false,
+      cell: ({ row }) => {
+        const data = row.original;
+        return <AdminControls id={data.id} />;
+      },
     },
   ];
 

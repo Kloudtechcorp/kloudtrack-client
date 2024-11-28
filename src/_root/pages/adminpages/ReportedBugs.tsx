@@ -24,7 +24,6 @@ import NoDataOptions from "@/components/shared/NoDataOptions";
 import { Input } from "@/components/ui/input";
 import NoBugsOptions from "@/components/shared/NoBugsFound";
 
-
 const ReportedBugs = () => {
   const {
     data: getBugReports,
@@ -93,7 +92,6 @@ const ReportedBugs = () => {
         This page will show the list of bugs reported by the users.
       </span>
 
-
       <Input
         type="text"
         placeholder="Search Bugs..."
@@ -104,10 +102,10 @@ const ReportedBugs = () => {
 
       {filteredBugReports.length === 0 ? (
         <div className="py-4">
-        <NoBugsOptions />
-      </div>
+          <NoBugsOptions />
+        </div>
       ) : (
-        <div className="overflow-y-auto max-h-[67vh]">
+        <div className="overflow-y-auto max-h-[67vh] custom-scrollbar">
           {filteredBugReports.map((item) => (
             <Accordion className="mr-2" type="single" collapsible key={item.id}>
               <AccordionItem value={`item-${item.id}`}>

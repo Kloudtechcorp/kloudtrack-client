@@ -40,7 +40,7 @@ const Header = ({ burgerMenu }: HeaderProps) => {
           </div>
           <div className="items-center flex w-full flex-row justify-center gap-4">
             <span className="size-12">
-              <img src={"/public/assets/pd-icons/pdrrmo-logo.png"} />
+              <img src={"/assets/pd-icons/pdrrmo-logo.png"} />
             </span>
             <div className="flex flex-col text-center w-52 mx-4">
               <span className="text-2xl font-bold capitalize">
@@ -49,7 +49,7 @@ const Header = ({ burgerMenu }: HeaderProps) => {
               <span className="text-sm">{time}</span>
             </div>
             <span className="size-12">
-              <img src={"/public/assets/pd-icons/bataangov.png"} />
+              <img src={"/assets/pd-icons/bataangov.png"} />
             </span>
           </div>
           <div className="mr-2 ">

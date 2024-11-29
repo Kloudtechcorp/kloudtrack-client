@@ -22,7 +22,7 @@ const AwsVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
               <span className="text-3xl font-bold px-4 capitalize">
                 {weatherData}
               </span>
-              <div className="flex flex-col justify-center px-6">
+              <div className="flex flex-col justify-center px-3">
                 <span className="text-sm px-1">Parameter Option</span>
                 <span className="text-3xl font-bold">
                   <Select
@@ -33,15 +33,16 @@ const AwsVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
                       <SelectValue placeholder="Variable" />
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="heatIndex">Heat Index</SelectItem>
                       <SelectItem value="temperature">Temperature</SelectItem>
                       <SelectItem value="humidity">Humidity</SelectItem>
-                      <SelectItem value="heatIndex">Heat Index</SelectItem>
                       <SelectItem value="pressure">Air Pressure</SelectItem>
+                      <SelectItem value="windSpeed">Wind Speed</SelectItem>
+                      <SelectItem value="uvIndex">UV Index</SelectItem>
+                      <SelectItem value="light">Light Intensity</SelectItem>
                       <SelectItem value="precipitation">
                         Precipitation
                       </SelectItem>
-                      <SelectItem value="uvIndex">UV Index</SelectItem>
-                      <SelectItem value="light">Light Intensity</SelectItem>
                     </SelectContent>
                   </Select>
                 </span>

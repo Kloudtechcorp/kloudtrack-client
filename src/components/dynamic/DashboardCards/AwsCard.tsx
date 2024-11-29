@@ -66,7 +66,7 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
       <CardContent className="flex flex-col lg:flex-row w-full p-0 gap-2">
         <div className="stationDetailsDiv px-2 pb-2">
           <div className="flex flex-col">
-            <div className="flex items-center">
+            <div className="flex items-center py-3">
               <CardTitle className="w-full">
                 {stationData.station.name}
               </CardTitle>

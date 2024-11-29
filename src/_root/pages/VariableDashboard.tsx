@@ -82,69 +82,78 @@ const VariableDashboard = () => {
                   <h1 className="capitalize text-2xl font-bold ">{station}</h1>
                 </div>
               </div>
-              {(stationData.type === "AWS" && (
-                <Select
-                  defaultValue={weatherData}
-                  onValueChange={(value) => setWeatherData(value)}
-                >
-                  <SelectTrigger className="w-[200px]">
-                    <SelectValue placeholder="Variable" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="temperature">Temperature</SelectItem>
-                    <SelectItem value="humidity">Humidity</SelectItem>
-                    <SelectItem value="heatIndex">Heat Index</SelectItem>
-                    <SelectItem value="pressure">Air Pressure</SelectItem>
-                    <SelectItem value="precipitation">Precipitation</SelectItem>
-                    <SelectItem value="uvIndex">UV Index</SelectItem>
-                    <SelectItem value="light">Light Intensity</SelectItem>
-                  </SelectContent>
-                </Select>
-              )) ||
-                (stationData.type === "ARG" && (
-                  <Select
-                    defaultValue={weatherData}
-                    onValueChange={(value) => setWeatherData(value)}
-                  >
-                    <SelectTrigger className="w-[200px]">
-                      <SelectValue placeholder="Variable" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="precipitation">
-                        Precipitation
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
+
+              <div className="flex flex-col justify-center">
+                <span className="text-sm px-1">Parameter Option</span>
+                {(stationData.type === "AWS" && (
+                  <span className="text-3xl font-bold">
+                    <Select
+                      defaultValue={weatherData}
+                      onValueChange={(value) => setWeatherData(value)}
+                    >
+                      <SelectTrigger className="w-[200px]">
+                        <SelectValue placeholder="Variable" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="heatIndex">Heat Index</SelectItem>
+                        <SelectItem value="temperature">Temperature</SelectItem>
+                        <SelectItem value="humidity">Humidity</SelectItem>
+                        <SelectItem value="pressure">Air Pressure</SelectItem>
+                        <SelectItem value="windSpeed">Wind Speed</SelectItem>
+                        <SelectItem value="uvIndex">UV Index</SelectItem>
+                        <SelectItem value="light">Light Intensity</SelectItem>
+                        <SelectItem value="precipitation">
+                          Precipitation
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </span>
                 )) ||
-                (stationData.type === "RLMS" && (
-                  <Select
-                    defaultValue={weatherData}
-                    onValueChange={(value) => setWeatherData(value)}
-                  >
-                    <SelectTrigger className="w-[200px]">
-                      <SelectValue placeholder="Variable" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="distance">Distance</SelectItem>
-                    </SelectContent>
-                  </Select>
-                )) ||
-                (stationData.type === "CLMS" && (
-                  <Select
-                    defaultValue={weatherData}
-                    onValueChange={(value) => setWeatherData(value)}
-                  >
-                    <SelectTrigger className="w-[200px]">
-                      <SelectValue placeholder="Variable" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="temperature">Temperature</SelectItem>
-                      <SelectItem value="humidity">Humidity</SelectItem>
-                      <SelectItem value="pressure">Air Pressure</SelectItem>
-                      <SelectItem value="distance">Distance</SelectItem>
-                    </SelectContent>
-                  </Select>
-                ))}
+                  (stationData.type === "ARG" && (
+                    <Select
+                      defaultValue={weatherData}
+                      onValueChange={(value) => setWeatherData(value)}
+                    >
+                      <SelectTrigger className="w-[200px]">
+                        <SelectValue placeholder="Variable" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="precipitation">
+                          Precipitation
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )) ||
+                  (stationData.type === "RLMS" && (
+                    <Select
+                      defaultValue={weatherData}
+                      onValueChange={(value) => setWeatherData(value)}
+                    >
+                      <SelectTrigger className="w-[200px]">
+                        <SelectValue placeholder="Variable" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="distance">Distance</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )) ||
+                  (stationData.type === "CLMS" && (
+                    <Select
+                      defaultValue={weatherData}
+                      onValueChange={(value) => setWeatherData(value)}
+                    >
+                      <SelectTrigger className="w-[200px]">
+                        <SelectValue placeholder="Variable" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="temperature">Temperature</SelectItem>
+                        <SelectItem value="humidity">Humidity</SelectItem>
+                        <SelectItem value="pressure">Air Pressure</SelectItem>
+                        <SelectItem value="distance">Distance</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  ))}
+              </div>
             </div>
 
             <div className="flex gap-4">

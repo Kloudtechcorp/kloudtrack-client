@@ -51,10 +51,7 @@ const DataDashboard = () => {
         <Card className="cardContainer">
           <CardContent className="flex flex-col p-0 gap-2">
             <div className="w-full flex justify-start flex-row gap-3">
-              <div className="p-1">
-                <img src="/assets/img/logo-v1.png" className="size-14" />
-              </div>
-              <div className="flex flex-col justify-center items-start dark:invert">
+              <div className="flex flex-col justify-center items-start dark:invert px-2">
                 <Dialog open={isOpen} onOpenChange={setIsOpen}>
                   <DialogTrigger asChild>
                     <span
@@ -72,7 +69,7 @@ const DataDashboard = () => {
                       {user.stations.map((stations, key) => (
                         <Button
                           key={key}
-                          className="bg-gray-200 text-gray-900 dark:bg-gray-900 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-800"
+                          variant="default"
                           onClick={() => {
                             navigate(`/${stations.name}`);
                             setIsOpen(false);

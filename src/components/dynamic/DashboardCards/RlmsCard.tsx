@@ -54,7 +54,7 @@ const RlmsCard: React.FC<{ id: string }> = ({ id }) => {
       <CardContent className="flex flex-col lg:flex-row w-full p-0 gap-2">
         <div className="stationDetailsDiv">
           <div className="flex flex-col px-2 ">
-            <div className="flex items-center">
+            <div className="flex items-center py-3">
               <CardTitle className="w-full">
                 {stationData.station.name}
               </CardTitle>

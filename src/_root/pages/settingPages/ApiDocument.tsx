@@ -8,7 +8,7 @@ const ApiDocument = () => {
       </h1>
       <p className="mb-4">
         <strong>Base Url:</strong>{" "}
-        <code className="bg-gray-100 dark:bg-gray-900 p-1 rounded">
+        <code className="bg-gray-100 dark:bg-[#545454] p-1 rounded">
           https://app.kloudtechsea.com/api/v1
         </code>
       </p>
@@ -37,10 +37,10 @@ const ApiDocument = () => {
               Example Usage
             </h3>
             <div className="bg-secondary p-4 rounded">
-              <div className="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md border bg-token-sidebar-surface-primary dark:bg-token-main-surface-secondary select-none">
+              <div className="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md border dark:border-[#545454] bg-token-sidebar-surface-primary dark:bg-token-main-surface-secondary select-none">
                 Javascript
               </div>
-              <pre className="bg-gray-200 dark:bg-slate-900 p-2 rounded text-sm">
+              <pre className="bg-gray-200 dark:bg-[#545454] p-2 rounded text-sm">
                 {`function fetchStations() {
   fetch("https://app.kloudtechsea.com/api/v1/get/stations", {
     method: "GET",
@@ -63,10 +63,10 @@ fetchStations();
             </div>
 
             <div className="bg-secondary p-4 rounded">
-              <div className="flex items-center text-token-text-secondary border px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9 bg-token-sidebar-surface-primary dark:bg-token-main-surface-secondary select-none">
+              <div className="flex items-center text-token-text-secondary border dark:border-[#545454] px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9 bg-token-sidebar-surface-primary dark:bg-token-main-surface-secondary select-none">
                 curl
               </div>
-              <pre className="bg-gray-200 dark:bg-slate-900 p-2 rounded text-sm">
+              <pre className="bg-gray-200 dark:bg-[#545454] p-2 rounded text-sm">
                 {`curl -X GET "https://app.kloudtechsea.com/api/v1/get/stations" 
      -H "kloudtrack-api-key: your-api-key-here" // Include the API key in the headers
 `}
@@ -79,7 +79,7 @@ fetchStations();
               <p>
                 <strong>200 OK:</strong>
               </p>
-              <pre className="bg-gray-200 dark:bg-slate-900 p-2 rounded text-sm">
+              <pre className="bg-gray-200 dark:bg-[#545454] p-2 rounded text-sm">
                 {`{
   "Automated Weather Stations": [
     {
@@ -159,7 +159,7 @@ fetchStations();
           <div className="bg-secondary p-4 rounded-lg">
             <p>
               <strong>Endpoint:</strong>{" "}
-              <code className="bg-gray-100 dark:bg-gray-900 p-1 rounded">
+              <code className="bg-gray-100 dark:bg-[#545454] p-1 rounded">
                 GET /get/station/:name
               </code>
             </p>
@@ -180,10 +180,10 @@ fetchStations();
               </li>
             </ul>
             <div className="bg-secondary p-4 rounded">
-              <div className="flex items-center text-token-text-secondary px-4 py-2 border text-xs font-sans justify-between rounded-t-md h-9 bg-token-sidebar-surface-primary dark:bg-token-main-surface-secondary select-none">
+              <div className="flex items-center text-token-text-secondary px-4 py-2 border dark:border-[#545454] text-xs font-sans justify-between rounded-t-md h-9 bg-token-sidebar-surface-primary dark:bg-token-main-surface-secondary select-none">
                 Javascript
               </div>
-              <pre className="bg-gray-200 dark:bg-slate-900 p-2 rounded text-sm">
+              <pre className="bg-gray-200 dark:bg-[#545454] p-2 rounded text-sm">
                 {`function fetchStations() {
   fetch("https://app.kloudtechsea.com/api/v1/get/station/:name", {
     method: "GET",
@@ -206,10 +206,10 @@ fetchStations();
             </div>
 
             <div className="bg-secondary p-4 rounded">
-              <div className="flex items-center border text-token-text-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9 bg-token-sidebar-surface-primary dark:bg-token-main-surface-secondary select-none">
+              <div className="flex items-center border dark:border-[#545454] text-token-text-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9 bg-token-sidebar-surface-primary dark:bg-token-main-surface-secondary select-none">
                 curl
               </div>
-              <pre className="bg-gray-200 dark:bg-slate-900 p-2 rounded text-sm">
+              <pre className="bg-gray-200 dark:bg-[#545454] p-2 rounded text-sm">
                 {`curl -X GET "https://app.kloudtechsea.com/api/v1/get/station/:name" 
      -H "kloudtrack-api-key: your-api-key-here" // Include the API key in the headers
 `}
@@ -222,7 +222,7 @@ fetchStations();
               <p>
                 <strong>200 OK:</strong>
               </p>
-              <pre className="bg-gray-200 dark:bg-gray-900 p-2 rounded text-sm">
+              <pre className="bg-gray-200 dark:bg-[#545454] p-2 rounded text-sm">
                 {`{
   "name": "Station A",
   "type": "AWS",

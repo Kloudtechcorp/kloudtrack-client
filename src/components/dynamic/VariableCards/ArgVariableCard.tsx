@@ -21,7 +21,7 @@ const ArgVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
               <span className="text-3xl font-bold px-4 capitalize">
                 {weatherData}
               </span>
-              <div className="flex flex-col justify-center px-6">
+              <div className="flex flex-col justify-center px-1">
                 <span className="text-sm px-1">Parameter Option</span>
                 <span className="text-3xl font-bold">
                   <Select

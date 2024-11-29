@@ -12,7 +12,7 @@ import { SonnerToaster } from "@/components/ui/sonner";
 import AdminSettings from "./_root/pages/AdminSettings";
 import VariableDashboard from "./_root/pages/VariableDashboard";
 import NotFound from "./components/shared/NotFound";
-import ApiDocument from "./_root/pages/settingPages/ApiDocument";
+// import ApiDocument from "./_root/pages/settingPages/ApiDocument";
 
 function App() {
   return (

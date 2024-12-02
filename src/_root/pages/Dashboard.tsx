@@ -30,15 +30,15 @@ const Dashboard = () => {
   }, [user.stations, stationCategories]);
 
   return (
-    <div className="bg-[#F6F8FC] dark:bg-secondary w-full overflow-auto rounded-xl p-[1rem] custom-scrollbar">
+    <div className="bg-[#F6F8FC] dark:bg-secondary w-full overflow-auto rounded-xl md:p-[1rem] p-[0.5rem] custom-scrollbar">
       {isLoading ? (
         <div className="flex flex-col gap-3 md:gap-5 w-full container p-2 h-full">
           <Skeleton className="w-full cardContainer dark:bg-primary" />
           <Skeleton className="w-full cardContainer dark:bg-primary" />
         </div>
       ) : (
-        <Tabs defaultValue="AWS" className="w-full flex flex-col">
-          <TabsList className="flex justify-start container ">
+        <Tabs defaultValue="AWS" className="w-full flex flex-col ">
+          <TabsList className="flex justify-start container">
             {stationCategories.map(
               (category) =>
                 filteredStations[category.type].length > 0 && (

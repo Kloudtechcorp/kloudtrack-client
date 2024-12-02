@@ -62,9 +62,9 @@ const ArgDataCard = ({ stationId }: ArgDataCardProps) => {
         </div>
       </div>
 
-      <div className="flex flex-col w-full gap-2">
+      <div className="flex flex-col w-full gap-2 px-2">
         <div className="flex w-full items-center ">
-          <span className="font-medium w-full">Weather Data Graphs</span>
+          <span className="weatherDataGraphs">Weather Data Graphs</span>
           <RainGaugeDialog name={station.name} id={stationId} />
         </div>
 

@@ -6,11 +6,11 @@ import { useNavigate } from "react-router-dom";
 import { useGetAwsData2 } from "../../../hooks/react-query/queries";
 import { formatDateString, stationType } from "@/lib/utils";
 import DataCards from "../../shared/DataCards";
-import { useUserContext } from "@/hooks/context/authContext";
+// import { useUserContext } from "@/hooks/context/authContext";
 import { useTheme } from "../../theme-provider";
 import NoData from "@/components/shared/NoData";
 import NavigateIcon from "@/components/shared/icons/NavigateIcon";
-import AdminControls from "@/components/shared/AdminControls";
+// import AdminControls from "@/components/shared/AdminControls";
 import { toast } from "sonner";
 import {
   Tooltip,
@@ -24,7 +24,7 @@ interface AwsCardProps {
 }
 
 const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
-  const { user } = useUserContext();
+  // const { user } = useUserContext();
   const navigate = useNavigate();
   const { data: stationData, isLoading, isError } = useGetAwsData2(id);
   const { theme } = useTheme();
@@ -38,9 +38,9 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
   if (isLoading || !stationData) {
     return (
       <Card className="cardContainer flex flex-row">
-        <CardContent className="flex flex-row w-full p-0 gap-2">
-          <div className="flex flex-col gap-3 justify-center items-center w-full">
-            <PuffLoader color={"#545454"} size={500} />
+        <CardContent className="puffLoaderCardContent">
+          <div className="puffLoaderDiv ">
+            <PuffLoader color={"#545454"} size={"100%"} />
           </div>
         </CardContent>
       </Card>
@@ -64,20 +64,20 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
   return (
     <Card className="cardContainer flex flex-row">
       <CardContent className="flex flex-col lg:flex-row w-full p-0 gap-2">
-        <div className="stationDetailsDiv px-2 pb-2">
+        <div className="stationDetailsDiv px-2 pb-2 ">
           <div className="flex flex-col">
-            <div className="flex items-center py-3">
-              <CardTitle className="w-full">
+            <div className="stationNameDiv">
+              <CardTitle className="stationName">
                 {stationData.station.name}
               </CardTitle>
             </div>
             <hr className="h-[0.25rem] bg-black" />
             <div className="flex flex-col">
-              <span className="text-base md:text-lg xl:text-xl font-semibold">
+              <span className="stationType">
                 {stationType(stationData.station.type)}
               </span>
-              <span className="text-base">{`${stationData.station.barangay}, ${stationData.station.municipality}, ${stationData.station.province}`}</span>
-              <span className="text-sm">
+              <span className="stationLocation">{`${stationData.station.barangay}, ${stationData.station.municipality}, ${stationData.station.province}`}</span>
+              <span className="stationLocation">
                 {stationData.station.latitude}, {stationData.station.longitude}
               </span>
             </div>
@@ -95,7 +95,7 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
         {stationData.data ? (
           <div className="flex flex-col gap-2 w-full">
             <div className="stationDataDiv">
-              <span className="w-full font-normal text-lg">
+              <span className="currentWeather">
                 Current Weather Conditions as of{" "}
                 {formatDateString(stationData.data.recordedAt, "long")}
               </span>

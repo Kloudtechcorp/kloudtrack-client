@@ -70,10 +70,22 @@ const VariableGraph = ({
   const getFormattedDataset = (
     graphData: formattedDataType[]
   ): formattedDataType[] => {
-    return graphData.map((item) => ({
-      ...item,
-      datetime: formatDateString(item.datetime, "short"),
-    }));
+    return graphData.map((item) => {
+      const formattedDate = new Date(item.datetime).toLocaleString("en-US", {
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      });
+
+      const datetimeWithAt = formattedDate.replace(",", " at");
+
+      return {
+        ...item,
+        datetime: datetimeWithAt,
+      };
+    });
   };
 
   const updatedData = getFormattedDataset(graphData);

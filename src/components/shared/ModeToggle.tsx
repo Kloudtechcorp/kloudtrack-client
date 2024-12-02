@@ -11,7 +11,7 @@ export function ModeToggle({ expand }: ModeToggleProps) {
       type="single"
       className={`flex flex-row gap-0 ${
         expand && "flex-row"
-      } rounded-sm bg-black/5 dark:bg-white/5 h-8 `}
+      } rounded-sm bg-black/5 dark:bg-white/5 h-8`}
       value={theme}
     >
       <ToggleGroupItem

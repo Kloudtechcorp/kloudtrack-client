@@ -5,12 +5,12 @@ import PuffLoader from "react-spinners/PuffLoader";
 import { useNavigate } from "react-router-dom";
 import { useGetRlmsData } from "../../../hooks/react-query/queries";
 import { formatDateString, stationType } from "@/lib/utils";
-import { useUserContext } from "@/hooks/context/authContext";
+// import { useUserContext } from "@/hooks/context/authContext";
 import { useTheme } from "../../theme-provider";
 import NoData from "@/components/shared/NoData";
 import VariableGraph from "../VariableGraph";
 import NavigateIcon from "@/components/shared/icons/NavigateIcon";
-import AdminControls from "@/components/shared/AdminControls";
+// import AdminControls from "@/components/shared/AdminControls";
 import MeasurementCard2 from "@/components/shared/MeasurementCard2";
 import {
   Tooltip,
@@ -22,15 +22,15 @@ import {
 const RlmsCard: React.FC<{ id: string }> = ({ id }) => {
   const navigate = useNavigate();
   const { theme } = useTheme();
-  const { user } = useUserContext();
+  // const { user } = useUserContext();
   const { data: stationData, isLoading, isError } = useGetRlmsData(id);
 
   if (isLoading || !stationData) {
     return (
       <Card className="cardContainer flex flex-row">
-        <CardContent className="flex flex-row w-full p-0 gap-2">
-          <div className="flex flex-col gap-3 justify-center items-center w-full">
-            <PuffLoader color="#545454" size={500} />
+        <CardContent className="puffLoaderCardContent">
+          <div className="puffLoaderDiv ">
+            <PuffLoader color={"#545454"} size={"100%"} />
           </div>
         </CardContent>
       </Card>
@@ -54,18 +54,18 @@ const RlmsCard: React.FC<{ id: string }> = ({ id }) => {
       <CardContent className="flex flex-col lg:flex-row w-full p-0 gap-2">
         <div className="stationDetailsDiv">
           <div className="flex flex-col px-2 ">
-            <div className="flex items-center py-3">
-              <CardTitle className="w-full">
+            <div className="stationNameDiv">
+              <CardTitle className="stationName">
                 {stationData.station.name}
               </CardTitle>
             </div>
             <hr className="h-[0.25rem] bg-black" />
             <div className="flex flex-col">
-              <span className="text-base md:text-lg xl:text-xl font-semibold">
+              <span className="stationType">
                 {stationType(stationData.station.type)}
               </span>
-              <span className="text-base">{`${stationData.station.barangay}, ${stationData.station.municipality}, ${stationData.station.province}`}</span>
-              <span className="text-sm">
+              <span className="stationLocation">{`${stationData.station.barangay}, ${stationData.station.municipality}, ${stationData.station.province}`}</span>
+              <span className="stationLocation">
                 {stationData.station.latitude}, {stationData.station.longitude}
               </span>
             </div>
@@ -88,7 +88,7 @@ const RlmsCard: React.FC<{ id: string }> = ({ id }) => {
         ) : (
           <div className="flex flex-col gap-2 w-full">
             <div className="stationDataDiv">
-              <span className="w-full font-normal text-lg">
+              <span className="currentWeather">
                 Current Weather Conditions as of{" "}
                 {formatDateString(stationData.data.recordedAt, "long")}
               </span>

@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import HimawariDetails from "@/components/dynamic/HimawariDetails";
+import { Fullscreen } from "lucide-react";
 
 const Himawari = () => {
   const [isCycling, setIsCycling] = useState(false);
@@ -137,13 +138,23 @@ const Himawari = () => {
     setSliderValue([currentIndex]);
     updateImage();
   }, [bandSelect, currentIndex]);
+  const imageRef = useRef<HTMLDivElement>(null);
 
+  const toggleFullscreen = () => {
+    if (imageRef.current) {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else {
+        imageRef.current.requestFullscreen();
+      }
+    }
+  };
   return (
     <div className="flex w-full rounded-2xl dark:bg-secondary bg-white  ">
       <div className="w-full flex sm:flex-col lg:flex-row bg-[#F6F8FC] dark:bg-[#181819] rounded-2xl ">
         <div className="h-full w-2/3 flex flex-col relative">
           {/* Slider */}
-          <div className="rounded-full p-3 pr-6 bg-[#F6F8FC] dark:bg-black flex flex-row items-center gap-3 absolute top-5 left-5 w-2/3 text-nowrap ">
+          <div className="rounded-full p-3 pr-6 bg-[#F6F8FC] dark:bg-black flex flex-row items-center gap-3 absolute top-5 left-5 w-2/3 text-nowrap z-50">
             <Button
               className="bg-yellow-400 size-8 p-2 rounded-full hover:bg-black/25 dark:hover:bg-white/25"
               onClick={() => setIsCycling(!isCycling)}
@@ -170,12 +181,20 @@ const Himawari = () => {
             </div>
           </div>
 
-          <div className="h-full w-full">
-            <img
-              src={imageElement}
-              alt="Himawari Satellite View"
-              className="rounded-2xl h-full p-0 m-0 w-full"
-            />
+          <div className="relative h-full w-full">
+            <div ref={imageRef} className="h-full w-full">
+              <img
+                src={imageElement}
+                alt="Himawari Satellite View"
+                className="rounded-2xl h-full p-0 m-0 w-full"
+              />
+            </div>
+            <button
+              onClick={toggleFullscreen}
+              className="absolute top-4 right-4  text-white p-2 rounded-lg shadow-lg"
+            >
+              <Fullscreen />
+            </button>
           </div>
         </div>
 

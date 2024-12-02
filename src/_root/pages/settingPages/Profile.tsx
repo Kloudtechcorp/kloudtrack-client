@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { formatDateString } from "@/lib/utils";
+import { checkStationType, formatDateString } from "@/lib/utils";
 import { useGetUserProfile } from "@/hooks/react-query/queries";
 import { useDeleteApiKey } from "@/hooks/react-query/mutations";
 import { useUserContext } from "@/hooks/context/authContext";
@@ -28,12 +28,32 @@ import {
 import { useTheme } from "@/components/theme-provider";
 import CopyIcon from "@/components/shared/icons/CopyIcon";
 import DeleteIconProfile from "@/components/shared/icons/DeleteIconProfile";
+import { toast } from "@/hooks/use-toast";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
 
 const Profile = () => {
   const { theme } = useTheme();
   const { user } = useUserContext();
   const { data: profile, refetch } = useGetUserProfile(user.id);
   const { mutateAsync: deleteApiKey } = useDeleteApiKey(refetch);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredStationNames = user.stations.filter((item) => {
+    const matchesSearch = item.name
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    return matchesSearch;
+  });
 
   return (
     <div className="px-5 w-full h-full flex flex-col gap-3">
@@ -80,7 +100,8 @@ const Profile = () => {
 
             <CardContent>
               <div className="flex flex-col gap-2 py-2">
-                <div className="flex flex-col ">
+                {/* Profile Section */}
+                <div className="flex flex-col">
                   <div className="flex flex-col w-full items-start">
                     <span className="text-md font-bold">Username</span>
                     <span className="capitalize text-lg">
@@ -92,88 +113,127 @@ const Profile = () => {
                     </span>
                   </div>
                 </div>
-                <span className="text-nowrap text-md font-bold">
-                  Authentication keys:
-                </span>
-                {profile.apiKeys ? (
-                  profile.apiKeys.map((item) => (
-                    <Card className="flex gap-2 p-5">
-                      <div className="flex flex-row w-full ">
-                        <div className="w-20 flex justify-center">
-                          <div className="flex flex-col gap-2 justify-center">
-                            <div>
+
+                {/* API Keys Section */}
+                {profile.apiKeys?.length > 0 ? (
+                  <>
+                    <span className="text-nowrap text-md font-bold">
+                      Authentication Keys:
+                    </span>
+                    {profile.apiKeys.map((item) => (
+                      <Card className="flex gap-2 p-5" key={item.id}>
+                        <div className="flex flex-row w-full">
+                          <div className="w-20 flex justify-center">
+                            <div className="flex flex-col gap-2 justify-center">
                               <img
                                 src="/assets/icons/key.svg"
                                 width={50}
                                 className="dark:invert hidden md:block"
+                                alt="API Key Icon"
                               />
+                              <Card className="flex justify-center bg-transparent shadow-none rounded-md">
+                                API
+                              </Card>
                             </div>
-                            <Card className="flex justify-center bg-transparent shadow-none rounded-md">
-                              API
-                            </Card>
+                          </div>
+                          <div className="w-full flex flex-col">
+                            <span className="capitalize font-medium text-lg">
+                              {item.title}
+                            </span>
+                            <span className="text-base">
+                              Token: {item.apiKey}
+                            </span>
+                            <span className="text-muted-foreground text-sm">
+                              Expires on {item.expiresAt}
+                            </span>
+                            <span className="text-muted-foreground text-sm">
+                              Generated on{" "}
+                              {formatDateString(item.createdAt, "long")}
+                            </span>
+                          </div>
+                          <div className="flex gap-2 flex-col">
+                            <Button
+                              aria-label="Copy API Key"
+                              onClick={() => {
+                                navigator.clipboard.writeText(item.apiKey);
+                                toast({
+                                  title: "API key successfully copied.",
+                                });
+                              }}
+                            >
+                              <CopyIcon theme={theme} />
+                            </Button>
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <Button aria-label="Delete API Key">
+                                  <DeleteIconProfile theme={theme} />
+                                </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>
+                                    Are you absolutely sure?
+                                  </AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    This action cannot be undone. This will
+                                    permanently delete your API key.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                  <AlertDialogAction
+                                    onClick={() => {
+                                      deleteApiKey(item.id);
+                                      refetch();
+                                    }}
+                                  >
+                                    Continue
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
                           </div>
                         </div>
-                        <div className="w-full flex flex-col">
-                          <span className="capitalize font-medium text-lg">
-                            {item.title}
-                          </span>
-                          <span className="text-base">
-                            Token: {item.apiKey}
-                          </span>
-                          <span className="text-muted-foreground text-sm">
-                            Expires on {item.expiresAt}
-                          </span>
-                          <span className="text-muted-foreground text-sm">
-                            Generated on{" "}
-                            {formatDateString(item.createdAt, "long")}
-                          </span>
-                        </div>
-                        <div className="flex gap-2 flex-col">
-                          <Button
-                            onClick={() => {
-                              navigator.clipboard.writeText(item.apiKey);
-                            }}
-                          >
-                            <CopyIcon theme={theme} />
-                          </Button>
-                          <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                              <Button>
-                                <DeleteIconProfile theme={theme} />
-                              </Button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                              <AlertDialogHeader>
-                                <AlertDialogTitle>
-                                  Are you absolutely sure?
-                                </AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  This action cannot be undone. This will
-                                  permanently delete your api key.
-                                </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction
-                                  onClick={() => {
-                                    deleteApiKey(item.id);
-                                    refetch();
-                                  }}
-                                >
-                                  Continue
-                                </AlertDialogAction>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
-                          </AlertDialog>
-                        </div>
-                      </div>
-                    </Card>
-                  ))
+                      </Card>
+                    ))}
+                  </>
                 ) : (
-                  <div>No api key generated</div>
+                  <div>No API key generated</div>
                 )}
               </div>
             </CardContent>
+
+            <div className="px-7 pb-5 flex flex-col gap-2">
+              <Input
+                type="text"
+                placeholder="Search station name..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="flex p-2 border rounded-md w-fit"
+              />
+              {filteredStationNames.length === 0 ? (
+                <div>No station names to filter.</div>
+              ) : (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="h-12">ID</TableHead>
+                      <TableHead>Name</TableHead>
+                      <TableHead>Type</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredStationNames.map((item, index) => (
+                      <TableRow key={index}>
+                        <TableCell className="font-medium">{item.id}</TableCell>
+                        <TableCell className="h-10">{item.name}</TableCell>
+                        <TableCell>{checkStationType(item.type)}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
+            </div>
           </div>
         )}
       </Card>

@@ -269,5 +269,31 @@ export const checkPasswordStrength = (password: string) => {
     digit: /[0-9]/.test(password),
     specialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password),
   };
-  return(criteria);
+  return criteria;
+};
+
+export const checkStationType = (type: string): string => {
+  if (type === "ARG") {
+    return "Automated Rain Gauge";
+  } else if (type === "RLMS") {
+    return "River Level Monitoring System";
+  } else if (type === "CLMS") {
+    return "Coastal Livel Monitoring System";
+  }
+  return "Automated Weather Station";
+};
+
+export const checkRepeat = (repeat: string, range: number): number => {
+  switch (repeat) {
+    case "minute":
+      return range * 60;
+    case "halfhour":
+      return range * 2;
+    case "day":
+      return range / 24;
+    case "week":
+      return range / 168;
+    default:
+      return range;
+  }
 };

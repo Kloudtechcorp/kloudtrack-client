@@ -18,10 +18,10 @@ import {
   useUpdateUserPassword,
 } from "@/hooks/react-query/mutations";
 import { useState } from "react";
-import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { INITIAL_USER, useUserContext } from "@/hooks/context/authContext";
 import { Card } from "@/components/ui/card";
+import { toast } from "@/hooks/use-toast";
 
 const defaultValues = {
   currentPassword: "",
@@ -43,21 +43,18 @@ const ChangePassword = () => {
 
   const clearForms = () => {
     form.reset(defaultValues);
-    setPasswordCriteria({
-      length: false,
-      uppercase: false,
-      lowercase: false,
-      digit: false,
-      specialChar: false,
-    });
   };
 
   const onSubmit = async (values: z.infer<typeof passwordSchema>) => {
+    console.log(values);
     updateUserPassword(values, {
       onSuccess: () => {
         clearForms();
         handleLogout();
-        toast.success("Please login again!");
+        toast({
+          title: "Password changed!",
+          description: "Login again to access the dashboard.",
+        });
         setIsAuthenticated(false);
         setUser(INITIAL_USER);
         navigate("/signin");
@@ -67,16 +64,6 @@ const ChangePassword = () => {
       },
     });
   };
-
-  const [passwordCriteria, setPasswordCriteria] = useState({
-    length: false,
-    uppercase: false,
-    lowercase: false,
-    digit: false,
-    specialChar: false,
-  });
-
-  const isPasswordValid = Object.values(passwordCriteria).every(Boolean);
 
   return (
     <div>
@@ -116,12 +103,6 @@ const ChangePassword = () => {
                         {...field}
                         type="password"
                         placeholder="Enter new password"
-                        onChange={(e) => {
-                          field.onChange(e);
-                          setPasswordCriteria(
-                            checkPasswordStrength(e.target.value)
-                          );
-                        }}
                       />
                     </FormControl>
 
@@ -148,64 +129,8 @@ const ChangePassword = () => {
                 )}
               />
 
-              <div className="mt-2 text-sm">
-                <ul>
-                  <li
-                    className={
-                      passwordCriteria.length
-                        ? "text-green-500"
-                        : "text-red-500"
-                    }
-                  >
-                    {passwordCriteria.length ? "✔" : "✘"} Must be a minimum of 8
-                    characters.
-                  </li>
-                  <li
-                    className={
-                      passwordCriteria.uppercase
-                        ? "text-green-500"
-                        : "text-red-500"
-                    }
-                  >
-                    {passwordCriteria.uppercase ? "✔" : "✘"} Must contain at
-                    least one uppercase letter.
-                  </li>
-                  <li
-                    className={
-                      passwordCriteria.lowercase
-                        ? "text-green-500"
-                        : "text-red-500"
-                    }
-                  >
-                    {passwordCriteria.lowercase ? "✔" : "✘"} Must contain at
-                    least one lowercase letter.
-                  </li>
-                  <li
-                    className={
-                      passwordCriteria.digit ? "text-green-500" : "text-red-500"
-                    }
-                  >
-                    {passwordCriteria.digit ? "✔" : "✘"} Must contain at least
-                    one digit.
-                  </li>
-                  <li
-                    className={
-                      passwordCriteria.specialChar
-                        ? "text-green-500"
-                        : "text-red-500"
-                    }
-                  >
-                    {passwordCriteria.specialChar ? "✔" : "✘"} Must contain at
-                    least one special character.
-                  </li>
-                </ul>
-              </div>
               <div className="w-full flex justify-end">
-                <Button
-                  type="submit"
-                  className={`my-5 dark:bg-blue-200`}
-                  disabled={!isPasswordValid}
-                >
+                <Button type="submit" className={`my-5 dark:bg-blue-200`}>
                   {isPending ? "Loading..." : "Submit"}
                 </Button>
               </div>

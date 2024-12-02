@@ -20,6 +20,7 @@ import {
   downloadRainGaugeData,
   downloadRiverLevelData,
   downloadWeatherData,
+  downloadWeatherDataSensors,
   generateApi,
   handleLogout,
   reportBug,
@@ -153,12 +154,6 @@ export const useHandleLogout = () => {
         description: error.message,
       });
     },
-    onSuccess: () => {
-      toast({
-        title: "Logout Successful!",
-        description: "Login again to access the dashboard.",
-      });
-    },
   });
 };
 
@@ -220,7 +215,7 @@ export const useUpdateStation = () => {
 //DELETE
 export const useDeleteApiKey = (onSuccess: () => void) => {
   return useMutation({
-    mutationFn: (id: string) => deleteApiKey(id),
+    mutationFn: (id: number) => deleteApiKey(id),
     onError: (error: Error) => {
       toast({
         title: "Error!",
@@ -260,6 +255,24 @@ export const useDeleteStation = () => {
 export const useWeatherDownloadData = () => {
   return useMutation({
     mutationFn: (data: downloadParamsTypes) => downloadWeatherData(data),
+    onError: (error: Error) => {
+      toast({
+        title: "Error!",
+        description: error.message,
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Download Successful!",
+        description: "Weather Data Downloaded.",
+      });
+    },
+  });
+};
+
+export const useWeatherDownloadSensorsData = () => {
+  return useMutation({
+    mutationFn: (data: downloadParamsTypes) => downloadWeatherDataSensors(data),
     onError: (error: Error) => {
       toast({
         title: "Error!",

@@ -56,31 +56,35 @@ const VariableGraph = ({
       </div>
     );
   }
-
-  // const sliceDetails = (change: string, value: any) => {
-  //   if (change === "minute") {
-  //     return value.slice(11, 16);
-  //   }
-  //   if (change === "hour") {
-  //     return value.slice(0, 16);
-  //   }
-  //   return value.slice(0, 10);
-  // };
-
   const getFormattedDataset = (
     graphData: formattedDataType[]
   ): formattedDataType[] => {
-    return graphData.map((item) => ({
-      ...item,
-      datetime: formatDateString(item.datetime, "short"),
-    }));
+    return graphData.map((item) => {
+      const formattedDate = new Date(item.datetime).toLocaleString("en-US", {
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      });
+
+      const datetimeWithAt = formattedDate.replace(",", " at");
+
+      return {
+        ...item,
+        datetime: datetimeWithAt,
+      };
+    });
   };
 
   const updatedData = getFormattedDataset(graphData);
 
   return (
     <div className="w-full rounded-lg p-1 border-[#545454] m-0 flex items-center justify-center">
-      <ChartContainer config={chartConfig} className="h-44 w-full m-0 p-0">
+      <ChartContainer
+        config={chartConfig}
+        className="h-[14.5rem] w-full m-0 p-0"
+      >
         {weatherData === "precipitation" || weatherData === "uvIndex" ? (
           <BarChart
             accessibilityLayer
@@ -124,7 +128,7 @@ const VariableGraph = ({
               type="linear"
               stroke="#fbd008"
               strokeWidth={3}
-              dot={true}
+              dot={false}
             />
           </LineChart>
         )}

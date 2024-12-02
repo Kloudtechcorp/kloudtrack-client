@@ -5,9 +5,28 @@ import AwsVariableCard from "@/components/dynamic/VariableCards/AwsVariableCard"
 import ArgVariableCard from "@/components/dynamic/VariableCards/ArgVariableCard";
 import ClmsVariableCard from "@/components/dynamic/VariableCards/ClmsVariableCard";
 import RlmsVariableCard from "@/components/dynamic/VariableCards/RlmsVariableCard";
+import { useRef } from "react";
+import { Fullscreen } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const Variable = () => {
   const { user, isLoading } = useUserContext();
+  const imageRef = useRef<HTMLDivElement>(null);
+
+  const toggleFullscreen = () => {
+    if (imageRef.current) {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else {
+        imageRef.current.requestFullscreen();
+      }
+    }
+  };
 
   if (isLoading) {
     return (
@@ -49,7 +68,10 @@ const Variable = () => {
 
   return (
     <>
-      <div className="bg-[#F6F8FC] dark:bg-secondary w-full overflow-auto rounded-xl p-[1rem] custom-scrollbar">
+      <div
+        className="bg-[#F6F8FC] dark:bg-secondary w-full overflow-auto rounded-xl p-[1rem] custom-scrollbar"
+        ref={imageRef}
+      >
         {isLoading ? (
           <div className="flex flex-col gap-3 md:gap-5 w-full container p-2 h-full">
             <Skeleton className="w-full cardContainer dark:bg-primary" />
@@ -57,37 +79,54 @@ const Variable = () => {
           </div>
         ) : (
           <Tabs defaultValue="aws" className="w-full flex flex-col">
-            <TabsList className="flex justify-start container">
-              {hasAwsStations && (
-                <TabsTrigger value="aws">Weather Stations</TabsTrigger>
-              )}
-              {hasArgStations && (
-                <TabsTrigger value="arg">Rain Gauges</TabsTrigger>
-              )}
-              {hasRlmsStations && (
-                <TabsTrigger value="rlms">River Level</TabsTrigger>
-              )}
-              {hasClmsStations && (
-                <TabsTrigger value="clms">Coastal Level</TabsTrigger>
-              )}
+            <TabsList className="flex justify-between container items-center">
+              <div className="flex justify-start gap-1">
+                {hasAwsStations && (
+                  <TabsTrigger value="aws">Weather Stations</TabsTrigger>
+                )}
+                {hasArgStations && (
+                  <TabsTrigger value="arg">Rain Gauges</TabsTrigger>
+                )}
+                {hasRlmsStations && (
+                  <TabsTrigger value="rlms">River Level</TabsTrigger>
+                )}
+                {hasClmsStations && (
+                  <TabsTrigger value="clms">Coastal Level</TabsTrigger>
+                )}
+              </div>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      onClick={toggleFullscreen}
+                      className="rounded-lg px-2"
+                    >
+                      <Fullscreen />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Fullscreen</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </TabsList>
             {hasAwsStations && (
-              <TabsContent value="aws">
+              <TabsContent value="aws" className="my-0">
                 <AwsVariableCard id={awsIds} />
               </TabsContent>
             )}
             {hasArgStations && (
-              <TabsContent value="arg">
+              <TabsContent value="arg" className="my-0">
                 <ArgVariableCard id={argIds} />
               </TabsContent>
             )}
             {hasRlmsStations && (
-              <TabsContent value="rlms">
+              <TabsContent value="rlms" className="my-0">
                 <RlmsVariableCard id={rlmsIds} />
               </TabsContent>
             )}
             {hasClmsStations && (
-              <TabsContent value="clms">
+              <TabsContent value="clms" className="my-0">
                 <ClmsVariableCard id={clmsIds} />
               </TabsContent>
             )}

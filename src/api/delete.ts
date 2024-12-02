@@ -2,7 +2,7 @@ const method: string = "DELETE";
 const server = import.meta.env.VITE_SERVER;
 
 export const deleteApiKey = async (
-  id: string
+  id: number
 ): Promise<{ message: string }> => {
   const response = await fetch(`${server}/user/delete-api-key/${id}`, {
     method,

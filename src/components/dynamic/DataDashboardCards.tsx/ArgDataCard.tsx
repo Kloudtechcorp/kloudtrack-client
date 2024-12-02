@@ -62,16 +62,16 @@ const ArgDataCard = ({ stationId }: ArgDataCardProps) => {
         </div>
       </div>
 
-      <div className="flex flex-col w-full gap-2">
+      <div className="flex flex-col w-full gap-2 px-2">
         <div className="flex w-full items-center ">
-          <span className="font-medium w-full">Weather Data Graphs</span>
+          <span className="weatherDataGraphs">Weather Data Graphs</span>
           <RainGaugeDialog name={station.name} id={stationId} />
         </div>
 
         <div className="flex flex-col gap-2 overflow-y-auto cursor-pointer">
           <div
             className="flex flex-col gap-1 border p-1 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 pr-5"
-            onClick={() => navigate(`/${station.name}/data-analysis`)}
+            onClick={() => navigate(`/${station.id}/data-analysis`)}
           >
             <div className="px-2 font-semibold">Precipitation</div>
             <VariableGraph

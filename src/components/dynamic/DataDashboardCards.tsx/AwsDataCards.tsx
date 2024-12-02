@@ -7,7 +7,8 @@ import VariableGraph from "@/components/dynamic/VariableGraph";
 import PuffLoader from "react-spinners/PuffLoader";
 import NotFound from "@/components/shared/NotFound";
 import WeatherDialog from "@/components/dynamic/DownloadCards/WeatherDialog";
-import { useEffect } from "react";
+// import WeatherDialog2 from "@/components/dynamic/DownloadCards/WeatherDialog2";
+import { useEffect, useRef } from "react";
 import { toast } from "sonner";
 
 type AwsDataCardProps = {
@@ -69,10 +70,13 @@ const AwsDataCard = ({ stationId }: AwsDataCardProps) => {
         </div>
       </div>
 
-      <div className="flex flex-col w-full gap-2">
+      <div className="flex flex-col w-full gap-2 px-2">
         <div className="flex w-full items-center ">
-          <span className="font-medium w-full">Weather Data Graphs</span>
+          <span className="weatherDataGraphs">Weather Data Graphs</span>
           <WeatherDialog name={station.name} id={stationId} />
+
+          {/* Replaces Data Download (t1-3, h1-h3, p1-p3) */}
+          {/* <WeatherDialog2 name={station.name} id={stationId} /> */}
         </div>
         <div className="flex flex-col gap-2 overflow-y-auto cursor-pointer">
           {weatherVariables.map(({ label, variable }) => (
@@ -80,7 +84,7 @@ const AwsDataCard = ({ stationId }: AwsDataCardProps) => {
               key={variable}
               className="flex flex-col gap-1 border p-1 rounded-lg hover:bg-black/5 dark:hover:bg-white/5"
               onClick={() =>
-                navigate(`/${station.name}/data-analysis`, {
+                navigate(`/${station.id}/data-analysis`, {
                   state: { variable },
                 })
               }

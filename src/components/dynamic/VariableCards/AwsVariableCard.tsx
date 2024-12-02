@@ -9,9 +9,13 @@ import {
 } from "@/components/ui/select";
 import React, { useState } from "react";
 import TableGraphCard from "../TableGraphCard";
+import { checkRepeat } from "@/lib/utils";
+import RangeRepeatSelector from "@/components/shared/SelectRangeRepeat";
 
 const AwsVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
   const [weatherData, setWeatherData] = useState("temperature");
+  const [repeatData, setRepeatData] = useState("hour");
+  const [rangeData, setRangeData] = useState("24");
 
   return (
     <div className="mainContainer bg-[#F6F8FC] dark:bg-secondary flex flex-col overflow-hidden">
@@ -22,29 +26,38 @@ const AwsVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
               <span className="text-3xl font-bold px-4 capitalize">
                 {weatherData}
               </span>
-              <div className="flex flex-col justify-center px-6">
-                <span className="text-sm px-1">Parameter Option</span>
-                <span className="text-3xl font-bold">
-                  <Select
-                    defaultValue={weatherData}
-                    onValueChange={(value) => setWeatherData(value)}
-                  >
-                    <SelectTrigger className="w-[200px]">
-                      <SelectValue placeholder="Variable" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="temperature">Temperature</SelectItem>
-                      <SelectItem value="humidity">Humidity</SelectItem>
-                      <SelectItem value="heatIndex">Heat Index</SelectItem>
-                      <SelectItem value="pressure">Air Pressure</SelectItem>
-                      <SelectItem value="precipitation">
-                        Precipitation
-                      </SelectItem>
-                      <SelectItem value="uvIndex">UV Index</SelectItem>
-                      <SelectItem value="light">Light Intensity</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </span>
+              <div className="flex gap-1">
+                <div className="flex flex-col justify-center px-3">
+                  <span className="text-sm px-1">Parameter Option</span>
+                  <span className="text-3xl font-bold">
+                    <Select
+                      defaultValue={weatherData}
+                      onValueChange={(value) => setWeatherData(value)}
+                    >
+                      <SelectTrigger className="w-[200px]">
+                        <SelectValue placeholder="Variable" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="heatIndex">Heat Index</SelectItem>
+                        <SelectItem value="temperature">Temperature</SelectItem>
+                        <SelectItem value="humidity">Humidity</SelectItem>
+                        <SelectItem value="pressure">Air Pressure</SelectItem>
+                        <SelectItem value="windSpeed">Wind Speed</SelectItem>
+                        <SelectItem value="uvIndex">UV Index</SelectItem>
+                        <SelectItem value="light">Light Intensity</SelectItem>
+                        <SelectItem value="precipitation">
+                          Precipitation
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </span>
+                </div>
+                <RangeRepeatSelector
+                  repeatData={repeatData}
+                  setRepeatData={setRepeatData}
+                  rangeData={rangeData}
+                  setRangeData={setRangeData}
+                />
               </div>
             </div>
 
@@ -54,8 +67,8 @@ const AwsVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
                   type={"aws"}
                   stationId={id}
                   weatherData={weatherData}
-                  range={12}
-                  repeat="hour"
+                  range={checkRepeat(repeatData, +rangeData)}
+                  repeat={repeatData}
                   key={key}
                 />
               ))}

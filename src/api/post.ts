@@ -12,6 +12,7 @@ import {
   downloadParamsTypes,
   rainGaugeDataTypes,
   riverLevelDataTypes,
+  weatherDataSensors,
   weatherDataTypes,
 } from "@/types/queryTypes";
 import { bugSchema } from "@/types/validation";
@@ -137,6 +138,26 @@ export const downloadWeatherData = async ({
   to,
 }: downloadParamsTypes): Promise<weatherDataTypes[]> => {
   const response = await fetch(`${server}/weather/download`, {
+    method,
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name, from, to }),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch data");
+  }
+  return data;
+};
+
+export const downloadWeatherDataSensors = async ({
+  name,
+  from,
+  to,
+}: downloadParamsTypes): Promise<weatherDataSensors[]> => {
+  const response = await fetch(`${server}/weather/download/sensorsRawData`, {
     method,
     credentials: "include",
     headers: {

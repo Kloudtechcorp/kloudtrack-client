@@ -149,7 +149,7 @@ export function UserTables() {
 
   return (
     <div className="w-full">
-      <div className="flex items-center pb-4 pt-2 ">
+      <div className="flex items-center pb-4 pt-2 pl-2">
         <Input
           placeholder="Filter usernames..."
           value={

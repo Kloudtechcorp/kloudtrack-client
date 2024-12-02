@@ -1,30 +1,35 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
+    "target": "ES2020", // A modern target for better performance
+    "useDefineForClassFields": true, // Ensure class fields are defined in a way compatible with ES2020+
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "skipLibCheck": true,
+    "module": "ESNext", // Use ESNext for compatibility with modern bundlers like Vite
+    "skipLibCheck": true, // Skip library checks for faster compilation, useful for large codebases
+    "moduleResolution": "bundler", // Ensure compatibility with modern bundlers
+    "allowImportingTsExtensions": true, // Allow imports with ".ts" extensions
+    "resolveJsonModule": true, // Enable importing of JSON files
+    "isolatedModules": true, // Ensures each file is treated as a module
+    "noEmit": true, // Disable emitting files since Vite handles the bundling
+    "jsx": "react-jsx", // Use the new JSX transform (React 17+)
 
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
+    /* Linting and Type Checking */
+    "strict": true, // Enable strict type-checking options for type safety
+    "noUnusedLocals": true, // Remove unused variables during build for cleaner code
+    "noUnusedParameters": true, // Remove unused parameters to prevent clutter
+    "noFallthroughCasesInSwitch": true, // Avoid fallthrough in switch statements
 
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noFallthroughCasesInSwitch": false,
-
-    // ShadCN
-    "baseUrl": ".",
+    /* Path Aliases */
+    "baseUrl": ".", // Ensure path aliasing works as expected
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+
+    /* Performance Optimizations */
+    "skipDefaultLibCheck": true, // Skip checking of default lib files for faster build
+    "esModuleInterop": true, // Ensures compatibility with CommonJS modules
+    "allowSyntheticDefaultImports": true, // Allow default imports from modules without a default export
+    "downlevelIteration": true // Allow async/await in older environments (useful if supporting older browsers)
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"]
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["node_modules"] // Exclude node_modules for faster build and type checking
 }

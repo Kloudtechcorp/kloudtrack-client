@@ -10,7 +10,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useGetStationNames } from "@/hooks/react-query/queries";
-import { useEffect, useState } from "react";
+import { Fullscreen } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import PuffLoader from "react-spinners/PuffLoader";
 
@@ -23,6 +24,17 @@ const VariableDashboard = () => {
     isLoading,
   } = useGetStationNames(station?.toString() || "");
   const [weatherData, setWeatherData] = useState<string>("temperature");
+  const imageRef = useRef<HTMLDivElement>(null);
+
+  const toggleFullscreen = () => {
+    if (imageRef.current) {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else {
+        imageRef.current.requestFullscreen();
+      }
+    }
+  };
 
   useEffect(() => {
     if (stationData) {
@@ -66,7 +78,10 @@ const VariableDashboard = () => {
     );
 
   return (
-    <div className="mainContainer bg-[#F6F8FC] dark:bg-secondary overflow-auto custom-scrollbar">
+    <div
+      className="mainContainer bg-[#F6F8FC] dark:bg-secondary overflow-auto custom-scrollbar"
+      ref={imageRef}
+    >
       <div className="container p-2">
         <Card className="cardContainer">
           <CardContent className="h-full flex flex-col gap-2">
@@ -78,73 +93,87 @@ const VariableDashboard = () => {
                   onClick={() => navigate(-1)}
                 />
 
-                <div className="flex flex-col leading-3">
-                  <h1 className="capitalize text-2xl font-bold ">{station}</h1>
+                <div className="flex flex-row gap-2 leading-3">
+                  <h1 className="capitalize text-2xl font-bold ">
+                    {stationData.name}
+                  </h1>
+                  <button onClick={toggleFullscreen} className="p-2 rounded-lg">
+                    <Fullscreen />
+                  </button>
                 </div>
               </div>
-              {(stationData.type === "AWS" && (
-                <Select
-                  defaultValue={weatherData}
-                  onValueChange={(value) => setWeatherData(value)}
-                >
-                  <SelectTrigger className="w-[200px]">
-                    <SelectValue placeholder="Variable" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="temperature">Temperature</SelectItem>
-                    <SelectItem value="humidity">Humidity</SelectItem>
-                    <SelectItem value="heatIndex">Heat Index</SelectItem>
-                    <SelectItem value="pressure">Air Pressure</SelectItem>
-                    <SelectItem value="precipitation">Precipitation</SelectItem>
-                    <SelectItem value="uvIndex">UV Index</SelectItem>
-                    <SelectItem value="light">Light Intensity</SelectItem>
-                  </SelectContent>
-                </Select>
-              )) ||
-                (stationData.type === "ARG" && (
-                  <Select
-                    defaultValue={weatherData}
-                    onValueChange={(value) => setWeatherData(value)}
-                  >
-                    <SelectTrigger className="w-[200px]">
-                      <SelectValue placeholder="Variable" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="precipitation">
-                        Precipitation
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
+
+              <div className="flex flex-col justify-center">
+                <span className="text-sm px-1">Parameter Option</span>
+                {(stationData.type === "AWS" && (
+                  <span className="text-3xl font-bold">
+                    <Select
+                      defaultValue={weatherData}
+                      onValueChange={(value) => setWeatherData(value)}
+                    >
+                      <SelectTrigger className="w-[200px]">
+                        <SelectValue placeholder="Variable" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="heatIndex">Heat Index</SelectItem>
+                        <SelectItem value="temperature">Temperature</SelectItem>
+                        <SelectItem value="humidity">Humidity</SelectItem>
+                        <SelectItem value="pressure">Air Pressure</SelectItem>
+                        <SelectItem value="windSpeed">Wind Speed</SelectItem>
+                        <SelectItem value="uvIndex">UV Index</SelectItem>
+                        <SelectItem value="light">Light Intensity</SelectItem>
+                        <SelectItem value="precipitation">
+                          Precipitation
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </span>
                 )) ||
-                (stationData.type === "RLMS" && (
-                  <Select
-                    defaultValue={weatherData}
-                    onValueChange={(value) => setWeatherData(value)}
-                  >
-                    <SelectTrigger className="w-[200px]">
-                      <SelectValue placeholder="Variable" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="distance">Distance</SelectItem>
-                    </SelectContent>
-                  </Select>
-                )) ||
-                (stationData.type === "CLMS" && (
-                  <Select
-                    defaultValue={weatherData}
-                    onValueChange={(value) => setWeatherData(value)}
-                  >
-                    <SelectTrigger className="w-[200px]">
-                      <SelectValue placeholder="Variable" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="temperature">Temperature</SelectItem>
-                      <SelectItem value="humidity">Humidity</SelectItem>
-                      <SelectItem value="pressure">Air Pressure</SelectItem>
-                      <SelectItem value="distance">Distance</SelectItem>
-                    </SelectContent>
-                  </Select>
-                ))}
+                  (stationData.type === "ARG" && (
+                    <Select
+                      defaultValue={weatherData}
+                      onValueChange={(value) => setWeatherData(value)}
+                    >
+                      <SelectTrigger className="w-[200px]">
+                        <SelectValue placeholder="Variable" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="precipitation">
+                          Precipitation
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )) ||
+                  (stationData.type === "RLMS" && (
+                    <Select
+                      defaultValue={weatherData}
+                      onValueChange={(value) => setWeatherData(value)}
+                    >
+                      <SelectTrigger className="w-[200px]">
+                        <SelectValue placeholder="Variable" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="distance">Distance</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )) ||
+                  (stationData.type === "CLMS" && (
+                    <Select
+                      defaultValue={weatherData}
+                      onValueChange={(value) => setWeatherData(value)}
+                    >
+                      <SelectTrigger className="w-[200px]">
+                        <SelectValue placeholder="Variable" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="temperature">Temperature</SelectItem>
+                        <SelectItem value="humidity">Humidity</SelectItem>
+                        <SelectItem value="pressure">Air Pressure</SelectItem>
+                        <SelectItem value="distance">Distance</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  ))}
+              </div>
             </div>
 
             <div className="flex gap-4">

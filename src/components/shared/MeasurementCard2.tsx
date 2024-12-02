@@ -3,7 +3,7 @@ const MeasurementCard2: React.FC<{
   value: number;
   unit: string;
 }> = ({ label, value, unit }) => (
-  <div className="w-full h-full">
+  <div className="w-full h-80">
     <div className="text-center w-full flex flex-col h-full">
       <div className="cardTitleDiv">
         <span className="weatherDataTitle">{label}</span>

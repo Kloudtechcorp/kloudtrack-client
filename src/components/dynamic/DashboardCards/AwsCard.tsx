@@ -90,36 +90,42 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
             className="h-full px-2 pb-3 hidden lg:block"
             onClick={() => setClicked(!clicked)}
           >
-            {!clicked ? (
-              <img
-                src={stationData.station.image}
-                className="rounded-md object-cover aspect-square h-full w-full"
-                alt="Station"
-              />
-            ) : (
-              <Map
-                mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
-                initialViewState={{
-                  longitude: +stationData.station.longitude,
-                  latitude: +stationData.station.latitude,
-                  zoom: 9,
-                }}
-                style={{ width: "100%", height: "100%", aspectRatio: "1/1" }}
-                mapStyle={mapboxStyle}
-              >
-                <Marker
-                  latitude={+stationData.station.latitude}
-                  longitude={+stationData.station.longitude}
-                  anchor="bottom"
+            <div className="w-[30rem] aspect-square">
+              {!clicked ? (
+                <img
+                  src={stationData.station.image}
+                  className="inset-0 rounded-md object-cover w-full h-full"
+                  alt="Station"
+                />
+              ) : (
+                <Map
+                  mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
+                  initialViewState={{
+                    longitude: +stationData.station.longitude,
+                    latitude: +stationData.station.latitude,
+                    zoom: 9,
+                  }}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    borderRadius: "calc(var(--radius) - 2px)",
+                  }}
+                  mapStyle={mapboxStyle}
                 >
-                  <img
-                    src="/assets/icons/pointer-aws.svg"
-                    alt="ARG Marker"
-                    className="size-12"
-                  />
-                </Marker>
-              </Map>
-            )}
+                  <Marker
+                    latitude={+stationData.station.latitude}
+                    longitude={+stationData.station.longitude}
+                    anchor="bottom"
+                  >
+                    <img
+                      src="/assets/icons/pointer-aws.svg"
+                      alt="ARG Marker"
+                      className="size-12"
+                    />
+                  </Marker>
+                </Map>
+              )}
+            </div>
           </div>
         </div>
         {stationData.data ? (

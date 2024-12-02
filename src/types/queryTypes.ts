@@ -70,6 +70,7 @@ export type stationsListType = {
 
 export type awsDashboardType = {
   station: {
+    id: string;
     name: string;
     type: string;
     latitude: string;
@@ -85,6 +86,7 @@ export type awsDashboardType = {
 
 export type awsDashboardType2 = {
   station: {
+    id: string;
     name: string;
     type: string;
     latitude: string;
@@ -101,6 +103,7 @@ export type awsDashboardType2 = {
 
 export type argDashboardType = {
   station: {
+    id: string;
     name: string;
     type: string;
     latitude: string;
@@ -116,6 +119,7 @@ export type argDashboardType = {
 
 export type rlmsDashboardType = {
   station: {
+    id: string;
     name: string;
     type: string;
     latitude: string;
@@ -131,6 +135,7 @@ export type rlmsDashboardType = {
 
 export type clmsDashboardType = {
   station: {
+    id: string;
     name: string;
     type: string;
     latitude: string;
@@ -199,7 +204,7 @@ export type TableGraphCardType = {
   stationId: string;
   weatherData: string;
   range: number;
-  repeat: "minute" | "halfhour" | "hour" | "day" | "week";
+  repeat: string;
 };
 
 export type stationComputedTypes = {
@@ -273,7 +278,7 @@ export type tablesType = {
   stationId: string;
   weatherData: string;
   range: number;
-  repeat: "minute" | "halfhour" | "hour" | "day" | "week";
+  repeat: string;
   type: string;
 };
 

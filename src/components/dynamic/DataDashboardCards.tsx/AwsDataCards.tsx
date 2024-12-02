@@ -8,7 +8,7 @@ import PuffLoader from "react-spinners/PuffLoader";
 import NotFound from "@/components/shared/NotFound";
 import WeatherDialog from "@/components/dynamic/DownloadCards/WeatherDialog";
 // import WeatherDialog2 from "@/components/dynamic/DownloadCards/WeatherDialog2";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { toast } from "sonner";
 
 type AwsDataCardProps = {
@@ -84,7 +84,7 @@ const AwsDataCard = ({ stationId }: AwsDataCardProps) => {
               key={variable}
               className="flex flex-col gap-1 border p-1 rounded-lg hover:bg-black/5 dark:hover:bg-white/5"
               onClick={() =>
-                navigate(`/${station.name}/data-analysis`, {
+                navigate(`/${station.id}/data-analysis`, {
                   state: { variable },
                 })
               }

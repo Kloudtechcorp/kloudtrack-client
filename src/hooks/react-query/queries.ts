@@ -203,11 +203,11 @@ export const useGetUserSession = (): UseQueryResult<UserType, Error> => {
 };
 
 export const useGetStationNames = (
-  stationName: string
+  stationId: string
 ): UseQueryResult<stationStaticType, Error> => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_STATION_NAMES, stationName],
-    queryFn: () => getStationData(stationName),
+    queryKey: [QUERY_KEYS.GET_STATION_NAMES, stationId],
+    queryFn: () => getStationData(stationId),
     staleTime: 60000,
   });
 };

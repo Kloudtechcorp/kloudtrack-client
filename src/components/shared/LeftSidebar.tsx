@@ -21,6 +21,7 @@ import {
 import { BugReport } from "../forms/bugReport";
 import { LogOut } from "lucide-react";
 import { useState } from "react";
+import { Button } from "../ui/button";
 
 const LeftSidebar = ({ clicked }: SidebarProps) => {
   const navigate = useNavigate();
@@ -85,20 +86,19 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
       <div className="flex flex-col gap-7 w-full">
         <div className="flex flex-col justify-start h-full">
           <ul className="flex flex-col gap-4 justify-start px-2 py-4">
-            {sidebarItems.map((link, key) => {
+            {sidebarItems.map((link) => {
               if (!link) return null;
               const isActive = pathname === link.route;
               return (
-                <TooltipProvider>
+                <TooltipProvider key={link.route}>
                   <Tooltip>
                     <TooltipTrigger>
                       <li
-                        key={key}
-                        className={` ${
+                        className={`${
                           isActive
                             ? "border-b-yellow-400 border-b-4 bg-accent"
                             : "hover:bg-black/5 dark:hover:bg-white/5"
-                        } rounded-sm `}
+                        } rounded-sm`}
                       >
                         <NavLink
                           to={link.route}
@@ -135,25 +135,12 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
         >
           <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger className="w-full">
-                    <div
-                      className={`flex gap-4 items-center ${
-                        clicked ? "justify-start" : "justify-center"
-                      } py-3 px-2 rounded-sm hover:bg-black/5 dark:hover:bg-white/5`}
-                    >
-                      <BugIcon theme={""} />
-                      <span className={clicked ? "block" : "hidden"}>
-                        Bug Report
-                      </span>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Report a Bug</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <div
+                className={`flex gap-4 items-center py-3 px-2 rounded-sm hover:bg-black/5 dark:hover:bg-white/5`}
+              >
+                <BugIcon theme={""} />
+                <span className={clicked ? "block" : "hidden"}>Bug Report</span>
+              </div>
             </SheetTrigger>
             <SheetContent side={"left"}>
               <SheetHeader>

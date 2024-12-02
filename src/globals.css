@@ -242,7 +242,7 @@
 }
 
 .cardDashboard {
-  @apply w-full h-[8rem];
+  @apply w-full h-[10rem];
 }
 
 .bgColor {

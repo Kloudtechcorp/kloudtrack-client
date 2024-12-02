@@ -75,7 +75,7 @@ const RlmsDataCard = ({ stationId }: RlmsDataCardProps) => {
           <div
             className="flex flex-col gap-1 border p-1 rounded-lg hover:bg-black/5 dark:hover:bg-white/5"
             onClick={() =>
-              navigate(`/${station.name}/data-analysis`, {
+              navigate(`/${station.id}/data-analysis`, {
                 state: { variable: "distance" },
               })
             }

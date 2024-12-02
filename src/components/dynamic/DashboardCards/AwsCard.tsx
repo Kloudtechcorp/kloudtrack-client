@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardTitle } from "../../ui/card";
 import { Button } from "../../ui/button";
 import PuffLoader from "react-spinners/PuffLoader";
@@ -10,7 +10,6 @@ import { useUserContext } from "@/hooks/context/authContext";
 import { useTheme } from "../../theme-provider";
 import NoData from "@/components/shared/NoData";
 import NavigateIcon from "@/components/shared/icons/NavigateIcon";
-import AdminControls from "@/components/shared/AdminControls";
 import { toast } from "sonner";
 import {
   Tooltip,
@@ -18,16 +17,22 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import Map, { Marker } from "react-map-gl";
 
 interface AwsCardProps {
   id: string;
 }
 
 const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
-  const { user } = useUserContext();
   const navigate = useNavigate();
   const { data: stationData, isLoading, isError } = useGetAwsData2(id);
+  const [clicked, setClicked] = useState(false);
   const { theme } = useTheme();
+  const [mapboxStyle, setMapboxStyle] = useState(
+    theme === "dark"
+      ? "mapbox://styles/mapbox/dark-v11"
+      : "mapbox://styles/mapbox/light-v11"
+  );
 
   useEffect(() => {
     return () => {
@@ -82,15 +87,41 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
               </span>
             </div>
           </div>
-          {stationData.station.image && (
-            <div className="hidden lg:block">
+          <div
+            className="h-full px-2 pb-3 hidden lg:block"
+            onClick={() => setClicked(!clicked)}
+          >
+            {!clicked ? (
               <img
                 src={stationData.station.image}
                 className="rounded-md object-cover aspect-square h-full w-full"
-                alt="Station image"
+                alt="Station"
               />
-            </div>
-          )}
+            ) : (
+              <Map
+                mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
+                initialViewState={{
+                  longitude: +stationData.station.longitude,
+                  latitude: +stationData.station.latitude,
+                  zoom: 9,
+                }}
+                style={{ width: "100%", height: "100%", aspectRatio: "1/1" }}
+                mapStyle={mapboxStyle}
+              >
+                <Marker
+                  latitude={+stationData.station.latitude}
+                  longitude={+stationData.station.longitude}
+                  anchor="bottom"
+                >
+                  <img
+                    src="/assets/icons/pointer-aws.svg"
+                    alt="ARG Marker"
+                    className="size-12"
+                  />
+                </Marker>
+              </Map>
+            )}
+          </div>
         </div>
         {stationData.data ? (
           <div className="flex flex-col gap-2 w-full">
@@ -105,7 +136,7 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
                   <TooltipTrigger asChild>
                     <Button
                       className="button-icon"
-                      onClick={() => navigate(`/${stationData.station.name}`)}
+                      onClick={() => navigate(`/${stationData.station.id}`)}
                       variant="ghost"
                     >
                       <NavigateIcon theme={theme} />
@@ -127,7 +158,7 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
             </div>
           </div>
         ) : (
-          <Card className="cardContainer flex flex-row">
+          <Card className="cardContainer flex flex-row border-none">
             <CardContent className="flex flex-col lg:flex-row w-full p-0 gap-2">
               <div className="flex flex-col gap-2 w-full">
                 <div className="flex flex-col pb-3 gap-1 relative h-full items-center justify-center">

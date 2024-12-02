@@ -10,7 +10,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useGetStationNames } from "@/hooks/react-query/queries";
-import { useEffect, useState } from "react";
+import { Fullscreen } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import PuffLoader from "react-spinners/PuffLoader";
 
@@ -23,6 +24,17 @@ const VariableDashboard = () => {
     isLoading,
   } = useGetStationNames(station?.toString() || "");
   const [weatherData, setWeatherData] = useState<string>("temperature");
+  const imageRef = useRef<HTMLDivElement>(null);
+
+  const toggleFullscreen = () => {
+    if (imageRef.current) {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else {
+        imageRef.current.requestFullscreen();
+      }
+    }
+  };
 
   useEffect(() => {
     if (stationData) {
@@ -66,7 +78,10 @@ const VariableDashboard = () => {
     );
 
   return (
-    <div className="mainContainer bg-[#F6F8FC] dark:bg-secondary overflow-auto custom-scrollbar">
+    <div
+      className="mainContainer bg-[#F6F8FC] dark:bg-secondary overflow-auto custom-scrollbar"
+      ref={imageRef}
+    >
       <div className="container p-2">
         <Card className="cardContainer">
           <CardContent className="h-full flex flex-col gap-2">
@@ -78,8 +93,13 @@ const VariableDashboard = () => {
                   onClick={() => navigate(-1)}
                 />
 
-                <div className="flex flex-col leading-3">
-                  <h1 className="capitalize text-2xl font-bold ">{station}</h1>
+                <div className="flex flex-row gap-2 leading-3">
+                  <h1 className="capitalize text-2xl font-bold ">
+                    {stationData.name}
+                  </h1>
+                  <button onClick={toggleFullscreen} className="p-2 rounded-lg">
+                    <Fullscreen />
+                  </button>
                 </div>
               </div>
 

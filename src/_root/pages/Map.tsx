@@ -68,7 +68,6 @@ const Map = () => {
       });
 
       mapRef.current = map;
-
       map.addControl(new mapboxgl.NavigationControl(), "bottom-left");
       map.addControl(
         new mapboxgl.GeolocateControl({
@@ -80,7 +79,6 @@ const Map = () => {
         }),
         "bottom-left"
       );
-
       return () => {
         mapRef.current?.remove();
         mapRef.current = null;
@@ -117,7 +115,7 @@ const Map = () => {
         const markerList: mapboxgl.Marker[] = [];
         user.stations.length > 0 &&
           user.stations.forEach(async (item) => {
-            const stationInfo = await getStationData(item.name);
+            const stationInfo = await getStationData(item.id);
             const el = document.createElement("div");
             if (item.type === "ARG") {
               el.className = "marker-arg";

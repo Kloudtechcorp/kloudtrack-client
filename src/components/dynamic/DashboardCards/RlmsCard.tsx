@@ -1,16 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent, CardTitle } from "../../ui/card";
 import { Button } from "../../ui/button";
 import PuffLoader from "react-spinners/PuffLoader";
 import { useNavigate } from "react-router-dom";
 import { useGetRlmsData } from "../../../hooks/react-query/queries";
 import { formatDateString, stationType } from "@/lib/utils";
-import { useUserContext } from "@/hooks/context/authContext";
 import { useTheme } from "../../theme-provider";
 import NoData from "@/components/shared/NoData";
 import VariableGraph from "../VariableGraph";
 import NavigateIcon from "@/components/shared/icons/NavigateIcon";
-import AdminControls from "@/components/shared/AdminControls";
 import MeasurementCard2 from "@/components/shared/MeasurementCard2";
 import {
   Tooltip,
@@ -18,12 +16,18 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import Map, { Marker } from "react-map-gl";
 
 const RlmsCard: React.FC<{ id: string }> = ({ id }) => {
   const navigate = useNavigate();
-  const { theme } = useTheme();
-  const { user } = useUserContext();
   const { data: stationData, isLoading, isError } = useGetRlmsData(id);
+  const [clicked, setClicked] = useState(false);
+  const { theme } = useTheme();
+  const [mapboxStyle, setMapboxStyle] = useState(
+    theme === "dark"
+      ? "mapbox://styles/mapbox/dark-v11"
+      : "mapbox://styles/mapbox/light-v11"
+  );
 
   if (isLoading || !stationData) {
     return (
@@ -70,15 +74,41 @@ const RlmsCard: React.FC<{ id: string }> = ({ id }) => {
               </span>
             </div>
           </div>
-          {stationData.station.image && (
-            <div className="h-full px-2 pb-3 hidden lg:block">
+          <div
+            className="h-full px-2 pb-3 hidden lg:block"
+            onClick={() => setClicked(!clicked)}
+          >
+            {!clicked ? (
               <img
                 src={stationData.station.image}
                 className="rounded-md object-cover aspect-square h-full w-full"
                 alt="Station"
               />
-            </div>
-          )}
+            ) : (
+              <Map
+                mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
+                initialViewState={{
+                  longitude: +stationData.station.longitude,
+                  latitude: +stationData.station.latitude,
+                  zoom: 8,
+                }}
+                style={{ width: "100%", height: "100%", aspectRatio: "1/1" }}
+                mapStyle={mapboxStyle}
+              >
+                <Marker
+                  latitude={+stationData.station.latitude}
+                  longitude={+stationData.station.longitude}
+                  anchor="bottom"
+                >
+                  <img
+                    src="/assets/icons/pointer-rlms.svg"
+                    alt="ARG Marker"
+                    className="size-12"
+                  />
+                </Marker>
+              </Map>
+            )}
+          </div>
         </div>
 
         {!stationData.data ? (
@@ -97,7 +127,7 @@ const RlmsCard: React.FC<{ id: string }> = ({ id }) => {
                   <TooltipTrigger asChild>
                     <Button
                       className="button-icon"
-                      onClick={() => navigate(`/${stationData.station.name}`)}
+                      onClick={() => navigate(`/${stationData.station.id}`)}
                       variant="ghost"
                     >
                       <NavigateIcon theme={theme} />

@@ -160,7 +160,7 @@ fetchStations();
             <p>
               <strong>Endpoint:</strong>{" "}
               <code className="bg-gray-100 dark:bg-[#545454] p-1 rounded">
-                GET /get/station/:name
+                GET /get/station/:id
               </code>
             </p>
             <h3 className="mt-4 font-semibold text-gray-600 dark:text-white">
@@ -168,7 +168,8 @@ fetchStations();
             </h3>
             <ul className="list-disc ml-6">
               <li>
-                <strong>name:</strong> (String) The name of the station.
+                <strong>id:</strong> (String) The id of the station. You can
+                find it in the profile section of this page.
               </li>
             </ul>
             <h3 className="mt-4 font-semibold text-gray-600 dark:text-white">
@@ -185,7 +186,7 @@ fetchStations();
               </div>
               <pre className="bg-gray-200 dark:bg-[#545454] p-2 rounded text-sm">
                 {`function fetchStations() {
-  fetch("https://app.kloudtechsea.com/api/v1/get/station/:name", {
+  fetch("https://app.kloudtechsea.com/api/v1/get/station/:id", {
     method: "GET",
     headers: {
       "kloudtrack-api-key": your-api-key-here, // Include the API key in the headers

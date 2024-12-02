@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import PuffLoader from "react-spinners/PuffLoader";
 import NotFound from "@/components/shared/NotFound";
 import AwsDataCard from "@/components/dynamic/DataDashboardCards.tsx/AwsDataCards";
@@ -17,12 +17,24 @@ import ArgDataCard from "@/components/dynamic/DataDashboardCards.tsx/ArgDataCard
 import RlmsDataCard from "@/components/dynamic/DataDashboardCards.tsx/RlmsDataCard";
 import { useUserContext } from "@/hooks/context/authContext";
 import ClmsDataCard from "@/components/dynamic/DataDashboardCards.tsx/ClmsDataCard";
+import { Fullscreen } from "lucide-react";
 
 const DataDashboard = () => {
   const { station } = useParams<string>();
   const [isOpen, setIsOpen] = useState(false);
   const { user, isLoading } = useUserContext();
   const navigate = useNavigate();
+  const imageRef = useRef<HTMLDivElement>(null);
+
+  const toggleFullscreen = () => {
+    if (imageRef.current) {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else {
+        imageRef.current.requestFullscreen();
+      }
+    }
+  };
 
   if (!station) {
     return <div>No station found</div>;
@@ -48,9 +60,9 @@ const DataDashboard = () => {
   return (
     <div className="w-full bg-[#F6F8FC] dark:bg-secondary rounded-xl p-[1rem] custom-scrollbar overflow-auto">
       <div className="container p-1">
-        <Card className="cardContainer">
+        <Card className="cardContainer" ref={imageRef}>
           <CardContent className="flex flex-col p-0 gap-2">
-            <div className="w-full flex justify-start flex-row gap-3">
+            <div className="w-full flex justify-between flex-row gap-3">
               <div className="flex flex-col justify-center items-start dark:invert px-2">
                 <Dialog open={isOpen} onOpenChange={setIsOpen}>
                   <DialogTrigger asChild>
@@ -58,7 +70,7 @@ const DataDashboard = () => {
                       className="text-sm xs:text-lg md:text-xl xl:text-3xl font-bold self-start p-0 hover:text-[#fbd008] dark:invert dark:hover:text-blue-500 ease-in-out duration-300 hover:scale-125 cursor-pointer"
                       onClick={() => setIsOpen(true)}
                     >
-                      {station}
+                      {stationData.name}
                     </span>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px] ">
@@ -86,6 +98,9 @@ const DataDashboard = () => {
                   <span>{`${stationData.barangay}, ${stationData.municipality}, ${stationData.province}`}</span>
                 </span>
               </div>
+              <button onClick={toggleFullscreen} className="p-2 rounded-lg ">
+                <Fullscreen />
+              </button>
             </div>
 
             {(stationData.type === "AWS" && (

@@ -205,9 +205,9 @@ export const getUserSession = async (): Promise<UserType> => {
 
 //=========================== GET DATA FOR EACH STATION
 export const getStationData = async (
-  stationName: string
+  stationId: string
 ): Promise<stationStaticType> => {
-  const response = await fetch(`${server}/user/stations/${stationName}`, {
+  const response = await fetch(`${server}/user/stations/${stationId}`, {
     method,
     credentials: "include",
   });

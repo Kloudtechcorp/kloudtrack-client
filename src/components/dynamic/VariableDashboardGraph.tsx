@@ -114,7 +114,7 @@ const VariableDashboardGraph = ({
               type="linear"
               stroke="#fbd008"
               strokeWidth={3}
-              dot={true}
+              dot={false}
             />
           </LineChart>
         )}

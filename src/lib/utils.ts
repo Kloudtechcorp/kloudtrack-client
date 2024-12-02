@@ -282,3 +282,18 @@ export const checkStationType = (type: string): string => {
   }
   return "Automated Weather Station";
 };
+
+export const checkRepeat = (repeat: string, range: number): number => {
+  switch (repeat) {
+    case "minute":
+      return range * 60;
+    case "halfhour":
+      return range * 2;
+    case "day":
+      return range / 24;
+    case "week":
+      return range / 168;
+    default:
+      return range;
+  }
+};

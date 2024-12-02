@@ -94,8 +94,8 @@ const VariableDashboard = () => {
                 />
 
                 <div className="flex flex-row gap-2 leading-3">
-                  <h1 className="capitalize text-2xl font-bold ">
-                    {stationData.name}
+                  <h1 className="capitalize font-medium md:text-2xl text-lg">
+                    {station}
                   </h1>
                   <button onClick={toggleFullscreen} className="p-2 rounded-lg">
                     <Fullscreen />
@@ -111,7 +111,7 @@ const VariableDashboard = () => {
                       defaultValue={weatherData}
                       onValueChange={(value) => setWeatherData(value)}
                     >
-                      <SelectTrigger className="w-[200px]">
+                      <SelectTrigger className="md:w-[200px]">
                         <SelectValue placeholder="Variable" />
                       </SelectTrigger>
                       <SelectContent>
@@ -134,7 +134,7 @@ const VariableDashboard = () => {
                       defaultValue={weatherData}
                       onValueChange={(value) => setWeatherData(value)}
                     >
-                      <SelectTrigger className="w-[200px]">
+                      <SelectTrigger className="md:w-[200px]">
                         <SelectValue placeholder="Variable" />
                       </SelectTrigger>
                       <SelectContent>
@@ -149,7 +149,7 @@ const VariableDashboard = () => {
                       defaultValue={weatherData}
                       onValueChange={(value) => setWeatherData(value)}
                     >
-                      <SelectTrigger className="w-[200px]">
+                      <SelectTrigger className="md:w-[200px]">
                         <SelectValue placeholder="Variable" />
                       </SelectTrigger>
                       <SelectContent>
@@ -162,7 +162,7 @@ const VariableDashboard = () => {
                       defaultValue={weatherData}
                       onValueChange={(value) => setWeatherData(value)}
                     >
-                      <SelectTrigger className="w-[200px]">
+                      <SelectTrigger className="md:w-[200px]">
                         <SelectValue placeholder="Variable" />
                       </SelectTrigger>
                       <SelectContent>
@@ -176,7 +176,7 @@ const VariableDashboard = () => {
               </div>
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex flex-col md:flex-row gap-4">
               <VerticalCards
                 stationId={stationData.id}
                 range={24}
@@ -184,7 +184,7 @@ const VariableDashboard = () => {
                 repeat="minute"
                 type={stationData.type.toLowerCase()}
               />
-              <div className="w-full flex flex-col gap-5 ">
+              <div className="w-full flex flex-col gap-5">
                 <div className="border p-2 rounded-lg flex flex-col gap-2">
                   <p className="font-semibold">Past 12 Hours</p>
                   <VariableDashboardGraph

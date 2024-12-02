@@ -248,6 +248,17 @@
   @apply w-full text-xs;
 }
 
+/* Variable Styling */
+.variableTitle {
+  @apply md:text-3xl font-bold md:px-4 px-2 capitalize;
+}
+.tableText {
+  @apply md:text-base text-xs;
+}
+.parameterOption {
+  @apply md:text-sm text-xs px-1;
+}
+
 /* Not Found Styling */
 .notFoundTitle {
   @apply bg-[#fbd008] to-transparent bg-clip-text md:text-[10rem] text-5xl font-extrabold leading-none text-transparent;

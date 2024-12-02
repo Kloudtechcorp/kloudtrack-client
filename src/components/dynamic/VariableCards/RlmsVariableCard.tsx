@@ -22,18 +22,16 @@ const RlmsVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
         <Card className="cardContainer">
           <CardContent className="flex flex-col p-0 gap-2">
             <div className="w-full flex flex-row justify-between items-center ">
-              <span className="text-3xl font-bold px-4 capitalize">
-                {weatherData}
-              </span>
+              <span className="variableTitle">{weatherData}</span>
               <div className="flex gap-1">
                 <div className="flex flex-col justify-center px-1">
-                  <span className="text-sm px-1">Parameter Option</span>
+                  <span className="parameterOption">Parameter Option</span>
                   <span className="text-3xl font-bold">
                     <Select
                       defaultValue={weatherData}
                       onValueChange={(value) => setWeatherData(value)}
                     >
-                      <SelectTrigger className="w-[200px]">
+                      <SelectTrigger className="md:w-[200px]">
                         <SelectValue placeholder="Variable" />
                       </SelectTrigger>
                       <SelectContent>

@@ -1,21 +1,27 @@
+import { apiKeyType } from "@/types";
 import {
   addPsgcType,
   addStationTypeType,
   createStationType,
   createUserData,
+  reportBugType,
   signInAccountType,
 } from "@/types/mutationTypes";
 import {
-  downloadableDataTypes,
+  coastalDataTypes,
   downloadParamsTypes,
+  rainGaugeDataTypes,
+  riverLevelDataTypes,
   weatherDataTypes,
 } from "@/types/queryTypes";
+import { bugSchema } from "@/types/validation";
+import { z } from "zod";
 
 const method: string = "POST";
 const server = import.meta.env.VITE_SERVER;
 
 export const signInAccount = async (user: signInAccountType) => {
-  const response = await fetch(`${server}/user/signin`, {
+  const response = await fetch(`${server}/user/auth/signin`, {
     method,
     headers: {
       "Content-Type": "application/json",
@@ -33,7 +39,7 @@ export const signInAccount = async (user: signInAccountType) => {
 };
 
 export const addPsgc = async (values: addPsgcType) => {
-  const response = await fetch(`${server}/admin/add-psgc`, {
+  const response = await fetch(`${server}/admin/psgc`, {
     method,
     headers: {
       "Content-Type": "application/json",
@@ -49,7 +55,7 @@ export const addPsgc = async (values: addPsgcType) => {
 };
 
 export const addStationType = async (values: addStationTypeType) => {
-  const response = await fetch(`${server}/admin/add-station-type`, {
+  const response = await fetch(`${server}/admin/station-type`, {
     method,
     headers: {
       "Content-Type": "application/json",
@@ -66,7 +72,7 @@ export const addStationType = async (values: addStationTypeType) => {
 };
 
 export const createStation = async (station: createStationType) => {
-  const response = await fetch(`${server}/admin/add-station`, {
+  const response = await fetch(`${server}/admin/station`, {
     method,
     headers: {
       "Content-Type": "application/json",
@@ -95,10 +101,16 @@ export const createUser = async (userData: createUserData) => {
   return data;
 };
 
-export const generateApi = async (): Promise<{ message: string }> => {
+export const generateApi = async (
+  apiData: apiKeyType
+): Promise<{ message: string }> => {
   const response = await fetch(`${server}/user/create-api-key`, {
     method,
     credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(apiData),
   });
   const data = await response.json();
   if (!response.ok) {
@@ -108,7 +120,7 @@ export const generateApi = async (): Promise<{ message: string }> => {
 };
 
 export const handleLogout = async () => {
-  const response = await fetch(`${server}/user/logout`, {
+  const response = await fetch(`${server}/user/auth/logout`, {
     method,
     credentials: "include",
   });
@@ -119,12 +131,12 @@ export const handleLogout = async () => {
   return data;
 };
 
-export const downloadData = async ({
+export const downloadWeatherData = async ({
   name,
   from,
   to,
 }: downloadParamsTypes): Promise<weatherDataTypes[]> => {
-  const response = await fetch(`${server}/weather/get/data`, {
+  const response = await fetch(`${server}/weather/download`, {
     method,
     credentials: "include",
     headers: {
@@ -136,6 +148,85 @@ export const downloadData = async ({
   if (!response.ok) {
     throw new Error(data.message || "Failed to fetch data");
   }
-  console.log(data);
+  return data;
+};
+
+export const downloadCoastalData = async ({
+  name,
+  from,
+  to,
+}: downloadParamsTypes): Promise<coastalDataTypes[]> => {
+  const response = await fetch(`${server}/coastal/download`, {
+    method,
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name, from, to }),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch data");
+  }
+  return data;
+};
+
+export const downloadRiverLevelData = async ({
+  name,
+  from,
+  to,
+}: downloadParamsTypes): Promise<riverLevelDataTypes[]> => {
+  const response = await fetch(`${server}/riverlevel/download`, {
+    method,
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name, from, to }),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch data");
+  }
+  return data;
+};
+
+export const downloadRainGaugeData = async ({
+  name,
+  from,
+  to,
+}: downloadParamsTypes): Promise<rainGaugeDataTypes[]> => {
+  const response = await fetch(`${server}/raingauge/download`, {
+    method,
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name, from, to }),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch data");
+  }
+  return data;
+};
+
+export const reportBug = async ({
+  title,
+  description,
+  metadata,
+}: reportBugType): Promise<rainGaugeDataTypes[]> => {
+  const response = await fetch(`${server}/user/bug`, {
+    method,
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ title, description, metadata }),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to send bug report.");
+  }
   return data;
 };

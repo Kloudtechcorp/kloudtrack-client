@@ -13,6 +13,7 @@ export const userValidation = z.object({
     .string()
     .min(8, { message: "Must be a minimum of 8 characters." }),
   role: z.string(),
+  grantedStations: z.array(z.number()),
 });
 
 export const psgcValidation = z.object({
@@ -29,7 +30,18 @@ export const stationTypeSchema = z.object({
 
 export const stationSchema = z.object({
   stationName: z.string({ required_error: "station name is required" }),
-  stationType: z.enum(["AWS", "TC", "CLMS", "RLMS", "ARG"]),
+  stationType: z.string({ required_error: "station type is required" }),
+  latitude: z.string({ required_error: "latitude is required" }),
+  longitude: z.string({ required_error: "longitude is required" }),
+  psgc: z.string({ required_error: "psgc id is required" }),
+  municipality: z.string({ required_error: "municipality id is required" }),
+  province: z.string({ required_error: "province is required" }),
+  region: z.string({ required_error: "region is required" }),
+  imageLink: z.string({ required_error: "province is required" }),
+});
+
+export const updateStationSchema = z.object({
+  stationName: z.string({ required_error: "station name is required" }),
   latitude: z.string({ required_error: "latitude is required" }),
   longitude: z.string({ required_error: "longitude is required" }),
   psgc: z.string({ required_error: "psgc id is required" }),
@@ -57,9 +69,14 @@ export const passwordSchema = z
   });
 
 export const downloadSchema = z.object({
-  // date: z.object({
-  //   from: z.string({ required_error: "from is required" }),
-  //   to: z.string({ required_error: "to is required" }),
-  // }),
   type: z.string({ required_error: "type is required" }),
+});
+
+export const bugSchema = z.object({
+  title: z.string().min(2, {
+    message: "Title is required",
+  }),
+  description: z.string().min(2, {
+    message: "Description is required.",
+  }),
 });

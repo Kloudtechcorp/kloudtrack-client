@@ -1,49 +1,38 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Card, CardContent } from "@/components/ui/card";
-import { useNavigate, useParams } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import DataCards from "@/components/shared/DataCards";
-import { useGetAwsData } from "@/hooks/react-query/queries";
-import { useStationContext } from "@/hooks/context/stationContext";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { formatDateString, returnActive } from "@/lib/utils";
+import { useGetAwsData2 } from "@/hooks/react-query/queries";
+import { formatDateString } from "@/lib/utils";
 import VariableGraph from "@/components/dynamic/VariableGraph";
-import { useState } from "react";
-import { stationStaticType } from "@/types";
-import DialogDownload from "@/components/shared/DialogDownload";
 import PuffLoader from "react-spinners/PuffLoader";
 import NotFound from "@/components/shared/NotFound";
+import WeatherDialog from "@/components/dynamic/DownloadCards/WeatherDialog";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 type AwsDataCardProps = {
-  stationName: string;
+  stationId: string;
 };
 
-const AwsDataCard = ({ stationName }: AwsDataCardProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-
+const AwsDataCard = ({ stationId }: AwsDataCardProps) => {
   const navigate = useNavigate();
-  const { data: stationData, isError, isLoading } = useGetAwsData(stationName);
+  const { data: stationData, isError, isLoading } = useGetAwsData2(stationId);
 
-  if (isError || !stationData?.currentweather)
+  useEffect(() => {
+    return () => {
+      toast.dismiss();
+    };
+  }, []);
+
+  if (isError || !stationData?.data) {
     return (
       <div className="w-full flex justify-center items-center h-full">
         <NotFound />
       </div>
     );
-  if (isLoading || !stationData)
+  }
+
+  if (isLoading) {
     return (
       <Card className="cardContainer flex flex-row">
         <CardContent className="flex flex-row w-full p-0 gap-2">
@@ -53,114 +42,59 @@ const AwsDataCard = ({ stationName }: AwsDataCardProps) => {
         </CardContent>
       </Card>
     );
+  }
+
+  const { station, data } = stationData;
+  const formattedDate = formatDateString(data.recordedAt, "long");
+
+  const weatherVariables = [
+    { label: "Heat Index", variable: "heatIndex" },
+    { label: "Temperature", variable: "temperature" },
+    { label: "Humidity", variable: "humidity" },
+  ];
 
   return (
     <div className="flex lg:flex-row flex-col w-full gap-2">
-      <div className="flex flex-col w-full px-2 gap-2">
-        {!stationData ? (
-          <p className="font-bold">There is no station data.</p>
-        ) : (
-          <div className="w-full gap-2 flex flex-col">
-            <div className=" px-3 text-xs md:text-sm border lg:text-base">
-              Current Weather as of{" "}
-              {formatDateString(stationData.currentweather.recordedAt, "long")}
-            </div>
-            <DataCards currentweather={stationData.currentweather} />
-          </div>
-        )}
-
-        {/* <div className="p-2 overflow-y-auto custom-scrollbar w-full">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead
-                  className="text-center border px-2 py-1 dark:bg-slate-800 text-lg font-bold dark:text-white rounded"
-                  colSpan={2}
-                >
-                  Weather Stations
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {stationNames.map((station, index) => (
-                <TableRow
-                  key={index}
-                  className={`hover-row h-7 ${
-                    index % 2 === 0
-                      ? "bg-gray-100 dark:bg-gray-700"
-                      : "bg-white dark:bg-gray-500"
-                  }`}
-                >
-                  <TableCell className="text-center ">
-                    {station.stationName}
-                  </TableCell>
-                  <TableCell className="text-center ">
-                    {returnActive(station.isActive)}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div> */}
+      <div className="flex flex-col w-full lg:w-2/3 px-2 gap-2">
+        <div className="w-full gap-2 flex flex-col">
+          <span className="currentWeatherText">
+            Current Weather as of {formattedDate}
+          </span>
+          <DataCards
+            currentweather={data}
+            type={"DATADASHBOARD"}
+            stationName={station.name}
+            pastHourPrecip={stationData.pastHourPrecip}
+          />
+        </div>
       </div>
 
       <div className="flex flex-col w-full gap-2">
-        <div className="flex w-full justify-start border px-3">
-          <span className="w-full font-bold">Weather Data Graphs</span>
-          <DialogDownload name={stationName} />
+        <div className="flex w-full items-center ">
+          <span className="font-medium w-full">Weather Data Graphs</span>
+          <WeatherDialog name={station.name} id={stationId} />
         </div>
         <div className="flex flex-col gap-2 overflow-y-auto cursor-pointer">
-          <div
-            className="flex flex-col gap-1 border p-1 rounded-lg hover:bg-yellow-100/25 dark:hover:bg-gray-900"
-            onClick={() =>
-              navigate(`/${stationName}/data-analysis`, {
-                state: { variable: "heatIndex" },
-              })
-            }
-          >
-            <div className="px-2 font-semibold">Heat Index</div>
-            <VariableGraph
-              stationName={stationName}
-              weatherData={"heatIndex"}
-              repeat={"hour"}
-              range={12}
-              key={1}
-            />
-          </div>
-          <div
-            className="flex flex-col gap-1 border p-1 rounded-lg hover:bg-yellow-100/25 dark:hover:bg-gray-900"
-            onClick={() =>
-              navigate(`/${stationName}/data-analysis`, {
-                state: { variable: "temperature" },
-              })
-            }
-          >
-            <div className="px-2 font-semibold">Temperature</div>
-            <VariableGraph
-              stationName={stationName}
-              weatherData={"temperature"}
-              range={12}
-              repeat={"hour"}
-              key={1}
-            />
-          </div>
-          <div
-            className="flex flex-col gap-1 border p-1 rounded-lg hover:bg-yellow-100/25 dark:hover:bg-gray-900"
-            onClick={() =>
-              navigate(`/${stationName}/data-analysis`, {
-                state: { variable: "humidity" },
-              })
-            }
-          >
-            <div className="px-2 font-semibold">Humidity</div>
-            <VariableGraph
-              stationName={stationName}
-              weatherData={"humidity"}
-              range={12}
-              key={1}
-              repeat={"hour"}
-            />
-          </div>
+          {weatherVariables.map(({ label, variable }) => (
+            <div
+              key={variable}
+              className="flex flex-col gap-1 border p-1 rounded-lg hover:bg-black/5 dark:hover:bg-white/5"
+              onClick={() =>
+                navigate(`/${station.name}/data-analysis`, {
+                  state: { variable },
+                })
+              }
+            >
+              <div className="px-2 font-semibold">{label}</div>
+              <VariableGraph
+                stationId={stationId}
+                weatherData={variable}
+                range={24}
+                repeat="hour"
+                type={"aws"}
+              />
+            </div>
+          ))}
         </div>
       </div>
     </div>

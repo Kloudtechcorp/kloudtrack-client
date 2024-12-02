@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
-import { useTheme } from "../theme-provider";
 import { HeaderProps } from "@/types";
 import { useUserContext } from "@/hooks/context/authContext";
 import { Skeleton } from "../ui/skeleton";
+import { ModeToggle } from "./ModeToggle";
+import { Twirl as Hamburger } from "hamburger-react";
 
 const Header = ({ burgerMenu }: HeaderProps) => {
-  const { theme } = useTheme();
-  const [data, setData] = useState(false);
+  const [clicked, setClicked] = useState(false);
   const [time, setTime] = useState("");
   const { user, isLoading } = useUserContext();
 
@@ -22,47 +21,33 @@ const Header = ({ burgerMenu }: HeaderProps) => {
   }, []);
 
   const handleClick = () => {
-    setData(!data);
-    burgerMenu(data);
+    setClicked(!clicked);
+    burgerMenu(!clicked);
   };
 
   return (
     <>
       {isLoading ? (
-        <div className="w-full bg-white dark:bg-[#181819] p-2 h-20 flex flex-col text-center justify-center items-center gap-2">
+        <div className="w-full bgColor p-2 h-[3.5rem] flex flex-col text-center justify-center items-center gap-2">
           <Skeleton className="w-44 h-4" />
           <Skeleton className="w-52 h-5" />
           <Skeleton className="w-64 h-6" />
         </div>
       ) : (
-        <div className="w-full bg-white dark:bg-[#181819] px-2 h-20 flex text-center">
-          <div className="flex px-[1.25rem] gap-2">
-            <img
-              src="/assets/icons/burger.svg"
-              width={30}
-              onClick={handleClick}
-              className="dark:invert hidden md:block"
-            />
+        <div className="w-full bg-white dark:bg-[#181819] p-1 h-[3.5rem] flex text-center items-center">
+          <div className="flex hover:cursor-pointer">
+            <Hamburger size={18} toggled={clicked} toggle={handleClick} />
           </div>
-
           <div className="items-center flex w-full flex-row justify-center">
-            {/* <Link to="/home" className="flex gap-3 justify-start p-3">
-              <img
-                src={
-                  theme === "dark"
-                    ? "/assets/img/logo-v2.png"
-                    : "/assets/img/logo-v1.png"
-                }
-                alt="logo"
-                className="size-12"
-              />
-            </Link> */}
             <div className="flex flex-col text-center">
-              <span className="text-3xl font-bold capitalize">
+              <span className="text-2xl font-bold capitalize">
                 {user.username}
               </span>
-              <span>{time}</span>
+              <span className="text-sm">{time}</span>
             </div>
+          </div>
+          <div className="mr-2 ">
+            <ModeToggle expand={false} />
           </div>
         </div>
       )}

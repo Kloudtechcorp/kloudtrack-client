@@ -1,10 +1,14 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+"use client";
+import { useMutation } from "@tanstack/react-query";
 import {
   addPsgcType,
   addStationTypeType,
   createStationType,
   createUserData,
+  reportBugType,
   signInAccountType,
+  UpdateStationProps,
+  updateUserGrantsProps,
   updateUserPasswordType,
 } from "@/types/mutationTypes";
 import {
@@ -12,22 +16,39 @@ import {
   addStationType,
   createStation,
   createUser,
-  downloadData,
+  downloadCoastalData,
+  downloadRainGaugeData,
+  downloadRiverLevelData,
+  downloadWeatherData,
   generateApi,
   handleLogout,
+  reportBug,
   signInAccount,
 } from "@/api/post";
-import toast from "react-hot-toast";
-import { updateApiKey, updateUserPassword } from "@/api/put";
-import { deleteApiKey } from "@/api/delete";
+import { toast } from "@/hooks/use-toast";
+import {
+  updateApiKey,
+  updateBugReport,
+  updateStation,
+  updateUserGrants,
+  updateUserPassword,
+} from "@/api/put";
+import { deleteApiKey, deleteStation } from "@/api/delete";
 import { downloadParamsTypes } from "@/types/queryTypes";
+import { apiKeyType, bugUpdateType } from "@/types";
+import { useNavigate } from "react-router-dom";
+import { bugSchema } from "@/types/validation";
+import { z } from "zod";
 
 //CREATE DATA
 export const useSignInAccount = () => {
   return useMutation({
     mutationFn: (user: signInAccountType) => signInAccount(user),
     onSuccess: () => {
-      toast.success("Login Successfull!");
+      toast({
+        title: "Login Successful!",
+        description: "Welcome to Kloudtrack!",
+      });
     },
   });
 };
@@ -36,10 +57,16 @@ export const useAddPsgc = () => {
   return useMutation({
     mutationFn: (values: addPsgcType) => addPsgc(values),
     onError: (error: Error) => {
-      toast.error(error.message);
+      toast({
+        title: "Error!",
+        description: error.message,
+      });
     },
     onSuccess: () => {
-      toast.success("Successfully added a psgc!");
+      toast({
+        title: "Creation Successful!",
+        description: "PSGC Added.",
+      });
     },
   });
 };
@@ -48,10 +75,16 @@ export const useAddStationType = () => {
   return useMutation({
     mutationFn: (values: addStationTypeType) => addStationType(values),
     onError: (error: Error) => {
-      toast.error(error.message);
+      toast({
+        title: "Error!",
+        description: error.message,
+      });
     },
     onSuccess: () => {
-      toast.success("Successfully added a station type!");
+      toast({
+        title: "Creation Successful!",
+        description: "Station Type Added.",
+      });
     },
   });
 };
@@ -60,10 +93,16 @@ export const useCreateStation = () => {
   return useMutation({
     mutationFn: (values: createStationType) => createStation(values),
     onError: (error: Error) => {
-      toast.error(error.message);
+      toast({
+        title: "Error!",
+        description: error.message,
+      });
     },
     onSuccess: () => {
-      toast.success("Successfully created a station!");
+      toast({
+        title: "Creation Successful!",
+        description: "Station Created.",
+      });
     },
   });
 };
@@ -72,23 +111,35 @@ export const useCreateUser = () => {
   return useMutation({
     mutationFn: (values: createUserData) => createUser(values),
     onError: (error: Error) => {
-      toast.error(error.message);
+      toast({
+        title: "Error!",
+        description: error.message,
+      });
     },
     onSuccess: () => {
-      toast.success("Successfully created user!");
+      toast({
+        title: "Creation Successful!",
+        description: "User Created.",
+      });
     },
   });
 };
 
 export const useGenerateApi = (onSuccess: () => void) => {
   return useMutation({
-    mutationFn: () => generateApi(),
+    mutationFn: ({ expiresAt, title }: apiKeyType) =>
+      generateApi({ expiresAt, title }),
     onError: (error: Error) => {
-      toast.error(error.message);
+      toast({
+        title: "Error!",
+        description: error.message,
+      });
     },
     onSuccess: () => {
-      toast.success("API key successfully generated!");
-      onSuccess();
+      toast({
+        title: "Creation Successful!",
+        description: "API Key Created.",
+      });
     },
   });
 };
@@ -97,7 +148,16 @@ export const useHandleLogout = () => {
   return useMutation({
     mutationFn: () => handleLogout(),
     onError: (error: Error) => {
-      toast.error(error.message);
+      toast({
+        title: "Error!",
+        description: error.message,
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Logout Successful!",
+        description: "Login again to access the dashboard.",
+      });
     },
   });
 };
@@ -107,10 +167,16 @@ export const useUpdateUserPassword = () => {
   return useMutation({
     mutationFn: (values: updateUserPasswordType) => updateUserPassword(values),
     onError: (error: Error) => {
-      toast.error(error.message);
+      toast({
+        title: "Error!",
+        description: error.message,
+      });
     },
     onSuccess: () => {
-      toast.success("Successfully updated password!");
+      toast({
+        title: "Update Successful!",
+        description: "Password updated.",
+      });
     },
   });
 };
@@ -119,11 +185,34 @@ export const useUpdateApiKey = (onSuccess: () => void) => {
   return useMutation({
     mutationFn: () => updateApiKey(),
     onError: (error: Error) => {
-      toast.error(error.message);
+      toast({
+        title: "Error!",
+        description: error.message,
+      });
     },
     onSuccess: () => {
-      toast.success("API key successfully updated!");
-      onSuccess();
+      toast({
+        title: "Update Successful!",
+        description: "API key updated.",
+      });
+    },
+  });
+};
+
+export const useUpdateStation = () => {
+  return useMutation({
+    mutationFn: (values: UpdateStationProps) => updateStation(values),
+    onError: (error: Error) => {
+      toast({
+        title: "Error!",
+        description: error.message,
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Update Successful!",
+        description: "Station updated.",
+      });
     },
   });
 };
@@ -131,25 +220,165 @@ export const useUpdateApiKey = (onSuccess: () => void) => {
 //DELETE
 export const useDeleteApiKey = (onSuccess: () => void) => {
   return useMutation({
-    mutationFn: () => deleteApiKey(),
+    mutationFn: (id: string) => deleteApiKey(id),
     onError: (error: Error) => {
-      toast.error(error.message);
+      toast({
+        title: "Error!",
+        description: error.message,
+      });
     },
     onSuccess: () => {
-      toast.success("API key successfully Deleted!");
-      onSuccess();
+      toast({
+        title: "Delete Successful!",
+        description: "API Key Deleted.",
+      });
     },
   });
 };
 
-export const useDownloadData = () => {
+export const useDeleteStation = () => {
+  const navigate = useNavigate();
+
   return useMutation({
-    mutationFn: (data: downloadParamsTypes) => downloadData(data),
+    mutationFn: (id: string) => deleteStation(id),
     onError: (error: Error) => {
-      toast.error(error.message);
+      toast({
+        title: "Error!",
+        description: error.message,
+      });
     },
     onSuccess: () => {
-      toast.success("Data Downloaded!");
+      toast({
+        title: "Delete Successful!",
+        description: "Station Deleted.",
+      });
+      navigate("/");
+    },
+  });
+};
+
+export const useWeatherDownloadData = () => {
+  return useMutation({
+    mutationFn: (data: downloadParamsTypes) => downloadWeatherData(data),
+    onError: (error: Error) => {
+      toast({
+        title: "Error!",
+        description: error.message,
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Download Successful!",
+        description: "Weather Data Downloaded.",
+      });
+    },
+  });
+};
+
+export const useCoastalDownloadData = () => {
+  return useMutation({
+    mutationFn: (data: downloadParamsTypes) => downloadCoastalData(data),
+    onError: (error: Error) => {
+      toast({
+        title: "Error!",
+        description: error.message,
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Download Successful!",
+        description: "Coastal Data Downloaded.",
+      });
+    },
+  });
+};
+
+export const useRiverLevelDownloadData = () => {
+  return useMutation({
+    mutationFn: (data: downloadParamsTypes) => downloadRiverLevelData(data),
+    onError: (error: Error) => {
+      toast({
+        title: "Error!",
+        description: error.message,
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Download Successful!",
+        description: "River Level Data Downloaded.",
+      });
+    },
+  });
+};
+
+export const useRainGaugeDownloadData = () => {
+  return useMutation({
+    mutationFn: (data: downloadParamsTypes) => downloadRainGaugeData(data),
+    onError: (error: Error) => {
+      toast({
+        title: "Error!",
+        description: error.message,
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Download Successful!",
+        description: "Rain Gauge Data Downloaded.",
+      });
+    },
+  });
+};
+
+export const useUpdateUserGrants = () => {
+  return useMutation({
+    mutationFn: (data: updateUserGrantsProps) => updateUserGrants(data),
+    onError: (error: Error) => {
+      toast({
+        title: "Error!",
+        description: error.message,
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Update Successful!",
+        description: "User stations grant updated.",
+      });
+    },
+  });
+};
+
+export const useReportBug = () => {
+  return useMutation({
+    mutationFn: (data: reportBugType) => reportBug(data),
+    onError: (error: Error) => {
+      toast({
+        title: "Error!",
+        description: error.message,
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Report Successful!",
+        description: "Bug Reported.",
+      });
+    },
+  });
+};
+
+export const useUpdateBug = (onSuccess: () => void) => {
+  return useMutation({
+    mutationFn: (data: bugUpdateType) => updateBugReport(data),
+    onError: (error: Error) => {
+      toast({
+        title: "Error!",
+        description: error.message,
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Update Successful!",
+        description: "Bug Updated.",
+      });
     },
   });
 };

@@ -1,157 +1,93 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { useUserContext } from "@/hooks/context/authContext";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  checkAS5600,
-  checkBH1750,
-  checkBME280,
-  checkRTC,
-  checkSlave,
-  checkUV,
-  NO_VALUE_BADGE,
-} from "@/lib/helper";
-import { useGetStationList } from "@/hooks/react-query/queries";
-import HashLoader from "react-spinners/HashLoader";
-import PuffLoader from "react-spinners/PuffLoader";
-import React from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AwsSensors } from "@/components/dynamic/SensorTables/AwsSensors";
+import { ArgSensors } from "@/components/dynamic/SensorTables/ArgSensors";
+import { RlmsSensors } from "@/components/dynamic/SensorTables/RlmsSensors";
+import { ClmsSensors } from "@/components/dynamic/SensorTables/ClmsSensors";
 
 const StationList = () => {
-  const { data: stationList, isLoading, isError } = useGetStationList();
+  const { user, isLoading } = useUserContext();
 
-  if (isLoading || !stationList) {
+  if (isLoading) {
     return (
-      <div className="w-full h-full flex justify-center items-center relative">
-        <HashLoader
-          color={"#fbd008"}
-          size={150}
-          className="absolute top-0 left-[15.5rem] z-50"
-        />
-        <PuffLoader
-          color={"#545454"}
-          size={500}
-          className="absolute top-0 left-[-10rem]"
-        />
+      <div className="mainContainer bg-[#F6F8FC] dark:bg-slate-950">
+        <div className=" flex flex-col gap-2 container ">
+          <Skeleton className="h-60 w-full" />
+          <Skeleton className="h-60 w-full" />
+          <Skeleton className="h-60 w-full" />
+        </div>
       </div>
     );
   }
 
-  if (isError) {
-    return <div>Error loading station list.</div>;
-  }
+  const hasAwsStations = user.stations.some(
+    (station) => station.type === "AWS"
+  );
+  const hasArgStations = user.stations.some(
+    (station) => station.type === "ARG"
+  );
+  const hasRlmsStations = user.stations.some(
+    (station) => station.type === "RLMS"
+  );
+  const hasClmsStations = user.stations.some(
+    (station) => station.type === "CLMS"
+  );
 
   return (
-    <Card x-chunk="dashboard-05-chunk-3">
-      <CardHeader className="px-7">
-        <CardTitle>Stations List</CardTitle>
-        <CardDescription>
-          This list shows the status of every station and its sensors.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Table className="overflow-x-auto min-w-[1440px]">
-          <TableHeader className="h-10">
-            <TableRow className="text-center dark:text-white">
-              {[
-                "Station Name",
-                "Latitude & Longitude",
-                "Location",
-                "Serial",
-                "BME280-1",
-                "BME280-2",
-                "BME280-3",
-                "BH1750",
-                "AS5600",
-                "SLAVE",
-                "RTC",
-                "UV",
-              ].map((header, index) => (
-                <TableHead
-                  key={index}
-                  className={`text-center p-0 dark:text-white ${
-                    index === 0
-                      ? "w-[100px]"
-                      : index === 1
-                      ? "w-[200px]"
-                      : index === 2
-                      ? "w-[250px]"
-                      : index === 3
-                      ? "w-[300px]"
-                      : "w-24"
-                  }`}
-                >
-                  {header}
-                </TableHead>
-              ))}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {stationList.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={13} className="text-center">
-                  <Skeleton className="h-4 w-full" />
-                </TableCell>
-              </TableRow>
-            ) : (
-              stationList.map((station, index) => (
-                <TableRow className="bg-accent h-10" key={index}>
-                  <TableCell className="text-center p-0">
-                    {station.stationName} ({station.stationType.typeName})
-                  </TableCell>
-                  <TableCell className="text-center p-0">{`${station.latitude}, ${station.longitude}`}</TableCell>
-                  <TableCell className="text-center p-0">{`${station.barangay.barangay}, ${station.municipality.municipality}, ${station.province.province}`}</TableCell>
-                  <TableCell className="text-center p-0">
-                    {station.serial}
-                  </TableCell>
-                  {station.currentweather?.length
-                    ? station.currentweather.map((weather, idx) => (
-                        <React.Fragment key={idx}>
-                          <TableCell>
-                            {checkBME280(weather.T1, weather.H1, weather.P1)}
-                          </TableCell>
-                          <TableCell>
-                            {checkBME280(weather.T2, weather.H2, weather.P2)}
-                          </TableCell>
-                          <TableCell>
-                            {checkBME280(weather.T3, weather.H3, weather.P3)}
-                          </TableCell>
-                          <TableCell>{checkBH1750(weather.light)}</TableCell>
-                          <TableCell>
-                            {checkAS5600(weather.windDirection)}
-                          </TableCell>
-                          <TableCell>
-                            {checkSlave(
-                              weather.windSpeed,
-                              weather.precipitation,
-                              weather.gust
-                            )}
-                          </TableCell>
-                          <TableCell>{checkRTC(weather.recordedAt)}</TableCell>
-                          <TableCell>{checkUV(weather.uvIntensity)}</TableCell>
-                        </React.Fragment>
-                      ))
-                    : Array.from({ length: 8 }).map((_, idx) => (
-                        <TableCell key={idx}>{NO_VALUE_BADGE}</TableCell>
-                      ))}
-                </TableRow>
-              ))
+    <div className="px-5 w-full">
+      <span className="flex pt-5 font-bold text-lg">Station List</span>
+      <span className="flex pb-5 text-sm">
+        This page will show the list of stations per station type along with its
+        sensors.
+      </span>
+
+      <div className="w-full overflow-auto rounded-md custom-scrollbar">
+        {isLoading ? (
+          <div className="flex flex-col gap-3 md:gap-5 w-full container p-2 h-full">
+            <Skeleton className="w-full cardContainer dark:bg-primary" />
+            <Skeleton className="w-full cardContainer dark:bg-primary" />
+          </div>
+        ) : (
+          <Tabs defaultValue="aws" className="w-full flex flex-col">
+            <TabsList className="flex justify-start container">
+              {hasAwsStations && (
+                <TabsTrigger value="aws">Weather Stations</TabsTrigger>
+              )}
+              {hasArgStations && (
+                <TabsTrigger value="arg">Rain Gauges</TabsTrigger>
+              )}
+              {hasRlmsStations && (
+                <TabsTrigger value="rlms">River Level</TabsTrigger>
+              )}
+              {hasClmsStations && (
+                <TabsTrigger value="clms">Coastal Level</TabsTrigger>
+              )}
+            </TabsList>
+            {hasAwsStations && (
+              <TabsContent value="aws">
+                <AwsSensors />
+              </TabsContent>
             )}
-          </TableBody>
-        </Table>
-      </CardContent>
-    </Card>
+            {hasArgStations && (
+              <TabsContent value="arg">
+                <ArgSensors />
+              </TabsContent>
+            )}
+            {hasRlmsStations && (
+              <TabsContent value="rlms">
+                <RlmsSensors />
+              </TabsContent>
+            )}
+            {hasClmsStations && (
+              <TabsContent value="clms">
+                <ClmsSensors />
+              </TabsContent>
+            )}
+          </Tabs>
+        )}
+      </div>
+    </div>
   );
 };
 

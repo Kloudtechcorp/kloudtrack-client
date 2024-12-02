@@ -6,17 +6,19 @@ import { Skeleton } from "../ui/skeleton";
 import { weatherUnit } from "@/lib/utils";
 
 const VerticalCards = ({
-  stationName,
+  stationId,
   weatherData,
   range,
   repeat,
+  type,
 }: TableGraphCardType) => {
   const {
     data: stationData,
     isError,
     isLoading,
   } = useGetTableGraphData({
-    stationName,
+    type,
+    stationId,
     weatherData,
     range,
     repeat,
@@ -29,8 +31,8 @@ const VerticalCards = ({
           key={index}
           className="w-full h-full aspect-square text-center flex flex-col px-0 gap-1"
         >
-          <Skeleton className="w-full h-7 border" />
-          <Skeleton className="h-52 w-full" />
+          <Skeleton className="w-full h-7" />
+          <Skeleton className="h-[11rem] w-full" />
         </div>
       ))}
     </>
@@ -38,18 +40,18 @@ const VerticalCards = ({
 
   const renderCard = (title: string, value: number | null) => {
     return (
-      <Card className="w-full h-full aspect-[10/9]">
+      <Card className="w-full h-[11rem]">
         <CardContent className="text-center flex flex-col h-full w-full px-0">
-          <span className="w-full h-7 border border-transparent border-b-gray-300">
-            {title}
-          </span>
-          <div className="h-full flex items-center justify-center">
-            <span className="text-5xl font-bold">
+          <div className="cardTitleDiv">
+            <span className="weatherDataTitle">{title}</span>
+          </div>
+          <div className="cardDataDiv ">
+            <span className="weatherDataText">
               {weatherData !== "uvIndex"
                 ? value
                 : value?.toString().slice(0, 1)}{" "}
-              <span className="text-3xl">{weatherUnit(weatherData)}</span>
             </span>
+            <span className="weatherDataText">{weatherUnit(weatherData)}</span>
           </div>
         </CardContent>
       </Card>
@@ -68,8 +70,8 @@ const VerticalCards = ({
 
   return (
     <div className="flex flex-col gap-3 w-[20%]">
-      {renderCard("Current", stationData.currentData.current)}
-      {renderCard("Past 1-minute", stationData.currentData.past1min)}
+      {renderCard("Current", stationData.currentData)}
+      {renderCard("Past 1-minute", stationData.past1minute)}
       {renderCard("Highest (Past 24-hours)", stationData.max)}
       {renderCard("Lowest (Past 24-hours)", stationData.min)}
     </div>

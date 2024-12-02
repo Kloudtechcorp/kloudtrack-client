@@ -7,14 +7,16 @@ import Dashboard from "./_root/pages/Dashboard";
 import Settings from "./_root/pages/Settings";
 import Variable from "./_root/pages/Variable";
 import DataDashboard from "./_root/pages/DataDashboard";
-import { Toaster } from "react-hot-toast";
+import { Toaster } from "@/components/ui/toaster";
+import { SonnerToaster } from "@/components/ui/sonner";
 import AdminSettings from "./_root/pages/AdminSettings";
 import VariableDashboard from "./_root/pages/VariableDashboard";
+import NotFound from "./components/shared/NotFound";
 
 function App() {
   return (
     <>
-      <main className="flex h-screen">
+      <main className="flex h-screen w-full">
         <Routes>
           <Route path="/signin" element={<Signin />} />
           <Route element={<RootLayout />}>
@@ -28,10 +30,12 @@ function App() {
               path="/:station/data-analysis"
               element={<VariableDashboard />}
             />
-            <Route path="/admin-settings" element={<AdminSettings />}></Route>
+            <Route path="/admin-settings" element={<AdminSettings />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
-        <Toaster position="top-center" reverseOrder={false} />
+        <Toaster />
+        <SonnerToaster />
       </main>
     </>
   );

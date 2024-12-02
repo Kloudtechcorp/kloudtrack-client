@@ -1,8 +1,8 @@
 import { type ClassValue, clsx } from "clsx";
-import { set } from "date-fns";
-import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { timer } from "./objects/himawariArrays";
+import { DateRange } from "react-day-picker";
+import { subDays } from "date-fns";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -18,8 +18,11 @@ export function formatDateString(
   const options: Intl.DateTimeFormatOptions = {
     month: month,
     day: "numeric",
-    year: "numeric",
   };
+
+  if (month !== "short") {
+    options.year = "numeric";
+  }
   const date = new Date(utcPlus8Now);
   const formattedDate = date.toLocaleDateString("en-US", options);
   const time = date.toLocaleTimeString([], {
@@ -27,7 +30,7 @@ export function formatDateString(
     minute: "numeric",
   });
 
-  return `${formattedDate} ${time}`;
+  return `${formattedDate} at ${time}`;
 }
 
 export const getNearestTimeIndex = (hours: number, minutes: number): number => {
@@ -56,6 +59,8 @@ export const stationType = (type: string) => {
       return "River Level Monitoring System";
     case "ARG":
       return "Automated Rain Gauge";
+    case "CLMS":
+      return "Coastal Level Monitoring System";
     default:
       return "Not Defined";
   }
@@ -210,4 +215,59 @@ export const weatherUnit = (measurement: string): string | null => {
   };
 
   return units[measurement] || null;
+};
+
+export const getDateRange = (
+  selected: string,
+  now: Date
+): DateRange | undefined => {
+  switch (selected) {
+    case "7days":
+      return { from: subDays(now, 7), to: now };
+    case "28days":
+      return { from: subDays(now, 28), to: now };
+    case "90days":
+      return { from: subDays(now, 90), to: now };
+    case "week":
+      const startOfWeek = now.getDate() - now.getDay(); // Sunday
+      return { from: new Date(now.setDate(startOfWeek)), to: new Date() };
+    case "month":
+      return {
+        from: new Date(now.getFullYear(), now.getMonth(), 1),
+        to: new Date(now.getFullYear(), now.getMonth() + 1, 0),
+      };
+    case "year":
+      return {
+        from: new Date(now.getFullYear(), 0, 1),
+        to: new Date(now.getFullYear(), 11, 31),
+      };
+    case "last-week":
+      const lastWeekStart = now.getDate() - now.getDay() - 7; // Start of last week
+      return {
+        from: new Date(now.setDate(lastWeekStart)),
+        to: new Date(now.setDate(lastWeekStart + 6)),
+      };
+    case "last-month":
+      const lastMonth = now.getMonth() - 1;
+      const lastMonthYear =
+        lastMonth < 0 ? now.getFullYear() - 1 : now.getFullYear();
+      const lastMonthEnd = new Date(lastMonthYear, lastMonth + 1, 0).getDate();
+      return {
+        from: new Date(lastMonthYear, lastMonth, 1),
+        to: new Date(lastMonthYear, lastMonth, lastMonthEnd),
+      };
+    default:
+      return undefined;
+  }
+};
+
+export const checkPasswordStrength = (password: string) => {
+  const criteria = {
+    length: password.length >= 8,
+    uppercase: /[A-Z]/.test(password),
+    lowercase: /[a-z]/.test(password),
+    digit: /[0-9]/.test(password),
+    specialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+  };
+  return(criteria);
 };

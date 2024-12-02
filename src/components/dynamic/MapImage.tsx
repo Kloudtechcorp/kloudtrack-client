@@ -1,5 +1,4 @@
 import React from "react";
-import { batteryPercentage, getBatteryImg } from "@/lib/utils";
 import { stationStaticType } from "@/types";
 import { Button } from "@/components/ui/button";
 
@@ -19,18 +18,18 @@ const MapImage: React.FC<MapImageProps> = ({
   return (
     <div className="flex flex-col w-full sm:w-1/2 md:w-full ">
       <img
-        src={stationDetails.imageLink}
-        alt={stationDetails.stationName}
+        src={stationDetails.image}
+        alt={stationDetails.name}
         className="h-72 w-full object-cover"
       />
 
       <div className="w-full px-2 flex justify-between items-center mt-2">
         <div className="flex gap-1">
           <h2 className="font-bold text-xl md:text-2xl capitalize">
-            {stationDetails.stationName}
+            {stationDetails.name}
           </h2>
         </div>
-        <h3>{stationDetails.stationType.typeName}</h3>
+        <h3>{stationDetails.type}</h3>
       </div>
 
       <hr className="bg-black dark:bg-white h-[0.1rem] mx-2" />
@@ -38,17 +37,17 @@ const MapImage: React.FC<MapImageProps> = ({
       <div className="flex flex-row p-2">
         <span className="flex flex-col w-2/3">
           <h3 className="font-medium text-xs md:text-sm lg:text-base">
-            {stationDetails.barangay.barangay},{" "}
-            {stationDetails.municipality.municipality},{" "}
-            {stationDetails.province.province}
+            {stationDetails.barangay}, {stationDetails.municipality},{" "}
+            {stationDetails.province}
           </h3>
           <p className="font-medium text-xs md:text-sm lg:text-base">
             {stationDetails.latitude} , {stationDetails.longitude}
           </p>
         </span>
         <Button
-          className="w-1/3 dark:bg-secondary dark:text-gray-200 text-xs md:text-sm lg:text-base"
-          onClick={() => navigate(`/${stationDetails.stationName}`)}
+          className="w-1/3 "
+          onClick={() => navigate(`/${stationDetails.name}`)}
+          variant="default"
         >
           Monitoring Page
         </Button>

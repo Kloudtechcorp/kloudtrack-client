@@ -77,9 +77,9 @@ const ClmsDataCard = ({ stationId }: ClmsDataCardProps) => {
         </div>
       </div>
 
-      <div className="flex flex-col w-full gap-2">
-        <div className="flex w-full items-center">
-          <span className="font-medium w-full ">Weather Data Graphs</span>
+      <div className="flex flex-col w-full gap-2 px-2">
+        <div className="flex w-full items-center ">
+          <span className="weatherDataGraphs">Weather Data Graphs</span>
           <CoastalDialog name={station.name} id={stationId} />
         </div>
         <div className="flex flex-col gap-2 overflow-y-auto cursor-pointer">

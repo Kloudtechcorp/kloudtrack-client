@@ -79,8 +79,8 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
 
   return (
     <nav
-      className={`bg-white dark:bg-[#181819] ease-in-out duration-300 hidden md:flex py-2 ${
-        clicked ? "w-44" : "w-[3.5rem]"
+      className={`bg-white dark:bg-[#181819] ease-in-out duration-300 lg:flex py-2 ${
+        clicked ? "w-44 lg:flex" : "w-[3.5rem] hidden"
       }`}
     >
       <div className="flex flex-col gap-7 w-full">
@@ -113,7 +113,13 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
                               src={link.imgUrl}
                               className={`dark:invert size-4`}
                             />
-                            <div className={`${clicked ? "block" : "hidden"}`}>
+                            <div
+                              className={`${
+                                clicked
+                                  ? "block md:text-base text-xs"
+                                  : "hidden"
+                              }`}
+                            >
                               {link.label}
                             </div>
                           </div>
@@ -166,7 +172,9 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
                 >
                   <LogOut className="dark:bg-transparent dark:invert size-5" />
                   <span
-                    className={`dark:invert ${clicked ? "block" : "hidden"}`}
+                    className={`dark:invert ${
+                      clicked ? "block md:text-base text-xs" : "hidden"
+                    }`}
                   >
                     Logout
                   </span>

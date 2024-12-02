@@ -31,9 +31,9 @@ const ArgCard: React.FC<{ id: string }> = ({ id }) => {
   if (isLoading || !stationData) {
     return (
       <Card className="cardContainer flex flex-row">
-        <CardContent className="flex flex-row w-full p-0 gap-2">
-          <div className="flex flex-col gap-3 justify-center items-center w-full">
-            <PuffLoader color={"#545454"} size={500} />
+        <CardContent className="puffLoaderCardContent">
+          <div className="puffLoaderDiv ">
+            <PuffLoader color={"#545454"} size={"100%"} />
           </div>
         </CardContent>
       </Card>
@@ -61,18 +61,18 @@ const ArgCard: React.FC<{ id: string }> = ({ id }) => {
       <CardContent className="flex flex-col lg:flex-row w-full p-0 gap-2">
         <div className="stationDetailsDiv">
           <div className="flex flex-col px-2 ">
-            <div className="flex items-center py-3">
-              <CardTitle className="w-full">
+            <div className="stationNameDiv">
+              <CardTitle className="stationName">
                 {stationData.station.name}
               </CardTitle>
             </div>
             <hr className="h-[0.25rem] bg-black" />
             <div className="flex flex-col">
-              <span className="text-base md:text-lg xl:text-xl font-semibold">
+              <span className="stationType">
                 {stationType(stationData.station.type)}
               </span>
-              <span className="text-base">{`${stationData.station.barangay}, ${stationData.station.municipality}, ${stationData.station.province}`}</span>
-              <span className="text-sm">
+              <span className="stationLocation">{`${stationData.station.barangay}, ${stationData.station.municipality}, ${stationData.station.province}`}</span>
+              <span className="stationLocation">
                 {stationData.station.latitude}, {stationData.station.longitude}
               </span>
             </div>
@@ -121,7 +121,7 @@ const ArgCard: React.FC<{ id: string }> = ({ id }) => {
         ) : (
           <div className="flex flex-col gap-2 w-full">
             <div className="stationDataDiv">
-              <span className="w-full font-normal text-lg">
+              <span className="currentWeather">
                 Current Weather Conditions as of{" "}
                 {formatDateString(stationData.data.recordedAt, "long")}
               </span>

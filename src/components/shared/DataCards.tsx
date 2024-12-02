@@ -19,7 +19,7 @@ const DataCards = ({
 }: DataCardsProps) => {
   if (type === "DATADASHBOARD") {
     return (
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 pb-2 ">
         <Card className="cardDashboard">
           <CardContent className="px-0 p-0 h-full">
             <HeatIndex
@@ -137,6 +137,7 @@ const DataCards = ({
       </div>
     );
   }
+  // Dashboard
   return (
     <div className={`grid grid-cols-3 w-full h-full gap-3 justify-center`}>
       <Card className="cardMain">

@@ -70,9 +70,9 @@ const AwsDataCard = ({ stationId }: AwsDataCardProps) => {
         </div>
       </div>
 
-      <div className="flex flex-col w-full gap-2">
+      <div className="flex flex-col w-full gap-2 px-2">
         <div className="flex w-full items-center ">
-          <span className="font-medium w-full">Weather Data Graphs</span>
+          <span className="weatherDataGraphs">Weather Data Graphs</span>
           <WeatherDialog name={station.name} id={stationId} />
 
           {/* Replaces Data Download (t1-3, h1-h3, p1-p3) */}

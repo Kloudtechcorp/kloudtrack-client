@@ -14,7 +14,6 @@ import { login } from "@/types/validation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useUserContext } from "@/hooks/context/authContext";
-import HashLoader from "react-spinners/PacmanLoader";
 import PuffLoader from "react-spinners/PuffLoader";
 import { useSignInAccount } from "@/hooks/react-query/mutations";
 import { useState } from "react";
@@ -66,11 +65,6 @@ const Signin = () => {
         <>
           {isLoading ? (
             <div className="w-full h-full flex justify-center items-center relative bgColor">
-              <HashLoader
-                color={"#fbd008"}
-                size={150}
-                className="absolute top-0 left-[15.5rem] z-50"
-              />
               <PuffLoader
                 color={"#545454"}
                 size={500}

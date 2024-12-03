@@ -283,6 +283,12 @@ export type tablesType = {
   type: string;
 };
 
+export type analysisType = {
+  stationId: string;
+  weatherData: string;
+  type: string;
+};
+
 export type detailedStationProps = {
   id: number;
   typeId: number;

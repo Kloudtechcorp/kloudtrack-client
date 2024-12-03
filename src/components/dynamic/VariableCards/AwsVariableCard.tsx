@@ -52,7 +52,7 @@ const AwsVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
               <span className="text-3xl font-bold px-4 capitalize">
                 {weatherData}
               </span>
-              <div className="flex gap-2">
+              <div className="flex gap-1">
                 {weatherData !== "precipitation" &&
                   weatherData !== "uvIndex" && (
                     <div className="flex flex-col items-center h-full">
@@ -66,7 +66,7 @@ const AwsVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
                     </div>
                   )}
 
-                <div className="flex flex-col justify-center items-center px-3">
+                <div className="flex flex-col justify-center items-center px-1">
                   <span className="text-sm px-1">Parameter Option</span>
                   <span className="text-3xl font-bold">
                     <Select

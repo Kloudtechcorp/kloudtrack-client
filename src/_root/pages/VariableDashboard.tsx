@@ -11,24 +11,35 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { useGetStationNames } from "@/hooks/react-query/queries";
+import { checkRepeat } from "@/lib/utils";
 import { Fullscreen } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import PuffLoader from "react-spinners/PuffLoader";
 
 const VariableDashboard = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { station } = useParams();
   const {
     data: stationData,
     isError,
     isLoading,
   } = useGetStationNames(station?.toString() || "");
-  const [weatherData, setWeatherData] = useState<string>("temperature");
+  const [weatherData, setWeatherData] = useState<string>(
+    location.state?.variable || "temperature"
+  );
   const imageRef = useRef<HTMLDivElement>(null);
   const [checked, setChecked] = useState<boolean>(() =>
     localStorage.getItem("variableChecked") === "true" ? true : false
   );
+  const [repeatData, setRepeatData] = useState<string>(
+    () => localStorage.getItem("variableRepeat") || "hour"
+  );
+
+  useEffect(() => {
+    localStorage.setItem("variableRepeat", repeatData);
+  }, [repeatData]);
 
   useEffect(() => {
     localStorage.setItem("variableChecked", String(checked));
@@ -86,12 +97,9 @@ const VariableDashboard = () => {
     );
 
   return (
-    <div
-      className="mainContainer bg-[#F6F8FC] dark:bg-secondary overflow-auto custom-scrollbar"
-      ref={imageRef}
-    >
+    <div className="mainContainer bg-[#F6F8FC] dark:bg-secondary overflow-auto custom-scrollbar">
       <div className="container p-2">
-        <Card className="cardContainer">
+        <Card className="cardContainer" ref={imageRef}>
           <CardContent className="h-full flex flex-col gap-2">
             <div className="flex items-center gap-5 justify-between ">
               <div className="flex gap-2">
@@ -123,6 +131,24 @@ const VariableDashboard = () => {
                       </div>
                     </div>
                   )}
+                <div className="flex flex-col justify-center items-center px-1">
+                  <span className="text-sm px-1">Repeat Value</span>
+                  <span className="text-3xl font-bold">
+                    <Select
+                      value={repeatData}
+                      onValueChange={(value) => setRepeatData(value)}
+                    >
+                      <SelectTrigger className="w-[200px]">
+                        <SelectValue placeholder="Repeat" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="minute">Minute</SelectItem>
+                        <SelectItem value="halfhour">30 Minutes</SelectItem>
+                        <SelectItem value="hour">Hour</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </span>
+                </div>
                 <div className="flex flex-col justify-center">
                   <span className="text-sm px-1">Parameter Option</span>
                   {(stationData.type === "AWS" && (
@@ -204,9 +230,7 @@ const VariableDashboard = () => {
             <div className="flex gap-4">
               <VerticalCards
                 stationId={stationData.id}
-                range={24}
                 weatherData={weatherData}
-                repeat="minute"
                 type={stationData.type.toLowerCase()}
               />
               <div className="w-full flex flex-col gap-5 ">
@@ -214,9 +238,9 @@ const VariableDashboard = () => {
                   <p className="font-semibold">Past 12 Hours</p>
                   <VariableDashboardGraph
                     stationId={stationData.id}
-                    range={12}
+                    range={checkRepeat(repeatData, 12)}
                     weatherData={weatherData}
-                    repeat="hour"
+                    repeat={repeatData}
                     type={stationData.type.toLowerCase()}
                     showDots={checked}
                   />
@@ -225,9 +249,9 @@ const VariableDashboard = () => {
                   <p className="font-semibold">Past 3 Days</p>
                   <VariableDashboardGraph
                     stationId={stationData.id}
-                    range={72}
+                    range={checkRepeat(repeatData, 72)}
                     weatherData={weatherData}
-                    repeat="hour"
+                    repeat={repeatData}
                     type={stationData.type.toLowerCase()}
                     showDots={checked}
                   />
@@ -236,9 +260,9 @@ const VariableDashboard = () => {
                   <p className="font-semibold">Past 7 Days</p>
                   <VariableDashboardGraph
                     stationId={stationData.id}
-                    range={168}
+                    range={checkRepeat(repeatData, 168)}
                     weatherData={weatherData}
-                    repeat="hour"
+                    repeat={repeatData}
                     type={stationData.type.toLowerCase()}
                     showDots={checked}
                   />

@@ -10,7 +10,7 @@ import { Skeleton } from "../ui/skeleton";
 import { formatDateString, weatherUnit } from "@/lib/utils";
 import VariableGrapht from "./VariableGraph";
 import { TableGraphCardType, tablesType } from "@/types/queryTypes";
-import { useGetTableGraphData } from "@/hooks/react-query/queries";
+import { useGetAnalysis } from "@/hooks/react-query/queries";
 import NoData from "../shared/NoData";
 
 const TableGraphCard = ({
@@ -32,7 +32,7 @@ const TableGraphCard = ({
     data: stationData,
     isError,
     isLoading,
-  } = useGetTableGraphData(stationDataParams);
+  } = useGetAnalysis(stationDataParams);
 
   if (isError) {
     return (
@@ -106,7 +106,7 @@ const TableGraphCard = ({
             </TableRow>
             <TableRow>
               <TableCell className="p-1 border-r-[1px]">
-                Highest (12-Hours)
+                Highest today
               </TableCell>
               <TableCell className="">
                 {Math.round(stationData.max * 100) / 100}{" "}
@@ -114,20 +114,18 @@ const TableGraphCard = ({
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell className="p-1 border-r-[1px]">
-                Lowest (12-Hours)
-              </TableCell>
+              <TableCell className="p-1 border-r-[1px]">Lowest today</TableCell>
               <TableCell className="">
-                {Math.round(stationData.min * 100) / 100}{" "}
+                {Math.round(stationData.min * 100) / 100}
                 {weatherUnit(weatherData)}
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell className="p-1 border-r-[1px]">
-                Past (6-Hours)
+                Average today
               </TableCell>
               <TableCell className="">
-                {Math.round(stationData.average * 100) / 100}{" "}
+                {Math.round(stationData.average * 100) / 100}
                 {weatherUnit(weatherData)}
               </TableCell>
             </TableRow>

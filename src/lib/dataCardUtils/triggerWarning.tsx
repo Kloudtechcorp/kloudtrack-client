@@ -64,7 +64,7 @@ export const triggerWarningToast = ({
 
       <div className="triggerButtonDiv ">
         <Button
-          className={`flex self-center`}
+          className={`flex self-center bg-transparent`}
           variant="default"
           onClick={() => {
             toast.dismiss(toastId);

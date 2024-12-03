@@ -52,11 +52,11 @@ const RangeRepeatSelector: React.FC<RangeRepeatSelectorProps> = ({
               <SelectValue placeholder="Range" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="24">A Day</SelectItem>
+              <SelectItem value="24">1 Day</SelectItem>
               <SelectItem value="72">3 Days</SelectItem>
-              <SelectItem value="168">A Week</SelectItem>
+              <SelectItem value="168">1 Week</SelectItem>
               <SelectItem value="336">2 Weeks</SelectItem>
-              <SelectItem value="672">A Month</SelectItem>
+              <SelectItem value="672">1 Month</SelectItem>
             </SelectContent>
           </Select>
         </span>

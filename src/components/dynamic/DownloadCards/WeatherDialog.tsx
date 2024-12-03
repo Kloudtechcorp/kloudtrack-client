@@ -97,7 +97,10 @@ const WeatherDialog = ({ id, name }: WeatherDialogProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="text-xs md:text-sm lg:text-base " variant="default">
+        <Button
+          className="text-xs md:text-sm lg:text-base bg-transparent hover:bg-transparent text-black dark:text-white downloadShadow transition-all duration-300 ease-in-out"
+          variant="default"
+        >
           Download Data
         </Button>
       </DialogTrigger>

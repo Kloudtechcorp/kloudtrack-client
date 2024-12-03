@@ -25,7 +25,6 @@ export function HeatIndex({
   const colorClass = useRef<string>("");
 
   const [hasWarning, setHasWarning] = useState<boolean>(false);
-  // const [hasShownToastRef, setHasShownToastRef] = useState<boolean>(false);
   const hasShownToastRef = useRef(false);
 
   const warning = useRef<string | null>("");
@@ -35,12 +34,7 @@ export function HeatIndex({
   };
 
   const determineWarning = useCallback(() => {
-    if (roundedHeatIndex < 27) {
-      colorClass.current = "text-green-500";
-      handleSetWarning("Caution: Stay hydrated!");
-      hasShownToastRef.current = false;
-      setHasWarning(false);
-    } else if (roundedHeatIndex >= 27 && roundedHeatIndex <= 32) {
+    if (roundedHeatIndex >= 27 && roundedHeatIndex <= 32) {
       colorClass.current = "text-green-500";
       handleSetWarning("Caution: Stay hydrated");
       hasShownToastRef.current = false;
@@ -55,7 +49,6 @@ export function HeatIndex({
       handleSetWarning(
         "Danger: High risk of heat-related illnesses in " + stationName
       );
-
       if (!hasShownToastRef.current) {
         triggerWarningToast({
           title: `High heat Index detected at ${stationName}!`,

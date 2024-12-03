@@ -153,9 +153,9 @@ const DataCards = ({
         <CardContent className="px-0 p-0 h-full">
           <div className="text-center w-full flex flex-col h-full">
             <div className="cardTitleDiv">
-              <span className="weatherDataTitle">Temperature</span>
+              <span className="weatherDataTitle">Temperature </span>
             </div>
-            <div className="flex h-full items-center justify-center">
+            <div className="flex h-full items-center justify-center gap-2">
               <span className="weatherDataText">
                 {Math.round(currentweather.temperature * 100) / 100} &deg;C
               </span>

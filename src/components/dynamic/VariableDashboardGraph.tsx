@@ -32,6 +32,7 @@ const VariableDashboardGraph = ({
   range,
   repeat,
   type,
+  showDots = false,
 }: TableGraphCardType) => {
   const stationDataParams: TableGraphCardType = {
     type,
@@ -114,7 +115,7 @@ const VariableDashboardGraph = ({
               type="linear"
               stroke="#fbd008"
               strokeWidth={3}
-              dot={false}
+              dot={showDots}
             />
           </LineChart>
         )}

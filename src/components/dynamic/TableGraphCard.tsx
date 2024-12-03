@@ -9,7 +9,7 @@ import {
 import { Skeleton } from "../ui/skeleton";
 import { formatDateString, weatherUnit } from "@/lib/utils";
 import VariableGrapht from "./VariableGraph";
-import { tablesType } from "@/types/queryTypes";
+import { TableGraphCardType, tablesType } from "@/types/queryTypes";
 import { useGetTableGraphData } from "@/hooks/react-query/queries";
 import NoData from "../shared/NoData";
 
@@ -19,7 +19,8 @@ const TableGraphCard = ({
   weatherData,
   range,
   repeat,
-}: tablesType) => {
+  showDots = false,
+}: TableGraphCardType) => {
   const stationDataParams: tablesType = {
     type,
     stationId,
@@ -140,6 +141,7 @@ const TableGraphCard = ({
           range={range}
           weatherData={weatherData}
           repeat={repeat}
+          showDots={showDots}
         />
       </div>
     </div>

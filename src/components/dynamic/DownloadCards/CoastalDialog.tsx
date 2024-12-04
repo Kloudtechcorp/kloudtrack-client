@@ -120,15 +120,15 @@ const CoastalDialog = ({ id, name }: CoastalDialogProps) => {
                           className="py-2 px-1 flex flex-col space-y-1 w-full gap-2 item-center h-full justify-center"
                         >
                           {[
-                            "7days",
-                            "28days",
-                            "90days",
-                            "week",
-                            "month",
-                            "year",
-                            "last-week",
-                            "last-month",
-                            "custom",
+                            "7 Days",
+                            "28 Days",
+                            "90 Days",
+                            "This Week",
+                            "This Month",
+                            "Year",
+                            "Last Week",
+                            "Last Month",
+                            "Custom",
                           ].map((val) => (
                             <FormItem
                               key={val}

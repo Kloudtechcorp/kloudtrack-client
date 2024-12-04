@@ -8,7 +8,7 @@ import PuffLoader from "react-spinners/PuffLoader";
 import NotFound from "@/components/shared/NotFound";
 import WeatherDialog from "@/components/dynamic/DownloadCards/WeatherDialog";
 // import WeatherDialog2 from "@/components/dynamic/DownloadCards/WeatherDialog2";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { toast } from "sonner";
 
 type AwsDataCardProps = {
@@ -52,6 +52,11 @@ const AwsDataCard = ({ stationId }: AwsDataCardProps) => {
     { label: "Heat Index", variable: "heatIndex" },
     { label: "Temperature", variable: "temperature" },
     { label: "Humidity", variable: "humidity" },
+    { label: "Pressure", variable: "pressure" },
+    { label: "Precipitation", variable: "precipitation" },
+    { label: "Wind Speed", variable: "windSpeed" },
+    { label: "UV Index", variable: "uvIndex" },
+    { label: "Light Index", variable: "light" },
   ];
 
   return (
@@ -75,7 +80,7 @@ const AwsDataCard = ({ stationId }: AwsDataCardProps) => {
           <span className="weatherDataGraphs">Weather Data Graphs</span>
           <WeatherDialog name={station.name} id={stationId} />
         </div>
-        <div className="flex flex-col gap-2 overflow-y-auto cursor-pointer">
+        <div className="flex flex-col gap-2 overflow-y-auto cursor-pointer h-[65svh] custom-scrollbar">
           {weatherVariables.map(({ label, variable }) => (
             <div
               key={variable}
@@ -93,6 +98,7 @@ const AwsDataCard = ({ stationId }: AwsDataCardProps) => {
                 range={24}
                 repeat="hour"
                 type={"aws"}
+                showDots={true}
               />
             </div>
           ))}

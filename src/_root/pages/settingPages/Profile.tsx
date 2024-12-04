@@ -12,7 +12,13 @@ import { checkStationType, formatDateString } from "@/lib/utils";
 import { useGetUserProfile } from "@/hooks/react-query/queries";
 import { useDeleteApiKey } from "@/hooks/react-query/mutations";
 import { useUserContext } from "@/hooks/context/authContext";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import AddApiKey from "@/components/forms/AddApiKey";
 import {
   AlertDialog,
@@ -27,7 +33,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useTheme } from "@/components/theme-provider";
 import CopyIcon from "@/components/shared/icons/CopyIcon";
-import DeleteIconProfile from "@/components/shared/icons/DeleteIconProfile";
 import { toast } from "@/hooks/use-toast";
 import {
   Table,
@@ -92,12 +97,17 @@ const Profile = () => {
                     <Button variant="default">Add api key</Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>Add New API Key</DialogHeader>
+                    <DialogDescription>
+                      Provide the necessary details to create a new API key for
+                      your application.
+                    </DialogDescription>
                     <AddApiKey onSuccess={refetch} />
                   </DialogContent>
                 </Dialog>
               )}
             </CardHeader>
-            <div className="w-[96%] h-px bg-black mx-auto"></div>
+            <div className="w-[96%] h-px bg-black dark:bg-white mx-auto"></div>
 
             <CardContent>
               <div className="flex flex-col gap-2 py-2">
@@ -236,6 +246,9 @@ const Profile = () => {
                       <TableHead>Type</TableHead>
                     </TableRow>
                   </TableHeader>
+                  <TableCaption>
+                    Reference the station ID to integrate with the API.
+                  </TableCaption>
                   <TableBody>
                     {filteredStationNames.map((item, index) => (
                       <TableRow key={index}>

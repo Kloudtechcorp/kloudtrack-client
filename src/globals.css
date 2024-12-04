@@ -310,7 +310,7 @@
 }
 
 .triggerButtonDiv {
-  @apply flex w-1/5 ml-4 mt-1 justify-center items-center;
+  @apply flex  ml-4 mt-1 justify-center items-center;
 }
 
 .downloadShadow {

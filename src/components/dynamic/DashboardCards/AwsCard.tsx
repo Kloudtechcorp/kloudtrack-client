@@ -159,6 +159,7 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
                 type="DASHBOARD"
                 stationName={stationData.station.name}
                 pastHourPrecip={stationData.pastHourPrecip}
+                id={stationData.station.id}
               />
             </div>
           </div>

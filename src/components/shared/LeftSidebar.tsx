@@ -142,10 +142,10 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
           <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger>
               <div
-                className={`flex gap-4 items-center py-3 px-2 rounded-sm hover:bg-black/5 dark:hover:bg-white/5`}
+                className={`flex items-center py-3 justify-center rounded-sm hover:bg-black/5 dark:hover:bg-white/5`}
               >
                 <BugIcon theme={""} />
-                <span className={clicked ? "block" : "hidden"}>Bug Report</span>
+                {clicked && <span>Bug Report</span>}
               </div>
             </SheetTrigger>
             <SheetContent side={"left"}>

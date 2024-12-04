@@ -13,10 +13,12 @@ export function HeatIndex({
   heatIndexval,
   stationName,
   dashboardType,
+  id,
 }: {
   heatIndexval: number;
   stationName: string;
   dashboardType: string;
+  id: string;
 }) {
   const navigate = useNavigate();
 
@@ -53,7 +55,7 @@ export function HeatIndex({
         triggerWarningToast({
           title: `High heat Index detected at ${stationName}!`,
           message: `${warning.current}`,
-          stationName: stationName,
+          id: id,
           dashboardType: dashboardType,
           colorClass: colorClass.current,
           navigate,
@@ -68,7 +70,7 @@ export function HeatIndex({
         triggerWarningToast({
           title: `High heat Index detected at ${stationName}!`,
           message: `${warning.current}`,
-          stationName: stationName,
+          id: id,
           dashboardType: dashboardType,
           colorClass: colorClass.current,
           navigate,

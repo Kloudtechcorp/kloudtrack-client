@@ -70,6 +70,7 @@ const AwsDataCard = ({ stationId }: AwsDataCardProps) => {
             currentweather={data}
             type={"DATADASHBOARD"}
             stationName={station.name}
+            id={station.id}
             pastHourPrecip={stationData.pastHourPrecip}
           />
         </div>
@@ -80,7 +81,7 @@ const AwsDataCard = ({ stationId }: AwsDataCardProps) => {
           <span className="weatherDataGraphs">Weather Data Graphs</span>
           <WeatherDialog name={station.name} id={stationId} />
         </div>
-        <div className="flex flex-col gap-2 overflow-y-auto cursor-pointer h-[65svh] custom-scrollbar">
+        <div className="flex flex-col gap-2 overflow-y-auto cursor-pointer h-[53.5rem] custom-scrollbar">
           {weatherVariables.map(({ label, variable }) => (
             <div
               key={variable}

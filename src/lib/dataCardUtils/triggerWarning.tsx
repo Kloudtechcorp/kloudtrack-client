@@ -1,10 +1,11 @@
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
 
 type WarningToastProps = {
   title: string;
   message: string;
-  stationName: string;
+  id: string;
   dashboardType: string;
   colorClass: string;
   navigate: (path: string) => void;
@@ -13,7 +14,7 @@ type WarningToastProps = {
 export const triggerWarningToast = ({
   title,
   message,
-  stationName,
+  id,
   colorClass,
   navigate,
   dashboardType,
@@ -29,7 +30,7 @@ export const triggerWarningToast = ({
           toast.dismiss(toastId);
         }}
       >
-        X
+        <X />
       </Button>
       <div className="flex w-4/5 flex-col ">
         <span className={`flex self-start ${colorClass}`}>{title}</span>
@@ -40,11 +41,11 @@ export const triggerWarningToast = ({
 
       <div className="triggerButtonDiv">
         <Button
-          className={`flex self-center`}
+          className={`flex self-center text-black dark:text-white bg-inherit hover:bg-gray-200 border border-transparent hover:border-gray-700 dark:hover:border-gray-200 dark:hover:bg-gray-700 transition-all ease-in-out duration-300`}
           variant="default"
           onClick={() => {
             toast.dismiss();
-            navigate(`/${stationName}`);
+            navigate(`/${id}`);
           }}
         >
           View
@@ -55,22 +56,22 @@ export const triggerWarningToast = ({
 
   const toasterDetailsNoView = (
     <div className="flex w-full h-full">
-      <div className="flex w-4/5 flex-col">
+      <div className="flex w-full flex-col">
         <span className={`flex self-start ${colorClass}`}>{title}</span>
         <span className="flex rounded self-start text-muted-foreground">
           {message}
         </span>
       </div>
 
-      <div className="triggerButtonDiv ">
+      <div className="w-20 flex items-center justify-end  ">
         <Button
-          className={`flex self-center bg-transparent`}
+          className={`flex self-center bg-inherit hover:bg-gray-200 border border-transparent hover:border-gray-700 dark:hover:border-gray-200 dark:hover:bg-gray-700 transition-all ease-in-out duration-300`}
           variant="default"
           onClick={() => {
             toast.dismiss(toastId);
           }}
         >
-          Close
+          <X className="invert" />
         </Button>
       </div>
     </div>

@@ -131,6 +131,7 @@ const UserCreation = () => {
                       }}
                     />
                   </FormControl>
+                  <FormMessage className="shad-form_message" />
                 </FormItem>
               )}
             />

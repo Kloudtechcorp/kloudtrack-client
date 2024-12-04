@@ -92,7 +92,9 @@ const TableGraphCard = ({
             </TableRow>
 
             <TableRow>
-              <TableCell className="p-1 border-r-[1px]">Current</TableCell>
+              <TableCell className="p-1 border-r-[1px]">
+                Current Value
+              </TableCell>
               <TableCell className="">
                 {Math.round(stationData.currentData * 100) / 100}{" "}
                 {weatherUnit(weatherData)}
@@ -106,7 +108,7 @@ const TableGraphCard = ({
             </TableRow>
             <TableRow>
               <TableCell className="p-1 border-r-[1px]">
-                Highest today
+                Highest (Today)
               </TableCell>
               <TableCell className="">
                 {Math.round(stationData.max * 100) / 100}{" "}
@@ -114,7 +116,9 @@ const TableGraphCard = ({
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell className="p-1 border-r-[1px]">Lowest today</TableCell>
+              <TableCell className="p-1 border-r-[1px]">
+                Lowest (Today)
+              </TableCell>
               <TableCell className="">
                 {Math.round(stationData.min * 100) / 100}
                 {weatherUnit(weatherData)}
@@ -122,7 +126,7 @@ const TableGraphCard = ({
             </TableRow>
             <TableRow>
               <TableCell className="p-1 border-r-[1px]">
-                Average today
+                Average (Today)
               </TableCell>
               <TableCell className="">
                 {Math.round(stationData.average * 100) / 100}

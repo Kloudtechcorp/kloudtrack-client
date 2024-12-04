@@ -10,12 +10,14 @@ type DataCardsProps = {
   currentweather: stationCurrentWeatherType;
   pastHourPrecip: number;
   stationName: string;
+  id: string;
 };
 const DataCards = ({
   currentweather,
   type,
   stationName,
   pastHourPrecip,
+  id,
 }: DataCardsProps) => {
   if (type === "DATADASHBOARD") {
     return (
@@ -25,6 +27,7 @@ const DataCards = ({
             <HeatIndex
               heatIndexval={currentweather.heatIndex}
               stationName={stationName}
+              id={id}
               dashboardType={type}
             />
           </CardContent>
@@ -146,6 +149,7 @@ const DataCards = ({
             heatIndexval={currentweather.heatIndex}
             stationName={stationName}
             dashboardType={type}
+            id={id}
           />
         </CardContent>
       </Card>

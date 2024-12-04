@@ -17,7 +17,6 @@ import { TableGraphCardType } from "@/types/queryTypes";
 import PuffLoader from "react-spinners/PuffLoader";
 import { useGetDataset } from "@/hooks/react-query/queries";
 import { formattedDataType } from "@/types";
-import { formatDateString } from "@/lib/utils";
 
 const chartConfig = {
   desktop: {
@@ -32,6 +31,7 @@ const VariableGraph = ({
   range,
   repeat,
   type,
+  showDots = false,
 }: TableGraphCardType) => {
   const stationDataParams: TableGraphCardType = {
     type,
@@ -61,7 +61,7 @@ const VariableGraph = ({
   ): formattedDataType[] => {
     return graphData.map((item) => {
       const formattedDate = new Date(item.datetime).toLocaleString("en-US", {
-        month: "2-digit",
+        month: "short",
         day: "2-digit",
         hour: "2-digit",
         minute: "2-digit",
@@ -69,7 +69,6 @@ const VariableGraph = ({
       });
 
       const datetimeWithAt = formattedDate.replace(",", " at");
-
       return {
         ...item,
         datetime: datetimeWithAt,
@@ -128,7 +127,7 @@ const VariableGraph = ({
               type="linear"
               stroke="#fbd008"
               strokeWidth={3}
-              dot={false}
+              dot={showDots}
             />
           </LineChart>
         )}

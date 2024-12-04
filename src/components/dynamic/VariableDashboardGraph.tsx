@@ -32,6 +32,7 @@ const VariableDashboardGraph = ({
   range,
   repeat,
   type,
+  showDots = false,
 }: TableGraphCardType) => {
   const stationDataParams: TableGraphCardType = {
     type,
@@ -70,7 +71,7 @@ const VariableDashboardGraph = ({
 
   return (
     <div className="w-full rounded-lg p-1 border-[#545454] m-0 flex items-center justify-center">
-      <ChartContainer config={chartConfig} className="h-44 w-full m-0 p-0">
+      <ChartContainer config={chartConfig} className="h-52 w-full m-0 p-0">
         {weatherData === "precipitation" || weatherData === "uvIndex" ? (
           <BarChart
             accessibilityLayer
@@ -114,7 +115,7 @@ const VariableDashboardGraph = ({
               type="linear"
               stroke="#fbd008"
               strokeWidth={3}
-              dot={false}
+              dot={showDots}
             />
           </LineChart>
         )}

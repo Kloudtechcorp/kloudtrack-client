@@ -83,7 +83,7 @@ const DataDashboard = () => {
                           key={key}
                           variant="default"
                           onClick={() => {
-                            navigate(`/${stations.name}`);
+                            navigate(`/${stations.id}`);
                             setIsOpen(false);
                           }}
                         >

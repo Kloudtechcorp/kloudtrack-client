@@ -27,6 +27,7 @@ import {
   clmsDashboardType,
   tablesType,
   detailedStationProps,
+  analysisType,
 } from "@/types/queryTypes";
 
 const method: string = "GET";
@@ -220,15 +221,13 @@ export const getStationData = async (
 };
 
 //=========================== GET AWS DATA FOR GRAHPHS
-export const getTableGraph = async ({
+export const getAnalysis = async ({
   stationId,
   weatherData,
-  repeat,
-  range,
   type,
-}: tablesType): Promise<stationComputedTypes> => {
+}: analysisType): Promise<stationComputedTypes> => {
   const response = await fetch(
-    `${server}/${type}/analysis/${stationId}?variable=${weatherData}&range=${range}&repeat=${repeat}`,
+    `${server}/${type}/analysis/${stationId}?variable=${weatherData}`,
     {
       method,
       credentials: "include",

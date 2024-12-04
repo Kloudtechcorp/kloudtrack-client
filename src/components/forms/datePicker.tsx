@@ -20,7 +20,7 @@ interface DatePickerProps {
 
 export function DatePicker({ selected, onSelect }: DatePickerProps) {
   return (
-    <div className="p-2">
+    <div>
       <Popover>
         <PopoverTrigger asChild>
           <Button

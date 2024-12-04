@@ -10,19 +10,26 @@ export const login = z.object({
 export const userValidation = z
   .object({
     username: z.string().min(2),
-    password: z
-      .string()
-      .min(8, { message: "Must be a minimum of 8 characters." }),
+    password: z.string(),
     role: z.string(),
     grantedStations: z.array(z.string()),
   })
   .superRefine(({ password }, ctx) => {
+    const hasMinLength = password.length >= 8;
     const hasUppercase = /[A-Z]/.test(password);
     const hasLowercase = /[a-z]/.test(password);
     const hasNumber = /\d/.test(password);
     const hasSpecialChar = /[`!@#$%^&*()_\-+=\[\]{};':"\\|,.<>\/?~ ]/.test(
       password
     );
+
+    if (!hasMinLength) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Password must be at least 8 characters long.",
+        path: ["password"],
+      });
+    }
 
     if (!hasUppercase || !hasLowercase || !hasNumber || !hasSpecialChar) {
       ctx.addIssue({

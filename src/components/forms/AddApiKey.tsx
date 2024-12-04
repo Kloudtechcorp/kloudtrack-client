@@ -43,24 +43,17 @@ const AddApiKey = ({ onSuccess }: refetchProps) => {
   const { mutateAsync: addApiKey, isPending } = useGenerateApi(onSuccess);
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
+    if (hasExpiration) {
+      addApiKey(data);
+    }
     toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
+      title: "Please set an expiration date.",
     });
-
-    addApiKey(data);
   }
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full space-y-6 p-2"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
         <FormField
           control={form.control}
           name="title"

@@ -40,6 +40,8 @@ import {
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Trash2 } from "lucide-react";
 
 const Profile = () => {
   const { theme } = useTheme();
@@ -54,7 +56,6 @@ const Profile = () => {
       .includes(searchQuery.toLowerCase());
     return matchesSearch;
   });
-
   return (
     <div className="px-5 w-full h-full flex flex-col gap-3">
       <Card x-chunk="dashboard-05-chunk-3">
@@ -137,14 +138,23 @@ const Profile = () => {
                             </div>
                           </div>
                           <div className="w-full flex flex-col">
-                            <span className="capitalize font-medium text-lg">
-                              {item.title}
-                            </span>
+                            <h2 className="capitalize font-medium text-lg flex gap-2 items-center">
+                              <span>{item.title}</span>
+                              <span className="flex">
+                                {item.expiresAt &&
+                                new Date(item.expiresAt) <= new Date() ? (
+                                  <Badge>Expired</Badge>
+                                ) : null}
+                              </span>
+                            </h2>
                             <span className="text-base">
                               Token: {item.apiKey}
                             </span>
                             <span className="text-muted-foreground text-sm">
-                              Expires on {item.expiresAt}
+                              Expires on{" "}
+                              {item.expiresAt && item.expiresAt !== "Never"
+                                ? formatDateString(item.expiresAt, "long")
+                                : item.expiresAt}
                             </span>
                             <span className="text-muted-foreground text-sm">
                               Generated on{" "}
@@ -154,6 +164,7 @@ const Profile = () => {
                           <div className="flex gap-2 flex-col">
                             <Button
                               aria-label="Copy API Key"
+                              className="bg-inherit hover:bg-inherit border border-transparent hover:border-black dark:hover:border-white transition-all ease-in-out duration-300"
                               onClick={() => {
                                 navigator.clipboard.writeText(item.apiKey);
                                 toast({
@@ -165,8 +176,11 @@ const Profile = () => {
                             </Button>
                             <AlertDialog>
                               <AlertDialogTrigger asChild>
-                                <Button aria-label="Delete API Key">
-                                  <DeleteIconProfile theme={theme} />
+                                <Button
+                                  aria-label="Delete API Key"
+                                  className="bg-inherit hover:bg-inherit border border-transparent hover:border-black dark:hover:border-white transition-all ease-in-out duration-300"
+                                >
+                                  <Trash2 className="invert" />
                                 </Button>
                               </AlertDialogTrigger>
                               <AlertDialogContent>

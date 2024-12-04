@@ -80,7 +80,7 @@ const Variable = () => {
         ) : (
           <Tabs defaultValue="aws" className="w-full flex flex-col">
             <TabsList className="flex justify-between container items-center">
-              <div className="flex justify-start gap-1">
+              <div className="flex justify-start gap-1 flex-wrap px-3 md:px-7 lg:px-3">
                 {hasAwsStations && (
                   <TabsTrigger value="aws">Weather Stations</TabsTrigger>
                 )}
@@ -94,21 +94,23 @@ const Variable = () => {
                   <TabsTrigger value="clms">Coastal Level</TabsTrigger>
                 )}
               </div>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button
-                      onClick={toggleFullscreen}
-                      className="rounded-lg px-2"
-                    >
-                      <Fullscreen />
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Fullscreen</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <div className="md:flex hidden">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        onClick={toggleFullscreen}
+                        className="rounded-lg px-2 flex p-2 flex-end "
+                      >
+                        <Fullscreen />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Fullscreen</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
             </TabsList>
             {hasAwsStations && (
               <TabsContent value="aws" className="my-0">

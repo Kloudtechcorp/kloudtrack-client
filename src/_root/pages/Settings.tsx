@@ -10,7 +10,7 @@ const Settings = () => {
         defaultValue="profile"
         className="w-full flex lg:flex-row flex-col p-3 rounded-2xl gap-5 justify-center container"
       >
-        <TabsList className="flex flex-col justify-start gap-3 w-full lg:w-1/5 h-28 p-5 container sticky left-0">
+        <TabsList className="flex flex-col justify-start gap-3 w-full lg:w-1/5 h-28 p-5 container sticky left-0 md:mb-28 lg:mb-0">
           <TabsTrigger value="profile" className="w-full h-10">
             Profile
           </TabsTrigger>

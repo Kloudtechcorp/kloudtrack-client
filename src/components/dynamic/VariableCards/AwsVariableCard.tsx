@@ -24,15 +24,15 @@ const AwsVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
           <CardContent className="flex flex-col p-0 gap-2">
             <div className="w-full flex flex-row justify-between items-center ">
               <span className="variableTitle">{weatherData}</span>
-              <div className="flex gap-1">
-                <div className="flex flex-col justify-center px-3">
+              <div className="multipleSelectDiv">
+                <div className="flex flex-col justify-center px-1">
                   <span className="parameterOption">Parameter Option</span>
                   <span className="text-3xl font-bold">
                     <Select
                       defaultValue={weatherData}
                       onValueChange={(value) => setWeatherData(value)}
                     >
-                      <SelectTrigger className="md:w-[200px]">
+                      <SelectTrigger className="selectTrigger">
                         <SelectValue placeholder="Variable" />
                       </SelectTrigger>
                       <SelectContent>

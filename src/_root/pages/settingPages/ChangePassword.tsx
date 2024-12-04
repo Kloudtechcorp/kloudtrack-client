@@ -69,7 +69,7 @@ const ChangePassword = () => {
     <div>
       <Form {...form}>
         <Card className="px-5 w-full h-full">
-          <span className="flex py-5 font-bold text-lg">
+          <span className="flex py-5 font-bold text-base md:text-lg">
             Add information for new user
           </span>
           <form onSubmit={form.handleSubmit(onSubmit)}>

@@ -259,6 +259,14 @@
   @apply md:text-sm text-xs px-1;
 }
 
+/* Select Styling */
+.selectTrigger {
+  @apply md:w-[200px] text-xs md:text-sm;
+}
+.multipleSelectDiv {
+  @apply flex gap-1 flex-col lg:flex-row px-2;
+}
+
 /* Not Found Styling */
 .notFoundTitle {
   @apply bg-[#fbd008] to-transparent bg-clip-text md:text-[10rem] text-5xl font-extrabold leading-none text-transparent;

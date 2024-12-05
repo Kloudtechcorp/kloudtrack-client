@@ -63,10 +63,11 @@ const VariableGraph = ({
       const formattedDate = new Date(item.datetime).toLocaleString("en-US", {
         month: "short",
         day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
+        ...(repeat !== "day" && { hour: "2-digit", minute: "2-digit" }),
         hour12: false,
       });
+
+      console.log(formattedDate);
 
       const datetimeWithAt = formattedDate.replace(",", " at");
       return {

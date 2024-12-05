@@ -66,9 +66,6 @@ const VariableGraph = ({
         ...(repeat !== "day" && { hour: "2-digit", minute: "2-digit" }),
         hour12: false,
       });
-
-      console.log(formattedDate);
-
       const datetimeWithAt = formattedDate.replace(",", " at");
       return {
         ...item,

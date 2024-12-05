@@ -59,16 +59,16 @@ const VariableDashboard = () => {
     if (stationData) {
       switch (stationData.type) {
         case "ARG":
-          setWeatherData("precipitation");
+          setWeatherData(location.state?.variable || "precipitation");
           break;
         case "CLMS":
-          setWeatherData("temperature");
+          setWeatherData(location.state?.variable || "distance");
           break;
         case "RLMS":
-          setWeatherData("distance");
+          setWeatherData(location.state?.variable || "distance");
           break;
         default:
-          setWeatherData("temperature");
+          setWeatherData(location.state?.variable || "temperature");
           break;
       }
     }

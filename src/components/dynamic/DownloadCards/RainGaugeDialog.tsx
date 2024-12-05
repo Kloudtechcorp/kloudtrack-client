@@ -111,28 +111,28 @@ const RainGaugeDialog = ({ id, name }: RainGaugeDialogProps) => {
                           className="py-2 px-1 flex flex-col space-y-1 w-full gap-2 item-center h-full justify-center"
                         >
                           {[
-                            "7 Days",
-                            "28 Days",
-                            "90 Days",
-                            "This Week",
-                            "This Month",
-                            "Year",
-                            "Last Week",
-                            "Last Month",
-                            "Custom",
-                          ].map((val) => (
+                            { value: "7days", label: "7 Days" },
+                            { value: "28days", label: "28 Days" },
+                            { value: "90days", label: "90 Days" },
+                            { value: "week", label: "This Week" },
+                            { value: "month", label: "This Month" },
+                            { value: "year", label: "Year" },
+                            { value: "last-week", label: "Last Week" },
+                            { value: "last-month", label: "Last Month" },
+                            { value: "custom", label: "Custom" },
+                          ].map(({ value, label }) => (
                             <FormItem
-                              key={val}
+                              key={value}
                               className="flex items-center space-x-3 space-y-0"
                             >
                               <FormControl>
                                 <RadioGroupItem
-                                  value={val}
+                                  value={value}
                                   className="size-6"
                                 />
                               </FormControl>
                               <FormLabel className="font-normal">
-                                {val.replace(/-/, " ")}
+                                {label}
                               </FormLabel>
                             </FormItem>
                           ))}

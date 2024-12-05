@@ -216,46 +216,47 @@ export const weatherUnit = (measurement: string): string | null => {
 
   return units[measurement] || null;
 };
-
 export const getDateRange = (
   selected: string,
   now: Date
 ): DateRange | undefined => {
+  // Create a copy of `now` to avoid mutation
+  const today = new Date(now);
+
   switch (selected) {
     case "7days":
-      return { from: subDays(now, 7), to: now };
+      return { from: subDays(today, 7), to: today };
     case "28days":
-      return { from: subDays(now, 28), to: now };
+      return { from: subDays(today, 28), to: today };
     case "90days":
-      return { from: subDays(now, 90), to: now };
+      return { from: subDays(today, 90), to: today };
     case "week":
-      const startOfWeek = now.getDate() - now.getDay(); // Sunday
-      return { from: new Date(now.setDate(startOfWeek)), to: new Date() };
+      const startOfWeek = new Date(today);
+      startOfWeek.setDate(today.getDate() - today.getDay()); // Sunday
+      return { from: startOfWeek, to: today };
     case "month":
       return {
-        from: new Date(now.getFullYear(), now.getMonth(), 1),
-        to: new Date(now.getFullYear(), now.getMonth() + 1, 0),
+        from: new Date(today.getFullYear(), today.getMonth(), 1),
+        to: new Date(today.getFullYear(), today.getMonth() + 1, 0),
       };
     case "year":
       return {
-        from: new Date(now.getFullYear(), 0, 1),
-        to: new Date(now.getFullYear(), 11, 31),
+        from: new Date(today.getFullYear(), 0, 1),
+        to: new Date(today.getFullYear(), 11, 31),
       };
     case "last-week":
-      const lastWeekStart = now.getDate() - now.getDay() - 7; // Start of last week
-      return {
-        from: new Date(now.setDate(lastWeekStart)),
-        to: new Date(now.setDate(lastWeekStart + 6)),
-      };
+      const lastWeekStart = new Date(today);
+      lastWeekStart.setDate(today.getDate() - today.getDay() - 7); // Start of last week
+      const lastWeekEnd = new Date(lastWeekStart);
+      lastWeekEnd.setDate(lastWeekStart.getDate() + 6); // End of last week
+      return { from: lastWeekStart, to: lastWeekEnd };
     case "last-month":
-      const lastMonth = now.getMonth() - 1;
+      const lastMonth = today.getMonth() - 1;
       const lastMonthYear =
-        lastMonth < 0 ? now.getFullYear() - 1 : now.getFullYear();
-      const lastMonthEnd = new Date(lastMonthYear, lastMonth + 1, 0).getDate();
-      return {
-        from: new Date(lastMonthYear, lastMonth, 1),
-        to: new Date(lastMonthYear, lastMonth, lastMonthEnd),
-      };
+        lastMonth < 0 ? today.getFullYear() - 1 : today.getFullYear();
+      const lastMonthStart = new Date(lastMonthYear, lastMonth, 1);
+      const lastMonthEnd = new Date(lastMonthYear, lastMonth + 1, 0);
+      return { from: lastMonthStart, to: lastMonthEnd };
     default:
       return undefined;
   }

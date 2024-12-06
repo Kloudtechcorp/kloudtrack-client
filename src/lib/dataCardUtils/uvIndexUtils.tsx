@@ -1,4 +1,4 @@
-import React, {  useEffect, useCallback, useRef, useState } from "react";
+import React, { useEffect, useCallback, useRef, useState } from "react";
 import {
   Tooltip,
   TooltipContent,
@@ -36,23 +36,23 @@ export function UVIndex({
         "Low danger from the sun's UV rays for the average person."
       );
       hasShownToastRef.current = false;
-      colorClass.current ="text-primary";
+      colorClass.current = "text-primary";
 
       setHasWarning(false);
     } else if (uvIndexVal >= 3 && uvIndexVal <= 5) {
-      colorClass.current ="text-[#fbfc04]";
+      colorClass.current = "text-[#fbfc04]";
       handleSetWarning("Moderate risk of harm from unprotected sun exposure.");
       hasShownToastRef.current = false;
       setHasWarning(false);
     } else if (uvIndexVal >= 6 && uvIndexVal <= 7) {
-      colorClass.current ="text-[#fa6801]";
+      colorClass.current = "text-[#fa6801]";
       handleSetWarning(
         "High risk of harm from unprotected sun exposure. Protection against skin and eye damage is needed!"
       );
       hasShownToastRef.current = false;
       setHasWarning(false);
     } else if (uvIndexVal >= 8 && uvIndexVal <= 10) {
-      colorClass.current ="text-[#fe0000]";
+      colorClass.current = "text-[#fe0000]";
       handleSetWarning(
         "Very high risk of harm from unprotected sun exposure. Take extra precautions because unprotected skin and eyes will be damaged and can burn quickly!"
       );
@@ -69,7 +69,7 @@ export function UVIndex({
         setHasWarning(true);
       }
     } else if (uvIndexVal > 10) {
-      colorClass.current ="text-[#83007e]";
+      colorClass.current = "text-[#83007e]";
 
       console.log("color class in uv is ", colorClass);
       handleSetWarning("Extreme Danger: Heatstroke is imminent!");
@@ -107,7 +107,7 @@ export function UVIndex({
                   {Math.round(uvIndexVal * 100) / 100}
                 </span>
                 {hasWarning && (
-                  <AlertIcon className={`${colorClass.current}`} />
+                  <AlertIcon className={`${colorClass.current} w-1/4`} />
                 )}
               </div>
             </TooltipTrigger>

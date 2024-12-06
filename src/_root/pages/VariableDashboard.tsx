@@ -85,19 +85,19 @@ const VariableDashboard = () => {
       <div className="container p-2">
         <Card className="cardContainer">
           <CardContent className="h-full flex flex-col gap-2">
-            <div className="flex items-center gap-5 justify-between ">
-              <div className="flex gap-2">
+            <div className="flex flex-col md:flex-row md:items-center gap-5 justify-between ">
+              <div className="flex gap-2 justify justify-center ">
                 <img
                   src="/assets/icons/back.svg"
                   className="cursor-pointer"
                   onClick={() => navigate(-1)}
                 />
 
-                <div className="flex flex-row gap-2 leading-3">
+                <div className="flex flex-row gap-2 leading-3 items-center">
                   <h1 className="capitalize font-medium md:text-2xl text-lg">
                     {station}
                   </h1>
-                  <button onClick={toggleFullscreen} className="p-2 rounded-lg">
+                  <button onClick={toggleFullscreen} className=" rounded-lg">
                     <Fullscreen />
                   </button>
                 </div>

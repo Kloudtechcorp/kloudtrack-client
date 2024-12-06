@@ -71,7 +71,7 @@ const ArgDataCard = ({ stationId }: ArgDataCardProps) => {
         <div className="flex flex-col gap-2 overflow-y-auto cursor-pointer">
           <div
             className="flex flex-col gap-1 border p-1 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 pr-5"
-            onClick={() => navigate(`/${station.id}/data-analysis`)}
+            onClick={() => navigate(`/${station.name}/data-analysis`)}
           >
             <div className="px-2 font-semibold">Precipitation</div>
             <VariableGraph

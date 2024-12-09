@@ -272,10 +272,13 @@
 
 /* Select Styling */
 .selectTrigger {
-  @apply md:w-[200px] text-xs md:text-sm;
+  @apply w-[200px] text-xs md:text-sm;
 }
 .multipleSelectDiv {
   @apply flex gap-1 flex-col lg:flex-row px-2;
+}
+.selectTitle {
+  @apply text-xs md:text-sm px-1;
 }
 
 /* Not Found Styling */

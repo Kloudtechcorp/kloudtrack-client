@@ -113,9 +113,9 @@ const Variable = () => {
       className="bg-[#F6F8FC] dark:bg-secondary w-full overflow-auto rounded-xl p-[1rem] custom-scrollbar"
       ref={imageRef}
     >
-      <Tabs defaultValue="aws" className="w-full flex flex-col">
-        <TabsList className="flex justify-between container items-center">
-          <div className="flex flex-wrap justify-start gap-1">
+      <Tabs defaultValue="aws" className="w-full flex flex-col ">
+        <TabsList className="flex justify-between container items-center md:px-6 lg:px-3 px-6">
+          <div className="flex flex-wrap justify-start gap-1 ">
             {hasAwsStations && (
               <TabsTrigger value="aws">Weather Stations</TabsTrigger>
             )}

@@ -23,7 +23,7 @@ const RangeRepeatSelector: React.FC<RangeRepeatSelectorProps> = ({
   return (
     <>
       <div className="flex flex-col justify-center items-center px-1">
-        <span className="text-sm px-1">Repeat Value</span>
+        <span className="selectTitle">Repeat Value</span>
         <span className="text-3xl font-bold">
           <Select
             value={repeatData}
@@ -43,7 +43,7 @@ const RangeRepeatSelector: React.FC<RangeRepeatSelectorProps> = ({
         </span>
       </div>
       <div className="flex flex-col justify-center items-center px-1">
-        <span className="text-sm px-1">Data Range</span>
+        <span className="selectTitle">Data Range</span>
         <span className="text-3xl font-bold">
           <Select
             value={rangeData}

@@ -2,7 +2,7 @@ import React from "react";
 
 const HimawariDetails = () => {
   return (
-    <div className="lg:text-l md:text-base xs:text-xs text-gray-500  gap-2 ">
+    <div className="lg:text-lg  text-xs text-gray-500  gap-2 ">
       <span className="font-bold">About Himawari 8/9</span>
       <p className="lg:text-sm text-justify indent-8 sm:text-xs">
         The Himawari satellite series was developed and operated by the Japan
@@ -11,7 +11,7 @@ const HimawariDetails = () => {
         satellites positioned at an altitude of approximately 35,786 kilometers
         above the equator.
       </p>
-      <p className="lg:text-sm text-justify indent-8 sm:text-xs">
+      <p className="lg:text-sm text-justify indent-8 text-xs">
         The latest in the series, Himawari-8 and Himawari-9, launched in 2014
         and 2016 respectively. They provide data every 10 minutes, enabling
         real-time monitoring of weather phenomena such as typhoons,

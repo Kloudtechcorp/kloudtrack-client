@@ -27,7 +27,7 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
   const { data: stationData, isLoading, isError } = useGetAwsData2(id);
   const [clicked, setClicked] = useState(false);
   const { theme } = useTheme();
-  const [mapboxStyle, setMapboxStyle] = useState(
+  const [mapboxStyle] = useState(
     theme === "dark"
       ? "mapbox://styles/mapbox/dark-v11"
       : "mapbox://styles/mapbox/light-v11"

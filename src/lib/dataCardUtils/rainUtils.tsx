@@ -122,7 +122,7 @@ export function Precipitation({
                   </span>
                 </div>
                 {hasWarning && (
-                  <AlertIcon className={`${colorClass.current} w-1/3`} />
+                  <AlertIcon className={`${colorClass.current} w-1/4`} />
                 )}
               </div>
             </TooltipTrigger>

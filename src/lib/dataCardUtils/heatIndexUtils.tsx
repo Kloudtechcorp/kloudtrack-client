@@ -101,7 +101,7 @@ export function HeatIndex({
                   {roundedHeatIndex} &deg;C
                 </span>
                 {hasWarning && (
-                  <AlertIcon className={`${colorClass.current}`} />
+                  <AlertIcon className={`${colorClass.current} w-1/4`} />
                 )}
               </div>
             </TooltipTrigger>

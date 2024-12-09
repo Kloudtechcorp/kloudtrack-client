@@ -5,7 +5,7 @@ import AwsCard from "@/components/dynamic/DashboardCards/AwsCard";
 import RlmsCard from "@/components/dynamic/DashboardCards/RlmsCard";
 import ClmsCard from "@/components/dynamic/DashboardCards/ClmsCard";
 import { useUserContext } from "@/hooks/context/authContext";
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
 import { Fullscreen } from "lucide-react";
 import {
   Tooltip,
@@ -14,9 +14,13 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
+const BATCH_SIZE = 3;
+
 const Dashboard = () => {
   const { user, isLoading } = useUserContext();
   const imageRef = useRef<HTMLDivElement>(null);
+  const observerRef = useRef<HTMLDivElement>(null);
+  const [visibleCards, setVisibleCards] = useState<Record<string, number>>({});
 
   const toggleFullscreen = () => {
     if (imageRef.current) {
@@ -46,6 +50,42 @@ const Dashboard = () => {
       return acc;
     }, {} as Record<string, typeof user.stations>);
   }, [user.stations, stationCategories]);
+
+  useEffect(() => {
+    const initialVisibleCards = stationCategories.reduce((acc, category) => {
+      acc[category.type] = BATCH_SIZE;
+      return acc;
+    }, {} as Record<string, number>);
+    setVisibleCards(initialVisibleCards);
+  }, [stationCategories]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisibleCards((prev) => {
+              const updated = { ...prev };
+              const currentTab = entry.target.getAttribute("data-tab")!;
+              updated[currentTab] += BATCH_SIZE;
+              return updated;
+            });
+          }
+        });
+      },
+      { threshold: 1.0 }
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current);
+      }
+    };
+  }, []);
 
   return (
     <div
@@ -94,12 +134,19 @@ const Dashboard = () => {
               filteredStations[category.type].length > 0 && (
                 <TabsContent key={category.type} value={category.type}>
                   <div className="flex flex-col gap-3 md:gap-5 w-full container p-2">
-                    {filteredStations[category.type].map((station) => (
-                      <category.CardComponent
-                        key={station.id}
-                        id={station.id}
-                      />
-                    ))}
+                    {filteredStations[category.type]
+                      .slice(0, visibleCards[category.type])
+                      .map((station) => (
+                        <category.CardComponent
+                          key={station.id}
+                          id={station.id}
+                        />
+                      ))}
+                    <div
+                      ref={observerRef}
+                      data-tab={category.type}
+                      className="h-10 w-full"
+                    />
                   </div>
                 </TabsContent>
               )

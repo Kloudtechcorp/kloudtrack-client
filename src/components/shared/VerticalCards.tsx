@@ -1,27 +1,19 @@
 import React from "react";
 import { Card, CardContent } from "../ui/card";
-import { useGetTableGraphData } from "@/hooks/react-query/queries";
-import { TableGraphCardType } from "@/types/queryTypes";
+import { useGetAnalysis } from "@/hooks/react-query/queries";
+import { analysisType, TableGraphCardType } from "@/types/queryTypes";
 import { Skeleton } from "../ui/skeleton";
 import { weatherUnit } from "@/lib/utils";
 
-const VerticalCards = ({
-  stationId,
-  weatherData,
-  range,
-  repeat,
-  type,
-}: TableGraphCardType) => {
+const VerticalCards = ({ stationId, weatherData, type }: analysisType) => {
   const {
     data: stationData,
     isError,
     isLoading,
-  } = useGetTableGraphData({
+  } = useGetAnalysis({
     type,
     stationId,
     weatherData,
-    range,
-    repeat,
   });
 
   const renderSkeletons = () => (
@@ -72,8 +64,8 @@ const VerticalCards = ({
     <div className="flex md:flex-col gap-3 md:w-[20%] flex-wrap">
       {renderCard("Current", stationData.currentData)}
       {renderCard("Past 1-minute", stationData.past1minute)}
-      {renderCard("Highest (Past 24-hours)", stationData.max)}
-      {renderCard("Lowest (Past 24-hours)", stationData.min)}
+      {renderCard("Highest today", stationData.max)}
+      {renderCard("Lowest today", stationData.min)}
     </div>
   );
 };

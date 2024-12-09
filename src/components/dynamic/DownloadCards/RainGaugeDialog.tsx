@@ -74,7 +74,10 @@ const RainGaugeDialog = ({ id, name }: RainGaugeDialogProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="text-xs md:text-sm lg:text-base " variant="default">
+        <Button
+          className="text-xs md:text-sm lg:text-base bg-transparent hover:bg-transparent text-black dark:text-white downloadShadow transition-all duration-300 ease-in-out"
+          variant="default"
+        >
           Download Data
         </Button>
       </DialogTrigger>
@@ -108,28 +111,28 @@ const RainGaugeDialog = ({ id, name }: RainGaugeDialogProps) => {
                           className="py-2 px-1 flex flex-col space-y-1 w-full gap-2 item-center h-full justify-center"
                         >
                           {[
-                            "7days",
-                            "28days",
-                            "90days",
-                            "week",
-                            "month",
-                            "year",
-                            "last-week",
-                            "last-month",
-                            "custom",
-                          ].map((val) => (
+                            { value: "7days", label: "7 Days" },
+                            { value: "28days", label: "28 Days" },
+                            { value: "90days", label: "90 Days" },
+                            { value: "week", label: "This Week" },
+                            { value: "month", label: "This Month" },
+                            { value: "year", label: "Year" },
+                            { value: "last-week", label: "Last Week" },
+                            { value: "last-month", label: "Last Month" },
+                            { value: "custom", label: "Custom" },
+                          ].map(({ value, label }) => (
                             <FormItem
-                              key={val}
+                              key={value}
                               className="flex items-center space-x-3 space-y-0"
                             >
                               <FormControl>
                                 <RadioGroupItem
-                                  value={val}
+                                  value={value}
                                   className="size-6"
                                 />
                               </FormControl>
                               <FormLabel className="font-normal">
-                                {val.replace(/-/, " ")}
+                                {label}
                               </FormLabel>
                             </FormItem>
                           ))}

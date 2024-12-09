@@ -205,6 +205,7 @@ export type TableGraphCardType = {
   weatherData: string;
   range: number;
   repeat: string;
+  showDots?: boolean;
 };
 
 export type stationComputedTypes = {
@@ -279,6 +280,12 @@ export type tablesType = {
   weatherData: string;
   range: number;
   repeat: string;
+  type: string;
+};
+
+export type analysisType = {
+  stationId: string;
+  weatherData: string;
   type: string;
 };
 

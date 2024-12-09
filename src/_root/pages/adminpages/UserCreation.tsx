@@ -13,7 +13,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { userValidation } from "@/types/validation";
 import { useCreateUser } from "@/hooks/react-query/mutations";
-import { useState } from "react";
 import {
   Select,
   SelectContent,
@@ -27,7 +26,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -54,7 +52,6 @@ const UserCreation = () => {
   };
 
   const onSubmit = (values: z.infer<typeof userValidation>) => {
-    console.log(values);
     createUser(values, {
       onSuccess: () => {
         clearForms();
@@ -131,6 +128,7 @@ const UserCreation = () => {
                       }}
                     />
                   </FormControl>
+                  <FormMessage className="shad-form_message" />
                 </FormItem>
               )}
             />

@@ -3,6 +3,7 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { QUERY_KEYS } from "./queryKeys";
 import {
+  analysisType,
   argDashboardType,
   awsDashboardType,
   awsDashboardType2,
@@ -39,7 +40,6 @@ import {
   getUserSession,
   getDataset,
   getClmsData,
-  getTableGraph,
   getWeatherSensors,
   getRainGaugeSensors,
   getRiverLevelSensors,
@@ -47,6 +47,7 @@ import {
   getUserList,
   getBugReports,
   getStationDetailed,
+  getAnalysis,
 } from "@/api/get";
 import {
   coastalSensorsType,
@@ -212,12 +213,12 @@ export const useGetStationNames = (
   });
 };
 
-export const useGetTableGraphData = (
-  graphData: tablesType
+export const useGetAnalysis = (
+  graphData: analysisType
 ): UseQueryResult<stationComputedTypes, Error> => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_TABLE_GRAPH_DATA, graphData],
-    queryFn: () => getTableGraph(graphData),
+    queryFn: () => getAnalysis(graphData),
     refetchInterval: 60000,
     staleTime: 60000,
   });

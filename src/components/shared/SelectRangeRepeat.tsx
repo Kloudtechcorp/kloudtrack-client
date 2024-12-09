@@ -22,9 +22,8 @@ const RangeRepeatSelector: React.FC<RangeRepeatSelectorProps> = ({
 }) => {
   return (
     <>
-      {" "}
-      <div className="flex flex-col justify-center px-1">
-        <span className="parameterOption">Repeat Value</span>
+      <div className="flex flex-col justify-center items-center px-1">
+        <span className="text-sm px-1">Repeat Value</span>
         <span className="text-3xl font-bold">
           <Select
             value={repeatData}
@@ -37,13 +36,14 @@ const RangeRepeatSelector: React.FC<RangeRepeatSelectorProps> = ({
               <SelectItem value="minute">Minute</SelectItem>
               <SelectItem value="halfhour">30 Minutes</SelectItem>
               <SelectItem value="hour">Hour</SelectItem>
-              <SelectItem value="day">Day</SelectItem>
+
+              {rangeData !== "24" && <SelectItem value="day">Day</SelectItem>}
             </SelectContent>
           </Select>
         </span>
       </div>
-      <div className="flex flex-col justify-center px-1">
-        <span className="parameterOption">Data Range</span>
+      <div className="flex flex-col justify-center items-center px-1">
+        <span className="text-sm px-1">Data Range</span>
         <span className="text-3xl font-bold">
           <Select
             value={rangeData}
@@ -53,11 +53,11 @@ const RangeRepeatSelector: React.FC<RangeRepeatSelectorProps> = ({
               <SelectValue placeholder="Range" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="24">A Day</SelectItem>
+              <SelectItem value="24">1 Day</SelectItem>
               <SelectItem value="72">3 Days</SelectItem>
-              <SelectItem value="168">A Week</SelectItem>
+              <SelectItem value="168">1 Week</SelectItem>
               <SelectItem value="336">2 Weeks</SelectItem>
-              <SelectItem value="672">A Month</SelectItem>
+              <SelectItem value="672">1 Month</SelectItem>
             </SelectContent>
           </Select>
         </span>

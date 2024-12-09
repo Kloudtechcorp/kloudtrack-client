@@ -12,7 +12,13 @@ import { checkStationType, formatDateString } from "@/lib/utils";
 import { useGetUserProfile } from "@/hooks/react-query/queries";
 import { useDeleteApiKey } from "@/hooks/react-query/mutations";
 import { useUserContext } from "@/hooks/context/authContext";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import AddApiKey from "@/components/forms/AddApiKey";
 import {
   AlertDialog,
@@ -27,11 +33,11 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useTheme } from "@/components/theme-provider";
 import CopyIcon from "@/components/shared/icons/CopyIcon";
-import DeleteIconProfile from "@/components/shared/icons/DeleteIconProfile";
 import { toast } from "@/hooks/use-toast";
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -39,6 +45,8 @@ import {
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Trash2 } from "lucide-react";
 
 const Profile = () => {
   const { theme } = useTheme();
@@ -53,7 +61,6 @@ const Profile = () => {
       .includes(searchQuery.toLowerCase());
     return matchesSearch;
   });
-
   return (
     <div className="px-5 w-full h-full flex flex-col gap-3">
       <Card x-chunk="dashboard-05-chunk-3">
@@ -94,12 +101,17 @@ const Profile = () => {
                     <Button variant="default">Add api key</Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>Add New API Key</DialogHeader>
+                    <DialogDescription>
+                      Provide the necessary details to create a new API key for
+                      your application.
+                    </DialogDescription>
                     <AddApiKey onSuccess={refetch} />
                   </DialogContent>
                 </Dialog>
               )}
             </CardHeader>
-            <div className="w-[96%] h-px bg-black mx-auto"></div>
+            <div className="w-[96%] h-px bg-black dark:bg-white mx-auto"></div>
 
             <CardContent>
               <div className="flex flex-col gap-2 py-2">
@@ -140,14 +152,23 @@ const Profile = () => {
                             </div>
                           </div>
                           <div className="w-full flex flex-col">
-                            <span className="capitalize font-medium text-lg">
-                              {item.title}
-                            </span>
-                            <span className="text-sm md:text-base">
+                            <h2 className="capitalize font-medium text-lg flex gap-2 items-center">
+                              <span>{item.title}</span>
+                              <span className="flex">
+                                {item.expiresAt &&
+                                new Date(item.expiresAt) <= new Date() ? (
+                                  <Badge>Expired</Badge>
+                                ) : null}
+                              </span>
+                            </h2>
+                            <span className="text-base">
                               Token: {item.apiKey}
                             </span>
-                            <span className="text-muted-foreground text-xs md:text-sm">
-                              Expires on {item.expiresAt}
+                            <span className="text-muted-foreground text-sm">
+                              Expires on{" "}
+                              {item.expiresAt && item.expiresAt !== "Never"
+                                ? formatDateString(item.expiresAt, "long")
+                                : item.expiresAt}
                             </span>
                             <span className="text-muted-foreground text-xs md:text-sm">
                               Generated on{" "}
@@ -157,6 +178,7 @@ const Profile = () => {
                           <div className="flex gap-2 flex-col">
                             <Button
                               aria-label="Copy API Key"
+                              className="bg-inherit hover:bg-inherit border border-transparent hover:border-black dark:hover:border-white transition-all ease-in-out duration-300"
                               onClick={() => {
                                 navigator.clipboard.writeText(item.apiKey);
                                 toast({
@@ -168,8 +190,11 @@ const Profile = () => {
                             </Button>
                             <AlertDialog>
                               <AlertDialogTrigger asChild>
-                                <Button aria-label="Delete API Key">
-                                  <DeleteIconProfile theme={theme} />
+                                <Button
+                                  aria-label="Delete API Key"
+                                  className="bg-inherit hover:bg-inherit border border-transparent hover:border-black dark:hover:border-white transition-all ease-in-out duration-300"
+                                >
+                                  <Trash2 className="invert" />
                                 </Button>
                               </AlertDialogTrigger>
                               <AlertDialogContent>
@@ -227,6 +252,9 @@ const Profile = () => {
                       <TableHead className="text-xs md:text-sm">Type</TableHead>
                     </TableRow>
                   </TableHeader>
+                  <TableCaption>
+                    Reference the station ID to integrate with the API.
+                  </TableCaption>
                   <TableBody>
                     {filteredStationNames.map((item, index) => (
                       <TableRow key={index}>

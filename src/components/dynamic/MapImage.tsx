@@ -46,7 +46,7 @@ const MapImage: React.FC<MapImageProps> = ({
         </span>
         <Button
           className="w-1/3 "
-          onClick={() => navigate(`/${stationDetails.name}`)}
+          onClick={() => navigate(`/${stationDetails.id}`)}
           variant="default"
         >
           Monitoring Page

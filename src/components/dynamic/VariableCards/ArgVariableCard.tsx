@@ -6,15 +6,40 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TableGraphCard from "../TableGraphCard";
 import { checkRepeat } from "@/lib/utils";
 import RangeRepeatSelector from "@/components/shared/SelectRangeRepeat";
+import { Switch } from "@/components/ui/switch";
 
 const ArgVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
-  const [weatherData, setWeatherData] = useState("precipitation");
-  const [repeatData, setRepeatData] = useState("hour");
-  const [rangeData, setRangeData] = useState("24");
+  const [weatherData, setWeatherData] = useState<string>(
+    () => localStorage.getItem("rainData") || "precipitation"
+  );
+  const [repeatData, setRepeatData] = useState<string>(
+    () => localStorage.getItem("rainRepeat") || "hour"
+  );
+  const [rangeData, setRangeData] = useState<string>(
+    () => localStorage.getItem("rainRange") || "24"
+  );
+  const [checked, setChecked] = useState<boolean>(() =>
+    localStorage.getItem("rainChecked") === "true" ? true : false
+  );
+  useEffect(() => {
+    localStorage.setItem("rainData", weatherData);
+  }, [weatherData]);
+
+  useEffect(() => {
+    localStorage.setItem("rainRepeat", repeatData);
+  }, [repeatData]);
+
+  useEffect(() => {
+    localStorage.setItem("rainRange", rangeData);
+  }, [rangeData]);
+
+  useEffect(() => {
+    localStorage.setItem("rainChecked", String(checked));
+  }, [checked]);
 
   return (
     <div className="mainContainer bg-[#F6F8FC] dark:bg-secondary flex flex-col overflow-hidden">
@@ -22,10 +47,24 @@ const ArgVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
         <Card className="cardContainer">
           <CardContent className="flex flex-col p-0 gap-2">
             <div className="w-full flex flex-row justify-between items-center ">
-              <span className="variableTitle">{weatherData}</span>
-              <div className="multipleSelectDiv">
-                <div className="flex flex-col justify-center px-1">
-                  <span className="parameterOption">Parameter Option</span>
+              <span className="text-3xl font-bold px-4 capitalize">
+                {weatherData}
+              </span>
+              <div className="flex gap-1">
+                {weatherData !== "precipitation" &&
+                  weatherData !== "uvIndex" && (
+                    <div className="flex flex-col items-center h-full">
+                      <span className="text-sm px-1">Show Dots</span>
+                      <div className="h-10 flex items-center w-full justify-center">
+                        <Switch
+                          onCheckedChange={() => setChecked(!checked)}
+                          checked={checked}
+                        />
+                      </div>
+                    </div>
+                  )}
+                <div className="flex flex-col justify-center items-center px-1">
+                  <span className="text-sm px-1">Parameter Option</span>
                   <span className="text-3xl font-bold">
                     <Select
                       defaultValue={weatherData}
@@ -60,6 +99,7 @@ const ArgVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
                   range={checkRepeat(repeatData, +rangeData)}
                   repeat={repeatData}
                   key={key}
+                  showDots={checked}
                 />
               ))}
             </div>

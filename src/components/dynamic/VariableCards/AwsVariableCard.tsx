@@ -49,14 +49,14 @@ const AwsVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
         <Card className="cardContainer">
           <CardContent className="flex flex-col p-0 gap-2">
             <div className="w-full flex flex-row justify-between items-center ">
-              <span className="text-3xl font-bold px-4 capitalize">
+              <span className="lg:text-3xl md:text-2xl text-xl font-bold px-4 capitalize">
                 {weatherData}
               </span>
-              <div className="flex gap-1">
+              <div className="flex md:flex-row flex-col gap-1">
                 {weatherData !== "precipitation" &&
                   weatherData !== "uvIndex" && (
-                    <div className="flex flex-col items-center h-full">
-                      <span className="text-sm px-1">Show Dots</span>
+                    <div className="flex md:flex-col items-center h-full">
+                      <span className="md:text-sm text-xs px-1">Show Dots</span>
                       <div className="h-10 flex items-center w-full justify-center">
                         <Switch
                           onCheckedChange={() => setChecked(!checked)}
@@ -67,7 +67,9 @@ const AwsVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
                   )}
 
                 <div className="flex flex-col justify-center items-center px-1">
-                  <span className="text-sm px-1">Parameter Option</span>
+                  <span className="md:text-sm text-xs  px-1">
+                    Parameter Option
+                  </span>
                   <span className="text-3xl font-bold">
                     <Select
                       defaultValue={weatherData}

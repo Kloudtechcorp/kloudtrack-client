@@ -101,19 +101,19 @@ const VariableDashboard = () => {
       <div className="container p-2">
         <Card className="cardContainer" ref={imageRef}>
           <CardContent className="h-full flex flex-col gap-2">
-            <div className="flex flex-col md:flex-row md:items-center gap-5 justify-between ">
-              <div className="flex gap-2 justify justify-center ">
+            <div className="flex items-center gap-5 justify-between ">
+              <div className="flex gap-2">
                 <img
                   src="/assets/icons/back.svg"
                   className="cursor-pointer"
                   onClick={() => navigate(-1)}
                 />
 
-                <div className="flex flex-row gap-2 leading-3 items-center">
-                  <h1 className="capitalize font-medium md:text-2xl text-lg">
-                    {station}
+                <div className="flex flex-row gap-2 leading-3">
+                  <h1 className="capitalize text-2xl font-bold ">
+                    {stationData.name}
                   </h1>
-                  <button onClick={toggleFullscreen} className=" rounded-lg">
+                  <button onClick={toggleFullscreen} className="p-2 rounded-lg">
                     <Fullscreen />
                   </button>
                 </div>
@@ -227,13 +227,13 @@ const VariableDashboard = () => {
               </div>
             </div>
 
-            <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex gap-4">
               <VerticalCards
                 stationId={stationData.id}
                 weatherData={weatherData}
                 type={stationData.type.toLowerCase()}
               />
-              <div className="w-full flex flex-col gap-5">
+              <div className="w-full flex flex-col gap-5 ">
                 <div className="border p-2 rounded-lg flex flex-col gap-2">
                   <p className="font-semibold">Past 12 Hours</p>
                   <VariableDashboardGraph

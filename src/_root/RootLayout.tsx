@@ -14,10 +14,8 @@ const RootLayout = () => {
     <div className="flex flex-col w-full">
       <Header burgerMenu={handleBurgerMenu} />
       <div className="flex h-[calc(100vh-3.5rem)] bg-white dark:bg-[#181819] w-full ">
-        <div className="hidden md:block">
-          <LeftSidebar clicked={clicked} />
-        </div>
-        <div className="block md:hidden">
+        <LeftSidebar clicked={clicked} />
+        <div className="block md:hidden ">
           <BottomNavbar />
         </div>
         <section className="flex-1 flex bg-white dark:bg-[#181819] w-full">

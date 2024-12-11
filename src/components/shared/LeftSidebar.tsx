@@ -77,7 +77,7 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
 
   return (
     <nav
-      className={`bg-white dark:bg-[#181819] ease-in-out duration-300 lg:flex py-2 ${
+      className={`bg-white dark:bg-[#181819] ease-in-out duration-300 lg:flex py-2 hidden md:flex ${
         clicked ? "w-44 lg:flex" : "w-[3.5rem] hidden"
       }`}
     >

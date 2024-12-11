@@ -48,12 +48,10 @@ const AwsVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
       <div className="container p-2">
         <Card className="cardContainer">
           <CardContent className="flex flex-col p-0 gap-2">
-            <div className="w-full flex md:flex-row flex-col justify-between items-center ">
-              <span className="lg:text-3xl md:text-2xl text-xl font-bold px-4 capitalize flex items-center ">
-                {weatherData}
-              </span>
-              <div className="flex flex-row flex-wrap md:flex-nowrap justify-center gap-1 py-2 md:py-0">
-                <div className="flex flex-col lg:flex-row justify-center items-center px-1 gap-0 lg:gap-3">
+            <div className="variableCardMain">
+              <span className="variableWeatherData">{weatherData}</span>
+              <div className="variableMainDiv">
+                <div className="variableSubDiv">
                   <div className="flex">
                     {weatherData !== "precipitation" &&
                       weatherData !== "uvIndex" && (
@@ -110,7 +108,7 @@ const AwsVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
               </div>
             </div>
 
-            <div className="flex flex-col gap-[.4rem] overflow-y-auto w-full custom-scrollbar">
+            <div className="tableGraphCard">
               {id.map((id, key) => (
                 <TableGraphCard
                   type={"aws"}

@@ -15,13 +15,13 @@ import {
 import { stationStaticType } from "@/types";
 import {
   argDashboardType,
-  awsDashboardType,
+  awsDashboardType2,
   clmsDashboardType,
   rlmsDashboardType,
 } from "@/types/queryTypes";
 import {
   getArgData,
-  getAwsData,
+  getAwsData2,
   getClmsData,
   getRlmsData,
   getStationData,
@@ -40,7 +40,7 @@ const Map = () => {
   const { user } = useUserContext();
   const [isLoading, setIsLoading] = useState(false);
   const mapContainer = useRef<HTMLDivElement>(null);
-  const [awsData, setAwsData] = useState<awsDashboardType | null>(null);
+  const [awsData, setAwsData] = useState<awsDashboardType2 | null>(null);
   const [argData, setArgData] = useState<argDashboardType | null>(null);
   const [rlmsData, setRlmsData] = useState<rlmsDashboardType | null>(null);
   const [clmsData, setClmsData] = useState<clmsDashboardType | null>(null);
@@ -154,7 +154,7 @@ const Map = () => {
               setRlmsData(null);
               try {
                 if (item.type === "AWS") {
-                  const stationData = await getAwsData(item.id);
+                  const stationData = await getAwsData2(item.id);
                   if (!stationData) {
                     toast.error("Error fetching station data");
                     throw new Error("Error fetching data");

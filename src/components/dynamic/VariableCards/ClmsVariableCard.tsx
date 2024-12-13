@@ -82,16 +82,10 @@ const ClmsVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
                     </Select>
                   </span>
                 </div>
-                <RangeRepeatSelector
-                  repeatData={repeatData}
-                  setRepeatData={setRepeatData}
-                  rangeData={rangeData}
-                  setRangeData={setRangeData}
-                />
               </div>
             </div>
 
-            <div className="flex flex-col gap-[.4rem] overflow-y-auto w-full custom-scrollbar">
+            <div className="tableGraphCard">
               {id.map((id, key) => (
                 <TableGraphCard
                   type={"clms"}

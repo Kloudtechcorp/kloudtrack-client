@@ -80,12 +80,6 @@ const RlmsVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
                     </Select>
                   </span>
                 </div>
-                <RangeRepeatSelector
-                  repeatData={repeatData}
-                  setRepeatData={setRepeatData}
-                  rangeData={rangeData}
-                  setRangeData={setRangeData}
-                />
               </div>
             </div>
 

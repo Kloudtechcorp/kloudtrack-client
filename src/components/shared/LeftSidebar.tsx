@@ -1,5 +1,4 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-// import { ModeToggle } from "./ModeToggle";
 import {
   Tooltip,
   TooltipContent,
@@ -9,7 +8,6 @@ import {
 import { SidebarProps } from "@/types";
 import { INITIAL_USER, useUserContext } from "@/hooks/context/authContext";
 import { useHandleLogout } from "@/hooks/react-query/mutations";
-// import toast from "react-hot-toast";
 import BugIcon from "./icons/BugIcon";
 import {
   Sheet,
@@ -21,7 +19,7 @@ import {
 import { BugReport } from "../forms/bugReport";
 import { LogOut } from "lucide-react";
 import { useState } from "react";
-import { Button } from "../ui/button";
+// import { Button } from "../ui/button";
 
 const LeftSidebar = ({ clicked }: SidebarProps) => {
   const navigate = useNavigate();
@@ -79,7 +77,7 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
 
   return (
     <nav
-      className={`bg-white dark:bg-[#181819] ease-in-out duration-300 lg:flex py-2 ${
+      className={`bg-white dark:bg-[#181819] ease-in-out duration-300 lg:flex py-2 hidden md:flex ${
         clicked ? "w-44 lg:flex" : "w-[3.5rem] hidden"
       }`}
     >
@@ -135,17 +133,23 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
         </div>
 
         <div
-          className={`w-full flex flex-col justify-end${
-            clicked ? "items-start px-4" : "items-center px-2"
+          className={`w-full flex flex-col justify-end ${
+            clicked ? " px-4" : "items-center px-2"
           } gap-3 `}
         >
           <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger>
               <div
-                className={`flex items-center py-3 justify-center rounded-sm hover:bg-black/5 dark:hover:bg-white/5`}
+                className={`flex items-center py-3 justify-center rounded-sm hover:bg-black/5 dark:hover:bg-white/5 ${
+                  clicked ? "justify-start px-4" : "justify-center"
+                }`}
               >
                 <BugIcon theme={""} />
-                {clicked && <span>Bug Report</span>}
+                {clicked && (
+                  <span className="w-full pl-2 text-sm md:text-base">
+                    Bug Report
+                  </span>
+                )}
               </div>
             </SheetTrigger>
             <SheetContent side={"left"}>
@@ -170,7 +174,7 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
                     handleLogout();
                   }}
                 >
-                  <LogOut className="dark:bg-transparent dark:invert size-5" />
+                  <LogOut className="dark:bg-transparent dark:invert size-4" />
                   <span
                     className={`dark:invert ${
                       clicked ? "block md:text-base text-xs" : "hidden"

@@ -151,10 +151,10 @@ const Himawari = () => {
   };
   return (
     <div className="flex w-full rounded-2xl dark:bg-secondary bg-white  ">
-      <div className="w-full flex sm:flex-col lg:flex-row bg-[#F6F8FC] dark:bg-[#181819] rounded-2xl ">
-        <div className="h-full w-2/3 flex flex-col relative">
+      <div className="w-full flex flex-col lg:flex-row bg-[#F6F8FC] dark:bg-[#181819] rounded-2xl ">
+        <div className="h-full lg:w-2/3 flex flex-col relative">
           {/* Slider */}
-          <div className="rounded-full p-3 pr-6 bg-[#F6F8FC] dark:bg-black flex flex-row items-center gap-3 absolute top-5 left-5 w-2/3 text-nowrap z-50">
+          <div className="rounded-full p-3 pr-6 bg-[#F6F8FC] dark:bg-black flex flex-row items-center gap-3 absolute top-5 left-5 md:w-2/3 text-nowrap z-50">
             <Button
               className="bg-yellow-400 size-8 p-2 rounded-full hover:bg-black/25 dark:hover:bg-white/25"
               onClick={() => setIsCycling(!isCycling)}
@@ -165,7 +165,7 @@ const Himawari = () => {
                 <img src="/assets/icons/play.svg" />
               )}
             </Button>
-            <div className="flex flex-row gap-2 grow">
+            <div className="flex flex-col md:flex-row gap-2 grow">
               <Slider
                 className="grow"
                 defaultValue={[0]}
@@ -198,12 +198,12 @@ const Himawari = () => {
           </div>
         </div>
 
-        <div className="w-1/3 bg-secondary">
+        <div className="lg:w-1/3 bg-secondary">
           <div className="p-5 ">
-            <h2 className="py-2 lg:text-3xl sm:text-base font-bold">
+            <h2 className="py-2 lg:text-3xl text-base font-bold">
               Real-time Satellite View
             </h2>
-            <span className=" lg:text-sm sm:text-xs">
+            <span className=" lg:text-sm text-xs">
               <p>
                 Source: The True Color Reproduction (TCR) imagery from Himawari
                 Satellite is provided by Meteorological Satellite Center, Japan

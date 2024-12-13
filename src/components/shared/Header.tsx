@@ -1,15 +1,36 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { HeaderProps } from "@/types";
-import { useUserContext } from "@/hooks/context/authContext";
 import { Skeleton } from "../ui/skeleton";
 import { ModeToggle } from "./ModeToggle";
 import { Twirl as Hamburger } from "hamburger-react";
+import { INITIAL_USER, useUserContext } from "@/hooks/context/authContext";
+import { useHandleLogout } from "@/hooks/react-query/mutations";
+import BugIcon from "./icons/BugIcon";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { BugReport } from "../forms/bugReport";
+import { LogOut } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
 
 const Header = ({ burgerMenu }: HeaderProps) => {
+  const [isSheetOpen, setSheetOpen] = useState(false);
+  const navigate = useNavigate();
+  const { setUser, user, setIsAuthenticated, isLoading } = useUserContext();
+  const { mutate: handleLogout } = useHandleLogout();
   const [clicked, setClicked] = useState(false);
   const [time, setTime] = useState("");
-  const { user, isLoading } = useUserContext();
 
   useEffect(() => {
     setInterval(() => {
@@ -24,6 +45,9 @@ const Header = ({ burgerMenu }: HeaderProps) => {
     setClicked(!clicked);
     burgerMenu(!clicked);
   };
+  const closeSheet = () => {
+    setSheetOpen(false);
+  };
 
   return (
     <>
@@ -35,7 +59,42 @@ const Header = ({ burgerMenu }: HeaderProps) => {
         </div>
       ) : (
         <div className="w-full bg-white dark:bg-[#181819] p-1 h-[3.5rem] flex text-center items-center">
-          <div className="flex hover:cursor-pointer">
+          <div className=" gap-4 md:hidden flex px-2">
+            <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
+              <SheetTrigger>
+                <div className="flex flex-col items-center text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white">
+                  <BugIcon theme="" />
+                  {/* <span className="text-xs">Bug Report</span> */}
+                </div>
+              </SheetTrigger>
+              <SheetContent side={"bottom"}>
+                <SheetHeader>
+                  <SheetTitle>Report a Bug!</SheetTitle>
+                  <BugReport onClose={closeSheet} />
+                </SheetHeader>
+              </SheetContent>
+            </Sheet>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <div
+                    className="flex flex-col items-center text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white"
+                    onClick={() => {
+                      setIsAuthenticated(false);
+                      setUser(INITIAL_USER);
+                      navigate("/signin");
+                      handleLogout();
+                    }}
+                  >
+                    <LogOut className="size-4" />
+                    {/* <span className="text-xs">Logout</span> */}
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>Logout</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+          <div className=" hover:cursor-pointer hidden md:block">
             <Hamburger size={18} toggled={clicked} toggle={handleClick} />
           </div>
           <div className="items-center flex w-full flex-row justify-center ">

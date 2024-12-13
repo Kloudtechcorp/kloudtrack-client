@@ -27,7 +27,7 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
   const { data: stationData, isLoading, isError } = useGetAwsData2(id);
   const [clicked, setClicked] = useState(false);
   const { theme } = useTheme();
-  const [mapboxStyle, setMapboxStyle] = useState(
+  const [mapboxStyle] = useState(
     theme === "dark"
       ? "mapbox://styles/mapbox/dark-v11"
       : "mapbox://styles/mapbox/light-v11"
@@ -51,7 +51,7 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
     );
   }
 
-  if (isError || !stationData.station) {
+  if (isError) {
     return (
       <Card className="cardContainer flex flex-row">
         <CardContent className="flex flex-col lg:flex-row w-full p-0 gap-2">
@@ -64,70 +64,74 @@ const AwsCard: React.FC<AwsCardProps> = ({ id }) => {
       </Card>
     );
   }
-
   return (
     <Card className="cardContainer flex flex-row">
       <CardContent className="flex flex-col lg:flex-row w-full p-0 gap-2">
-        <div className="stationDetailsDiv px-2 pb-2 ">
-          <div className="flex flex-col">
-            <div className="stationNameDiv">
-              <CardTitle className="stationName">
-                {stationData.station.name}
-              </CardTitle>
-            </div>
-            <hr className="h-[0.25rem] bg-black dark:bg-white" />
+        {!stationData.station ? (
+          <div>No Station Data Found.</div>
+        ) : (
+          <div className="stationDetailsDiv px-2 pb-2 ">
             <div className="flex flex-col">
-              <span className="stationType">
-                {stationType(stationData.station.type)}
-              </span>
-              <span className="stationLocation">{`${stationData.station.barangay}, ${stationData.station.municipality}, ${stationData.station.province}`}</span>
-              <span className="stationLocation">
-                {stationData.station.latitude}, {stationData.station.longitude}
-              </span>
+              <div className="stationNameDiv">
+                <CardTitle className="stationName">
+                  {stationData.station.name}
+                </CardTitle>
+              </div>
+              <hr className="h-[0.25rem] bg-black dark:bg-white" />
+              <div className="flex flex-col">
+                <span className="stationType">
+                  {stationType(stationData.station.type)}
+                </span>
+                <span className="stationLocation">{`${stationData.station.barangay}, ${stationData.station.municipality}, ${stationData.station.province}`}</span>
+                <span className="stationLocation">
+                  {stationData.station.latitude},{" "}
+                  {stationData.station.longitude}
+                </span>
+              </div>
             </div>
-          </div>
-          <div
-            className="h-full px-2 pb-3 hidden lg:block"
-            onClick={() => setClicked(!clicked)}
-          >
-            <div className="w-[30rem] aspect-square">
-              {!clicked ? (
-                <img
-                  src={stationData.station.image}
-                  className="inset-0 rounded-md object-cover w-full h-full"
-                  alt="Station"
-                />
-              ) : (
-                <Map
-                  mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
-                  initialViewState={{
-                    longitude: +stationData.station.longitude,
-                    latitude: +stationData.station.latitude,
-                    zoom: 9,
-                  }}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    borderRadius: "calc(var(--radius) - 2px)",
-                  }}
-                  mapStyle={mapboxStyle}
-                >
-                  <Marker
-                    latitude={+stationData.station.latitude}
-                    longitude={+stationData.station.longitude}
-                    anchor="bottom"
+            <div
+              className="h-full px-2 pb-3 hidden lg:block"
+              onClick={() => setClicked(!clicked)}
+            >
+              <div className="w-[30rem] aspect-square">
+                {!clicked && stationData.station.image ? (
+                  <img
+                    src={stationData.station.image}
+                    className="inset-0 rounded-md object-cover w-full h-full"
+                    alt="Station"
+                  />
+                ) : (
+                  <Map
+                    mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
+                    initialViewState={{
+                      longitude: +stationData.station.longitude,
+                      latitude: +stationData.station.latitude,
+                      zoom: 9,
+                    }}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      borderRadius: "calc(var(--radius) - 2px)",
+                    }}
+                    mapStyle={mapboxStyle}
                   >
-                    <img
-                      src="/assets/icons/pointer-aws.svg"
-                      alt="ARG Marker"
-                      className="size-12"
-                    />
-                  </Marker>
-                </Map>
-              )}
+                    <Marker
+                      latitude={+stationData.station.latitude}
+                      longitude={+stationData.station.longitude}
+                      anchor="bottom"
+                    >
+                      <img
+                        src="/assets/icons/pointer-aws.svg"
+                        alt="ARG Marker"
+                        className="size-12"
+                      />
+                    </Marker>
+                  </Map>
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        )}
         {stationData.data ? (
           <div className="flex flex-col gap-2 w-full">
             <div className="stationDataDiv">

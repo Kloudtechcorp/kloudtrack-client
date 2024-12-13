@@ -63,11 +63,9 @@ const VariableGraph = ({
       const formattedDate = new Date(item.datetime).toLocaleString("en-US", {
         month: "short",
         day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
+        ...(repeat !== "day" && { hour: "2-digit", minute: "2-digit" }),
         hour12: false,
       });
-
       const datetimeWithAt = formattedDate.replace(",", " at");
       return {
         ...item,
@@ -126,7 +124,10 @@ const VariableGraph = ({
               dataKey="data"
               type="linear"
               stroke="#fbd008"
-              strokeWidth={3}
+              isAnimationActive={true}
+              animateNewValues={true}
+              animationEasing={"ease-in-out"}
+              strokeWidth={1.5}
               dot={showDots}
             />
           </LineChart>

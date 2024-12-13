@@ -66,10 +66,12 @@ const Profile = () => {
       <Card x-chunk="dashboard-05-chunk-3">
         {!profile ? (
           <div className="p-5">
-            <CardHeader className="px-2 flex flex-row justify-between">
+            <CardHeader className="px-2 flex flex-row justify-between ">
               <div>
-                <CardTitle>Your Profile</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-lg md:text-2xl">
+                  Your Profile
+                </CardTitle>
+                <CardDescription className="text-xs md:text-sm">
                   This section contains your username and api key.
                 </CardDescription>
               </div>
@@ -84,10 +86,12 @@ const Profile = () => {
           </div>
         ) : (
           <div>
-            <CardHeader className="flex flex-row justify-between ">
+            <CardHeader className="flex md:flex-row justify-between ">
               <div className="flex flex-col">
-                <CardTitle>Your Profile</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-lg md:text-2xl">
+                  Your Profile
+                </CardTitle>
+                <CardDescription className="text-xs md:text-sm">
                   This section contains your username and api key.
                 </CardDescription>
               </div>
@@ -115,10 +119,10 @@ const Profile = () => {
                 <div className="flex flex-col">
                   <div className="flex flex-col w-full items-start">
                     <span className="text-md font-bold">Username</span>
-                    <span className="capitalize text-lg">
+                    <span className="capitalize text-base md:text-lg">
                       {profile.username}
                     </span>
-                    <span className="text-muted-foreground text-sm">
+                    <span className="text-muted-foreground text-xs md:text-sm">
                       Your profile was created on{" "}
                       {formatDateString(profile.createdAt, "long")}
                     </span>
@@ -133,9 +137,9 @@ const Profile = () => {
                     </span>
                     {profile.apiKeys.map((item) => (
                       <Card className="flex gap-2 p-5" key={item.id}>
-                        <div className="flex flex-row w-full">
-                          <div className="w-20 flex justify-center">
-                            <div className="flex flex-col gap-2 justify-center">
+                        <div className="flex flex-col md:flex-row w-full gap-2">
+                          <div className="w-20 hidden md:flex justify-center">
+                            <div className="flex flex-col gap-2 justify-center ">
                               <img
                                 src="/assets/icons/key.svg"
                                 width={50}
@@ -166,7 +170,7 @@ const Profile = () => {
                                 ? formatDateString(item.expiresAt, "long")
                                 : item.expiresAt}
                             </span>
-                            <span className="text-muted-foreground text-sm">
+                            <span className="text-muted-foreground text-xs md:text-sm">
                               Generated on{" "}
                               {formatDateString(item.createdAt, "long")}
                             </span>
@@ -241,9 +245,11 @@ const Profile = () => {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="h-12">ID</TableHead>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Type</TableHead>
+                      <TableHead className="h-12 text-xs md:text-sm">
+                        ID
+                      </TableHead>
+                      <TableHead className="text-xs md:text-sm">Name</TableHead>
+                      <TableHead className="text-xs md:text-sm">Type</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableCaption>
@@ -252,9 +258,15 @@ const Profile = () => {
                   <TableBody>
                     {filteredStationNames.map((item, index) => (
                       <TableRow key={index}>
-                        <TableCell className="font-medium">{item.id}</TableCell>
-                        <TableCell className="h-10">{item.name}</TableCell>
-                        <TableCell>{checkStationType(item.type)}</TableCell>
+                        <TableCell className="font-medium text-xs md:text-sm">
+                          {item.id}
+                        </TableCell>
+                        <TableCell className="h-10 text-xs md:text-sm">
+                          {item.name}
+                        </TableCell>
+                        <TableCell className="text-xs md:text-sm">
+                          {checkStationType(item.type)}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

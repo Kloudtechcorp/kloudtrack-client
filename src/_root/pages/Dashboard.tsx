@@ -99,8 +99,8 @@ const Dashboard = () => {
         </div>
       ) : (
         <Tabs defaultValue="AWS" className="w-full flex flex-col">
-          <TabsList className="flex justify-between container ">
-            <div className="flex justify-start">
+          <TabsList className="flex justify-between container">
+            <div className="flex justify-start flex-wrap md:px-2">
               {stationCategories.map(
                 (category) =>
                   filteredStations[category.type].length > 0 && (
@@ -110,21 +110,23 @@ const Dashboard = () => {
                   )
               )}
             </div>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    onClick={toggleFullscreen}
-                    className="rounded-lg px-2 flex p-2"
-                  >
-                    <Fullscreen />
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Fullscreen</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <div className="md:flex hidden">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      onClick={toggleFullscreen}
+                      className="rounded-lg px-2 flex p-2 flex-end "
+                    >
+                      <Fullscreen />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Fullscreen</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
           </TabsList>
 
           {stationCategories.map(

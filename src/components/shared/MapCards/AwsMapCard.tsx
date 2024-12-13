@@ -1,6 +1,6 @@
 import React from "react";
 import { formatDateString, getWindDirectionLabel } from "@/lib/utils";
-import { awsDashboardType } from "@/types/queryTypes";
+import { awsDashboardType2 } from "@/types/queryTypes";
 
 import { Card, CardContent, CardDescription } from "@/components/ui/card";
 import {
@@ -13,7 +13,7 @@ import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import NoData from "@/components/shared/NoData";
 
 interface MapCardProps {
-  data: awsDashboardType | null;
+  data: awsDashboardType2 | null;
 }
 
 const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
@@ -161,7 +161,8 @@ const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {
                         </TooltipProvider>
                       </TableCell>
                       <TableCell className="font-bold text-sm">
-                        {Math.round(data.data.precipitation * 100) / 100} mm/hr
+                        {Math.round(data.data.precipitation * 100) / 100} mm |{" "}
+                        {Math.round(data.pastHourPrecip * 100) / 100} mm/hr
                       </TableCell>
                     </TableRow>
 

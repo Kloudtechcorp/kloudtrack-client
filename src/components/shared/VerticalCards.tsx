@@ -32,7 +32,7 @@ const VerticalCards = ({ stationId, weatherData, type }: analysisType) => {
 
   const renderCard = (title: string, value: number | null) => {
     return (
-      <Card className="w-full h-[11rem]">
+      <Card className="w-full md:h-[11rem]">
         <CardContent className="text-center flex flex-col h-full w-full px-0">
           <div className="cardTitleDiv">
             <span className="weatherDataTitle">{title}</span>
@@ -61,7 +61,7 @@ const VerticalCards = ({ stationId, weatherData, type }: analysisType) => {
   }
 
   return (
-    <div className="flex flex-col gap-3 w-[20%]">
+    <div className="flex md:flex-col gap-3 md:w-[20%] flex-wrap">
       {renderCard("Current", stationData.currentData)}
       {renderCard("Past 1-minute", stationData.past1minute)}
       {renderCard("Highest today", stationData.max)}

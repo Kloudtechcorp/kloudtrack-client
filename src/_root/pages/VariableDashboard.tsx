@@ -59,16 +59,16 @@ const VariableDashboard = () => {
     if (stationData) {
       switch (stationData.type) {
         case "ARG":
-          setWeatherData("precipitation");
+          setWeatherData(location.state?.variable || "precipitation");
           break;
         case "CLMS":
-          setWeatherData("temperature");
+          setWeatherData(location.state?.variable || "distance");
           break;
         case "RLMS":
-          setWeatherData("distance");
+          setWeatherData(location.state?.variable || "distance");
           break;
         default:
-          setWeatherData("temperature");
+          setWeatherData(location.state?.variable || "temperature");
           break;
       }
     }
@@ -101,38 +101,43 @@ const VariableDashboard = () => {
       <div className="container p-2">
         <Card className="cardContainer" ref={imageRef}>
           <CardContent className="h-full flex flex-col gap-2">
-            <div className="flex items-center gap-5 justify-between ">
-              <div className="flex gap-2">
-                <img
-                  src="/assets/icons/back.svg"
-                  className="cursor-pointer"
-                  onClick={() => navigate(-1)}
-                />
+            <div className="variableMainDiv">
+              <div className="flex w-full ">
+                <div className="flex size-6 self-center">
+                  <img
+                    src="/assets/icons/back.svg"
+                    className="cursor-pointer"
+                    onClick={() => navigate(-1)}
+                  />
+                </div>
 
-                <div className="flex flex-row gap-2 leading-3">
-                  <h1 className="capitalize text-2xl font-bold ">
-                    {stationData.name}
-                  </h1>
+                <div className="flex flex-row ">
+                  <h1 className="variableWeatherData">{stationData.name}</h1>
                   <button onClick={toggleFullscreen} className="p-2 rounded-lg">
                     <Fullscreen />
                   </button>
                 </div>
               </div>
-              <div className="flex gap-2">
-                {weatherData !== "precipitation" &&
-                  weatherData !== "uvIndex" && (
-                    <div className="flex flex-col items-center h-full">
-                      <span className="text-sm px-1">Show Dots</span>
-                      <div className="h-10 flex items-center w-full justify-center">
-                        <Switch
-                          onCheckedChange={() => setChecked(!checked)}
-                          checked={checked}
-                        />
+              <div className="variableSubDiv">
+                <div className="flex">
+                  {weatherData !== "precipitation" &&
+                    weatherData !== "uvIndex" && (
+                      <div className="flex flex-col items-center h-full">
+                        <span className="md:text-sm text-xs px-3 text-nowrap">
+                          Show Dots
+                        </span>
+                        <div className="h-10 flex items-center w-full justify-center">
+                          <Switch
+                            onCheckedChange={() => setChecked(!checked)}
+                            checked={checked}
+                          />
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
+                </div>
+
                 <div className="flex flex-col justify-center items-center px-1">
-                  <span className="text-sm px-1">Repeat Value</span>
+                  <span className="text-sm px-1">Interval</span>
                   <span className="text-3xl font-bold">
                     <Select
                       value={repeatData}
@@ -149,8 +154,11 @@ const VariableDashboard = () => {
                     </Select>
                   </span>
                 </div>
-                <div className="flex flex-col justify-center">
-                  <span className="text-sm px-1">Parameter Option</span>
+
+                <div className="flex flex-col">
+                  <span className="md:text-sm text-xs px-3 text-nowrap text-center">
+                    Parameter Option
+                  </span>
                   {(stationData.type === "AWS" && (
                     <span className="text-3xl font-bold">
                       <Select
@@ -227,7 +235,7 @@ const VariableDashboard = () => {
               </div>
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex gap-4 md:flex-row flex-col">
               <VerticalCards
                 stationId={stationData.id}
                 weatherData={weatherData}

@@ -23,13 +23,13 @@ const RangeRepeatSelector: React.FC<RangeRepeatSelectorProps> = ({
   return (
     <>
       <div className="flex flex-col justify-center items-center px-1">
-        <span className="text-sm px-1">Repeat Value</span>
+        <span className="text-sm px-1">Interval</span>
         <span className="text-3xl font-bold">
           <Select
             value={repeatData}
             onValueChange={(value) => setRepeatData(value)}
           >
-            <SelectTrigger className="w-[200px]">
+            <SelectTrigger className="selectTrigger">
               <SelectValue placeholder="Repeat" />
             </SelectTrigger>
             <SelectContent>
@@ -43,13 +43,13 @@ const RangeRepeatSelector: React.FC<RangeRepeatSelectorProps> = ({
         </span>
       </div>
       <div className="flex flex-col justify-center items-center px-1">
-        <span className="text-sm px-1">Data Range</span>
+        <span className="selectTitle">Data Range</span>
         <span className="text-3xl font-bold">
           <Select
             value={rangeData}
             onValueChange={(value) => setRangeData(value)}
           >
-            <SelectTrigger className="w-[200px]">
+            <SelectTrigger className="selectTrigger">
               <SelectValue placeholder="Range" />
             </SelectTrigger>
             <SelectContent>

@@ -131,6 +131,7 @@ const DataCards = ({
               <Precipitation
                 precipitation={currentweather.precipitation}
                 pastHourPrecip={pastHourPrecip}
+                id={id}
                 stationName={stationName}
                 dashboardType={type}
               />
@@ -251,6 +252,7 @@ const DataCards = ({
           <Precipitation
             precipitation={currentweather.precipitation}
             pastHourPrecip={pastHourPrecip}
+            id={id}
             stationName={stationName}
             dashboardType={type}
           />

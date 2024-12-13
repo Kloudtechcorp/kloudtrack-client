@@ -69,7 +69,7 @@ export function BugReport({ onClose }: { onClose: () => void }) {
                   {...field}
                 />
               </FormControl>
-              <FormDescription>
+              <FormDescription className="text-xs">
                 Please describe your bug. Avoid using non-descriptive words like
                 "it glitches" or "its broken"
               </FormDescription>

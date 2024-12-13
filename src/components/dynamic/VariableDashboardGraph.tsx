@@ -17,7 +17,7 @@ import { TableGraphCardType } from "@/types/queryTypes";
 import PuffLoader from "react-spinners/PuffLoader";
 import { useGetDataset } from "@/hooks/react-query/queries";
 import { formattedDataType } from "@/types";
-import { formatDateString } from "@/lib/utils";
+// import { formatDateString } from "@/lib/utils";
 
 const chartConfig = {
   desktop: {
@@ -61,10 +61,21 @@ const VariableDashboardGraph = ({
   const getFormattedDataset = (
     graphData: formattedDataType[]
   ): formattedDataType[] => {
-    return graphData.map((item) => ({
-      ...item,
-      datetime: formatDateString(item.datetime, "short"),
-    }));
+    return graphData.map((item) => {
+      const formattedDate = new Date(item.datetime).toLocaleString("en-US", {
+        month: "short",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      });
+
+      const datetimeWithAt = formattedDate.replace(",", " at");
+      return {
+        ...item,
+        datetime: datetimeWithAt,
+      };
+    });
   };
 
   const updatedData = getFormattedDataset(graphData);
@@ -114,7 +125,10 @@ const VariableDashboardGraph = ({
               dataKey="data"
               type="linear"
               stroke="#fbd008"
-              strokeWidth={3}
+              isAnimationActive={true}
+              animateNewValues={true}
+              animationEasing={"ease-in-out"}
+              strokeWidth={1.5}
               dot={showDots}
             />
           </LineChart>

@@ -184,6 +184,7 @@
 .puffLoaderCardContent {
   @apply flex flex-row w-full p-0 justify-center items-center;
 }
+
 .puffLoaderDiv {
   @apply flex size-20 md:size-40;
 }
@@ -192,18 +193,23 @@
 .stationDetailsDiv {
   @apply flex flex-col gap-3 justify-between lg:w-1/2 w-full;
 }
+
 .stationDataDiv {
   @apply flex items-center gap-2;
 }
+
 .stationNameDiv {
   @apply flex items-center md:py-2 py-[0.5rem];
 }
+
 .stationName {
   @apply w-full text-xl md:text-2xl;
 }
+
 .stationType {
   @apply text-sm md:text-lg xl:text-xl font-semibold;
 }
+
 .stationLocation {
   @apply md:text-sm text-xs;
 }
@@ -212,6 +218,7 @@
 .currentWeather {
   @apply w-full font-normal md:text-lg px-2 md:px-0 text-xs;
 }
+
 .cardMain {
   @apply w-full h-full lg:aspect-[100/56] md:aspect-[16/11];
 }
@@ -223,15 +230,19 @@
     background-clip: padding-box;
   }
 }
+
 .animate-border-pulse {
   animation: border-pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
+
 .cardDashboard {
   @apply w-full md:h-[8rem] h-[5rem];
 }
+
 .cardTitleDiv {
   @apply w-full py-1;
 }
+
 .cardDataDiv {
   @apply text-xl flex h-full items-center justify-center;
 }
@@ -255,14 +266,64 @@
 .weatherDataGraphs {
   @apply md:text-xl text-xs w-full font-medium;
 }
+
 .tooltipContentDiv {
   @apply w-full text-xs;
+}
+
+/* Variable Card Styling */
+
+/* Variable Styling */
+.variableCardMain {
+  @apply w-full flex md:flex-row flex-col justify-between items-center;
+}
+
+.variableWeatherData {
+  @apply lg:text-3xl md:text-2xl text-xl font-bold px-4 capitalize flex items-center;
+}
+
+.variableMainDiv {
+  @apply flex flex-row flex-wrap md:flex-nowrap justify-center gap-1 py-2 md:py-0;
+}
+
+.variableSubDiv {
+  @apply flex flex-col lg:flex-row justify-center items-center px-1 gap-0 lg:gap-3;
+}
+
+.variableTitle {
+  @apply md:text-3xl font-bold md:px-4 px-2 capitalize;
+}
+
+.tableText {
+  @apply md:text-base text-xs;
+}
+
+.parameterOption {
+  @apply md:text-sm text-xs px-1;
+}
+
+.tableGraphCard {
+  @apply flex flex-col gap-[.4rem] overflow-y-auto w-full custom-scrollbar;
+}
+
+/* Select Styling */
+.selectTrigger {
+  @apply w-[200px] text-xs md:text-sm;
+}
+
+.multipleSelectDiv {
+  @apply flex gap-1 flex-col lg:flex-row px-2;
+}
+
+.selectTitle {
+  @apply text-xs md:text-sm px-1;
 }
 
 /* Not Found Styling */
 .notFoundTitle {
   @apply bg-[#fbd008] to-transparent bg-clip-text md:text-[10rem] text-5xl font-extrabold leading-none text-transparent;
 }
+
 .notFoundDesc {
   @apply font-bold md:text-3xl text-2xl;
 }
@@ -310,7 +371,7 @@
 }
 
 .triggerButtonDiv {
-  @apply flex  ml-4 mt-1 justify-center items-center;
+  @apply flex ml-4 mt-1 justify-center items-center;
 }
 
 .downloadShadow {

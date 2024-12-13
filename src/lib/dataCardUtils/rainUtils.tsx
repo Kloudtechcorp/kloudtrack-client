@@ -14,11 +14,13 @@ export function Precipitation({
   stationName,
   pastHourPrecip,
   dashboardType,
+  id,
 }: {
   precipitation: number;
   stationName: string;
   pastHourPrecip: number;
   dashboardType: string;
+  id: string;
 }) {
   const navigate = useNavigate();
 
@@ -47,7 +49,7 @@ export function Precipitation({
         triggerWarningToast({
           title: `Heavy rainfall detected at ${stationName}!`,
           message: `${warning.current}`,
-          stationName: stationName,
+          id: id,
           dashboardType: dashboardType,
           colorClass: colorClass.current,
           navigate,
@@ -65,7 +67,7 @@ export function Precipitation({
         triggerWarningToast({
           title: `Intense rain detected at ${stationName}!`,
           message: `${warning.current}`,
-          stationName: stationName,
+          id: id,
           dashboardType: dashboardType,
           colorClass: colorClass.current,
           navigate,
@@ -84,7 +86,7 @@ export function Precipitation({
         triggerWarningToast({
           title: `Torrential rain detected at ${stationName}!`,
           message: `${warning.current}`,
-          stationName: stationName,
+          id: id,
           dashboardType: dashboardType,
           colorClass: colorClass.current,
           navigate,
@@ -120,7 +122,7 @@ export function Precipitation({
                   </span>
                 </div>
                 {hasWarning && (
-                  <AlertIcon className={`${colorClass.current} w-1/3`} />
+                  <AlertIcon className={`${colorClass.current} w-1/4`} />
                 )}
               </div>
             </TooltipTrigger>

@@ -36,7 +36,7 @@ const TableGraphCard = ({
 
   if (isError) {
     return (
-      <div className="w-full min-h-[16rem] flex flex-row rounded-lg p-1 pr-3 gap-1">
+      <div className="w-full md:min-h-[16rem] min-h-[10rem] flex flex-row rounded-lg p-1 pr-3 gap-1">
         <div className="flex flex-col gap-2 w-full">
           <div className="flex flex-col pb-3 gap-1 relative h-full items-center justify-center">
             <NoData />
@@ -49,7 +49,7 @@ const TableGraphCard = ({
 
   if (isLoading || !stationData) {
     return (
-      <div className="w-full min-h-[16rem] flex flex-row rounded-lg p-1 pr-3 gap-1">
+      <div className="w-full md:min-h-[16rem] min-h-[10rem] flex flex-row rounded-lg p-1 pr-3 gap-1">
         <div className="w-1/3 flex flex-col gap-1">
           <Skeleton className="w-full h-10" />
           <Skeleton className="w-full h-10" />
@@ -78,65 +78,71 @@ const TableGraphCard = ({
           </TableHeader>
           <TableBody className="text-center ">
             <TableRow>
-              <TableCell className="p-1 border-r-[1px]">Station Name</TableCell>
-              <TableCell className="">{stationData.station.name}</TableCell>
+              <TableCell className="p-1 border-r-[1px] tableText">
+                Station Name
+              </TableCell>
+              <TableCell className="tableText">
+                {stationData.station.name}
+              </TableCell>
             </TableRow>
 
             <TableRow>
-              <TableCell className="p-1 border-r-[1px]">
+              <TableCell className="p-1 border-r-[1px] tableText">
                 Date Recorded
               </TableCell>
-              <TableCell className="">
+              <TableCell className="tableText">
                 {formatDateString(stationData.recordedAt, "long")}
               </TableCell>
             </TableRow>
 
             <TableRow>
-              <TableCell className="p-1 border-r-[1px]">
-                Current Value
+              <TableCell className="p-1 border-r-[1px] tableText">
+                Current Record
               </TableCell>
-              <TableCell className="">
+              <TableCell className="tableText">
                 {Math.round(stationData.currentData * 100) / 100}{" "}
                 {weatherUnit(weatherData)}
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell className="p-1 border-r-[1px]">Location</TableCell>
-              <TableCell className="">
+              <TableCell className="p-1 border-r-[1px] tableText">
+                Location
+              </TableCell>
+              <TableCell className="tableText">
                 {`${stationData.station.barangay}, ${stationData.station.municipality}, ${stationData.station.province}`}
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell className="p-1 border-r-[1px]">
+              <TableCell className="p-1 border-r-[1px] tableText">
                 Highest (Today)
               </TableCell>
-              <TableCell className="">
+              <TableCell className="tableText">
                 {Math.round(stationData.max * 100) / 100}{" "}
                 {weatherUnit(weatherData)}
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell className="p-1 border-r-[1px]">
+              <TableCell className="p-1 border-r-[1px] tableText">
                 Lowest (Today)
               </TableCell>
-              <TableCell className="">
-                {Math.round(stationData.min * 100) / 100}
+              <TableCell className="tableText">
+                {Math.round(stationData.min * 100) / 100}{" "}
                 {weatherUnit(weatherData)}
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell className="p-1 border-r-[1px]">
+              <TableCell className="p-1 border-r-[1px] tableText">
                 Average (Today)
               </TableCell>
-              <TableCell className="">
-                {Math.round(stationData.average * 100) / 100}
+              <TableCell className="tableText">
+                {Math.round(stationData.average * 100) / 100}{" "}
                 {weatherUnit(weatherData)}
               </TableCell>
             </TableRow>
           </TableBody>
         </Table>
       </div>
-      <div className="border rounded-lg w-full items-center h-full grow p-1 flex">
+      <div className="border rounded-lg w-full items-center lg:h-[17.5rem] grow p-1 flex  ">
         <VariableGrapht
           type={type}
           stationId={stationId}

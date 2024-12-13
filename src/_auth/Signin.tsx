@@ -73,7 +73,7 @@ const Signin = () => {
             </div>
           ) : (
             <Form {...form}>
-              <div className=" w-full h-full items-center flex flex-col justify-center gap-5 bg-secondary">
+              <div className=" w-full h-full items-center flex flex-col justify-center gap-5 bg-secondary p-4">
                 <svg
                   className="h-14 absolute top-5"
                   xmlns="http://www.w3.org/2000/svg"

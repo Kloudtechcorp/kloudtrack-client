@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import TableGraphCard from "../TableGraphCard";
-import { checkRepeat } from "@/lib/utils";
+import { addSpacesToPascalCase, checkRepeat } from "@/lib/utils";
 import RangeRepeatSelector from "@/components/shared/SelectRangeRepeat";
 import { Switch } from "@/components/ui/switch";
 
@@ -49,7 +49,7 @@ const RlmsVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
           <CardContent className="flex flex-col p-0 gap-2">
             <div className="w-full flex flex-row justify-between items-center ">
               <span className="text-3xl font-bold px-4 capitalize">
-                {weatherData}
+                {addSpacesToPascalCase(weatherData)}
               </span>
               <div className="flex gap-1">
                 {weatherData !== "precipitation" &&
@@ -71,7 +71,7 @@ const RlmsVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
                       defaultValue={weatherData}
                       onValueChange={(value) => setWeatherData(value)}
                     >
-                      <SelectTrigger className="w-[200px]">
+                      <SelectTrigger className="selectTrigger">
                         <SelectValue placeholder="Variable" />
                       </SelectTrigger>
                       <SelectContent>
@@ -80,12 +80,6 @@ const RlmsVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
                     </Select>
                   </span>
                 </div>
-                <RangeRepeatSelector
-                  repeatData={repeatData}
-                  setRepeatData={setRepeatData}
-                  rangeData={rangeData}
-                  setRangeData={setRangeData}
-                />
               </div>
             </div>
 

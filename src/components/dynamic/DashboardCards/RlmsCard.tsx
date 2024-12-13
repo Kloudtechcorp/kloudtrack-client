@@ -23,7 +23,7 @@ const RlmsCard: React.FC<{ id: string }> = ({ id }) => {
   const { data: stationData, isLoading, isError } = useGetRlmsData(id);
   const [clicked, setClicked] = useState(false);
   const { theme } = useTheme();
-  const [mapboxStyle, setMapboxStyle] = useState(
+  const [mapboxStyle] = useState(
     theme === "dark"
       ? "mapbox://styles/mapbox/dark-v11"
       : "mapbox://styles/mapbox/light-v11"

@@ -3,29 +3,29 @@ import { Card } from "@/components/ui/card";
 const ApiDocument = () => {
   return (
     <Card className="px-7 py-4 gap-2 pb-10">
-      <h1 className="text-4xl font-bold text-start text-gray-800 dark:text-white mb-4">
+      <h1 className="text-lg md:text-2xl font-bold text-start text-gray-800 dark:text-white mb-4">
         How to use the API key
       </h1>
-      <p className="mb-4">
+      <p className="mb-4 text-sm md:text-base">
         <strong>Base Url:</strong>{" "}
-        <code className="bg-gray-100 dark:bg-[#545454] p-1 rounded">
+        <code className="bg-gray-100 dark:bg-[#545454] p-1 rounded text-xs md:text-sm break-words">
           https://app.kloudtechsea.com/api/v1
         </code>
       </p>
       <div className="px-6 h-full">
         <span></span>
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-700 dark:text-white mb-4">
+        <section className="mb-10 text-xs md:text-base">
+          <h2 className="text-base md:text-lg font-semibold text-gray-700 dark:text-white mb-4">
             1. Get All Stations
           </h2>
-          <div className="bg-secondary p-4 rounded-lg">
+          <div className="bg-secondary p-4 rounded-lg ">
             <p>
               <strong>Endpoint:</strong>{" "}
-              <code className="bg-gray-100 dark:bg-gray-900 p-1 rounded">
+              <code className="bg-gray-100 dark:bg-[#545454] p-1 rounded break-words">
                 GET /get/stations
               </code>
             </p>
-            <h3 className="mt-4 font-semibold text-gray-600 dark:text-white">
+            <h3 className="mt-4 font-semibold text-gray-600 dark:text-white ">
               Headers:
             </h3>
             <ul className="list-disc ml-6">
@@ -40,7 +40,7 @@ const ApiDocument = () => {
               <div className="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md border dark:border-[#545454] bg-token-sidebar-surface-primary dark:bg-token-main-surface-secondary select-none">
                 Javascript
               </div>
-              <pre className="bg-gray-200 dark:bg-[#545454] p-2 rounded text-sm">
+              <pre className="bg-gray-200 dark:bg-[#545454] p-2 rounded text-xs md:text-sm overflow-auto whitespace-pre-wrap">
                 {`function fetchStations() {
   fetch("https://app.kloudtechsea.com/api/v1/get/stations", {
     method: "GET",
@@ -66,7 +66,7 @@ fetchStations();
               <div className="flex items-center text-token-text-secondary border dark:border-[#545454] px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9 bg-token-sidebar-surface-primary dark:bg-token-main-surface-secondary select-none">
                 curl
               </div>
-              <pre className="bg-gray-200 dark:bg-[#545454] p-2 rounded text-sm">
+              <pre className="bg-gray-200 dark:bg-[#545454] p-2 rounded text-xs md:text-sm overflow-auto whitespace-pre-wrap">
                 {`curl -X GET "https://app.kloudtechsea.com/api/v1/get/stations" 
      -H "kloudtrack-api-key: your-api-key-here" // Include the API key in the headers
 `}
@@ -79,7 +79,7 @@ fetchStations();
               <p>
                 <strong>200 OK:</strong>
               </p>
-              <pre className="bg-gray-200 dark:bg-[#545454] p-2 rounded text-sm">
+              <pre className="bg-gray-200 dark:bg-[#545454] p-2 rounded text-xs md:text-sm overflow-auto whitespace-pre-wrap">
                 {`{
   "Automated Weather Stations": [
     {
@@ -152,8 +152,8 @@ fetchStations();
           </div>
         </section>
 
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-700 dark:text-white mb-4">
+        <section className="text-xs md:text-base">
+          <h2 className="text-base md:text-lg font-semibold text-gray-700 dark:text-white mb-4">
             2. Get Specific Station
           </h2>
           <div className="bg-secondary p-4 rounded-lg">
@@ -184,7 +184,7 @@ fetchStations();
               <div className="flex items-center text-token-text-secondary px-4 py-2 border dark:border-[#545454] text-xs font-sans justify-between rounded-t-md h-9 bg-token-sidebar-surface-primary dark:bg-token-main-surface-secondary select-none">
                 Javascript
               </div>
-              <pre className="bg-gray-200 dark:bg-[#545454] p-2 rounded text-sm">
+              <pre className="bg-gray-200 dark:bg-[#545454] p-2 rounded text-xs md:text-sm overflow-auto whitespace-pre-wrap">
                 {`function fetchStations() {
   fetch("https://app.kloudtechsea.com/api/v1/get/station/:id", {
     method: "GET",
@@ -210,7 +210,7 @@ fetchStations();
               <div className="flex items-center border dark:border-[#545454] text-token-text-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9 bg-token-sidebar-surface-primary dark:bg-token-main-surface-secondary select-none">
                 curl
               </div>
-              <pre className="bg-gray-200 dark:bg-[#545454] p-2 rounded text-sm">
+              <pre className="bg-gray-200 dark:bg-[#545454] p-2 rounded text-sm overflow-auto whitespace-pre-wrap">
                 {`curl -X GET "https://app.kloudtechsea.com/api/v1/get/station/:name" 
      -H "kloudtrack-api-key: your-api-key-here" // Include the API key in the headers
 `}
@@ -223,7 +223,7 @@ fetchStations();
               <p>
                 <strong>200 OK:</strong>
               </p>
-              <pre className="bg-gray-200 dark:bg-[#545454] p-2 rounded text-sm">
+              <pre className="bg-gray-200 dark:bg-[#545454] p-2 rounded text-xs md:text-sm overflow-auto whitespace-pre-wrap">
                 {`{
   "name": "Station A",
   "type": "AWS",

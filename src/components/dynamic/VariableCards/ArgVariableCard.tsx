@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/select";
 import React, { useEffect, useState } from "react";
 import TableGraphCard from "../TableGraphCard";
-import { checkRepeat } from "@/lib/utils";
+import { addSpacesToPascalCase, checkRepeat } from "@/lib/utils";
 import RangeRepeatSelector from "@/components/shared/SelectRangeRepeat";
 import { Switch } from "@/components/ui/switch";
 
@@ -48,7 +48,7 @@ const ArgVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
           <CardContent className="flex flex-col p-0 gap-2">
             <div className="w-full flex flex-row justify-between items-center ">
               <span className="text-3xl font-bold px-4 capitalize">
-                {weatherData}
+                {addSpacesToPascalCase(weatherData)}
               </span>
               <div className="flex gap-1">
                 {weatherData !== "precipitation" &&
@@ -70,7 +70,7 @@ const ArgVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
                       defaultValue={weatherData}
                       onValueChange={(value) => setWeatherData(value)}
                     >
-                      <SelectTrigger className="w-[200px]">
+                      <SelectTrigger className="selectTrigger">
                         <SelectValue placeholder="Variable" />
                       </SelectTrigger>
                       <SelectContent>
@@ -81,27 +81,64 @@ const ArgVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
                     </Select>
                   </span>
                 </div>
-                <RangeRepeatSelector
-                  repeatData={repeatData}
-                  setRepeatData={setRepeatData}
-                  rangeData={rangeData}
-                  setRangeData={setRangeData}
-                />
-              </div>
-            </div>
+                <div className="variableSubDiv justify-end">
+                  <div className="flex">
+                    {weatherData !== "precipitation" &&
+                      weatherData !== "uvIndex" && (
+                        <div className="flex flex-col items-center h-full">
+                          <span className="text-sm px-1">Show Dots</span>
+                          <div className="h-10 flex items-center w-full justify-center">
+                            <Switch
+                              onCheckedChange={() => setChecked(!checked)}
+                              checked={checked}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    <div className="flex flex-col">
+                      <span className="selectTitle">Parameter Option</span>
+                      <span className="text-3xl font-bold">
+                        <Select
+                          defaultValue={weatherData}
+                          onValueChange={(value) => setWeatherData(value)}
+                        >
+                          <SelectTrigger className="selectTrigger">
+                            <SelectValue placeholder="Variable" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="precipitation">
+                              Precipitation
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </span>
+                    </div>
+                  </div>
 
-            <div className="flex flex-col gap-[.4rem] overflow-y-auto w-full custom-scrollbar">
-              {id.map((id, key) => (
-                <TableGraphCard
-                  type={"arg"}
-                  stationId={id}
-                  weatherData={weatherData}
-                  range={checkRepeat(repeatData, +rangeData)}
-                  repeat={repeatData}
-                  key={key}
-                  showDots={checked}
-                />
-              ))}
+                  <div className="flex flex-col lg:flex-row">
+                    <RangeRepeatSelector
+                      repeatData={repeatData}
+                      setRepeatData={setRepeatData}
+                      rangeData={rangeData}
+                      setRangeData={setRangeData}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="tableGraphCard">
+                {id.map((id, key) => (
+                  <TableGraphCard
+                    type={"arg"}
+                    stationId={id}
+                    weatherData={weatherData}
+                    range={checkRepeat(repeatData, +rangeData)}
+                    repeat={repeatData}
+                    key={key}
+                    showDots={checked}
+                  />
+                ))}
+              </div>
             </div>
           </CardContent>
         </Card>

@@ -96,10 +96,10 @@ const TableGraphCard = ({
             </TableRow>
 
             <TableRow>
-              <TableCell className="p-1 border-r-[1px]">
-                Current Value
+              <TableCell className="p-1 border-r-[1px] tableText">
+                Current Record
               </TableCell>
-              <TableCell className="">
+              <TableCell className="tableText">
                 {Math.round(stationData.currentData * 100) / 100}{" "}
                 {weatherUnit(weatherData)}
               </TableCell>
@@ -113,7 +113,7 @@ const TableGraphCard = ({
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell className="p-1 border-r-[1px]">
+              <TableCell className="p-1 border-r-[1px] tableText">
                 Highest (Today)
               </TableCell>
               <TableCell className="tableText">
@@ -122,20 +122,20 @@ const TableGraphCard = ({
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell className="p-1 border-r-[1px]">
+              <TableCell className="p-1 border-r-[1px] tableText">
                 Lowest (Today)
               </TableCell>
-              <TableCell className="">
-                {Math.round(stationData.min * 100) / 100}
+              <TableCell className="tableText">
+                {Math.round(stationData.min * 100) / 100}{" "}
                 {weatherUnit(weatherData)}
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell className="p-1 border-r-[1px]">
+              <TableCell className="p-1 border-r-[1px] tableText">
                 Average (Today)
               </TableCell>
-              <TableCell className="">
-                {Math.round(stationData.average * 100) / 100}
+              <TableCell className="tableText">
+                {Math.round(stationData.average * 100) / 100}{" "}
                 {weatherUnit(weatherData)}
               </TableCell>
             </TableRow>

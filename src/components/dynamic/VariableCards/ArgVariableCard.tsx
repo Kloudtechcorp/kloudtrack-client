@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/select";
 import React, { useEffect, useState } from "react";
 import TableGraphCard from "../TableGraphCard";
-import { checkRepeat } from "@/lib/utils";
+import { addSpacesToPascalCase, checkRepeat } from "@/lib/utils";
 import RangeRepeatSelector from "@/components/shared/SelectRangeRepeat";
 import { Switch } from "@/components/ui/switch";
 
@@ -48,7 +48,7 @@ const ArgVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
           <CardContent className="flex flex-col p-0 gap-2">
             <div className="w-full flex flex-row justify-between items-center ">
               <span className="text-3xl font-bold px-4 capitalize">
-                {weatherData}
+                {addSpacesToPascalCase(weatherData)}
               </span>
               <div className="flex gap-1">
                 {weatherData !== "precipitation" &&

@@ -212,6 +212,7 @@ export const weatherUnit = (measurement: string): string | null => {
     pressure: "mb",
     windSpeed: "kph",
     precipitation: "mm",
+    distance: "cm",
   };
 
   return units[measurement] || null;
@@ -298,3 +299,7 @@ export const checkRepeat = (repeat: string, range: number): number => {
       return range;
   }
 };
+
+export function addSpacesToPascalCase(input: string): string {
+  return input.replace(/([a-z])([A-Z])/g, "$1 $2");
+}

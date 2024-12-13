@@ -125,7 +125,10 @@ const VariableDashboardGraph = ({
               dataKey="data"
               type="linear"
               stroke="#fbd008"
-              strokeWidth={3}
+              isAnimationActive={true}
+              animateNewValues={true}
+              animationEasing={"ease-in-out"}
+              strokeWidth={1.5}
               dot={showDots}
             />
           </LineChart>

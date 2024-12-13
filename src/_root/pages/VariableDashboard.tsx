@@ -132,7 +132,7 @@ const VariableDashboard = () => {
                     </div>
                   )}
                 <div className="flex flex-col justify-center items-center px-1">
-                  <span className="text-sm px-1">Repeat Value</span>
+                  <span className="text-sm px-1">Interval</span>
                   <span className="text-3xl font-bold">
                     <Select
                       value={repeatData}

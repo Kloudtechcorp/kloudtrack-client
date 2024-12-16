@@ -82,6 +82,14 @@ const ClmsVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
                     </Select>
                   </span>
                 </div>
+                <div className="flex flex-col lg:flex-row">
+                  <RangeRepeatSelector
+                    repeatData={repeatData}
+                    setRepeatData={setRepeatData}
+                    rangeData={rangeData}
+                    setRangeData={setRangeData}
+                  />
+                </div>
               </div>
             </div>
 

@@ -6,7 +6,11 @@ import { useNavigate } from "react-router-dom";
 import { useGetArgData, useGetAwsData2 } from "@/hooks/react-query/queries";
 import { Card, CardContent } from "@/components/ui/card";
 import PuffLoader from "react-spinners/PuffLoader";
-import { getWindDirectionLabel, weatherUnit } from "@/lib/utils";
+import {
+  formatDateString,
+  getWindDirectionLabel,
+  weatherUnit,
+} from "@/lib/utils";
 import { TableCell, TableRow } from "@/components/ui/table";
 
 interface AwsCardProps {
@@ -25,27 +29,17 @@ const ArgTable: React.FC<AwsCardProps> = ({ id }) => {
 
   if (isLoading || !stationData) {
     return (
-      <Card className="cardContainer flex flex-row">
-        <CardContent className="puffLoaderCardContent">
-          <div className="puffLoaderDiv ">
-            <PuffLoader color={"#545454"} size={"100%"} />
-          </div>
-        </CardContent>
-      </Card>
+      <TableRow className="hover:bg-secondary cursor-pointer">
+        <TableCell>Loading ...</TableCell>
+      </TableRow>
     );
   }
 
   if (isError) {
     return (
-      <Card className="cardContainer flex flex-row">
-        <CardContent className="flex flex-col lg:flex-row w-full p-0 gap-2">
-          <div className="flex flex-col gap-2 w-full">
-            <div className="flex flex-col pb-3 gap-1 relative h-full items-center justify-center">
-              <NoData />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <TableRow className="hover:bg-secondary cursor-pointer">
+        <TableCell>Error</TableCell>
+      </TableRow>
     );
   }
 
@@ -60,8 +54,7 @@ const ArgTable: React.FC<AwsCardProps> = ({ id }) => {
           {stationData.station.barangay}, {stationData.station.municipality}
         </TableCell>
         <TableCell>
-          {Number(stationData.station.latitude).toFixed(5)},{" "}
-          {Number(stationData.station.longitude).toFixed(5)}
+          {formatDateString(stationData.data.recordedAt, "long")}
         </TableCell>
 
         <TableCell>
@@ -81,11 +74,7 @@ const ArgTable: React.FC<AwsCardProps> = ({ id }) => {
       <TableCell>
         {stationData.station.barangay}, {stationData.station.municipality}
       </TableCell>
-      <TableCell>
-        {Number(stationData.station.latitude).toFixed(5)},{" "}
-        {Number(stationData.station.longitude).toFixed(5)}
-      </TableCell>
-
+      <TableCell>N/A</TableCell>
       <TableCell>N/A</TableCell>
     </TableRow>
   );

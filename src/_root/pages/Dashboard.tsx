@@ -209,7 +209,7 @@ const Dashboard = () => {
                                   Name
                                 </TableHead>
                                 <TableHead>Location</TableHead>
-                                <TableHead>Coordinates</TableHead>
+                                <TableHead>Date Recorded</TableHead>
                                 <TableHead>Temperature</TableHead>
                                 <TableHead>Humidity</TableHead>
                                 <TableHead>Pressure</TableHead>
@@ -241,7 +241,7 @@ const Dashboard = () => {
                                   Name
                                 </TableHead>
                                 <TableHead>Location</TableHead>
-                                <TableHead>Coordinates</TableHead>
+                                <TableHead>Date Recorded</TableHead>
                                 <TableHead>Precipitation</TableHead>
                               </TableRow>
                             </TableHeader>
@@ -265,7 +265,7 @@ const Dashboard = () => {
                                   Name
                                 </TableHead>
                                 <TableHead>Location</TableHead>
-                                <TableHead>Coordinates</TableHead>
+                                <TableHead>Date Recorded</TableHead>
                                 <TableHead>Distance</TableHead>
                               </TableRow>
                             </TableHeader>
@@ -289,7 +289,7 @@ const Dashboard = () => {
                                   Name
                                 </TableHead>
                                 <TableHead>Location</TableHead>
-                                <TableHead>Coordinates</TableHead>
+                                <TableHead>Date Recorded</TableHead>
                                 <TableHead>Temperature</TableHead>
                                 <TableHead>Humidity</TableHead>
                                 <TableHead>Pressure</TableHead>

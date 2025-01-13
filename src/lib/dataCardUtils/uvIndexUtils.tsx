@@ -13,15 +13,16 @@ export function UVIndex({
   uvIndexVal,
   stationName,
   dashboardType,
+  id,
 }: {
   uvIndexVal: number;
   stationName: string;
   dashboardType: string;
+  id: string;
 }) {
   const navigate = useNavigate();
 
   const [hasWarning, setHasWarning] = useState<boolean>(false);
-  // const [hasShownToastRef, setHasShownToastRef] = useState<boolean>(false);
   const hasShownToastRef = useRef(false);
 
   const warning = useRef<string | null>("");
@@ -60,7 +61,7 @@ export function UVIndex({
         triggerWarningToast({
           title: ` Very High UV Index detected at ${stationName}!`,
           message: `${warning.current}`,
-          stationName: stationName,
+          id: id,
           dashboardType: dashboardType,
           colorClass: colorClass.current,
           navigate,
@@ -77,7 +78,7 @@ export function UVIndex({
         triggerWarningToast({
           title: `Extreme UV detected at ${stationName}!`,
           message: `${warning.current}`,
-          stationName: stationName,
+          id: id,
           dashboardType: dashboardType,
           colorClass: colorClass.current,
           navigate,

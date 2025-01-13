@@ -1,20 +1,8 @@
 import React, { useEffect } from "react";
-
-import NoData from "@/components/shared/NoData";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import {
-  useGetArgData,
-  useGetAwsData2,
-  useGetRlmsData,
-} from "@/hooks/react-query/queries";
-import { Card, CardContent } from "@/components/ui/card";
-import PuffLoader from "react-spinners/PuffLoader";
-import {
-  formatDateString,
-  getWindDirectionLabel,
-  weatherUnit,
-} from "@/lib/utils";
+import { useGetRlmsData } from "@/hooks/react-query/queries";
+import { formatDateString, weatherUnit } from "@/lib/utils";
 import { TableCell, TableRow } from "@/components/ui/table";
 
 interface AwsCardProps {
@@ -62,7 +50,7 @@ const RlmsTable: React.FC<AwsCardProps> = ({ id }) => {
 
         <TableCell>
           {stationData.data.distance === null
-            ? "N/A"
+            ? "--"
             : `${stationData.data.distance} ${weatherUnit("distance")}`}
         </TableCell>
       </TableRow>
@@ -75,9 +63,9 @@ const RlmsTable: React.FC<AwsCardProps> = ({ id }) => {
       <TableCell>
         {stationData.station.barangay}, {stationData.station.municipality}
       </TableCell>
-      <TableCell>N/A</TableCell>
+      <TableCell>--</TableCell>
 
-      <TableCell>N/A</TableCell>
+      <TableCell>--</TableCell>
     </TableRow>
   );
 };

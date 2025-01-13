@@ -8,6 +8,7 @@ import {
 import AlertIcon from "@/components/dynamic/DynamicIcons/AlertIcon";
 import { triggerWarningToast } from "./triggerWarning";
 import { useNavigate } from "react-router-dom";
+import { weatherUnit } from "../utils";
 
 export function Precipitation({
   precipitation,
@@ -115,7 +116,9 @@ export function Precipitation({
               <div className="font-medium text-xl flex h-full items-center flex-row justify-center gap-2 ">
                 <div className="flex flex-col w-full">
                   <span className="weatherDataText">
-                    {(Math.round(precipitation * 100) / 100).toFixed(1)} mm
+                    {precipitation === null
+                      ? "--"
+                      : `${precipitation} ${weatherUnit("precipitation")}`}
                   </span>
                   <span className="weatherDataText">
                     {(Math.round(pastHourPrecip * 100) / 100).toFixed(1)} mm/hr

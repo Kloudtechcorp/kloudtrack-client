@@ -6,14 +6,13 @@ import RlmsCard from "@/components/dynamic/DashboardCards/RlmsCard";
 import ClmsCard from "@/components/dynamic/DashboardCards/ClmsCard";
 import { useUserContext } from "@/hooks/context/authContext";
 import { useMemo, useRef, useState, useEffect } from "react";
-import { Clipboard, CreditCard, Fullscreen, TableIcon } from "lucide-react";
+import { CreditCard, Fullscreen, TableIcon } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Switch } from "@/components/ui/switch";
 import {
   Table,
   TableBody,
@@ -27,7 +26,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -36,14 +34,16 @@ import ArgTable from "@/components/dynamic/DashboardCards/Tabular/ARGTable";
 import RlmsTable from "@/components/dynamic/DashboardCards/Tabular/RLMSTable";
 import ClmsTable from "@/components/dynamic/DashboardCards/Tabular/CLMSTable";
 
-const BATCH_SIZE = 3;
-
 const Dashboard = () => {
   const { user, isLoading } = useUserContext();
   const imageRef = useRef<HTMLDivElement>(null);
-  const observerRef = useRef<HTMLDivElement>(null);
-  const [visibleCards, setVisibleCards] = useState<Record<string, number>>({});
-  const [view, setView] = useState("card");
+  const [view, setView] = useState(() => {
+    return localStorage.getItem("view") || "card";
+  });
+
+  useEffect(() => {
+    localStorage.setItem("view", view);
+  }, [view]);
 
   const toggleFullscreen = () => {
     if (imageRef.current) {
@@ -73,42 +73,6 @@ const Dashboard = () => {
       return acc;
     }, {} as Record<string, typeof user.stations>);
   }, [user.stations, stationCategories]);
-
-  useEffect(() => {
-    const initialVisibleCards = stationCategories.reduce((acc, category) => {
-      acc[category.type] = BATCH_SIZE;
-      return acc;
-    }, {} as Record<string, number>);
-    setVisibleCards(initialVisibleCards);
-  }, [stationCategories]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setVisibleCards((prev) => {
-              const updated = { ...prev };
-              const currentTab = entry.target.getAttribute("data-tab")!;
-              updated[currentTab] += BATCH_SIZE;
-              return updated;
-            });
-          }
-        });
-      },
-      { threshold: 1.0 }
-    );
-
-    if (observerRef.current) {
-      observer.observe(observerRef.current);
-    }
-
-    return () => {
-      if (observerRef.current) {
-        observer.unobserve(observerRef.current);
-      }
-    };
-  }, []);
 
   return (
     <div
@@ -165,16 +129,16 @@ const Dashboard = () => {
                           </SelectTrigger>
                           <SelectContent>
                             <SelectGroup>
-                              <SelectItem value="table">
-                                <div className="flex flex-row items-center gap-2">
-                                  <TableIcon className="h-4 w-4" />
-                                  <span>Table View</span>
-                                </div>
-                              </SelectItem>
                               <SelectItem value="card">
                                 <div className="flex flex-row items-center gap-2">
                                   <CreditCard className="h-4 w-4" />
                                   <span>Card View</span>
+                                </div>
+                              </SelectItem>
+                              <SelectItem value="table">
+                                <div className="flex flex-row items-center gap-2">
+                                  <TableIcon className="h-4 w-4" />
+                                  <span>Table View</span>
                                 </div>
                               </SelectItem>
                             </SelectGroup>
@@ -201,7 +165,7 @@ const Dashboard = () => {
                         {category.type === "AWS" && (
                           <Table className="border">
                             <TableCaption>
-                              A list of your stations.
+                              A list of your automated weather stations.
                             </TableCaption>
                             <TableHeader className="bg-secondary">
                               <TableRow className="h-14">
@@ -233,7 +197,7 @@ const Dashboard = () => {
                         {category.type === "ARG" && (
                           <Table className="border">
                             <TableCaption>
-                              A list of your stations.
+                              A list of your automated rain gauges.
                             </TableCaption>
                             <TableHeader className="bg-secondary">
                               <TableRow className="h-14">
@@ -257,7 +221,7 @@ const Dashboard = () => {
                         {category.type === "RLMS" && (
                           <Table className="border">
                             <TableCaption>
-                              A list of your stations.
+                              A list of your river level monitoring systems.
                             </TableCaption>
                             <TableHeader className="bg-secondary">
                               <TableRow className="h-14">
@@ -281,7 +245,7 @@ const Dashboard = () => {
                         {category.type === "CLMS" && (
                           <Table className="border">
                             <TableCaption>
-                              A list of your stations.
+                              A list of your coastal level monitoring systems.
                             </TableCaption>
                             <TableHeader className="bg-secondary">
                               <TableRow className="h-14">
@@ -307,21 +271,12 @@ const Dashboard = () => {
                         )}
                       </div>
                     ) : (
-                      filteredStations[category.type]
-                        .slice(0, visibleCards[category.type])
-                        .map((station) => (
-                          <category.CardComponent
-                            key={station.id}
-                            id={station.id}
-                          />
-                        ))
-                    )}
-                    {view === "table" && (
-                      <div
-                        ref={observerRef}
-                        data-tab={category.type}
-                        className="h-10 w-full"
-                      />
+                      filteredStations[category.type].map((station) => (
+                        <category.CardComponent
+                          key={station.id}
+                          id={station.id}
+                        />
+                      ))
                     )}
                   </div>
                 </TabsContent>

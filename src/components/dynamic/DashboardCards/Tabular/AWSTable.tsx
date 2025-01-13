@@ -1,11 +1,7 @@
 import React, { useEffect } from "react";
-
-import NoData from "@/components/shared/NoData";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useGetAwsData2 } from "@/hooks/react-query/queries";
-import { Card, CardContent } from "@/components/ui/card";
-import PuffLoader from "react-spinners/PuffLoader";
 import {
   formatDateString,
   getWindDirectionLabel,
@@ -58,42 +54,45 @@ const AwsTable: React.FC<AwsCardProps> = ({ id }) => {
         <TableCell>
           {stationData.data.temperature > 0
             ? `${stationData.data.temperature} ${weatherUnit("temperature")}`
-            : "N/A"}
+            : "--"}
         </TableCell>
         <TableCell>
           {stationData.data.humidity > 0
             ? `${stationData.data.humidity} ${weatherUnit("humidity")}`
-            : "N/A"}
+            : "--"}
         </TableCell>
         <TableCell>
           {stationData.data.pressure > 0
             ? `${stationData.data.pressure} ${weatherUnit("pressure")}`
-            : "N/A"}
+            : "--"}
         </TableCell>
         <TableCell>
           {stationData.data.heatIndex > 0
             ? `${stationData.data.heatIndex} ${weatherUnit("heatIndex")}`
-            : "N/A"}
+            : "--"}
         </TableCell>
         <TableCell>
-          {stationData.data.windSpeed > 0
+          {stationData.data.windSpeed >= 0 &&
+          stationData.data.windSpeed !== null
             ? `${stationData.data.windSpeed} ${weatherUnit("windSpeed")}`
-            : "N/A"}
+            : "--"}
         </TableCell>
         <TableCell>
           {getWindDirectionLabel(stationData.data.windDirection)}
         </TableCell>
         <TableCell>
-          {stationData.data.uvIndex ? stationData.data.uvIndex : "N/A"}
+          {stationData.data.uvIndex >= 0 && stationData.data.uvIndex !== null
+            ? stationData.data.uvIndex
+            : "--"}
         </TableCell>
         <TableCell>
-          {stationData.data.light > 0
+          {stationData.data.light >= 0 && stationData.data.light !== null
             ? `${stationData.data.light} ${weatherUnit("light")}`
-            : "N/A"}
+            : "--"}
         </TableCell>
         <TableCell>
           {stationData.data.precipitation === null
-            ? "N/A"
+            ? "--"
             : `${stationData.data.precipitation} ${weatherUnit(
                 "precipitation"
               )}`}
@@ -108,16 +107,16 @@ const AwsTable: React.FC<AwsCardProps> = ({ id }) => {
       <TableCell>
         {stationData.station.barangay}, {stationData.station.municipality}
       </TableCell>
-      <TableCell>N/A</TableCell>
-      <TableCell>N/A</TableCell>
-      <TableCell>N/A</TableCell>
-      <TableCell>N/A</TableCell>
-      <TableCell>N/A</TableCell>
-      <TableCell>N/A</TableCell>
-      <TableCell>N/A </TableCell>
-      <TableCell>N/A </TableCell>
-      <TableCell>N/A</TableCell>
-      <TableCell>N/A</TableCell>
+      <TableCell>--</TableCell>
+      <TableCell>--</TableCell>
+      <TableCell>--</TableCell>
+      <TableCell>--</TableCell>
+      <TableCell>--</TableCell>
+      <TableCell>--</TableCell>
+      <TableCell>-- </TableCell>
+      <TableCell>-- </TableCell>
+      <TableCell>--</TableCell>
+      <TableCell>--</TableCell>
     </TableRow>
   );
 };

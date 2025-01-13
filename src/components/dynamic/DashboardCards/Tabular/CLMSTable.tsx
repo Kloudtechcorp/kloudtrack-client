@@ -1,21 +1,8 @@
 import React, { useEffect } from "react";
-
-import NoData from "@/components/shared/NoData";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import {
-  useGetArgData,
-  useGetAwsData2,
-  useGetClmsData,
-  useGetRlmsData,
-} from "@/hooks/react-query/queries";
-import { Card, CardContent } from "@/components/ui/card";
-import PuffLoader from "react-spinners/PuffLoader";
-import {
-  formatDateString,
-  getWindDirectionLabel,
-  weatherUnit,
-} from "@/lib/utils";
+import { useGetClmsData } from "@/hooks/react-query/queries";
+import { formatDateString, weatherUnit } from "@/lib/utils";
 import { TableCell, TableRow } from "@/components/ui/table";
 
 interface AwsCardProps {
@@ -64,21 +51,21 @@ const ClmsTable: React.FC<AwsCardProps> = ({ id }) => {
         <TableCell>
           {stationData.data.temperature > 0
             ? `${stationData.data.temperature} ${weatherUnit("temperature")}`
-            : "N/A"}
+            : "--"}
         </TableCell>
         <TableCell>
           {stationData.data.humidity > 0
             ? `${stationData.data.humidity} ${weatherUnit("humidity")}`
-            : "N/A"}
+            : "--"}
         </TableCell>
         <TableCell>
           {stationData.data.pressure > 0
             ? `${stationData.data.pressure} ${weatherUnit("pressure")}`
-            : "N/A"}
+            : "--"}
         </TableCell>
         <TableCell>
           {stationData.data.distance === null
-            ? "N/A"
+            ? "--"
             : `${stationData.data.distance} ${weatherUnit("distance")}`}
         </TableCell>
       </TableRow>
@@ -91,11 +78,11 @@ const ClmsTable: React.FC<AwsCardProps> = ({ id }) => {
       <TableCell>
         {stationData.station.barangay}, {stationData.station.municipality}
       </TableCell>
-      <TableCell>N/A</TableCell>
-      <TableCell>N/A </TableCell>
-      <TableCell>N/A</TableCell>
-      <TableCell>N/A</TableCell>
-      <TableCell>N/A</TableCell>
+      <TableCell>--</TableCell>
+      <TableCell>-- </TableCell>
+      <TableCell>--</TableCell>
+      <TableCell>--</TableCell>
+      <TableCell>--</TableCell>
     </TableRow>
   );
 };

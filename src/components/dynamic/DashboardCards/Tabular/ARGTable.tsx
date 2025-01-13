@@ -1,16 +1,8 @@
 import React, { useEffect } from "react";
-
-import NoData from "@/components/shared/NoData";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { useGetArgData, useGetAwsData2 } from "@/hooks/react-query/queries";
-import { Card, CardContent } from "@/components/ui/card";
-import PuffLoader from "react-spinners/PuffLoader";
-import {
-  formatDateString,
-  getWindDirectionLabel,
-  weatherUnit,
-} from "@/lib/utils";
+import { useGetArgData } from "@/hooks/react-query/queries";
+import { formatDateString, weatherUnit } from "@/lib/utils";
 import { TableCell, TableRow } from "@/components/ui/table";
 
 interface AwsCardProps {
@@ -58,11 +50,11 @@ const ArgTable: React.FC<AwsCardProps> = ({ id }) => {
         </TableCell>
 
         <TableCell>
-          {stationData.data.precipitation === null
-            ? "N/A"
-            : `${stationData.data.precipitation} ${weatherUnit(
+          {stationData.data.precipitation >= 0
+            ? `${stationData.data.precipitation} ${weatherUnit(
                 "precipitation"
-              )}`}
+              )}`
+            : "--"}
         </TableCell>
       </TableRow>
     );
@@ -74,8 +66,8 @@ const ArgTable: React.FC<AwsCardProps> = ({ id }) => {
       <TableCell>
         {stationData.station.barangay}, {stationData.station.municipality}
       </TableCell>
-      <TableCell>N/A</TableCell>
-      <TableCell>N/A</TableCell>
+      <TableCell>--</TableCell>
+      <TableCell>--</TableCell>
     </TableRow>
   );
 };

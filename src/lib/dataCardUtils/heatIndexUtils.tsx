@@ -8,6 +8,7 @@ import {
 import AlertIcon from "@/components/dynamic/DynamicIcons/AlertIcon";
 import { triggerWarningToast } from "./triggerWarning";
 import { useNavigate } from "react-router-dom";
+import { weatherUnit } from "../utils";
 
 export function HeatIndex({
   heatIndexval,
@@ -98,7 +99,9 @@ export function HeatIndex({
             <TooltipTrigger asChild>
               <div className="flex items-center">
                 <span className="weatherDataText">
-                  {roundedHeatIndex} &deg;C
+                  {roundedHeatIndex > 0
+                    ? `${roundedHeatIndex} ${weatherUnit("heatIndex")}`
+                    : "--"}
                 </span>
                 {hasWarning && (
                   <AlertIcon className={`${colorClass.current} w-1/4`} />

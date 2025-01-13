@@ -74,7 +74,7 @@ export const returnActive = (active: boolean) => {
 };
 
 export const getWindDirectionLabel = (value: number) => {
-  if (value >= 337.6 && value <= 22.5) {
+  if (value >= 337.6 || value <= 22.5) {
     return `${Math.round(value * 100) / 100} °N`;
   } else if (value >= 22.6 && value <= 67.5) {
     return `${Math.round(value * 100) / 100} °NE`;

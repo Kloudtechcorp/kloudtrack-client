@@ -81,7 +81,7 @@ const ArgCard: React.FC<{ id: string }> = ({ id }) => {
             className="h-full px-2 pb-3 hidden lg:block"
             onClick={() => setClicked(!clicked)}
           >
-            <div className="w-[30rem] aspect-square">
+            <div className="max-w-[30rem] w-full aspect-square">
               {!clicked ? (
                 <img
                   src={stationData.station.image}

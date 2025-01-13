@@ -63,58 +63,39 @@ const ArgVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
                       </div>
                     </div>
                   )}
-                <div className="flex flex-col justify-center items-center px-1">
-                  <span className="text-sm px-1">Parameter Option</span>
-                  <span className="text-3xl font-bold">
-                    <Select
-                      defaultValue={weatherData}
-                      onValueChange={(value) => setWeatherData(value)}
-                    >
-                      <SelectTrigger className="selectTrigger">
-                        <SelectValue placeholder="Variable" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="precipitation">
-                          Precipitation
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </span>
-                </div>
-                <div className="variableSubDiv justify-end">
-                  <div className="flex">
-                    {weatherData !== "precipitation" &&
-                      weatherData !== "uvIndex" && (
-                        <div className="flex flex-col items-center h-full">
-                          <span className="text-sm px-1">Show Dots</span>
-                          <div className="h-10 flex items-center w-full justify-center">
-                            <Switch
-                              onCheckedChange={() => setChecked(!checked)}
-                              checked={checked}
-                            />
-                          </div>
+                <div className="flex gap-1">
+                  {weatherData !== "precipitation" &&
+                    weatherData !== "uvIndex" && (
+                      <div className="flex flex-col items-center h-full">
+                        <span className="text-sm px-1">Show Dots</span>
+                        <div className="h-10 flex items-center w-full justify-center">
+                          <Switch
+                            onCheckedChange={() => setChecked(!checked)}
+                            checked={checked}
+                          />
                         </div>
-                      )}
-                    <div className="flex flex-col">
-                      <span className="selectTitle">Parameter Option</span>
-                      <span className="text-3xl font-bold">
-                        <Select
-                          defaultValue={weatherData}
-                          onValueChange={(value) => setWeatherData(value)}
-                        >
-                          <SelectTrigger className="selectTrigger">
-                            <SelectValue placeholder="Variable" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="precipitation">
-                              Precipitation
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </span>
-                    </div>
+                      </div>
+                    )}
+                  <div className="flex flex-col justify-center items-center px-1">
+                    <span className="selectTitle text-center">
+                      Parameter Option
+                    </span>
+                    <span className="text-3xl font-bold">
+                      <Select
+                        defaultValue={weatherData}
+                        onValueChange={(value) => setWeatherData(value)}
+                      >
+                        <SelectTrigger className="selectTrigger">
+                          <SelectValue placeholder="Variable" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="precipitation">
+                            Precipitation
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </span>
                   </div>
-
                   <div className="flex flex-col lg:flex-row">
                     <RangeRepeatSelector
                       repeatData={repeatData}
@@ -125,20 +106,19 @@ const ArgVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
                   </div>
                 </div>
               </div>
-
-              <div className="tableGraphCard">
-                {id.map((id, key) => (
-                  <TableGraphCard
-                    type={"arg"}
-                    stationId={id}
-                    weatherData={weatherData}
-                    range={checkRepeat(repeatData, +rangeData)}
-                    repeat={repeatData}
-                    key={key}
-                    showDots={checked}
-                  />
-                ))}
-              </div>
+            </div>
+            <div className="tableGraphCard">
+              {id.map((id, key) => (
+                <TableGraphCard
+                  type={"arg"}
+                  stationId={id}
+                  weatherData={weatherData}
+                  range={checkRepeat(repeatData, +rangeData)}
+                  repeat={repeatData}
+                  key={key}
+                  showDots={checked}
+                />
+              ))}
             </div>
           </CardContent>
         </Card>

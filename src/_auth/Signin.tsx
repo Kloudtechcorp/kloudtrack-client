@@ -64,12 +64,8 @@ const Signin = () => {
       ) : (
         <>
           {isLoading ? (
-            <div className="w-full h-full flex justify-center items-center relative bgColor">
-              <PuffLoader
-                color={"#545454"}
-                size={500}
-                className="absolute top-0 left-[-10rem]"
-              />
+            <div className="w-full h-full flex justify-center items-center bgColor">
+              <PuffLoader color={"#545454"} size={500} />
             </div>
           ) : (
             <Form {...form}>

@@ -1,6 +1,6 @@
 import { stationCurrentWeatherType } from "@/types/queryTypes";
 import { Card, CardContent } from "../ui/card";
-import { getWindDirectionLabel } from "@/lib/utils";
+import { getWindDirectionLabel, weatherUnit } from "@/lib/utils";
 import { HeatIndex } from "../../lib/dataCardUtils/heatIndexUtils";
 import { UVIndex } from "@/lib/dataCardUtils/uvIndexUtils";
 import { Precipitation } from "@/lib/dataCardUtils/rainUtils";
@@ -41,7 +41,11 @@ const DataCards = ({
                 </div>
                 <div className="cardDataDiv">
                   <span className="weatherDataText">
-                    {Math.round(currentweather.temperature * 100) / 100} &deg;C
+                    {currentweather.temperature > 0
+                      ? `${currentweather.temperature} ${weatherUnit(
+                          "temperature"
+                        )}`
+                      : "--"}
                   </span>
                 </div>
               </div>
@@ -55,7 +59,9 @@ const DataCards = ({
                 </div>
                 <div className="cardDataDiv">
                   <span className="weatherDataText">
-                    {Math.round(currentweather.humidity * 100) / 100} %
+                    {currentweather.humidity > 0
+                      ? `${currentweather.humidity} ${weatherUnit("humidity")}`
+                      : "--"}
                   </span>
                 </div>
               </div>
@@ -69,7 +75,9 @@ const DataCards = ({
                 </div>
                 <div className="cardDataDiv">
                   <span className="weatherDataText">
-                    {Math.round(currentweather.pressure * 100) / 100} mb
+                    {currentweather.pressure > 0
+                      ? `${currentweather.pressure} ${weatherUnit("pressure")}`
+                      : "--"}
                   </span>
                 </div>
               </div>
@@ -83,7 +91,12 @@ const DataCards = ({
                 </div>
                 <div className="cardDataDiv">
                   <span className="weatherDataText">
-                    {Math.round(currentweather.windSpeed * 100) / 100} kph
+                    {currentweather.windSpeed >= 0 &&
+                    currentweather.windSpeed !== null
+                      ? `${currentweather.windSpeed} ${weatherUnit(
+                          "windSpeed"
+                        )}`
+                      : "--"}
                   </span>
                 </div>
               </div>
@@ -107,6 +120,7 @@ const DataCards = ({
             <CardContent className="px-0 p-0 h-full">
               <UVIndex
                 uvIndexVal={currentweather.uvIndex}
+                id={id}
                 stationName={stationName}
                 dashboardType={type}
               />
@@ -120,7 +134,9 @@ const DataCards = ({
                 </div>
                 <div className="cardDataDiv">
                   <span className="weatherDataText">
-                    {Math.round(currentweather.light * 100) / 100} lux
+                    {currentweather.light >= 0 && currentweather.light !== null
+                      ? `${currentweather.light} ${weatherUnit("light")}`
+                      : "--"}
                   </span>
                 </div>
               </div>
@@ -141,7 +157,6 @@ const DataCards = ({
       </div>
     );
   }
-  // Dashboard
   return (
     <div className={`grid grid-cols-3 w-full h-full gap-3 justify-center`}>
       <Card className="cardMain">
@@ -162,7 +177,11 @@ const DataCards = ({
             </div>
             <div className="flex h-full items-center justify-center gap-2">
               <span className="weatherDataText">
-                {Math.round(currentweather.temperature * 100) / 100} &deg;C
+                {currentweather.temperature > 0
+                  ? `${currentweather.temperature} ${weatherUnit(
+                      "temperature"
+                    )}`
+                  : "--"}
               </span>
             </div>
           </div>
@@ -176,7 +195,9 @@ const DataCards = ({
             </div>
             <div className="cardDataDiv">
               <span className="weatherDataText">
-                {Math.round(currentweather.humidity * 100) / 100} %
+                {currentweather.humidity > 0
+                  ? `${currentweather.humidity} ${weatherUnit("humidity")}`
+                  : "--"}
               </span>
             </div>
           </div>
@@ -190,7 +211,9 @@ const DataCards = ({
             </div>
             <div className="cardDataDiv">
               <span className="weatherDataText">
-                {Math.round(currentweather.pressure * 100) / 100} mb
+                {currentweather.pressure > 0
+                  ? `${currentweather.pressure} ${weatherUnit("pressure")}`
+                  : "--"}
               </span>
             </div>
           </div>
@@ -204,7 +227,10 @@ const DataCards = ({
             </div>
             <div className="flex h-full items-center justify-center">
               <span className="weatherDataText">
-                {Math.round(currentweather.windSpeed * 100) / 100} kph
+                {currentweather.windSpeed >= 0 &&
+                currentweather.windSpeed !== null
+                  ? `${currentweather.windSpeed} ${weatherUnit("windSpeed")}`
+                  : "--"}
               </span>
             </div>
           </div>
@@ -228,6 +254,7 @@ const DataCards = ({
         <CardContent className="px-0 p-0 h-full">
           <UVIndex
             uvIndexVal={currentweather.uvIndex}
+            id={id}
             stationName={stationName}
             dashboardType={type}
           />
@@ -241,7 +268,9 @@ const DataCards = ({
             </div>
             <div className="cardDataDiv">
               <span className="weatherDataText">
-                {Math.round(currentweather.light * 100) / 100} lux
+                {currentweather.light >= 0 && currentweather.light !== null
+                  ? `${currentweather.light} ${weatherUnit("light")}`
+                  : "--"}
               </span>
             </div>
           </div>

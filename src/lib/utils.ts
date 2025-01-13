@@ -91,7 +91,7 @@ export const getWindDirectionLabel = (value: number) => {
   } else if (value >= 292.6 && value <= 337.5) {
     return `${Math.round(value * 100) / 100} °NW`;
   } else {
-    return `N/A`;
+    return `--`;
   }
 };
 

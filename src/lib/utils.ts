@@ -74,21 +74,21 @@ export const returnActive = (active: boolean) => {
 };
 
 export const getWindDirectionLabel = (value: number) => {
-  if (value === 0 || value === 360) {
+  if (value >= 337.6 && value <= 22.5) {
     return `${Math.round(value * 100) / 100} °N`;
-  } else if (value > 0 && value < 90) {
+  } else if (value >= 22.6 && value <= 67.5) {
     return `${Math.round(value * 100) / 100} °NE`;
-  } else if (value === 90) {
+  } else if (value >= 67.6 && value <= 112.5) {
     return `${Math.round(value * 100) / 100} °E`;
-  } else if (value > 90 && value < 180) {
+  } else if (value >= 112.6 && value <= 157.5) {
     return `${Math.round(value * 100) / 100} °SE`;
-  } else if (value === 180) {
+  } else if (value >= 157.6 && value <= 202.5) {
     return `${Math.round(value * 100) / 100} °S`;
-  } else if (value > 180 && value < 270) {
+  } else if (value >= 202.6 && value <= 247.5) {
     return `${Math.round(value * 100) / 100} °SW`;
-  } else if (value === 270) {
+  } else if (value >= 247.6 && value <= 292.5) {
     return `${Math.round(value * 100) / 100} °W`;
-  } else if (value > 270 && value < 360) {
+  } else if (value >= 292.6 && value <= 337.5) {
     return `${Math.round(value * 100) / 100} °NW`;
   } else {
     return `N/A`;

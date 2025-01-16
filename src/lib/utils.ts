@@ -2,7 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { timer } from "./objects/himawariArrays";
 import { DateRange } from "react-day-picker";
-import { subDays } from "date-fns";
+import { endOfDay, startOfDay, subDays } from "date-fns";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -74,21 +74,21 @@ export const returnActive = (active: boolean) => {
 };
 
 export const getWindDirectionLabel = (value: number) => {
-  if (value === 0 || value === 360) {
+  if (value >= 337.6 || value <= 22.5) {
     return `${Math.round(value * 100) / 100} °N`;
-  } else if (value > 0 && value < 90) {
+  } else if (value >= 22.6 && value <= 67.5) {
     return `${Math.round(value * 100) / 100} °NE`;
-  } else if (value === 90) {
+  } else if (value >= 67.6 && value <= 112.5) {
     return `${Math.round(value * 100) / 100} °E`;
-  } else if (value > 90 && value < 180) {
+  } else if (value >= 112.6 && value <= 157.5) {
     return `${Math.round(value * 100) / 100} °SE`;
-  } else if (value === 180) {
+  } else if (value >= 157.6 && value <= 202.5) {
     return `${Math.round(value * 100) / 100} °S`;
-  } else if (value > 180 && value < 270) {
+  } else if (value >= 202.6 && value <= 247.5) {
     return `${Math.round(value * 100) / 100} °SW`;
-  } else if (value === 270) {
+  } else if (value >= 247.6 && value <= 292.5) {
     return `${Math.round(value * 100) / 100} °W`;
-  } else if (value > 270 && value < 360) {
+  } else if (value >= 292.6 && value <= 337.5) {
     return `${Math.round(value * 100) / 100} °NW`;
   } else {
     return `--`;
@@ -221,43 +221,50 @@ export const getDateRange = (
   selected: string,
   now: Date
 ): DateRange | undefined => {
-  // Create a copy of `now` to avoid mutation
   const today = new Date(now);
 
   switch (selected) {
+    case "today":
+      return { from: startOfDay(today), to: endOfDay(today) };
     case "7days":
-      return { from: subDays(today, 7), to: today };
+      return { from: startOfDay(subDays(today, 7)), to: endOfDay(today) };
     case "28days":
-      return { from: subDays(today, 28), to: today };
+      return { from: startOfDay(subDays(today, 28)), to: endOfDay(today) };
     case "90days":
-      return { from: subDays(today, 90), to: today };
-    case "week":
+      return { from: startOfDay(subDays(today, 90)), to: endOfDay(today) };
+    case "week": {
       const startOfWeek = new Date(today);
-      startOfWeek.setDate(today.getDate() - today.getDay()); // Sunday
-      return { from: startOfWeek, to: today };
+      startOfWeek.setDate(today.getDate() - today.getDay());
+      return { from: startOfDay(startOfWeek), to: endOfDay(today) };
+    }
     case "month":
       return {
-        from: new Date(today.getFullYear(), today.getMonth(), 1),
-        to: new Date(today.getFullYear(), today.getMonth() + 1, 0),
+        from: startOfDay(new Date(today.getFullYear(), today.getMonth(), 1)),
+        to: endOfDay(today),
       };
     case "year":
       return {
-        from: new Date(today.getFullYear(), 0, 1),
-        to: new Date(today.getFullYear(), 11, 31),
+        from: startOfDay(new Date(today.getFullYear(), 0, 1)),
+        to: endOfDay(today),
       };
-    case "last-week":
+    case "last-week": {
       const lastWeekStart = new Date(today);
-      lastWeekStart.setDate(today.getDate() - today.getDay() - 7); // Start of last week
+      lastWeekStart.setDate(today.getDate() - today.getDay() - 7);
       const lastWeekEnd = new Date(lastWeekStart);
-      lastWeekEnd.setDate(lastWeekStart.getDate() + 6); // End of last week
-      return { from: lastWeekStart, to: lastWeekEnd };
-    case "last-month":
+      lastWeekEnd.setDate(lastWeekStart.getDate() + 6);
+      return { from: startOfDay(lastWeekStart), to: endOfDay(lastWeekEnd) };
+    }
+    case "last-month": {
       const lastMonth = today.getMonth() - 1;
       const lastMonthYear =
         lastMonth < 0 ? today.getFullYear() - 1 : today.getFullYear();
       const lastMonthStart = new Date(lastMonthYear, lastMonth, 1);
       const lastMonthEnd = new Date(lastMonthYear, lastMonth + 1, 0);
-      return { from: lastMonthStart, to: lastMonthEnd };
+      return {
+        from: startOfDay(lastMonthStart),
+        to: endOfDay(lastMonthEnd),
+      };
+    }
     default:
       return undefined;
   }

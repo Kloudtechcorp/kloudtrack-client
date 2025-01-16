@@ -134,6 +134,7 @@ const WeatherDialog = ({ id, name }: WeatherDialogProps) => {
                           className="py-2 px-1 flex flex-col space-y-1 w-full gap-2 item-center h-full justify-center"
                         >
                           {[
+                            { value: "today", label: "Today" },
                             { value: "7days", label: "7 Days" },
                             { value: "28days", label: "28 Days" },
                             { value: "90days", label: "90 Days" },

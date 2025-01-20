@@ -6,31 +6,33 @@ import ArgVariableCard from "@/components/dynamic/VariableCards/ArgVariableCard"
 import ClmsVariableCard from "@/components/dynamic/VariableCards/ClmsVariableCard";
 import RlmsVariableCard from "@/components/dynamic/VariableCards/RlmsVariableCard";
 import { useRef, useState, useEffect } from "react";
-import { Fullscreen } from "lucide-react";
+import { CreditCard, Fullscreen, TableIcon } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
-// Define the possible keys for the visibleCount state
-type TabType = "aws" | "arg" | "clms" | "rlms";
-
-const BATCH_SIZE = 3; // Number of cards to load at a time
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import AwsStackedVariable from "@/components/dynamic/VariableCards/Stacked/AwsStackedVariable";
 
 const Variable = () => {
   const { user, isLoading } = useUserContext();
   const imageRef = useRef<HTMLDivElement>(null);
-  const observerRef = useRef<HTMLDivElement>(null);
-
-  // Explicitly define the state type using TabType
-  const [visibleCount, setVisibleCount] = useState<Record<TabType, number>>({
-    aws: BATCH_SIZE,
-    arg: BATCH_SIZE,
-    clms: BATCH_SIZE,
-    rlms: BATCH_SIZE,
+  const [view, setView] = useState(() => {
+    return localStorage.getItem("view") || "linear";
   });
+
+  useEffect(() => {
+    localStorage.setItem("view", view);
+  }, [view]);
 
   const toggleFullscreen = () => {
     if (imageRef.current) {
@@ -68,34 +70,6 @@ const Variable = () => {
     .filter((item) => item.type === "RLMS")
     .map((item) => item.id);
 
-  // Lazy load observer
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const tab = entry.target.getAttribute("data-tab") as TabType; // Explicitly assert the type here
-            setVisibleCount((prev) => ({
-              ...prev,
-              [tab]: prev[tab] + BATCH_SIZE,
-            }));
-          }
-        });
-      },
-      { threshold: 1.0 }
-    );
-
-    if (observerRef.current) {
-      observer.observe(observerRef.current);
-    }
-
-    return () => {
-      if (observerRef.current) {
-        observer.unobserve(observerRef.current);
-      }
-    };
-  }, []);
-
   if (isLoading) {
     return (
       <div className="mainContainer bg-[#F6F8FC] dark:bg-slate-950">
@@ -129,43 +103,97 @@ const Variable = () => {
               <TabsTrigger value="clms">Coastal Level</TabsTrigger>
             )}
           </div>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button onClick={toggleFullscreen} className="rounded-lg px-2">
-                  <Fullscreen />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Fullscreen</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <div className="flex flex-row gap-2">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    onClick={toggleFullscreen}
+                    className="rounded-lg px-2"
+                  >
+                    <Fullscreen />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Fullscreen</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <div className="flex items-center space-x-2 pr-2">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="flex items-center space-x-2">
+                      <Select
+                        defaultValue={view}
+                        onValueChange={(value) => setView(value)}
+                      >
+                        <SelectTrigger className="w-[180px]">
+                          <SelectValue placeholder="Select a view" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectItem value="linear">
+                              <div className="flex flex-row items-center gap-2">
+                                <CreditCard className="h-4 w-4" />
+                                <span>Linear View</span>
+                              </div>
+                            </SelectItem>
+                            <SelectItem value="stacked">
+                              <div className="flex flex-row items-center gap-2">
+                                <TableIcon className="h-4 w-4" />
+                                <span>Stacked View</span>
+                              </div>
+                            </SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Switch View</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+          </div>
         </TabsList>
-
-        {hasAwsStations && (
-          <TabsContent value="aws" className="my-0">
-            <AwsVariableCard id={awsIds.slice(0, visibleCount.aws)} />
-            <div ref={observerRef} data-tab="aws" className="h-10 w-full" />
-          </TabsContent>
-        )}
-        {hasArgStations && (
-          <TabsContent value="arg" className="my-0">
-            <ArgVariableCard id={argIds.slice(0, visibleCount.arg)} />
-            <div ref={observerRef} data-tab="arg" className="h-10 w-full" />
-          </TabsContent>
-        )}
-        {hasRlmsStations && (
-          <TabsContent value="rlms" className="my-0">
-            <RlmsVariableCard id={rlmsIds.slice(0, visibleCount.rlms)} />
-            <div ref={observerRef} data-tab="rlms" className="h-10 w-full" />
-          </TabsContent>
-        )}
-        {hasClmsStations && (
-          <TabsContent value="clms" className="my-0">
-            <ClmsVariableCard id={clmsIds.slice(0, visibleCount.clms)} />
-            <div ref={observerRef} data-tab="clms" className="h-10 w-full" />
-          </TabsContent>
+        {view === "linear" ? (
+          <>
+            {hasAwsStations && (
+              <TabsContent value="aws" className="my-0">
+                <AwsVariableCard id={awsIds.slice(0)} />
+                <div data-tab="aws" className="h-10 w-full" />
+              </TabsContent>
+            )}
+            {hasArgStations && (
+              <TabsContent value="arg" className="my-0">
+                <ArgVariableCard id={argIds.slice(0)} />
+                <div data-tab="arg" className="h-10 w-full" />
+              </TabsContent>
+            )}
+            {hasRlmsStations && (
+              <TabsContent value="rlms" className="my-0">
+                <RlmsVariableCard id={rlmsIds.slice(0)} />
+                <div data-tab="rlms" className="h-10 w-full" />
+              </TabsContent>
+            )}
+            {hasClmsStations && (
+              <TabsContent value="clms" className="my-0">
+                <ClmsVariableCard id={clmsIds.slice(0)} />
+                <div data-tab="clms" className="h-10 w-full" />
+              </TabsContent>
+            )}
+          </>
+        ) : (
+          <>
+            {hasAwsStations && (
+              <TabsContent value="aws" className="my-0">
+                <AwsStackedVariable id={awsIds} />
+                <div data-tab="aws" className="h-10 w-full" />
+              </TabsContent>
+            )}
+          </>
         )}
       </Tabs>
     </div>

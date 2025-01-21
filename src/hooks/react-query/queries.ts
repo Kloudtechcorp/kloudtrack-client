@@ -10,6 +10,7 @@ import {
   clmsDashboardType,
   coastalDataTypes,
   detailedStationProps,
+  DynamicDatasetType,
   hourlyDataTypes,
   rlmsDashboardType,
   stationBarangayType,
@@ -48,6 +49,7 @@ import {
   getBugReports,
   getStationDetailed,
   getAnalysis,
+  stackedGraphDataset,
 } from "@/api/get";
 import {
   coastalSensorsType,
@@ -318,6 +320,15 @@ export const useGetStationDetailed = (
   return useQuery({
     queryKey: [QUERY_KEYS.GET_BUG_REPORTS],
     queryFn: () => getStationDetailed(id),
+    staleTime: 5000,
+    refetchInterval: 5000,
+  });
+};
+
+export const useGetStackedGraphData = (data: DynamicDatasetType) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_DATASET_ALL],
+    queryFn: () => stackedGraphDataset(data),
     staleTime: 5000,
     refetchInterval: 5000,
   });

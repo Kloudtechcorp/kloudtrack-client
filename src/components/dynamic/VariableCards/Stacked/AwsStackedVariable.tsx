@@ -15,7 +15,10 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { useGetDataset } from "@/hooks/react-query/queries";
+import {
+  useGetDataset,
+  useGetStackedGraphData,
+} from "@/hooks/react-query/queries";
 import {
   Bar,
   BarChart,
@@ -25,6 +28,9 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { DynamicDatasetType } from "@/types/queryTypes";
+import PuffLoader from "react-spinners/PuffLoader";
+import { formattedDataType } from "@/types";
 
 const chartConfig = {
   desktop: {
@@ -32,6 +38,11 @@ const chartConfig = {
     color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig;
+
+interface GraphData {
+  recorded: string;
+  [key: string]: number | string;
+}
 
 const AwsStackedVariable: React.FC<{ id: string[] }> = ({ id }) => {
   const [weatherData, setWeatherData] = useState<string>(
@@ -43,28 +54,6 @@ const AwsStackedVariable: React.FC<{ id: string[] }> = ({ id }) => {
   const [rangeData, setRangeData] = useState<string>(
     () => localStorage.getItem("weatherRange") || "24"
   );
-  const [checked, setChecked] = useState<boolean>(() =>
-    localStorage.getItem("weatherChecked") === "true" ? true : false
-  );
-  const useGetAllDatasets = (
-    ids: string[],
-    weatherData: string,
-    rangeData: string,
-    repeatData: string
-  ) => {
-    return ids.map((item) => {
-      const { data: graphData } = useGetDataset({
-        type: "aws",
-        stationId: item,
-        weatherData: weatherData,
-        range: +rangeData,
-        repeat: repeatData,
-      });
-      return graphData;
-    });
-  };
-
-  const stationData = useGetAllDatasets(id, weatherData, rangeData, repeatData);
 
   useEffect(() => {
     localStorage.setItem("weatherData", weatherData);
@@ -78,9 +67,48 @@ const AwsStackedVariable: React.FC<{ id: string[] }> = ({ id }) => {
     localStorage.setItem("weatherRange", rangeData);
   }, [rangeData]);
 
-  useEffect(() => {
-    localStorage.setItem("weatherChecked", String(checked));
-  }, [checked]);
+  const stationDataParams: DynamicDatasetType = {
+    type: "aws",
+    stationIds: id,
+    weatherData: weatherData,
+    range: +rangeData,
+    repeat: repeatData,
+  };
+
+  const {
+    data: graphData,
+    isError,
+    isLoading,
+  } = useGetStackedGraphData(stationDataParams);
+
+  if (isError) {
+    return <div>Error fetching data</div>;
+  }
+  if (isLoading || !graphData) {
+    return (
+      <div className="w-full flex justify-center items-center h-full">
+        <PuffLoader />
+      </div>
+    );
+  }
+
+  const getFormattedDataset = (graphData: GraphData[]): GraphData[] => {
+    return graphData.map((item) => {
+      const formattedDate = new Date(item.recorded).toLocaleString("en-US", {
+        month: "short",
+        day: "2-digit",
+        ...(repeatData !== "day" && { hour: "2-digit", minute: "2-digit" }),
+        hour12: false,
+      });
+      const datetimeWithAt = formattedDate.replace(",", " at");
+      return {
+        ...item,
+        recorded: datetimeWithAt,
+      };
+    });
+  };
+
+  const updatedData = getFormattedDataset(graphData);
 
   return (
     <div className="mainContainer bg-[#F6F8FC] dark:bg-secondary flex flex-col overflow-hidden">
@@ -131,13 +159,13 @@ const AwsStackedVariable: React.FC<{ id: string[] }> = ({ id }) => {
             <div className="tableGraphCard">
               <ChartContainer
                 config={chartConfig}
-                className="h-[14.5rem] w-full m-0 p-0"
+                className="h-full w-full m-0 p-0"
               >
                 {weatherData === "precipitation" ||
                 weatherData === "uvIndex" ? (
                   <BarChart
                     accessibilityLayer
-                    data={stationData[0]}
+                    data={updatedData}
                     margin={{
                       left: 2,
                       right: 12,
@@ -145,7 +173,7 @@ const AwsStackedVariable: React.FC<{ id: string[] }> = ({ id }) => {
                   >
                     <CartesianGrid vertical={false} />
                     <XAxis
-                      dataKey="datetime"
+                      dataKey="recorded"
                       tickLine={true}
                       axisLine={true}
                       tickMargin={10}
@@ -155,12 +183,16 @@ const AwsStackedVariable: React.FC<{ id: string[] }> = ({ id }) => {
                       cursor={true}
                       content={<ChartTooltipContent />}
                     />
-                    <Bar dataKey="data" fill={"#fbd008"} />
+                    {Object.keys(updatedData[0])
+                      .filter((key) => key !== "recorded")
+                      .map((key) => (
+                        <Bar key={key} dataKey={key} fill="#fbd008" />
+                      ))}
                   </BarChart>
                 ) : (
                   <LineChart
                     accessibilityLayer
-                    data={stationData[0]}
+                    data={updatedData}
                     margin={{
                       left: 2,
                       right: 12,
@@ -168,7 +200,7 @@ const AwsStackedVariable: React.FC<{ id: string[] }> = ({ id }) => {
                   >
                     <CartesianGrid vertical={false} />
                     <XAxis
-                      dataKey="datetime"
+                      dataKey="recorded"
                       tickLine={true}
                       axisLine={true}
                       tickMargin={10}
@@ -178,15 +210,21 @@ const AwsStackedVariable: React.FC<{ id: string[] }> = ({ id }) => {
                       cursor={true}
                       content={<ChartTooltipContent />}
                     />
-                    <Line
-                      dataKey="data"
-                      type="linear"
-                      stroke="#fbd008"
-                      isAnimationActive={true}
-                      animateNewValues={true}
-                      animationEasing={"ease-in-out"}
-                      strokeWidth={1.5}
-                    />
+                    {Object.keys(updatedData[0])
+                      .filter((key) => key !== "recorded")
+                      .map((key) => (
+                        <Line
+                          key={key}
+                          dataKey={key}
+                          type="linear"
+                          stroke="#fbd008"
+                          isAnimationActive={true}
+                          animateNewValues={true}
+                          animationEasing={"ease-in-out"}
+                          strokeWidth={1.5}
+                          dot={false}
+                        />
+                      ))}
                   </LineChart>
                 )}
               </ChartContainer>

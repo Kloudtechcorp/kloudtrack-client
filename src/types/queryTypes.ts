@@ -208,6 +208,15 @@ export type TableGraphCardType = {
   showDots?: boolean;
 };
 
+export type DynamicDatasetType = {
+  type: string;
+  stationIds: string[];
+  weatherData: string;
+  range: number;
+  repeat: string;
+  showDots?: boolean;
+};
+
 export type stationComputedTypes = {
   max: number;
   min: number;

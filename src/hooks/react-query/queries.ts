@@ -329,7 +329,7 @@ export const useGetStackedGraphData = (data: DynamicDatasetType) => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_DATASET_ALL],
     queryFn: () => stackedGraphDataset(data),
-    staleTime: 5000,
-    refetchInterval: 5000,
+    staleTime: 60000,
+    refetchInterval: 60000,
   });
 };

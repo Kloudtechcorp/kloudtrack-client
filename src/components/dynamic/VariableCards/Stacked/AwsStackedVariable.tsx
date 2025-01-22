@@ -12,13 +12,12 @@ import RangeRepeatSelector from "@/components/shared/SelectRangeRepeat";
 import {
   ChartConfig,
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import {
-  useGetDataset,
-  useGetStackedGraphData,
-} from "@/hooks/react-query/queries";
+import { useGetStackedGraphData } from "@/hooks/react-query/queries";
 import {
   Bar,
   BarChart,
@@ -30,14 +29,11 @@ import {
 } from "recharts";
 import { DynamicDatasetType } from "@/types/queryTypes";
 import PuffLoader from "react-spinners/PuffLoader";
-import { formattedDataType } from "@/types";
 
-const chartConfig = {
-  desktop: {
-    label: "average",
-    color: "hsl(var(--chart-1))",
-  },
-} satisfies ChartConfig;
+const dynamicChartConfig = (dataKey: string) => ({
+  label: addSpacesToPascalCase(dataKey),
+  color: `hsl(var(--chart-${Math.floor(Math.random() * 10) + 1}))`,
+});
 
 interface GraphData {
   recorded: string;
@@ -95,8 +91,8 @@ const AwsStackedVariable: React.FC<{ id: string[] }> = ({ id }) => {
   const getFormattedDataset = (graphData: GraphData[]): GraphData[] => {
     return graphData.map((item) => {
       const formattedDate = new Date(item.recorded).toLocaleString("en-US", {
-        month: "short",
-        day: "2-digit",
+        month: "long",
+        day: "numeric",
         ...(repeatData !== "day" && { hour: "2-digit", minute: "2-digit" }),
         hour12: false,
       });
@@ -109,6 +105,18 @@ const AwsStackedVariable: React.FC<{ id: string[] }> = ({ id }) => {
   };
 
   const updatedData = getFormattedDataset(graphData);
+
+  const chartConfig = Object.fromEntries(
+    Object.keys(updatedData[0])
+      .filter((key) => key !== "recorded")
+      .map((key) => [
+        key,
+        {
+          label: addSpacesToPascalCase(key),
+          color: `hsl(var(--chart-${Math.floor(Math.random() * 10) + 1}))`,
+        },
+      ])
+  ) satisfies ChartConfig;
 
   return (
     <div className="mainContainer bg-[#F6F8FC] dark:bg-secondary flex flex-col overflow-hidden">
@@ -212,19 +220,31 @@ const AwsStackedVariable: React.FC<{ id: string[] }> = ({ id }) => {
                     />
                     {Object.keys(updatedData[0])
                       .filter((key) => key !== "recorded")
-                      .map((key) => (
-                        <Line
-                          key={key}
-                          dataKey={key}
-                          type="linear"
-                          stroke="#fbd008"
-                          isAnimationActive={true}
-                          animateNewValues={true}
-                          animationEasing={"ease-in-out"}
-                          strokeWidth={1.5}
-                          dot={false}
-                        />
-                      ))}
+                      .map((key) => {
+                        const getRandomColor = () => {
+                          const letters = "0123456789ABCDEF";
+                          let color = "#";
+                          for (let i = 0; i < 6; i++) {
+                            color += letters[Math.floor(Math.random() * 16)];
+                          }
+                          return color;
+                        };
+
+                        return (
+                          <Line
+                            key={key}
+                            dataKey={key}
+                            type="linear"
+                            stroke={getRandomColor()}
+                            isAnimationActive={true}
+                            animateNewValues={true}
+                            animationEasing={"ease-in-out"}
+                            strokeWidth={1.5}
+                            dot={false}
+                          />
+                        );
+                      })}
+                    <ChartLegend content={<ChartLegendContent />} />
                   </LineChart>
                 )}
               </ChartContainer>

@@ -384,6 +384,7 @@ export const stackedGraphDataset = async ({
   weatherData,
   range,
   repeat,
+  type,
 }: DynamicDatasetType) => {
   const stationIdsQuery = stationIds
     .map((id) => `stationIds[]=${encodeURIComponent(id)}`)
@@ -392,9 +393,9 @@ export const stackedGraphDataset = async ({
   const response = await fetch(
     `${server}/dataset/dynamic?variable=${encodeURIComponent(
       weatherData
-    )}&range=${encodeURIComponent(range)}&repeat=${encodeURIComponent(
-      repeat
-    )}&${stationIdsQuery}`,
+    )}&type=${type}&range=${encodeURIComponent(
+      range
+    )}&repeat=${encodeURIComponent(repeat)}&${stationIdsQuery}`,
     {
       credentials: "include",
       headers: {

@@ -255,7 +255,6 @@ export const useGetAwsSensors = (): UseQueryResult<
     queryKey: [QUERY_KEYS.GET_AWS_SENSORS],
     queryFn: () => getWeatherSensors(),
     staleTime: 60000,
-    refetchInterval: 5000,
   });
 };
 
@@ -267,7 +266,6 @@ export const useGetArgSensors = (): UseQueryResult<
     queryKey: [QUERY_KEYS.GET_ARG_SENSORS],
     queryFn: () => getRainGaugeSensors(),
     staleTime: 60000,
-    refetchInterval: 5000,
   });
 };
 export const useGetRlmsSensors = (): UseQueryResult<
@@ -278,7 +276,6 @@ export const useGetRlmsSensors = (): UseQueryResult<
     queryKey: [QUERY_KEYS.GET_RLMS_SENSORS],
     queryFn: () => getRiverLevelSensors(),
     staleTime: 60000,
-    refetchInterval: 5000,
   });
 };
 export const useGetClmsSensors = (): UseQueryResult<
@@ -289,7 +286,6 @@ export const useGetClmsSensors = (): UseQueryResult<
     queryKey: [QUERY_KEYS.GET_CLMS_SENSORS],
     queryFn: () => getCoastalSensors(),
     staleTime: 60000,
-    refetchInterval: 5000,
   });
 };
 
@@ -329,7 +325,5 @@ export const useGetStackedGraphData = (data: DynamicDatasetType) => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_DATASET_ALL],
     queryFn: () => stackedGraphDataset(data),
-    staleTime: 60000,
-    refetchInterval: 60000,
   });
 };

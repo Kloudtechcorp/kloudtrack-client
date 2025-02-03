@@ -22,16 +22,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import AwsStackedVariable from "@/components/dynamic/VariableCards/Stacked/AwsStackedVariable";
+import ArgStackedVariable from "@/components/dynamic/VariableCards/Stacked/ArgStackedVariable";
+import RlmsStackedVariable from "@/components/dynamic/VariableCards/Stacked/RlmsStackedVariable";
+import ClmsStackedVariable from "@/components/dynamic/VariableCards/Stacked/ClmsStackedVariable";
 
 const Variable = () => {
   const { user, isLoading } = useUserContext();
   const imageRef = useRef<HTMLDivElement>(null);
-  const [view, setView] = useState(() => {
-    return localStorage.getItem("view") || "linear";
-  });
+  const [view, setView] = useState<string>(
+    () => localStorage.getItem("variable-view") || "linear"
+  );
 
   useEffect(() => {
-    localStorage.setItem("view", view);
+    localStorage.setItem("variable-view", view);
   }, [view]);
 
   const toggleFullscreen = () => {
@@ -190,7 +193,25 @@ const Variable = () => {
             {hasAwsStations && (
               <TabsContent value="aws" className="my-0">
                 <AwsStackedVariable id={awsIds} />
-                <div data-tab="aws" className="h-10 w-full" />
+                <div data-tab="aws" className="h-full w-full" />
+              </TabsContent>
+            )}
+            {hasArgStations && (
+              <TabsContent value="arg" className="my-0">
+                <ArgStackedVariable id={argIds} />
+                <div data-tab="arg" className="h-full w-full" />
+              </TabsContent>
+            )}
+            {hasRlmsStations && (
+              <TabsContent value="rlms" className="my-0">
+                <RlmsStackedVariable id={rlmsIds} />
+                <div data-tab="rlms" className="h-full w-full" />
+              </TabsContent>
+            )}
+            {hasClmsStations && (
+              <TabsContent value="clms" className="my-0">
+                <ClmsStackedVariable id={clmsIds} />
+                <div data-tab="clms" className="h-full w-full" />
               </TabsContent>
             )}
           </>

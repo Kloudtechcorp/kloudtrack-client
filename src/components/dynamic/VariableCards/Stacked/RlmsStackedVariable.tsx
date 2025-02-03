@@ -29,28 +29,28 @@ import {
 import { DynamicDatasetType } from "@/types/queryTypes";
 import PuffLoader from "react-spinners/PuffLoader";
 
-const AwsStackedVariable: React.FC<{ id: string[] }> = ({ id }) => {
+const RlmsStackedVariable: React.FC<{ id: string[] }> = ({ id }) => {
   const [weatherData, setWeatherData] = useState<string>(
-    () => localStorage.getItem("weatherData") || "temperature"
+    () => localStorage.getItem("riverData") || "distance"
   );
 
   const [rangeData, setRangeData] = useState<string>(
-    () => localStorage.getItem("weatherRange") || "24"
+    () => localStorage.getItem("riverRange") || "24"
   );
 
   const [isRefetching, setIsRefetching] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem("weatherData", weatherData);
+    localStorage.setItem("riverData", weatherData);
   }, [weatherData]);
 
   useEffect(() => {
-    localStorage.setItem("weatherRange", rangeData);
+    localStorage.setItem("riverRange", rangeData);
   }, [rangeData]);
 
   const stationDataParams = useMemo<DynamicDatasetType>(
     () => ({
-      type: "aws",
+      type: "rlms",
       stationIds: id,
       weatherData: weatherData,
       range: +rangeData,
@@ -80,7 +80,7 @@ const AwsStackedVariable: React.FC<{ id: string[] }> = ({ id }) => {
     await refetch();
     setIsRefetching(false);
   };
-
+  console.log(graphData);
   const updatedData = useMemo(
     () => (graphData ? getFormattedDataset(graphData) : []),
     [graphData]
@@ -94,7 +94,7 @@ const AwsStackedVariable: React.FC<{ id: string[] }> = ({ id }) => {
         .map((key) => [
           key,
           {
-            label: addSpacesToPascalCase(key),
+            label: `${addSpacesToPascalCase(key)} `,
             color: `hsl(var(--chart-${Math.floor(Math.random() * 10) + 1}))`,
           },
         ])
@@ -122,16 +122,7 @@ const AwsStackedVariable: React.FC<{ id: string[] }> = ({ id }) => {
                         <SelectValue placeholder="Variable" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="heatIndex">Heat Index</SelectItem>
-                        <SelectItem value="temperature">Temperature</SelectItem>
-                        <SelectItem value="humidity">Humidity</SelectItem>
-                        <SelectItem value="pressure">Air Pressure</SelectItem>
-                        <SelectItem value="windSpeed">Wind Speed</SelectItem>
-                        <SelectItem value="uvIndex">UV Index</SelectItem>
-                        <SelectItem value="light">Light Intensity</SelectItem>
-                        <SelectItem value="precipitation">
-                          Precipitation
-                        </SelectItem>
+                        <SelectItem value="distance">Distance</SelectItem>
                       </SelectContent>
                     </Select>
                   </span>
@@ -260,4 +251,4 @@ const AwsStackedVariable: React.FC<{ id: string[] }> = ({ id }) => {
   );
 };
 
-export default AwsStackedVariable;
+export default RlmsStackedVariable;

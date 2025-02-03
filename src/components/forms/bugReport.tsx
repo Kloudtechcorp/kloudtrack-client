@@ -64,7 +64,7 @@ export function BugReport({ onClose }: { onClose: () => void }) {
               <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Tell us about your experience with this bug"
+                  placeholder="Tell us about your experience"
                   className="resize-none"
                   {...field}
                 />

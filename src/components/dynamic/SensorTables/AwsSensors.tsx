@@ -11,15 +11,12 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
@@ -37,13 +34,9 @@ import { checkBadge } from "@/lib/helper";
 import { formatDateString } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import NoDataOptions from "@/components/shared/NoDataOptions";
-import { useDeleteStation } from "@/hooks/react-query/mutations";
-import { toast } from "@/hooks/use-toast";
 import AdminControls from "@/components/shared/AdminControls";
 
 export function AwsSensors() {
-  const [isEditDialogOpen, setIsEditDialogOpen] = React.useState(false);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []

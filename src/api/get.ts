@@ -28,6 +28,7 @@ import {
   tablesType,
   detailedStationProps,
   analysisType,
+  DynamicDatasetType,
 } from "@/types/queryTypes";
 
 const method: string = "GET";
@@ -376,4 +377,36 @@ export const getStationDetailed = async (
     throw new Error(data.message || "Failed to detailed data of a station");
   }
   return data;
+};
+
+export const stackedGraphDataset = async ({
+  stationIds,
+  weatherData,
+  range,
+  repeat,
+  type,
+}: DynamicDatasetType) => {
+  const stationIdsQuery = stationIds
+    .map((id) => `stationIds[]=${encodeURIComponent(id)}`)
+    .join("&");
+
+  const response = await fetch(
+    `${server}/dataset/dynamic?variable=${encodeURIComponent(
+      weatherData
+    )}&type=${type}&range=${encodeURIComponent(
+      range
+    )}&repeat=${encodeURIComponent(repeat)}&${stationIdsQuery}`,
+    {
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch graph data");
+  }
+  return data.transformedData;
 };

@@ -8,11 +8,11 @@ import {
   signInAccountType,
 } from "@/types/mutationTypes";
 import {
+  DynamicDatasetType,
   coastalDataTypes,
   downloadParamsTypes,
   rainGaugeDataTypes,
   riverLevelDataTypes,
-  weatherDataSensors,
   weatherDataTypes,
 } from "@/types/queryTypes";
 import { bugSchema } from "@/types/validation";
@@ -156,7 +156,7 @@ export const downloadWeatherDataSensors = async ({
   name,
   from,
   to,
-}: downloadParamsTypes): Promise<weatherDataSensors[]> => {
+}: downloadParamsTypes) => {
   const response = await fetch(`${server}/weather/download/sensorsRawData`, {
     method,
     credentials: "include",

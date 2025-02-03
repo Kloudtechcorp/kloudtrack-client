@@ -37,10 +37,9 @@ import ClmsTable from "@/components/dynamic/DashboardCards/Tabular/CLMSTable";
 const Dashboard = () => {
   const { user, isLoading } = useUserContext();
   const imageRef = useRef<HTMLDivElement>(null);
-  const [view, setView] = useState(() => {
-    return localStorage.getItem("view") || "card";
-  });
-
+  const [view, setView] = useState<string>(
+    () => localStorage.getItem("view") || "card"
+  );
   useEffect(() => {
     localStorage.setItem("view", view);
   }, [view]);

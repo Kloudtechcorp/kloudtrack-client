@@ -19,6 +19,7 @@ import {
 import { BugReport } from "../forms/bugReport";
 import { LogOut } from "lucide-react";
 import { useState } from "react";
+import { Button } from "../ui/button";
 // import { Button } from "../ui/button";
 
 const LeftSidebar = ({ clicked }: SidebarProps) => {
@@ -134,27 +135,27 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
 
         <div
           className={`w-full flex flex-col justify-end ${
-            clicked ? " px-4" : "items-center px-2"
+            clicked ? "px-4" : "items-center px-2"
           } gap-3 `}
         >
           <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger>
-              <div
-                className={`flex items-center py-3 justify-center rounded-sm hover:bg-black/5 dark:hover:bg-white/5 ${
+              <Button
+                className={`bg-transparent text-black dark:text-white flex items-center py-3 justify-center rounded-sm w-full hover:bg-black/5 dark:hover:bg-white/5 ${
                   clicked ? "justify-start px-4" : "justify-center"
                 }`}
               >
                 <BugIcon theme={""} />
                 {clicked && (
                   <span className="w-full pl-2 text-sm md:text-base">
-                    Bug Report
+                    Send a Report
                   </span>
                 )}
-              </div>
+              </Button>
             </SheetTrigger>
             <SheetContent side={"left"}>
               <SheetHeader>
-                <SheetTitle>Report a Bug!</SheetTitle>
+                <SheetTitle>Report!</SheetTitle>
                 <BugReport onClose={closeSheet} />
               </SheetHeader>
             </SheetContent>

@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 import { timer } from "./objects/himawariArrays";
 import { DateRange } from "react-day-picker";
 import { endOfDay, startOfDay, subDays } from "date-fns";
+import { GraphData } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -310,3 +311,18 @@ export const checkRepeat = (repeat: string, range: number): number => {
 export function addSpacesToPascalCase(input: string): string {
   return input.replace(/([a-z])([A-Z])/g, "$1 $2");
 }
+
+export const getFormattedDataset = (data: GraphData[]): GraphData[] => {
+  return data.map((item) => {
+    const formattedDate = new Date(item.recorded).toLocaleString("en-US", {
+      month: "long",
+      day: "numeric",
+      hour12: false,
+    });
+    const datetimeWithAt = formattedDate.replace(",", " at");
+    return {
+      ...item,
+      recorded: datetimeWithAt,
+    };
+  });
+};

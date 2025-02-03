@@ -97,7 +97,7 @@ const Header = ({ burgerMenu }: HeaderProps) => {
           <div className=" hover:cursor-pointer hidden md:block">
             <Hamburger size={18} toggled={clicked} toggle={handleClick} />
           </div>
-          <div className="items-center flex w-full flex-row justify-center ">
+          <div className="items-center flex w-full flex-row justify-center my-2">
             <span className="hidden md:block md:size-12">
               <img src={"/assets/pd-icons/pdrrmo-logo.png"} />
             </span>

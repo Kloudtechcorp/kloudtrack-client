@@ -221,3 +221,7 @@ export type profileType = {
     updatedAt: string;
   };
 };
+export interface GraphData {
+  recorded: string;
+  [key: string]: number | string;
+}

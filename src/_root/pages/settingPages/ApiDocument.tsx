@@ -202,13 +202,13 @@ const ApiDocument: React.FC = () => {
         endpoint="GET /get/stations"
         headers={[
           <>
-            <strong>kloudtrack-api-key:</strong> Required
+            <strong>x-kloudtrack-key:</strong> Required
           </>,
         ]}
         codeExamples={[
           {
-            language: "TypeScript",
-            code: `async function fetchStations(): Promise<Station[]> {
+            language: "JavaScript",
+            code: `async function fetchStations() {
   try {
     const response = await fetch("https://app.kloudtechsea.com/api/v1/get/stations", {
       method: "GET",
@@ -296,13 +296,13 @@ fetchStations();`,
         ]}
         headers={[
           <>
-            <strong>kloudtrack-api-key:</strong> Required
+            <strong>x-kloudtrack-key:</strong> Required
           </>,
         ]}
         codeExamples={[
           {
-            language: "TypeScript",
-            code: `async function fetchStation(id: string): Promise<Station> {
+            language: "JavaScript",
+            code: `async function fetchStation(id: string) {
   try {
     const response = await fetch(
       \`https://app.kloudtechsea.com/api/v1/get/station/\${id}\`,
@@ -405,15 +405,15 @@ fetchStation("station-id");`,
         ]}
         headers={[
           <>
-            <strong>kloudtrack-api-key:</strong> Required
+            <strong>x-kloudtrack-key:</strong> Required
           </>,
         ]}
         codeExamples={[
           {
-            language: "TypeScript",
+            language: "JavaScript",
             code: `type StationType = 'aws' | 'arg' | 'clms' | 'rlms';
 
-async function fetchStationsByType(type: StationType): Promise<Station[]> {
+async function fetchStationsByType(type: StationType) {
   try {
     const response = await fetch(
       \`https://app.kloudtechsea.com/api/v1/get/stations/\${type}\`,

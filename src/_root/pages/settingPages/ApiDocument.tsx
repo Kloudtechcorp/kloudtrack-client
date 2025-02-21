@@ -1,86 +1,246 @@
+import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
+import { Copy, Check } from "lucide-react";
 
-const ApiDocument = () => {
+interface CopyButtonProps {
+  text: string;
+}
+
+const CopyButton: React.FC<CopyButtonProps> = ({ text }) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
-    <Card className="px-7 py-4 gap-2 pb-10">
-      <h1 className="text-lg md:text-2xl font-bold text-start text-gray-800 dark:text-white mb-4">
-        How to use the API key
+    <button
+      onClick={handleCopy}
+      className="p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md transition-colors"
+      aria-label="Copy code"
+    >
+      {copied ? (
+        <Check size={16} className="text-green-500" />
+      ) : (
+        <Copy size={16} className="text-gray-500" />
+      )}
+    </button>
+  );
+};
+
+interface CodeBlockProps {
+  language: string;
+  code: string;
+}
+
+interface ResponseExampleProps {
+  status: string;
+  description?: string;
+  code?: string;
+}
+
+interface CodeExample {
+  language: string;
+  code: string;
+}
+
+interface EndpointSectionProps {
+  title: string;
+  endpoint: string;
+  description?: string;
+  pathParams?: React.ReactNode[];
+  headers?: React.ReactNode[];
+  codeExamples: CodeExample[];
+  responses: ResponseExampleProps[];
+}
+
+const CodeBlock: React.FC<CodeBlockProps> = ({ language, code }) => (
+  <div className="mb-4">
+    <div className="flex items-center justify-between px-4 py-2 text-xs font-sans rounded-t-md border dark:border-[#545454] bg-gray-50 dark:bg-gray-800">
+      <span>{language}</span>
+      <CopyButton text={code} />
+    </div>
+    <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-b-md text-sm overflow-auto whitespace-pre-wrap">
+      {code}
+    </pre>
+  </div>
+);
+
+const ResponseExample: React.FC<ResponseExampleProps> = ({
+  status,
+  description,
+  code,
+}) => (
+  <div className="mt-4">
+    <p className="font-semibold">{status}:</p>
+    {description && (
+      <p className="mt-1 text-gray-600 dark:text-gray-300">{description}</p>
+    )}
+    {code && (
+      <div className="mt-2 relative">
+        <div className="absolute right-2 top-2">
+          <CopyButton text={code} />
+        </div>
+        <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded text-sm overflow-auto whitespace-pre-wrap">
+          {code}
+        </pre>
+      </div>
+    )}
+  </div>
+);
+const EndpointSection: React.FC<EndpointSectionProps> = ({
+  title,
+  endpoint,
+  description,
+  pathParams,
+  headers,
+  codeExamples,
+  responses,
+}) => (
+  <section className="mb-12">
+    <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-4">
+      {title}
+    </h2>
+    {description && (
+      <p className="mb-4 text-gray-600 dark:text-gray-300">{description}</p>
+    )}
+
+    <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
+      <p className="mb-4">
+        <strong>Endpoint:</strong>{" "}
+        <code className="bg-gray-100 dark:bg-gray-900 px-2 py-1 rounded text-sm">
+          {endpoint}
+        </code>
+      </p>
+
+      {pathParams && (
+        <>
+          <h3 className="font-semibold mb-2">Path Parameters:</h3>
+          <ul className="list-disc ml-6 mb-4 space-y-2">
+            {pathParams.map((param, index) => (
+              <li key={index}>{param}</li>
+            ))}
+          </ul>
+        </>
+      )}
+
+      {headers && (
+        <>
+          <h3 className="font-semibold mb-2">Headers:</h3>
+          <ul className="list-disc ml-6 mb-4 space-y-2">
+            {headers.map((header, index) => (
+              <li key={index}>{header}</li>
+            ))}
+          </ul>
+        </>
+      )}
+
+      <h3 className="font-semibold mb-2">Example Usage:</h3>
+      {codeExamples.map((example, index) => (
+        <CodeBlock
+          key={index}
+          language={example.language}
+          code={example.code}
+        />
+      ))}
+
+      <h3 className="font-semibold mb-2">Responses:</h3>
+      <div className="space-y-4">
+        {responses.map((response, index) => (
+          <ResponseExample key={index} {...response} />
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
+interface StationData {
+  recordedAt: string;
+  temperature: number;
+  humidity: number;
+  pressure?: number;
+  heatIndex?: number;
+  precipitation?: number;
+  light?: number;
+  windSpeed?: number;
+  windDirection?: string;
+  uvIndex?: number;
+}
+
+interface Station {
+  id: string;
+  name: string;
+  type: string;
+  latitude: number;
+  longitude: number;
+  barangay: string;
+  municipality: string;
+  province: string;
+  region: string;
+  image: string;
+  data: StationData;
+}
+
+const ApiDocument: React.FC = () => {
+  return (
+    <Card className="p-8">
+      <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-8">
+        API Documentation
       </h1>
-      <p className="mb-4 text-sm md:text-base">
-        <strong>Base Url:</strong>{" "}
-        <code className="bg-gray-100 dark:bg-[#545454] p-1 rounded text-xs md:text-sm break-words">
+
+      <p className="mb-8 text-gray-600 dark:text-gray-300">
+        <strong>Base URL:</strong>{" "}
+        <code className="bg-gray-100 dark:bg-gray-900 px-2 py-1 rounded text-sm">
           https://app.kloudtechsea.com/api/v1
         </code>
       </p>
-      <div className="px-6 h-full">
-        <span></span>
-        <section className="mb-10 text-xs md:text-base">
-          <h2 className="text-base md:text-lg font-semibold text-gray-700 dark:text-white mb-4">
-            1. Get All Stations
-          </h2>
-          <div className="bg-secondary p-4 rounded-lg ">
-            <p>
-              <strong>Endpoint:</strong>{" "}
-              <code className="bg-gray-100 dark:bg-[#545454] p-1 rounded break-words">
-                GET /get/stations
-              </code>
-            </p>
-            <h3 className="mt-4 font-semibold text-gray-600 dark:text-white ">
-              Headers:
-            </h3>
-            <ul className="list-disc ml-6">
-              <li>
-                <strong>kloudtrack-api-key:</strong> <span>Required</span>
-              </li>
-            </ul>
-            <h3 className="mt-4 font-semibold text-gray-600 dark:text-white">
-              Example Usage
-            </h3>
-            <div className="bg-secondary p-4 rounded">
-              <div className="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md border dark:border-[#545454] bg-token-sidebar-surface-primary dark:bg-token-main-surface-secondary select-none">
-                Javascript
-              </div>
-              <pre className="bg-gray-200 dark:bg-[#545454] p-2 rounded text-xs md:text-sm overflow-auto whitespace-pre-wrap">
-                {`function fetchStations() {
-  fetch("https://app.kloudtechsea.com/api/v1/get/stations", {
-    method: "GET",
-    headers: {
-      "x-kloudtrack-key": your-api-key-here, // Include the API key in the headers
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-        {/* Use the data fetched according to your needs */}
-    })
-    .catch((error) => {
-      console.error("Error:", error); 
+
+      <EndpointSection
+        title="1. Get All Stations"
+        endpoint="GET /get/stations"
+        headers={[
+          <>
+            <strong>kloudtrack-api-key:</strong> Required
+          </>,
+        ]}
+        codeExamples={[
+          {
+            language: "TypeScript",
+            code: `async function fetchStations(): Promise<Station[]> {
+  try {
+    const response = await fetch("https://app.kloudtechsea.com/api/v1/get/stations", {
+      method: "GET",
+      headers: {
+        "x-kloudtrack-key": "your-api-key-here",
+      },
     });
+    
+    if (!response.ok) {
+      throw new Error(\`HTTP error! status: \${response.status}\`);
+    }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
 }
 
-fetchStations();
-`}
-              </pre>
-            </div>
-
-            <div className="bg-secondary p-4 rounded">
-              <div className="flex items-center text-token-text-secondary border dark:border-[#545454] px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9 bg-token-sidebar-surface-primary dark:bg-token-main-surface-secondary select-none">
-                curl
-              </div>
-              <pre className="bg-gray-200 dark:bg-[#545454] p-2 rounded text-xs md:text-sm overflow-auto whitespace-pre-wrap">
-                {`curl -X GET "https://app.kloudtechsea.com/api/v1/get/stations" 
-     -H "x-kloudtrack-key: your-api-key-here" // Include the API key in the headers
-`}
-              </pre>
-            </div>
-            <h3 className="mt-4 font-semibold text-gray-600 dark:text-white">
-              Responses:
-            </h3>
-            <div className="bg-secondary p-4 rounded">
-              <p>
-                <strong>200 OK:</strong>
-              </p>
-              <pre className="bg-gray-200 dark:bg-[#545454] p-2 rounded text-xs md:text-sm overflow-auto whitespace-pre-wrap">
-                {`{
+fetchStations();`,
+          },
+          {
+            language: "curl",
+            code: `curl -X GET "https://app.kloudtechsea.com/api/v1/get/stations" \\
+     -H "x-kloudtrack-key: your-api-key-here"`,
+          },
+        ]}
+        responses={[
+          {
+            status: "200 OK",
+            code: `{
   "Automated Weather Stations": [
     {
       "name": "Station A",
@@ -107,124 +267,77 @@ fetchStations();
         "uvIndex": 7
       }
     }
-  ],
-    "Automated Rain Gauge": [
-    {
-      "name": "Station B",
-      "type": "ARG",
-      "latitude": 14.5995,
-      "longitude": 120.9842,
-      "barangay": "Barangay A",
-      "municipality": "Municipality A",
-      "province": "Province A",
-      "region": "Region A",
-      "image": "https://example.com/image.jpg",
-      "data": {
-        "recordedAt": "2024-11-24T15:30:00Z",
-        "precipitation": 30,
-      }
-    }
-  ],
-   "River Level Monitoring Systen": [
-    {
-      "name": "Station C",
-      "type": "ARG",
-        ...
   ]
-}`}
-              </pre>
-              <p className="mt-2">
-                <strong>400 Bad Request:</strong> The station type is invalid or
-                unrecognized.
-              </p>
-              <p className="mt-2">
-                <strong>401 Unauthorized:</strong> Invalid or missing API key.
-              </p>
-              <p className="mt-2">
-                <strong>404 Not Found:</strong> No stations available for the
-                user.
-              </p>
-              <p className="mt-2">
-                <strong>500 Internal Server Error:</strong> Error while fetching
-                station data.
-              </p>
-            </div>
-          </div>
-        </section>
+}`,
+          },
+          {
+            status: "400 Bad Request",
+            description: "The station type is invalid or unrecognized.",
+          },
+          {
+            status: "401 Unauthorized",
+            description: "Invalid or missing API key.",
+          },
+          {
+            status: "404 Not Found",
+            description: "No stations available for the user.",
+          },
+        ]}
+      />
 
-        <section className="text-xs md:text-base">
-          <h2 className="text-base md:text-lg font-semibold text-gray-700 dark:text-white mb-4">
-            2. Get Specific Station
-          </h2>
-          <div className="bg-secondary p-4 rounded-lg">
-            <p>
-              <strong>Endpoint:</strong>{" "}
-              <code className="bg-gray-100 dark:bg-[#545454] p-1 rounded">
-                GET /get/station/:id
-              </code>
-            </p>
-            <h3 className="mt-4 font-semibold text-gray-600 dark:text-white">
-              Path Parameters:
-            </h3>
-            <ul className="list-disc ml-6">
-              <li>
-                <strong>id:</strong> (String) The id of the station. You can
-                find it in the profile section of this page.
-              </li>
-            </ul>
-            <h3 className="mt-4 font-semibold text-gray-600 dark:text-white">
-              Headers:
-            </h3>
-            <ul className="list-disc ml-6">
-              <li>
-                <strong>kloudtrack-api-key:</strong> <span>Required</span>
-              </li>
-            </ul>
-            <div className="bg-secondary p-4 rounded">
-              <div className="flex items-center text-token-text-secondary px-4 py-2 border dark:border-[#545454] text-xs font-sans justify-between rounded-t-md h-9 bg-token-sidebar-surface-primary dark:bg-token-main-surface-secondary select-none">
-                Javascript
-              </div>
-              <pre className="bg-gray-200 dark:bg-[#545454] p-2 rounded text-xs md:text-sm overflow-auto whitespace-pre-wrap">
-                {`function fetchStations() {
-  fetch("https://app.kloudtechsea.com/api/v1/get/station/:id", {
-    method: "GET",
-    headers: {
-      "x-kloudtrack-key": your-api-key-here, // Include the API key in the headers
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-        {/* Use the data fetched according to your needs */}
-    })
-    .catch((error) => {
-      console.error("Error:", error); 
-    });
+      <EndpointSection
+        title="2. Get Specific Station"
+        endpoint="GET /get/station/:id"
+        pathParams={[
+          <>
+            <strong>id:</strong> (String) The id of the station. You can find it
+            in the profile section.
+          </>,
+        ]}
+        headers={[
+          <>
+            <strong>kloudtrack-api-key:</strong> Required
+          </>,
+        ]}
+        codeExamples={[
+          {
+            language: "TypeScript",
+            code: `async function fetchStation(id: string): Promise<Station> {
+  try {
+    const response = await fetch(
+      \`https://app.kloudtechsea.com/api/v1/get/station/\${id}\`,
+      {
+        method: "GET",
+        headers: {
+          "x-kloudtrack-key": "your-api-key-here",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(\`HTTP error! status: \${response.status}\`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
 }
 
-fetchStations();
-`}
-              </pre>
-            </div>
-
-            <div className="bg-secondary p-4 rounded">
-              <div className="flex items-center border dark:border-[#545454] text-token-text-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9 bg-token-sidebar-surface-primary dark:bg-token-main-surface-secondary select-none">
-                curl
-              </div>
-              <pre className="bg-gray-200 dark:bg-[#545454] p-2 rounded text-sm overflow-auto whitespace-pre-wrap">
-                {`curl -X GET "https://app.kloudtechsea.com/api/v1/get/station/:name" 
-     -H "x-kloudtrack-key: your-api-key-here" // Include the API key in the headers
-`}
-              </pre>
-            </div>
-            <h3 className="mt-4 font-semibold text-gray-600 dark:text-white">
-              Responses:
-            </h3>
-            <div className="bg-secondary p-4 rounded">
-              <p>
-                <strong>200 OK:</strong>
-              </p>
-              <pre className="bg-gray-200 dark:bg-[#545454] p-2 rounded text-xs md:text-sm overflow-auto whitespace-pre-wrap">
-                {`{
+fetchStation("station-id");`,
+          },
+          {
+            language: "curl",
+            code: `curl -X GET "https://app.kloudtechsea.com/api/v1/get/station/:id" \\
+     -H "x-kloudtrack-key: your-api-key-here"`,
+          },
+        ]}
+        responses={[
+          {
+            status: "200 OK",
+            code: `{
   "name": "Station A",
   "type": "AWS",
   "latitude": 14.5995,
@@ -246,30 +359,127 @@ fetchStations();
     "windDirection": "N",
     "uvIndex": 7
   }
-}`}
-              </pre>
-              <p className="mt-2">
-                <strong>400 Bad Request:</strong> The station type is invalid or
-                unrecognized.
-              </p>
-              <p className="mt-2">
-                <strong>401 Unauthorized:</strong> Invalid or missing API key.
-              </p>
-              <p className="mt-2">
-                <strong>403 Forbidden:</strong> The user does not have
-                permission to access the station.
-              </p>
-              <p className="mt-2">
-                <strong>404 Not Found:</strong> Station not found.
-              </p>
-              <p className="mt-2">
-                <strong>500 Internal Server Error:</strong> Error while fetching
-                station data.
-              </p>
-            </div>
-          </div>
-        </section>
-      </div>
+}`,
+          },
+          {
+            status: "401 Unauthorized",
+            description: "Invalid or missing API key.",
+          },
+          {
+            status: "403 Forbidden",
+            description:
+              "The user does not have permission to access the station.",
+          },
+          {
+            status: "404 Not Found",
+            description: "Station not found.",
+          },
+        ]}
+      />
+
+      <EndpointSection
+        title="3. Get Stations by Type"
+        endpoint="GET /get/stations/:type"
+        description="Fetch a list of stations filtered by their type (e.g., AWS, ARG, CLMS, RLMS). Use this endpoint to get only the stations that match a specific type."
+        pathParams={[
+          <>
+            <strong>type:</strong> (String) The station type. Accepted values
+            include:{" "}
+            <code className="bg-gray-100 dark:bg-gray-900 px-1 rounded">
+              aws
+            </code>
+            ,{" "}
+            <code className="bg-gray-100 dark:bg-gray-900 px-1 rounded">
+              arg
+            </code>
+            ,{" "}
+            <code className="bg-gray-100 dark:bg-gray-900 px-1 rounded">
+              clms
+            </code>
+            , and{" "}
+            <code className="bg-gray-100 dark:bg-gray-900 px-1 rounded">
+              rlms
+            </code>
+            .
+          </>,
+        ]}
+        headers={[
+          <>
+            <strong>kloudtrack-api-key:</strong> Required
+          </>,
+        ]}
+        codeExamples={[
+          {
+            language: "TypeScript",
+            code: `type StationType = 'aws' | 'arg' | 'clms' | 'rlms';
+
+async function fetchStationsByType(type: StationType): Promise<Station[]> {
+  try {
+    const response = await fetch(
+      \`https://app.kloudtechsea.com/api/v1/get/stations/\${type}\`,
+      {
+        method: "GET",
+        headers: {
+          "x-kloudtrack-key": "your-api-key-here",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(\`HTTP error! status: \${response.status}\`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+}
+
+fetchStationsByType("aws");`,
+          },
+          {
+            language: "curl",
+            code: `curl -X GET "https://app.kloudtechsea.com/api/v1/get/stations/aws" \\
+     -H "x-kloudtrack-key: your-api-key-here"`,
+          },
+        ]}
+        responses={[
+          {
+            status: "200 OK",
+            description:
+              "A JSON array containing station objects matching the requested type.",
+            code: `[
+  {
+    "id": "bKBoGzL0Yl0pwdm3",
+    "name": "Demo Station ( Maria )",
+    "type": "AWS",
+    "barangay": "San Jose",
+    "municipality": "Balanga",
+    "province": "Bataan",
+    "region": "Region III",
+    "image": "https://client.kloudtechsea.com/assets/img/demo.jpg",
+    "latitude": 14.67238327039792,
+    "longitude": 120.5297135541752,
+    "data": {
+      "recordedAt": "2025-02-21T08:34:26.000Z",
+      "temperature": 0,
+      "humidity": 0
+    }
+  }
+]`,
+          },
+          {
+            status: "401 Unauthorized",
+            description: "Invalid or missing API key.",
+          },
+          {
+            status: "404 Not Found",
+            description: "No stations found for the user.",
+          },
+        ]}
+      />
     </Card>
   );
 };

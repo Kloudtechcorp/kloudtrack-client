@@ -45,7 +45,7 @@ const ApiDocument = () => {
   fetch("https://app.kloudtechsea.com/api/v1/get/stations", {
     method: "GET",
     headers: {
-      "kloudtrack-api-key": your-api-key-here, // Include the API key in the headers
+      "x-kloudtrack-key": your-api-key-here, // Include the API key in the headers
     },
   })
     .then((response) => response.json())
@@ -68,7 +68,7 @@ fetchStations();
               </div>
               <pre className="bg-gray-200 dark:bg-[#545454] p-2 rounded text-xs md:text-sm overflow-auto whitespace-pre-wrap">
                 {`curl -X GET "https://app.kloudtechsea.com/api/v1/get/stations" 
-     -H "kloudtrack-api-key: your-api-key-here" // Include the API key in the headers
+     -H "x-kloudtrack-key: your-api-key-here" // Include the API key in the headers
 `}
               </pre>
             </div>
@@ -189,7 +189,7 @@ fetchStations();
   fetch("https://app.kloudtechsea.com/api/v1/get/station/:id", {
     method: "GET",
     headers: {
-      "kloudtrack-api-key": your-api-key-here, // Include the API key in the headers
+      "x-kloudtrack-key": your-api-key-here, // Include the API key in the headers
     },
   })
     .then((response) => response.json())
@@ -212,7 +212,7 @@ fetchStations();
               </div>
               <pre className="bg-gray-200 dark:bg-[#545454] p-2 rounded text-sm overflow-auto whitespace-pre-wrap">
                 {`curl -X GET "https://app.kloudtechsea.com/api/v1/get/station/:name" 
-     -H "kloudtrack-api-key: your-api-key-here" // Include the API key in the headers
+     -H "x-kloudtrack-key: your-api-key-here" // Include the API key in the headers
 `}
               </pre>
             </div>

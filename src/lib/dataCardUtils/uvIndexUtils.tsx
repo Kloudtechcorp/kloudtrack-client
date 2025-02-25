@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useRef, useState } from "react";
+import { useEffect, useCallback, useRef, useState } from "react";
 import {
   Tooltip,
   TooltipContent,
@@ -9,85 +9,100 @@ import AlertIcon from "@/components/dynamic/DynamicIcons/AlertIcon";
 import { triggerWarningToast } from "./triggerWarning";
 import { useNavigate } from "react-router-dom";
 
+type UVCategory = {
+  range: [number, number];
+  message: string;
+  color: string;
+  requiresWarning: boolean;
+};
+
+const UV_CATEGORIES: UVCategory[] = [
+  {
+    range: [0, 2.99],
+    message: "Low danger from the sun's UV rays for the average person.",
+    color: "text-primary",
+    requiresWarning: false,
+  },
+  {
+    range: [3, 5.99],
+    message: "Moderate risk of harm from unprotected sun exposure.",
+    color: "text-[#fbfc04]",
+    requiresWarning: false,
+  },
+  {
+    range: [6, 7.99],
+    message:
+      "High risk of harm from unprotected sun exposure. Protection against skin and eye damage is needed!",
+    color: "text-[#fa6801]",
+    requiresWarning: false,
+  },
+  {
+    range: [8, 10.99],
+    message:
+      "Very high risk of harm from unprotected sun exposure. Take extra precautions because unprotected skin and eyes will be damaged and can burn quickly!",
+    color: "text-[#fe0000]",
+    requiresWarning: true,
+  },
+  {
+    range: [11, Infinity],
+    message: "Extreme Danger: Heatstroke is imminent!",
+    color: "text-[#83007e]",
+    requiresWarning: true,
+  },
+];
+
+export interface UVIndexProps {
+  uvIndexVal: number;
+  stationName: string;
+  dashboardType: string;
+  id: string;
+}
+
 export function UVIndex({
   uvIndexVal,
   stationName,
   dashboardType,
   id,
-}: {
-  uvIndexVal: number;
-  stationName: string;
-  dashboardType: string;
-  id: string;
-}) {
+}: UVIndexProps) {
   const navigate = useNavigate();
-
-  const [hasWarning, setHasWarning] = useState<boolean>(false);
+  const [hasWarning, setHasWarning] = useState(false);
   const hasShownToastRef = useRef(false);
+  const [warning, setWarning] = useState<string>("");
+  const [colorClass, setColorClass] = useState<string>("");
 
-  const warning = useRef<string | null>("");
-  const colorClass = useRef<string>("");
-
-  const handleSetWarning = async (warningMessage: string) => {
-    warning.current = warningMessage;
-  };
   const determineWarning = useCallback(() => {
-    if (uvIndexVal < 3) {
-      handleSetWarning(
-        "Low danger from the sun's UV rays for the average person."
-      );
-      hasShownToastRef.current = false;
-      colorClass.current = "text-primary";
+    // Find the matching category for the current UV index
+    const category = UV_CATEGORIES.find(
+      (cat) => uvIndexVal >= cat.range[0] && uvIndexVal <= cat.range[1]
+    );
 
-      setHasWarning(false);
-    } else if (uvIndexVal >= 3 && uvIndexVal <= 5) {
-      colorClass.current = "text-[#fbfc04]";
-      handleSetWarning("Moderate risk of harm from unprotected sun exposure.");
-      hasShownToastRef.current = false;
-      setHasWarning(false);
-    } else if (uvIndexVal >= 6 && uvIndexVal <= 7) {
-      colorClass.current = "text-[#fa6801]";
-      handleSetWarning(
-        "High risk of harm from unprotected sun exposure. Protection against skin and eye damage is needed!"
-      );
-      hasShownToastRef.current = false;
-      setHasWarning(false);
-    } else if (uvIndexVal >= 8 && uvIndexVal <= 10) {
-      colorClass.current = "text-[#fe0000]";
-      handleSetWarning(
-        "Very high risk of harm from unprotected sun exposure. Take extra precautions because unprotected skin and eyes will be damaged and can burn quickly!"
-      );
-      if (!hasShownToastRef.current) {
-        triggerWarningToast({
-          title: ` Very High UV Index detected at ${stationName}!`,
-          message: `${warning.current}`,
-          id: id,
-          dashboardType: dashboardType,
-          colorClass: colorClass.current,
-          navigate,
-        });
-        hasShownToastRef.current = true;
-        setHasWarning(true);
-      }
-    } else if (uvIndexVal > 10) {
-      colorClass.current = "text-[#83007e]";
+    if (!category) return;
 
-      console.log("color class in uv is ", colorClass);
-      handleSetWarning("Extreme Danger: Heatstroke is imminent!");
-      if (!hasShownToastRef.current) {
-        triggerWarningToast({
-          title: `Extreme UV detected at ${stationName}!`,
-          message: `${warning.current}`,
-          id: id,
-          dashboardType: dashboardType,
-          colorClass: colorClass.current,
-          navigate,
-        });
-        hasShownToastRef.current = true;
-        setHasWarning(true);
-      }
+    setWarning(category.message);
+    setColorClass(category.color);
+
+    if (category.requiresWarning && !hasShownToastRef.current) {
+      const title =
+        uvIndexVal > 10
+          ? `Extreme UV detected at ${stationName}!`
+          : `Very High UV Index detected at ${stationName}!`;
+
+      triggerWarningToast({
+        title,
+        message: category.message,
+        id,
+        dashboardType,
+        colorClass: category.color,
+        navigate,
+      });
+
+      hasShownToastRef.current = true;
+      setHasWarning(true);
+    } else if (!category.requiresWarning) {
+      hasShownToastRef.current = false;
+      setHasWarning(false);
     }
-  }, [uvIndexVal, stationName, dashboardType, navigate]);
+  }, [uvIndexVal, stationName, dashboardType, id, navigate]);
 
   useEffect(() => {
     determineWarning();
@@ -99,21 +114,19 @@ export function UVIndex({
         <span className="weatherDataTitle">UV Index</span>
       </div>
 
-      <div className={`text-xl flex h-full items-center justify-center `}>
+      <div className="text-xl flex h-full items-center justify-center">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
               <div className="font-medium flex items-center">
-                <span className="weatherDataText">
-                  {Math.round(uvIndexVal * 100) / 100}
+                <span className={`weatherDataText ${colorClass}`}>
+                  {(Math.round(uvIndexVal * 100) / 100).toFixed(1)}
                 </span>
-                {hasWarning && (
-                  <AlertIcon className={`${colorClass.current} w-1/4`} />
-                )}
+                {hasWarning && <AlertIcon className={`${colorClass} w-1/4`} />}
               </div>
             </TooltipTrigger>
             <TooltipContent side="top" align="center">
-              <p>{warning.current || "No warning available"}</p>
+              <p>{warning || "No warning available"}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

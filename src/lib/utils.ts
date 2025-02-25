@@ -328,3 +328,27 @@ export const getFormattedDataset = (data: GraphData[]): GraphData[] => {
     };
   });
 };
+
+export const WARNING_THRESHOLDS = {
+  temperature: { moderate: 32, high: 35, extreme: 38 },
+  heatIndex: { moderate: 32, high: 41, extreme: 54 },
+  windSpeed: { moderate: 20, high: 38, extreme: 62 },
+  uvIndex: { moderate: 3, high: 6, extreme: 8 },
+  precipitation: { moderate: 7.5, high: 15, extreme: 30 },
+};
+
+export const getWarningInfo = (
+  type: keyof typeof WARNING_THRESHOLDS,
+  value: number
+): { level: "none" | "moderate" | "high" | "extreme"; color: string } => {
+  if (!value || value <= 0) return { level: "none", color: "transparent" };
+
+  const thresholds = WARNING_THRESHOLDS[type];
+  if (value >= thresholds.extreme)
+    return { level: "extreme", color: "rgb(220, 38, 38)" };
+  if (value >= thresholds.high)
+    return { level: "high", color: "rgb(234, 88, 12)" };
+  if (value >= thresholds.moderate)
+    return { level: "moderate", color: "rgb(234, 179, 8)" };
+  return { level: "none", color: "transparent" };
+};

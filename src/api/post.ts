@@ -15,8 +15,6 @@ import {
   riverLevelDataTypes,
   weatherDataTypes,
 } from "@/types/queryTypes";
-import { bugSchema } from "@/types/validation";
-import { z } from "zod";
 
 const method: string = "POST";
 const server = import.meta.env.VITE_SERVER;

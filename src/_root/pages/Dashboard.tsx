@@ -171,7 +171,6 @@ const Dashboard = () => {
                                 <TableHead className="w-[12rem]">
                                   Name
                                 </TableHead>
-                                <TableHead>Location</TableHead>
                                 <TableHead>Date Recorded</TableHead>
                                 <TableHead>Temperature</TableHead>
                                 <TableHead>Humidity</TableHead>
@@ -182,6 +181,7 @@ const Dashboard = () => {
                                 <TableHead>UV Index</TableHead>
                                 <TableHead>Light</TableHead>
                                 <TableHead>Precipitation</TableHead>
+                                <TableHead>Hourly Precipitation</TableHead>
                               </TableRow>
                             </TableHeader>
                             <TableBody>

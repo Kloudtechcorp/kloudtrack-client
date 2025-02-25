@@ -10,7 +10,6 @@ import {
   weatherUnit,
 } from "@/lib/utils";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { AlertTriangle } from "lucide-react";
 
 interface AwsCardProps {
   id: string;
@@ -32,9 +31,9 @@ const AwsTable: React.FC<AwsCardProps> = ({ id }) => {
 
       if (data.temperature >= WARNING_THRESHOLDS.temperature.high) {
         toast.warning(
-          `High Temperature Alert: ${data.temperature}${weatherUnit(
-            "temperature"
-          )}`,
+          `High Temperature Alert at ${stationData.station.name}: ${
+            data.temperature
+          }${weatherUnit("temperature")}`,
           {
             duration: 10000,
           }
@@ -43,7 +42,9 @@ const AwsTable: React.FC<AwsCardProps> = ({ id }) => {
 
       if (data.heatIndex >= WARNING_THRESHOLDS.heatIndex.high) {
         toast.warning(
-          `Dangerous Heat Index: ${data.heatIndex}${weatherUnit("heatIndex")}`,
+          `Dangerous Heat Index at ${stationData.station.name}: ${
+            data.heatIndex
+          }${weatherUnit("heatIndex")}`,
           {
             duration: 10000,
           }
@@ -52,9 +53,9 @@ const AwsTable: React.FC<AwsCardProps> = ({ id }) => {
 
       if (data.precipitation >= WARNING_THRESHOLDS.precipitation.high) {
         toast.warning(
-          `Heavy Rainfall Warning: ${data.precipitation}${weatherUnit(
-            "precipitation"
-          )}`,
+          `Heavy Rainfall Warning at ${stationData.station.name}: ${
+            data.precipitation
+          }${weatherUnit("precipitation")}`,
           {
             duration: 10000,
           }
@@ -94,6 +95,10 @@ const AwsTable: React.FC<AwsCardProps> = ({ id }) => {
       "precipitation",
       stationData.data.precipitation
     );
+    const hourRainWarning = getWarningInfo(
+      "precipitation",
+      stationData.pastHourPrecip
+    );
 
     return (
       <TableRow
@@ -102,21 +107,20 @@ const AwsTable: React.FC<AwsCardProps> = ({ id }) => {
       >
         <TableCell>{stationData.station.name}</TableCell>
         <TableCell>
-          {formatDateString(stationData.data.recordedAt, "long")}
+          {formatDateString(stationData.data.recordedAt, "short")}
         </TableCell>
         <TableCell>
           {stationData.data.temperature > 0 ? (
             <div className="flex items-center gap-1">
-              <span>{`${stationData.data.temperature} ${weatherUnit(
+              <span
+                className={`
+  ${tempWarning.color === "red" ? "text-red-500 font-bold" : ""}
+  ${tempWarning.color === "orange" ? "text-orange-500 font-bold" : ""}
+  ${tempWarning.color === "yellow" ? "text-yellow-500 font-bold" : ""}
+`}
+              >{`${stationData.data.temperature} ${weatherUnit(
                 "temperature"
               )}`}</span>
-              {tempWarning.level !== "none" && (
-                <AlertTriangle
-                  size={16}
-                  color={tempWarning.color}
-                  className="animate-pulse"
-                />
-              )}
             </div>
           ) : (
             "--"
@@ -135,16 +139,15 @@ const AwsTable: React.FC<AwsCardProps> = ({ id }) => {
         <TableCell>
           {stationData.data.heatIndex > 0 ? (
             <div className="flex items-center gap-1">
-              <span>{`${stationData.data.heatIndex} ${weatherUnit(
+              <span
+                className={`
+  ${heatIndexWarning.color === "red" ? "text-red-500 font-bold" : ""}
+  ${heatIndexWarning.color === "orange" ? "text-orange-500 font-bold" : ""}
+  ${heatIndexWarning.color === "yellow" ? "text-yellow-500 font-bold" : ""}
+`}
+              >{`${stationData.data.heatIndex} ${weatherUnit(
                 "heatIndex"
               )}`}</span>
-              {heatIndexWarning.level !== "none" && (
-                <AlertTriangle
-                  size={16}
-                  color={heatIndexWarning.color}
-                  className="animate-pulse"
-                />
-              )}
             </div>
           ) : (
             "--"
@@ -154,16 +157,15 @@ const AwsTable: React.FC<AwsCardProps> = ({ id }) => {
           {stationData.data.windSpeed >= 0 &&
           stationData.data.windSpeed !== null ? (
             <div className="flex items-center gap-1">
-              <span>{`${stationData.data.windSpeed} ${weatherUnit(
+              <span
+                className={`
+  ${windWarning.color === "red" ? "text-red-500 font-bold" : ""}
+  ${windWarning.color === "orange" ? "text-orange-500 font-bold" : ""}
+  ${windWarning.color === "yellow" ? "text-yellow-500 font-bold" : ""}
+`}
+              >{`${stationData.data.windSpeed} ${weatherUnit(
                 "windSpeed"
               )}`}</span>
-              {windWarning.level !== "none" && (
-                <AlertTriangle
-                  size={16}
-                  color={windWarning.color}
-                  className="animate-pulse"
-                />
-              )}
             </div>
           ) : (
             "--"
@@ -176,14 +178,15 @@ const AwsTable: React.FC<AwsCardProps> = ({ id }) => {
           {stationData.data.uvIndex >= 0 &&
           stationData.data.uvIndex !== null ? (
             <div className="flex items-center gap-1">
-              <span>{stationData.data.uvIndex}</span>
-              {uvWarning.level !== "none" && (
-                <AlertTriangle
-                  size={16}
-                  color={uvWarning.color}
-                  className="animate-pulse"
-                />
-              )}
+              <span
+                className={`
+  ${uvWarning.color === "red" ? "text-red-500 font-bold" : ""}
+  ${uvWarning.color === "orange" ? "text-orange-500 font-bold" : ""}
+  ${uvWarning.color === "yellow" ? "text-yellow-500 font-bold" : ""}
+`}
+              >
+                {stationData.data.uvIndex}
+              </span>
             </div>
           ) : (
             "--"
@@ -199,16 +202,15 @@ const AwsTable: React.FC<AwsCardProps> = ({ id }) => {
             "--"
           ) : (
             <div className="flex items-center gap-1">
-              <span>{`${stationData.data.precipitation} ${weatherUnit(
+              <span
+                className={`
+  ${rainWarning.color === "red" ? "text-red-500 font-bold" : ""}
+  ${rainWarning.color === "orange" ? "text-orange-500 font-bold" : ""}
+  ${rainWarning.color === "yellow" ? "text-yellow-500 font-bold" : ""}
+`}
+              >{`${stationData.data.precipitation} ${weatherUnit(
                 "precipitation"
               )}`}</span>
-              {rainWarning.level !== "none" && (
-                <AlertTriangle
-                  size={16}
-                  color={rainWarning.color}
-                  className="animate-pulse"
-                />
-              )}
             </div>
           )}
         </TableCell>
@@ -217,16 +219,15 @@ const AwsTable: React.FC<AwsCardProps> = ({ id }) => {
             "--"
           ) : (
             <div className="flex items-center gap-1">
-              <span>{`${stationData.pastHourPrecip} ${weatherUnit(
+              <span
+                className={`
+  ${hourRainWarning.color === "red" ? "text-red-500 font-bold" : ""}
+  ${hourRainWarning.color === "orange" ? "text-orange-500 font-bold" : ""}
+  ${hourRainWarning.color === "yellow" ? "text-yellow-500 font-bold" : ""}
+`}
+              >{`${stationData.pastHourPrecip} ${weatherUnit(
                 "precipitation"
               )}`}</span>
-              {rainWarning.level !== "none" && (
-                <AlertTriangle
-                  size={16}
-                  color={rainWarning.color}
-                  className="animate-pulse"
-                />
-              )}
             </div>
           )}
         </TableCell>

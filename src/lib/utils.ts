@@ -340,15 +340,15 @@ export const WARNING_THRESHOLDS = {
 export const getWarningInfo = (
   type: keyof typeof WARNING_THRESHOLDS,
   value: number
-): { level: "none" | "moderate" | "high" | "extreme"; color: string } => {
+): {
+  level: "none" | "moderate" | "high" | "extreme";
+  color: "red" | "orange" | "yellow" | "transparent";
+} => {
   if (!value || value <= 0) return { level: "none", color: "transparent" };
-
   const thresholds = WARNING_THRESHOLDS[type];
-  if (value >= thresholds.extreme)
-    return { level: "extreme", color: "rgb(220, 38, 38)" };
-  if (value >= thresholds.high)
-    return { level: "high", color: "rgb(234, 88, 12)" };
+  if (value >= thresholds.extreme) return { level: "extreme", color: "red" };
+  if (value >= thresholds.high) return { level: "high", color: "orange" };
   if (value >= thresholds.moderate)
-    return { level: "moderate", color: "rgb(234, 179, 8)" };
+    return { level: "moderate", color: "yellow" };
   return { level: "none", color: "transparent" };
 };

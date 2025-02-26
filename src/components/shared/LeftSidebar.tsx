@@ -56,6 +56,13 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
     },
 
     {
+      imgUrl: "/assets/icons/reference.svg",
+      route: "/references",
+      label: "References",
+      tooltip: "References",
+    },
+
+    {
       imgUrl: "/assets/icons/settings.svg",
       route: "/settings",
       label: "Settings",

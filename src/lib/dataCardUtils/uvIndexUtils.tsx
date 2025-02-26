@@ -120,7 +120,7 @@ export function UVIndex({
             <TooltipTrigger asChild>
               <div className="font-medium flex items-center">
                 <span className={`weatherDataText ${colorClass}`}>
-                  {(Math.round(uvIndexVal * 100) / 100).toFixed(1)}
+                  {(Math.round(uvIndexVal * 100) / 100).toFixed(0)}
                 </span>
                 {hasWarning && <AlertIcon className={`${colorClass} w-1/4`} />}
               </div>

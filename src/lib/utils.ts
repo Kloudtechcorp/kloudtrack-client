@@ -330,25 +330,27 @@ export const getFormattedDataset = (data: GraphData[]): GraphData[] => {
 };
 
 export const WARNING_THRESHOLDS = {
-  temperature: { moderate: 32, high: 35, extreme: 38 },
-  heatIndex: { moderate: 32, high: 41, extreme: 54 },
-  windSpeed: { moderate: 20, high: 38, extreme: 62 },
-  uvIndex: { moderate: 3, high: 6, extreme: 8 },
-  precipitation: { moderate: 7.5, high: 15, extreme: 30 },
+  heatIndex: { moderate: 27, high: 33, "very high": 42, extreme: 54 },
+  windSpeed: { moderate: 20, high: 30, "very high": 40, extreme: 88 },
+  uvIndex: { moderate: 3, high: 6, "very high": 12, extreme: 8 },
+  precipitation: { moderate: 2.5, high: 7.5, "very high": 15, extreme: 30 },
 };
 
 export const getWarningInfo = (
   type: keyof typeof WARNING_THRESHOLDS,
   value: number
 ): {
-  level: "none" | "moderate" | "high" | "extreme";
-  color: "red" | "orange" | "yellow" | "transparent";
+  level: "none" | "moderate" | "high" | "very high" | "extreme";
+  color: "red" | "orange" | "yellow" | "transparent" | "amber";
 } => {
   if (!value || value <= 0) return { level: "none", color: "transparent" };
   const thresholds = WARNING_THRESHOLDS[type];
   if (value >= thresholds.extreme) return { level: "extreme", color: "red" };
-  if (value >= thresholds.high) return { level: "high", color: "orange" };
+  if (value >= thresholds["very high"])
+    return { level: "very high", color: "orange" };
+  if (value >= thresholds.high) return { level: "high", color: "amber" };
   if (value >= thresholds.moderate)
     return { level: "moderate", color: "yellow" };
+
   return { level: "none", color: "transparent" };
 };

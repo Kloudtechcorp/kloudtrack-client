@@ -33,6 +33,7 @@ import AwsTable from "@/components/dynamic/DashboardCards/Tabular/AWSTable";
 import ArgTable from "@/components/dynamic/DashboardCards/Tabular/ARGTable";
 import RlmsTable from "@/components/dynamic/DashboardCards/Tabular/RLMSTable";
 import ClmsTable from "@/components/dynamic/DashboardCards/Tabular/CLMSTable";
+import { Card } from "@/components/ui/card";
 
 const Dashboard = () => {
   const { user, isLoading } = useUserContext();
@@ -268,6 +269,29 @@ const Dashboard = () => {
                             </TableBody>
                           </Table>
                         )}
+                        <Card className="absolute bottom-10 right-5 z-50 px-3 py-2 w-44">
+                          <div className="flex flex-col gap-2 ">
+                            <span className="font-bold text-base">
+                              Danger Level
+                            </span>
+                            <div className="flex items-center gap-3">
+                              <span className="size-4 bg-yellow-500 rounded-full "></span>
+                              <span className="text-sm">Moderate</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <span className="size-4 bg-amber-500 rounded-full "></span>
+                              <span className="text-sm">High</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <span className="size-4 bg-orange-500 rounded-full "></span>
+                              <span className="text-sm">Very High</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <span className="size-4 bg-red-500 rounded-full "></span>
+                              <span className="text-sm">Extreme</span>
+                            </div>
+                          </div>
+                        </Card>
                       </div>
                     ) : (
                       filteredStations[category.type].map((station) => (

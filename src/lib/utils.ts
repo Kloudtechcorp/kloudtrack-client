@@ -74,7 +74,10 @@ export const returnActive = (active: boolean) => {
   return "Active";
 };
 
-export const getWindDirectionLabel = (value: number) => {
+export const getWindDirectionLabel = (value: number | null) => {
+  if (value === null) {
+    return "--";
+  }
   if (value >= 337.6 || value <= 22.5) {
     return `${Math.round(value * 100) / 100} °N`;
   } else if (value >= 22.6 && value <= 67.5) {
@@ -331,8 +334,8 @@ export const getFormattedDataset = (data: GraphData[]): GraphData[] => {
 
 export const WARNING_THRESHOLDS = {
   heatIndex: { moderate: 27, high: 33, "very high": 42, extreme: 54 },
-  windSpeed: { moderate: 20, high: 30, "very high": 40, extreme: 88 },
-  uvIndex: { moderate: 3, high: 6, "very high": 12, extreme: 8 },
+  windSpeed: { moderate: 39, high: 62, "very high": 89, extreme: 118 },
+  uvIndex: { moderate: 3, high: 6, "very high": 8, extreme: 11 },
   precipitation: { moderate: 2.5, high: 7.5, "very high": 15, extreme: 30 },
 };
 

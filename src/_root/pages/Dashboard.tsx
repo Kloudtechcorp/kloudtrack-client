@@ -33,7 +33,7 @@ import AwsTable from "@/components/dynamic/DashboardCards/Tabular/AWSTable";
 import ArgTable from "@/components/dynamic/DashboardCards/Tabular/ARGTable";
 import RlmsTable from "@/components/dynamic/DashboardCards/Tabular/RLMSTable";
 import ClmsTable from "@/components/dynamic/DashboardCards/Tabular/CLMSTable";
-import { Card } from "@/components/ui/card";
+import { WeatherDangerLegends } from "@/components/shared/MultipleLegends";
 
 const Dashboard = () => {
   const { user, isLoading } = useUserContext();
@@ -102,12 +102,13 @@ const Dashboard = () => {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <button
+                      {/* Fixed: Changed from button to div to avoid nested button issue */}
+                      <div
                         onClick={toggleFullscreen}
-                        className="rounded-lg px-2 flex p-2 flex-end "
+                        className="rounded-lg px-2 flex p-2 flex-end cursor-pointer"
                       >
                         <Fullscreen />
-                      </button>
+                      </div>
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>Fullscreen</p>
@@ -163,56 +164,90 @@ const Dashboard = () => {
                     {view === "table" ? (
                       <div>
                         {category.type === "AWS" && (
-                          <Table className="border">
-                            <TableCaption>
-                              A list of your automated weather stations.
-                            </TableCaption>
-                            <TableHeader className="bg-secondary">
-                              <TableRow className="h-14">
-                                <TableHead className="w-[12rem]">
-                                  Name
-                                </TableHead>
-                                <TableHead>Date Recorded</TableHead>
-                                <TableHead>Temperature</TableHead>
-                                <TableHead>Humidity</TableHead>
-                                <TableHead>Pressure</TableHead>
-                                <TableHead>Heat Index</TableHead>
-                                <TableHead>Wind Speed</TableHead>
-                                <TableHead>Wind Direction</TableHead>
-                                <TableHead>UV Index</TableHead>
-                                <TableHead>Light</TableHead>
-                                <TableHead>Precipitation</TableHead>
-                                <TableHead>Hourly Precipitation</TableHead>
-                              </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                              {filteredStations[category.type].map(
-                                (station) => (
-                                  <AwsTable id={station.id} />
-                                )
-                              )}
-                            </TableBody>
-                          </Table>
+                          <>
+                            <Table className="rounded-sm">
+                              <TableCaption>
+                                A list of your automated weather stations.
+                              </TableCaption>
+                              <TableHeader className="bgColor ">
+                                <TableRow className="h-14">
+                                  <TableHead className="w-[12rem] border border-stone-200 dark:border-stone-700">
+                                    Name
+                                  </TableHead>
+                                  <TableHead className="border border-stone-200 dark:border-stone-700">
+                                    Date Recorded
+                                  </TableHead>
+                                  <TableHead className="border border-stone-200 dark:border-stone-700">
+                                    Temperature
+                                  </TableHead>
+                                  <TableHead className="border border-stone-200 dark:border-stone-700">
+                                    Humidity
+                                  </TableHead>
+                                  <TableHead className="border border-stone-200 dark:border-stone-700">
+                                    Pressure
+                                  </TableHead>
+                                  <TableHead className="border border-stone-200 dark:border-stone-700">
+                                    Heat Index
+                                  </TableHead>
+                                  <TableHead className="border border-stone-200 dark:border-stone-700">
+                                    Wind Speed
+                                  </TableHead>
+                                  <TableHead className="border border-stone-200 dark:border-stone-700">
+                                    Wind Direction
+                                  </TableHead>
+                                  <TableHead className="border border-stone-200 dark:border-stone-700">
+                                    UV Index
+                                  </TableHead>
+                                  <TableHead className="border border-stone-200 dark:border-stone-700">
+                                    Light
+                                  </TableHead>
+                                  <TableHead className="border border-stone-200 dark:border-stone-700">
+                                    Precipitation
+                                  </TableHead>
+                                  <TableHead className="border border-stone-200 dark:border-stone-700">
+                                    Hourly Precipitation
+                                  </TableHead>
+                                </TableRow>
+                              </TableHeader>
+                              <TableBody>
+                                {filteredStations[category.type].map(
+                                  (station) => (
+                                    <AwsTable
+                                      key={station.id}
+                                      id={station.id}
+                                    />
+                                  )
+                                )}
+                              </TableBody>
+                            </Table>
+                            <WeatherDangerLegends />
+                          </>
                         )}
                         {category.type === "ARG" && (
                           <Table className="border">
                             <TableCaption>
                               A list of your automated rain gauges.
                             </TableCaption>
-                            <TableHeader className="bg-secondary">
+                            <TableHeader className="bgColor ">
                               <TableRow className="h-14">
-                                <TableHead className="w-[12rem]">
+                                <TableHead className="w-[12rem] border border-stone-200 dark:border-stone-700">
                                   Name
                                 </TableHead>
-                                <TableHead>Location</TableHead>
-                                <TableHead>Date Recorded</TableHead>
-                                <TableHead>Precipitation</TableHead>
+                                <TableHead className="border border-stone-200 dark:border-stone-700">
+                                  Location
+                                </TableHead>
+                                <TableHead className="border border-stone-200 dark:border-stone-700">
+                                  Date Recorded
+                                </TableHead>
+                                <TableHead className="border border-stone-200 dark:border-stone-700">
+                                  Precipitation
+                                </TableHead>
                               </TableRow>
                             </TableHeader>
                             <TableBody>
                               {filteredStations[category.type].map(
                                 (station) => (
-                                  <ArgTable id={station.id} />
+                                  <ArgTable key={station.id} id={station.id} />
                                 )
                               )}
                             </TableBody>
@@ -223,20 +258,26 @@ const Dashboard = () => {
                             <TableCaption>
                               A list of your river level monitoring systems.
                             </TableCaption>
-                            <TableHeader className="bg-secondary">
+                            <TableHeader className="bgColor ">
                               <TableRow className="h-14">
-                                <TableHead className="w-[12rem]">
+                                <TableHead className="w-[12rem] border border-stone-200 dark:border-stone-700">
                                   Name
                                 </TableHead>
-                                <TableHead>Location</TableHead>
-                                <TableHead>Date Recorded</TableHead>
-                                <TableHead>Distance</TableHead>
+                                <TableHead className="border border-stone-200 dark:border-stone-700">
+                                  Location
+                                </TableHead>
+                                <TableHead className="border border-stone-200 dark:border-stone-700">
+                                  Date Recorded
+                                </TableHead>
+                                <TableHead className="border border-stone-200 dark:border-stone-700">
+                                  Distance
+                                </TableHead>
                               </TableRow>
                             </TableHeader>
                             <TableBody>
                               {filteredStations[category.type].map(
                                 (station) => (
-                                  <RlmsTable id={station.id} />
+                                  <RlmsTable key={station.id} id={station.id} />
                                 )
                               )}
                             </TableBody>
@@ -247,51 +288,40 @@ const Dashboard = () => {
                             <TableCaption>
                               A list of your coastal level monitoring systems.
                             </TableCaption>
-                            <TableHeader className="bg-secondary">
+                            <TableHeader className="bgColor ">
                               <TableRow className="h-14">
-                                <TableHead className="w-[12rem]">
+                                <TableHead className="w-[12rem] border border-stone-200 dark:border-stone-700">
                                   Name
                                 </TableHead>
-                                <TableHead>Location</TableHead>
-                                <TableHead>Date Recorded</TableHead>
-                                <TableHead>Temperature</TableHead>
-                                <TableHead>Humidity</TableHead>
-                                <TableHead>Pressure</TableHead>
-                                <TableHead>Distance</TableHead>
+                                <TableHead className="border border-stone-200 dark:border-stone-700">
+                                  Location
+                                </TableHead>
+                                <TableHead className="border border-stone-200 dark:border-stone-700">
+                                  Date Recorded
+                                </TableHead>
+                                <TableHead className="border border-stone-200 dark:border-stone-700">
+                                  Temperature
+                                </TableHead>
+                                <TableHead className="border border-stone-200 dark:border-stone-700">
+                                  Humidity
+                                </TableHead>
+                                <TableHead className="border border-stone-200 dark:border-stone-700">
+                                  Pressure
+                                </TableHead>
+                                <TableHead className="border border-stone-200 dark:border-stone-700">
+                                  Distance
+                                </TableHead>
                               </TableRow>
                             </TableHeader>
                             <TableBody>
                               {filteredStations[category.type].map(
                                 (station) => (
-                                  <ClmsTable id={station.id} />
+                                  <ClmsTable key={station.id} id={station.id} />
                                 )
                               )}
                             </TableBody>
                           </Table>
                         )}
-                        <Card className="absolute bottom-10 right-5 z-50 px-3 py-2 w-44">
-                          <div className="flex flex-col gap-2 ">
-                            <span className="font-bold text-base">
-                              Danger Level
-                            </span>
-                            <div className="flex items-center gap-3">
-                              <span className="size-4 bg-yellow-500 rounded-full "></span>
-                              <span className="text-sm">Moderate</span>
-                            </div>
-                            <div className="flex items-center gap-3">
-                              <span className="size-4 bg-amber-500 rounded-full "></span>
-                              <span className="text-sm">High</span>
-                            </div>
-                            <div className="flex items-center gap-3">
-                              <span className="size-4 bg-orange-500 rounded-full "></span>
-                              <span className="text-sm">Very High</span>
-                            </div>
-                            <div className="flex items-center gap-3">
-                              <span className="size-4 bg-red-500 rounded-full "></span>
-                              <span className="text-sm">Extreme</span>
-                            </div>
-                          </div>
-                        </Card>
                       </div>
                     ) : (
                       filteredStations[category.type].map((station) => (

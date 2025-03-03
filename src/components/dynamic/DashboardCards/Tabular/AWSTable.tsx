@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useGetAwsData2 } from "@/hooks/react-query/queries";
@@ -16,127 +16,309 @@ interface AwsCardProps {
   id: string;
 }
 
+// interface WarningState {
+//   severity: string;
+//   value: number;
+//   lastShownAt: number;
+// }
+
+// interface WarningStates {
+//   heatIndex: WarningState | null;
+//   windSpeed: WarningState | null;
+//   uvIndex: WarningState | null;
+//   precipitation: WarningState | null;
+// }
+
+// const LOCAL_STORAGE_KEY = "weather-warnings";
+// const WARNING_COOLDOWN = 60 * 60 * 1000; // 1 hour in milliseconds
+
 const AwsTable: React.FC<AwsCardProps> = ({ id }) => {
   const navigate = useNavigate();
   const { data: stationData, isLoading, isError } = useGetAwsData2(id);
+  // const isFirstRender = useRef(true);
+  // const warningStates = useRef<WarningStates>({
+  //   heatIndex: null,
+  //   windSpeed: null,
+  //   uvIndex: null,
+  //   precipitation: null,
+  // });
+
+  // useEffect(() => {
+  //   try {
+  //     const savedWarnings = localStorage.getItem(LOCAL_STORAGE_KEY);
+  //     if (savedWarnings) {
+  //       warningStates.current = JSON.parse(savedWarnings);
+  //     }
+  //   } catch (error) {
+  //     console.error("Failed to load warning states:", error);
+  //     localStorage.removeItem(LOCAL_STORAGE_KEY);
+  //   }
+
+  //   return () => {
+  //     toast.dismiss();
+  //   };
+  // }, []);
+
+  // const shouldShowWarning = (
+  //   type: keyof WarningStates,
+  //   severity: string,
+  //   value: number
+  // ): boolean => {
+  //   const now = Date.now();
+  //   const currentState = warningStates.current[type];
+
+  //   if (!currentState) {
+  //     return true;
+  //   }
+
+  //   if (currentState.severity !== severity) {
+  //     return true;
+  //   }
+
+  //   const valueChanged =
+  //     Math.abs((value - currentState.value) / currentState.value) >= 0.05;
+  //   if (valueChanged) {
+  //     return true;
+  //   }
+
+  //   if (now - currentState.lastShownAt >= WARNING_COOLDOWN) {
+  //     return true;
+  //   }
+
+  //   return false;
+  // };
+
+  // const updateWarningState = (
+  //   type: keyof WarningStates,
+  //   severity: string,
+  //   value: number
+  // ) => {
+  //   warningStates.current[type] = {
+  //     severity,
+  //     value,
+  //     lastShownAt: Date.now(),
+  //   };
+
+  //   try {
+  //     localStorage.setItem(
+  //       LOCAL_STORAGE_KEY,
+  //       JSON.stringify(warningStates.current)
+  //     );
+  //   } catch (error) {
+  //     console.error("Failed to save warning states:", error);
+  //   }
+  // };
 
   useEffect(() => {
-    return () => {
-      toast.dismiss();
-    };
-  }, []);
+    if (!stationData?.data) return;
 
-  useEffect(() => {
-    if (stationData?.data) {
-      const { data } = stationData;
-      const heatIndexWarning = getWarningInfo(
-        "heatIndex",
-        stationData.data.heatIndex
+    const { data } = stationData;
+    const heatIndexWarning = getWarningInfo("heatIndex", data.heatIndex);
+    const windWarning = getWarningInfo("windSpeed", data.windSpeed);
+    const uvWarning = getWarningInfo("uvIndex", data.uvIndex);
+    const hourRainWarning = getWarningInfo(
+      "precipitation",
+      stationData.pastHourPrecip
+    );
+
+    // isFirstRender.current = false;
+
+    // Check and show wind warning if needed
+    if (data.windSpeed >= WARNING_THRESHOLDS.windSpeed.high) {
+      toast(
+        <div className="flex flex-col">
+          <span>
+            {`
+                ${windWarning.color === "red" ? "Typhoon Force" : ""}
+                ${windWarning.color === "orange" ? "Storm Force" : ""}
+                ${windWarning.color === "amber" ? "Gale Force" : ""}
+                ${windWarning.color === "yellow" ? "Strong" : ""}
+              `}{" "}
+            Winds Alert at {stationData.station.name}
+          </span>
+          <span
+            className={`
+                ${
+                  windWarning.color === "red"
+                    ? "text-[#FE0000] font-bold text-2xl"
+                    : ""
+                }
+                ${
+                  windWarning.color === "orange"
+                    ? "text-[#FFC000] font-bold text-2xl"
+                    : ""
+                }
+                ${
+                  windWarning.color === "amber"
+                    ? "text-[#FFFF00] font-bold text-2xl"
+                    : ""
+                }
+                ${
+                  windWarning.color === "yellow"
+                    ? "text-[#00CCFF] font-bold text-2xl"
+                    : ""
+                }
+              `}
+          >
+            {data.windSpeed}
+            {weatherUnit("windSpeed")}
+          </span>
+        </div>,
+        {
+          position: "bottom-right",
+          duration: 10000,
+        }
       );
-      const windWarning = getWarningInfo(
-        "windSpeed",
-        stationData.data.windSpeed
+    }
+
+    // Check and show UV warning if needed
+    if (data.uvIndex >= WARNING_THRESHOLDS.uvIndex.high) {
+      toast(
+        <div className="flex flex-col">
+          <span>
+            {`
+                ${uvWarning.color === "red" ? "Extreme" : ""}
+                ${uvWarning.color === "orange" ? "Very High" : ""}
+                ${uvWarning.color === "amber" ? "High" : ""}
+                ${uvWarning.color === "yellow" ? "Moderate" : ""}
+              `}{" "}
+            UV Index Alert at {stationData.station.name}
+          </span>
+          <span
+            className={`
+                ${
+                  uvWarning.color === "red"
+                    ? "text-[#9E47CC] font-bold text-2xl"
+                    : ""
+                }
+                ${
+                  uvWarning.color === "orange"
+                    ? "text-[#F55023] font-bold text-2xl"
+                    : ""
+                }
+                ${
+                  uvWarning.color === "amber"
+                    ? "text-[#FF9000] font-bold text-2xl"
+                    : ""
+                }
+                ${
+                  uvWarning.color === "yellow"
+                    ? "text-[#FFBC01] font-bold text-2xl"
+                    : ""
+                }
+              `}
+          >
+            {data.uvIndex}
+            {weatherUnit("uvIndex")}
+          </span>
+        </div>,
+        {
+          position: "bottom-right",
+          duration: 10000,
+        }
       );
-      const uvWarning = getWarningInfo("uvIndex", stationData.data.uvIndex);
-      const hourRainWarning = getWarningInfo(
-        "precipitation",
-        stationData.pastHourPrecip
+    }
+
+    // Check and show heat index warning if needed
+    if (data.heatIndex >= WARNING_THRESHOLDS.heatIndex.high) {
+      toast(
+        <div className="flex flex-col">
+          <span>
+            {heatIndexWarning.color === "red"
+              ? "Extreme Danger"
+              : heatIndexWarning.color === "orange"
+              ? "Danger"
+              : heatIndexWarning.color === "amber"
+              ? "Extreme Caution"
+              : heatIndexWarning.color === "yellow"
+              ? "Caution"
+              : ""}{" "}
+            Heat Index at {stationData.station.name}
+          </span>
+          <span
+            className={`
+                ${
+                  heatIndexWarning.color === "red"
+                    ? "text-[#CC0001] font-bold text-2xl"
+                    : ""
+                }
+                ${
+                  heatIndexWarning.color === "orange"
+                    ? "text-[#FF6600] font-bold text-2xl"
+                    : ""
+                }
+                ${
+                  heatIndexWarning.color === "amber"
+                    ? "text-[#FFCC00] font-bold text-2xl"
+                    : ""
+                }
+                ${
+                  heatIndexWarning.color === "yellow"
+                    ? "text-[#FFFF00] font-bold text-2xl"
+                    : ""
+                }
+              `}
+          >
+            {data.heatIndex}
+            {weatherUnit("heatIndex")}
+          </span>
+        </div>,
+        {
+          position: "bottom-right",
+          duration: 10000,
+        }
       );
+    }
 
-      if (data.windSpeed >= WARNING_THRESHOLDS.windSpeed.high) {
-        toast(
-          <div className="flex flex-col">
-            <span>Strong Winds Alert at {stationData.station.name}</span>
-            <span
-              className={`
-${windWarning.color === "red" ? "text-red-500 font-bold" : ""}
-${windWarning.color === "orange" ? "text-orange-500 font-bold" : ""}
-${windWarning.color === "yellow" ? "text-yellow-500 font-bold" : ""}
-`}
-            >
-              {data.windSpeed}
-              {weatherUnit("windSpeed")}
-            </span>
-          </div>,
-          {
-            position: "top-right",
-            duration: 10000,
-          }
-        );
-      }
-
-      if (data.uvIndex >= WARNING_THRESHOLDS.uvIndex.high) {
-        toast(
-          <div className="flex flex-col">
-            <span>High UV Index Alert at {stationData.station.name}</span>
-            <span
-              className={`
-${uvWarning.color === "red" ? "text-red-500 font-bold" : ""}
-${uvWarning.color === "orange" ? "text-orange-500 font-bold" : ""}
-${uvWarning.color === "yellow" ? "text-yellow-500 font-bold" : ""}
-`}
-            >
-              {data.uvIndex}
-              {weatherUnit("uvIndex")}
-            </span>
-          </div>,
-          {
-            position: "top-right",
-            duration: 10000,
-          }
-        );
-      }
-
-      if (data.heatIndex >= WARNING_THRESHOLDS.heatIndex.high) {
-        toast(
-          <div className="flex flex-col">
-            <span>Dangerous Heat Index at {stationData.station.name}</span>
-            <span
-              className={`
-${heatIndexWarning.color === "red" ? "text-red-500 font-bold" : ""}
-${heatIndexWarning.color === "orange" ? "text-orange-500 font-bold" : ""}
-${heatIndexWarning.color === "yellow" ? "text-yellow-500 font-bold" : ""}
-`}
-            >
-              {data.heatIndex}
-              {weatherUnit("heatIndex")}
-            </span>
-          </div>,
-          {
-            position: "top-right",
-            duration: 10000,
-          }
-        );
-      }
-
-      if (stationData.pastHourPrecip >= WARNING_THRESHOLDS.precipitation.high) {
-        toast(
-          <div className="flex flex-col">
-            <span>Heavy Rainfall Warning at {stationData.station.name}</span>
-            <span
-              className={`
-${hourRainWarning.color === "red" ? "text-red-500 font-bold" : ""}
-${hourRainWarning.color === "orange" ? "text-orange-500 font-bold" : ""}
-${hourRainWarning.color === "yellow" ? "text-yellow-500 font-bold" : ""}
-`}
-            >
-              {stationData.pastHourPrecip}
-              {weatherUnit("precipitation")}/hr
-            </span>
-          </div>,
-          {
-            position: "top-right",
-            duration: 10000,
-          }
-        );
-      }
+    // Check and show precipitation warning if needed
+    if (stationData.pastHourPrecip >= WARNING_THRESHOLDS.precipitation.high) {
+      toast(
+        <div className="flex flex-col">
+          <span>
+            {`
+                ${hourRainWarning.color === "red" ? "Torrential" : ""}
+                ${hourRainWarning.color === "orange" ? "Intense" : ""}
+                ${hourRainWarning.color === "amber" ? "Heavy" : ""}
+              `}{" "}
+            Rainfall Warning at {stationData.station.name}
+          </span>
+          <span
+            className={`
+                ${
+                  hourRainWarning.color === "red"
+                    ? "text-red-500 font-bold text-2xl"
+                    : ""
+                }
+                ${
+                  hourRainWarning.color === "orange"
+                    ? "text-orange-500 font-bold text-2xl"
+                    : ""
+                }
+                ${
+                  hourRainWarning.color === "yellow"
+                    ? "text-yellow-500 font-bold text-2xl"
+                    : ""
+                }
+              `}
+          >
+            {stationData.pastHourPrecip}
+            {weatherUnit("precipitation")}/hr
+          </span>
+        </div>,
+        {
+          position: "bottom-right",
+          duration: 10000,
+        }
+      );
     }
   }, [stationData]);
 
   if (isLoading || !stationData) {
     return (
       <TableRow className="hover:bg-secondary cursor-pointer">
-        <TableCell>Loading ...</TableCell>
+        <TableCell className="border border-stone-200 dark:border-stone-700">
+          Loading ...
+        </TableCell>
       </TableRow>
     );
   }
@@ -144,7 +326,9 @@ ${hourRainWarning.color === "yellow" ? "text-yellow-500 font-bold" : ""}
   if (isError) {
     return (
       <TableRow className="hover:bg-secondary cursor-pointer">
-        <TableCell>Error</TableCell>
+        <TableCell className="border border-stone-200 dark:border-stone-700">
+          Error
+        </TableCell>
       </TableRow>
     );
   }
@@ -167,14 +351,16 @@ ${hourRainWarning.color === "yellow" ? "text-yellow-500 font-bold" : ""}
 
     return (
       <TableRow
-        className="hover:bg-secondary cursor-pointer"
+        className="hover:bg-secondary cursor-pointer h-14"
         onClick={() => navigate(`/${stationData.station.id}`)}
       >
-        <TableCell>{stationData.station.name}</TableCell>
-        <TableCell>
+        <TableCell className="border border-stone-200 dark:border-stone-700">
+          {stationData.station.name}
+        </TableCell>
+        <TableCell className="border border-stone-200 dark:border-stone-700">
           {formatDateString(stationData.data.recordedAt, "short")}
         </TableCell>
-        <TableCell>
+        <TableCell className="border border-stone-200 dark:border-stone-700">
           {stationData.data.temperature > 0 ? (
             <div className="flex items-center gap-1">
               <span>{`${stationData.data.temperature} ${weatherUnit(
@@ -185,19 +371,19 @@ ${hourRainWarning.color === "yellow" ? "text-yellow-500 font-bold" : ""}
             "--"
           )}
         </TableCell>
-        <TableCell>
+        <TableCell className="border border-stone-200 dark:border-stone-700">
           {stationData.data.humidity > 0
             ? `${stationData.data.humidity} ${weatherUnit("humidity")}`
             : "--"}
         </TableCell>
-        <TableCell>
+        <TableCell className="border border-stone-200 dark:border-stone-700">
           {stationData.data.pressure > 0
             ? `${stationData.data.pressure} ${weatherUnit("pressure")}`
             : "--"}
         </TableCell>
-        <TableCell>
+        <TableCell className="border border-stone-200 dark:border-stone-700 p-2">
           {stationData.data.heatIndex > 0 ? (
-            <div className="flex items-center gap-1">
+            <div className="flex items-center p-0">
               {heatIndexWarning &&
               heatIndexWarning.color &&
               ["red", "amber", "orange", "yellow"].includes(
@@ -206,13 +392,13 @@ ${hourRainWarning.color === "yellow" ? "text-yellow-500 font-bold" : ""}
                 <Badge
                   className={`w-full ${
                     heatIndexWarning.color === "red"
-                      ? "bg-red-500 font-bold"
-                      : heatIndexWarning.color === "amber"
-                      ? "bg-amber-500 font-bold"
+                      ? "bg-[#CC0001] font-bold hover:bg-[#FE0000]/80 text-white"
                       : heatIndexWarning.color === "orange"
-                      ? "bg-orange-600 font-bold"
+                      ? "bg-[#FF6600] font-bold hover:bg-[#FF6600]/80 text-white"
+                      : heatIndexWarning.color === "amber"
+                      ? "bg-[#FFCC00] font-bold hover:bg-[#FFCC00]/80 text-black"
                       : heatIndexWarning.color === "yellow"
-                      ? "bg-yellow-500 font-bold"
+                      ? "bg-[#FFFF00] font-bold hover:bg-[#FFFF00]/80 text-black"
                       : ""
                   }`}
                 >{`${stationData.data.heatIndex} ${weatherUnit(
@@ -228,7 +414,7 @@ ${hourRainWarning.color === "yellow" ? "text-yellow-500 font-bold" : ""}
             "--"
           )}
         </TableCell>
-        <TableCell>
+        <TableCell className="border border-stone-200 dark:border-stone-700">
           {stationData.data.windSpeed >= 0 &&
           stationData.data.windSpeed !== null ? (
             <div className="flex items-center gap-1">
@@ -240,13 +426,13 @@ ${hourRainWarning.color === "yellow" ? "text-yellow-500 font-bold" : ""}
                 <Badge
                   className={`w-full ${
                     windWarning.color === "red"
-                      ? "bg-red-500 font-bold"
-                      : windWarning.color === "amber"
-                      ? "bg-amber-500 font-bold"
+                      ? "bg-[#FE0000] font-bold hover:bg-[#FE0000]/80 text-white"
                       : windWarning.color === "orange"
-                      ? "bg-orange-600 font-bold"
+                      ? "bg-[#FFC000] font-bold hover:bg-[#FFC000]/80 text-black"
+                      : windWarning.color === "amber"
+                      ? "bg-[#FFFF00] font-bold hover:bg-[#FFFF00]/80 text-black"
                       : windWarning.color === "yellow"
-                      ? "bg-yellow-500 font-bold"
+                      ? "bg-[#00CCFF] font-bold hover:bg-[#00CCFF]/80 text-black"
                       : ""
                   }`}
                 >{`${stationData.data.windSpeed} ${weatherUnit(
@@ -262,10 +448,10 @@ ${hourRainWarning.color === "yellow" ? "text-yellow-500 font-bold" : ""}
             "--"
           )}
         </TableCell>
-        <TableCell>
+        <TableCell className="border border-stone-200 dark:border-stone-700">
           {getWindDirectionLabel(stationData.data.windDirection)}
         </TableCell>
-        <TableCell>
+        <TableCell className="border border-stone-200 dark:border-stone-700">
           {stationData.data.uvIndex >= 0 &&
           stationData.data.uvIndex !== null ? (
             <div className="flex items-center gap-1">
@@ -275,13 +461,13 @@ ${hourRainWarning.color === "yellow" ? "text-yellow-500 font-bold" : ""}
                 <Badge
                   className={`w-full text-center ${
                     uvWarning.color === "red"
-                      ? "bg-red-500 font-bold"
-                      : uvWarning.color === "amber"
-                      ? "bg-amber-500 font-bold"
+                      ? "bg-[#9E47CC] font-bold hover:bg-[#9E47CC]/80 text-white"
                       : uvWarning.color === "orange"
-                      ? "bg-orange-600 font-bold"
+                      ? "bg-[#F55023] font-bold hover:bg-[#F55023]/80 text-white"
+                      : uvWarning.color === "amber"
+                      ? "bg-[#FF9000] font-bold hover:bg-[#FF9000]/80 text-black"
                       : uvWarning.color === "yellow"
-                      ? "bg-yellow-500 font-bold"
+                      ? "bg-[#FFBC01] font-bold hover:bg-[#FFBC01]/80 text-black"
                       : ""
                   }`}
                 >
@@ -296,46 +482,81 @@ ${hourRainWarning.color === "yellow" ? "text-yellow-500 font-bold" : ""}
             "--"
           )}
         </TableCell>
-        <TableCell>
+        <TableCell className="border border-stone-200 dark:border-stone-700">
           {stationData.data.light >= 0 && stationData.data.light !== null
             ? `${stationData.data.light} ${weatherUnit("light")}`
             : "--"}
         </TableCell>
-        <TableCell>
-          {stationData.data.precipitation === null ? (
-            "--"
-          ) : (
+        <TableCell className="border border-stone-200 dark:border-stone-700">
+          {stationData.data.precipitation >= 0 &&
+          stationData.data.precipitation !== null ? (
             <div className="flex items-center gap-1">
-              <span
-                className={`
-  ${rainWarning.color === "red" ? "text-red-500 font-bold" : ""}
-  ${rainWarning.color === "amber" ? "text-amber-500 font-bold" : ""}
-  ${rainWarning.color === "orange" ? "text-orange-600 font-bold" : ""}
-  ${rainWarning.color === "yellow" ? "text-yellow-500 font-bold" : ""}
-
-`}
-              >{`${stationData.data.precipitation} ${weatherUnit(
-                "precipitation"
-              )}`}</span>
+              {rainWarning &&
+              rainWarning.color &&
+              ["red", "amber", "orange", "yellow"].includes(
+                rainWarning.color
+              ) ? (
+                <Badge
+                  className={`w-full text-center ${
+                    rainWarning.color === "red"
+                      ? "bg-[#FF0000] font-bold hover:bg-[#FF0000]/80 text-white"
+                      : rainWarning.color === "orange"
+                      ? "bg-[#FFA500] font-bold hover:bg-[#FFA500]/80 text-black"
+                      : rainWarning.color === "amber"
+                      ? "bg-[#FFFF00] font-bold hover:bg-[#FFFF00]/80 text-black"
+                      : ""
+                  }`}
+                >
+                  <span className="w-full">
+                    {stationData.data.precipitation}{" "}
+                    {weatherUnit("precipitation")}
+                  </span>
+                </Badge>
+              ) : (
+                <div className="w-full px-2.5 py-0.5 text-center">
+                  {stationData.data.precipitation}{" "}
+                  {weatherUnit("precipitation")}
+                </div>
+              )}
             </div>
+          ) : (
+            "--"
           )}
         </TableCell>
-        <TableCell>
-          {stationData.pastHourPrecip === null ? (
-            "--"
-          ) : (
+
+        <TableCell className="border border-stone-200 dark:border-stone-700">
+          {stationData.pastHourPrecip >= 0 &&
+          stationData.pastHourPrecip !== null ? (
             <div className="flex items-center gap-1">
-              <span
-                className={`
-  ${hourRainWarning.color === "red" ? "text-red-500 font-bold" : ""}
-  ${hourRainWarning.color === "amber" ? "text-amber-500 font-bold" : ""}
-  ${hourRainWarning.color === "orange" ? "text-orange-600 font-bold" : ""}
-  ${hourRainWarning.color === "yellow" ? "text-yellow-500 font-bold" : ""}
-`}
-              >{`${stationData.pastHourPrecip} ${weatherUnit(
-                "precipitation"
-              )}`}</span>
+              {hourRainWarning &&
+              hourRainWarning.color &&
+              ["red", "amber", "orange", "yellow"].includes(
+                hourRainWarning.color
+              ) ? (
+                <Badge
+                  className={`w-full text-center ${
+                    hourRainWarning.color === "red"
+                      ? "bg-[#FF0000] font-bold hover:bg-[#FF0000]/80 text-white"
+                      : hourRainWarning.color === "orange"
+                      ? "bg-[#FFA500] font-bold hover:bg-[#FFA500]/80 text-black"
+                      : hourRainWarning.color === "amber"
+                      ? "bg-[#FFFF00] font-bold hover:bg-[#FFFF00]/80 text-black"
+                      : ""
+                  }`}
+                >
+                  <span className="w-full">
+                    {stationData.pastHourPrecip} {weatherUnit("precipitation")}
+                    /hr
+                  </span>
+                </Badge>
+              ) : (
+                <div className="w-full px-2.5 py-0.5 text-center">
+                  {stationData.pastHourPrecip} {weatherUnit("precipitation")}/hr
+                </div>
+              )}
             </div>
+          ) : (
+            "--"
           )}
         </TableCell>
       </TableRow>
@@ -344,18 +565,42 @@ ${hourRainWarning.color === "yellow" ? "text-yellow-500 font-bold" : ""}
 
   return (
     <TableRow>
-      <TableCell>{stationData.station.name}</TableCell>
-      <TableCell>--</TableCell>
-      <TableCell>--</TableCell>
-      <TableCell>--</TableCell>
-      <TableCell>--</TableCell>
-      <TableCell>--</TableCell>
-      <TableCell>--</TableCell>
-      <TableCell>--</TableCell>
-      <TableCell>-- </TableCell>
-      <TableCell>-- </TableCell>
-      <TableCell>--</TableCell>
-      <TableCell>--</TableCell>
+      <TableCell className="border border-stone-200 dark:border-stone-700">
+        {stationData.station.name}
+      </TableCell>
+      <TableCell className="border border-stone-200 dark:border-stone-700">
+        --
+      </TableCell>
+      <TableCell className="border border-stone-200 dark:border-stone-700">
+        --
+      </TableCell>
+      <TableCell className="border border-stone-200 dark:border-stone-700">
+        --
+      </TableCell>
+      <TableCell className="border border-stone-200 dark:border-stone-700">
+        --
+      </TableCell>
+      <TableCell className="border border-stone-200 dark:border-stone-700">
+        --
+      </TableCell>
+      <TableCell className="border border-stone-200 dark:border-stone-700">
+        --
+      </TableCell>
+      <TableCell className="border border-stone-200 dark:border-stone-700">
+        --
+      </TableCell>
+      <TableCell className="border border-stone-200 dark:border-stone-700">
+        --{" "}
+      </TableCell>
+      <TableCell className="border border-stone-200 dark:border-stone-700">
+        --{" "}
+      </TableCell>
+      <TableCell className="border border-stone-200 dark:border-stone-700">
+        --
+      </TableCell>
+      <TableCell className="border border-stone-200 dark:border-stone-700">
+        --
+      </TableCell>
     </TableRow>
   );
 };

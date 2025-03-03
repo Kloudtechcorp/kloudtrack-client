@@ -283,7 +283,6 @@ export const getWeatherSensors = async (): Promise<weatherSensorsType> => {
     credentials: "include",
   });
   const data = await response.json();
-
   if (!response.ok) {
     throw new Error(
       data.message || "Failed to fetch sensor data in weather stations"

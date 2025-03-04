@@ -7,7 +7,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Skeleton } from "../ui/skeleton";
-import { formatDateString, weatherUnit } from "@/lib/utils";
+import {
+  formatDateString,
+  formatDateStringGraph,
+  weatherUnit,
+} from "@/lib/utils";
 import VariableGrapht from "./VariableGraph";
 import { TableGraphCardType, tablesType } from "@/types/queryTypes";
 import { useGetAnalysis } from "@/hooks/react-query/queries";
@@ -91,7 +95,10 @@ const TableGraphCard = ({
                 Date Recorded
               </TableCell>
               <TableCell className="tableText">
-                {formatDateString(stationData.recordedAt, "long")}
+                {formatDateString(
+                  stationData.recordedAt.toLocaleString(),
+                  "long"
+                )}
               </TableCell>
             </TableRow>
 
@@ -117,8 +124,8 @@ const TableGraphCard = ({
                 Highest (Today)
               </TableCell>
               <TableCell className="tableText">
-                {Math.round(stationData.max * 100) / 100}{" "}
-                {weatherUnit(weatherData)}
+                {stationData.max} {weatherUnit(weatherData)} (
+                {formatDateStringGraph(stationData.maxTime)})
               </TableCell>
             </TableRow>
             <TableRow>
@@ -126,8 +133,9 @@ const TableGraphCard = ({
                 Lowest (Today)
               </TableCell>
               <TableCell className="tableText">
-                {Math.round(stationData.min * 100) / 100}{" "}
-                {weatherUnit(weatherData)}
+                {stationData.min}
+                {weatherUnit(weatherData)} (
+                {formatDateStringGraph(stationData.minTime)})
               </TableCell>
             </TableRow>
             <TableRow>
@@ -135,8 +143,7 @@ const TableGraphCard = ({
                 Average (Today)
               </TableCell>
               <TableCell className="tableText">
-                {Math.round(stationData.average * 100) / 100}{" "}
-                {weatherUnit(weatherData)}
+                {stationData.average} {weatherUnit(weatherData)}
               </TableCell>
             </TableRow>
           </TableBody>

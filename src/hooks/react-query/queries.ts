@@ -23,6 +23,7 @@ import {
   TableGraphCardType,
   tablesType,
   userProfileTypes,
+  WeatherStationResponse,
 } from "@/types/queryTypes";
 import {
   getArgData,
@@ -217,7 +218,7 @@ export const useGetStationNames = (
 
 export const useGetAnalysis = (
   graphData: analysisType
-): UseQueryResult<stationComputedTypes, Error> => {
+): UseQueryResult<WeatherStationResponse, Error> => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_TABLE_GRAPH_DATA, graphData],
     queryFn: () => getAnalysis(graphData),

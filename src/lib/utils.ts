@@ -31,7 +31,20 @@ export function formatDateString(
     minute: "numeric",
   });
 
-  return `${formattedDate} at ${time}`;
+  return `${formattedDate} ${time}`;
+}
+
+export function formatDateStringGraph(dateString: string) {
+  const now = new Date(dateString);
+  const utcPlus8Now = new Date(now.getTime() - 8 * 60 * 60 * 1000);
+
+  const date = new Date(utcPlus8Now);
+  const time = date.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "numeric",
+  });
+
+  return `${time}`;
 }
 
 export const getNearestTimeIndex = (hours: number, minutes: number): number => {
@@ -317,13 +330,17 @@ export function addSpacesToPascalCase(input: string): string {
 
 export const getFormattedDataset = (data: GraphData[]): GraphData[] => {
   return data.map((item) => {
-    const formattedDate = new Date(item.recorded).toLocaleString("en-US", {
+    const recordedDate = new Date(item.recorded);
+    recordedDate.setHours(recordedDate.getHours() + 8); // Add 8 hours
+
+    const formattedDate = recordedDate.toLocaleString("en-US", {
       month: "long",
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
       hour12: false,
     });
+
     const datetimeWithAt = formattedDate.replace(",", " at");
     return {
       ...item,

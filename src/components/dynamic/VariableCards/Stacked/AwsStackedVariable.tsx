@@ -271,7 +271,16 @@ const AwsStackedVariable: React.FC<{ id: string[] }> = ({ id }) => {
                             />
                           );
                         })}
-                      <ChartLegend content={<ChartLegendContent />} />
+                      <ChartLegend
+                        content={<ChartLegendContent />}
+                        align="center"
+                        wrapperStyle={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          justifyContent: "center",
+                          maxWidth: "100%",
+                        }}
+                      />
                     </LineChart>
                   )}
                 </ChartContainer>

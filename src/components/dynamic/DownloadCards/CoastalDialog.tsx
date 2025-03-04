@@ -19,20 +19,31 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "../../ui/form";
 import { RadioGroup, RadioGroupItem } from "../../ui/radio-group";
 import { coastalDataTypes } from "@/types/queryTypes";
 import { formatDateString, getDateRange } from "@/lib/utils";
 import toast from "react-hot-toast";
 import { useCoastalDownloadData } from "@/hooks/react-query/mutations";
+import { Separator } from "@/components/ui/separator";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 type CoastalDialogProps = {
   id: string;
   name: string;
 };
 
+const updatedDownloadSchema = downloadSchema.extend({
+  format: z.enum(["csv", "json", "pdf"], {
+    message: "Please select a download format.",
+  }),
+});
+
 const CoastalDialog = ({ id, name }: CoastalDialogProps) => {
-  const [selected, setSelected] = useState("7days");
+  const [selected, setSelected] = useState("today");
+  const [format, setFormat] = useState<"csv" | "json" | "pdf">("csv");
   const { mutateAsync: downloadData, isPending } = useCoastalDownloadData();
   const now = new Date();
 
@@ -59,22 +70,90 @@ const CoastalDialog = ({ id, name }: CoastalDialogProps) => {
     return [headers.join(","), ...rows.map((row) => row.join(","))].join("\n");
   };
 
-  const form = useForm<z.infer<typeof downloadSchema>>({
-    resolver: zodResolver(downloadSchema),
-    defaultValues: { type: "7days" },
+  const generateJSONData = (data: coastalDataTypes[]): string => {
+    return JSON.stringify(data, null, 2);
+  };
+
+  const form = useForm<z.infer<typeof updatedDownloadSchema>>({
+    resolver: zodResolver(updatedDownloadSchema),
+    defaultValues: { type: "today", format: "csv" },
   });
 
-  const onSubmit = (data: z.infer<typeof downloadSchema>) => {
+  const onSubmit = (data: z.infer<typeof updatedDownloadSchema>) => {
     const updatedData = { ...data, name, id, from: date?.from, to: date?.to };
     downloadData(updatedData, {
       onSuccess: (data) => {
-        const csvData = generateCSVData(data);
-        const blob = new Blob([csvData], { type: "text/csv" });
+        let blob;
+        let fileName = `${updatedData.name}: from ${updatedData.from} ${
+          !updatedData.to ? `to ${updatedData.to}` : ""
+        }`;
+
+        // Handle different format types
+        switch (updatedData.format) {
+          case "csv":
+            const csvData = generateCSVData(data);
+            blob = new Blob([csvData], { type: "text/csv" });
+            fileName += ".csv";
+            break;
+          case "json":
+            const jsonData = generateJSONData(data);
+            blob = new Blob([jsonData], { type: "application/json" });
+            fileName += ".json";
+            break;
+          case "pdf":
+            const doc = new jsPDF();
+            doc.text(`Rain Gauge Data Report for ${name}`, 14, 10);
+            doc.setFontSize(10);
+            const wrappedText = doc.splitTextToSize(
+              `from ${updatedData.from} ${
+                updatedData.to ? `to ${updatedData.to}` : ""
+              }`,
+              180
+            );
+            doc.text(wrappedText, 14, 20);
+
+            doc.setFontSize(12);
+            autoTable(doc, {
+              startY: 30,
+              head: [
+                [
+                  "Date Recorded",
+                  "Temperature (°C)",
+                  "Humidity (%)",
+                  "Air Pressure (mb)",
+                  "Height (cm)",
+                ],
+              ],
+              body: data.map((item) => [
+                formatDateString(item.recordedAt, "2-digit"),
+                item.temperature,
+                item.humidity,
+                item.pressure,
+                item.distance,
+              ]),
+              theme: "grid",
+              styles: {
+                font: "Inter",
+              },
+            });
+
+            doc.save(`${fileName}.pdf`);
+            toast.success("PDF downloaded successfully");
+            return;
+          default:
+            const defaultData = generateCSVData(data);
+            blob = new Blob([defaultData], { type: "text/csv" });
+            fileName += ".csv";
+        }
+
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
-        link.download = `${updatedData.name}: from ${updatedData.from} to ${updatedData.to}`;
+        link.download = fileName;
         link.click();
         URL.revokeObjectURL(link.href);
+        toast.success(
+          `Downloaded ${updatedData.format.toUpperCase()} successfully`
+        );
       },
       onError: () => toast.error("Error downloading data"),
     });
@@ -120,6 +199,7 @@ const CoastalDialog = ({ id, name }: CoastalDialogProps) => {
                           className="py-2 px-1 flex flex-col space-y-1 w-full gap-2 item-center h-full justify-center"
                         >
                           {[
+                            { value: "today", label: "Today" },
                             { value: "7days", label: "7 Days" },
                             { value: "28days", label: "28 Days" },
                             { value: "90days", label: "90 Days" },
@@ -164,8 +244,56 @@ const CoastalDialog = ({ id, name }: CoastalDialogProps) => {
                 />
               </div>
             </div>
-            <Button type="submit" variant="default">
-              {isPending ? "Loading..." : "Download CSV"}
+            {/* Format Selection */}
+            <Separator />
+            <FormField
+              control={form.control}
+              name="format"
+              render={({ field }) => (
+                <FormItem className="flex flex-col gap-2 mt-2 px-2">
+                  <FormLabel>Download Format</FormLabel>
+                  <FormMessage />
+                  <RadioGroup
+                    onValueChange={(value: "csv" | "json" | "pdf") => {
+                      setFormat(value);
+                      field.onChange(value);
+                    }}
+                    defaultValue={field.value}
+                    className="flex flex-row gap-5"
+                  >
+                    <FormItem className="flex items-center space-x-1 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem
+                          value="csv"
+                          className="flex items-center justify-center size-6"
+                        />
+                      </FormControl>
+                      <FormLabel className="font-normal">CSV</FormLabel>
+                    </FormItem>
+                    <FormItem className="flex items-center space-x-1 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem
+                          value="json"
+                          className="flex items-center justify-center size-6"
+                        />
+                      </FormControl>
+                      <FormLabel className="font-normal">JSON </FormLabel>
+                    </FormItem>
+                    <FormItem className="flex items-center space-x-1 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem
+                          value="pdf"
+                          className="flex items-center justify-center size-6"
+                        />
+                      </FormControl>
+                      <FormLabel className="font-normal">PDF</FormLabel>
+                    </FormItem>
+                  </RadioGroup>
+                </FormItem>
+              )}
+            />
+            <Button type="submit" variant="default" className="mt-4">
+              {isPending ? "Loading..." : `Download ${format.toUpperCase()}`}
             </Button>
           </form>
         </Form>

@@ -29,6 +29,7 @@ import {
   detailedStationProps,
   analysisType,
   DynamicDatasetType,
+  WeatherStationResponse,
 } from "@/types/queryTypes";
 
 const method: string = "GET";
@@ -226,9 +227,10 @@ export const getAnalysis = async ({
   stationId,
   weatherData,
   type,
-}: analysisType): Promise<stationComputedTypes> => {
+  repeat,
+}: analysisType): Promise<WeatherStationResponse> => {
   const response = await fetch(
-    `${server}/${type}/analysis/${stationId}?variable=${weatherData}`,
+    `${server}/${type}/analysis/v2/${stationId}?variable=${weatherData}&repeat=${repeat}`,
     {
       method,
       credentials: "include",

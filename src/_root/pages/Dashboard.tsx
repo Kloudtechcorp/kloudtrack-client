@@ -324,12 +324,15 @@ const Dashboard = () => {
                         )}
                       </div>
                     ) : (
-                      filteredStations[category.type].map((station) => (
-                        <category.CardComponent
-                          key={station.id}
-                          id={station.id}
-                        />
-                      ))
+                      <>
+                        {filteredStations[category.type].map((station) => (
+                          <category.CardComponent
+                            key={station.id}
+                            id={station.id}
+                          />
+                        ))}
+                        <WeatherDangerLegends />
+                      </>
                     )}
                   </div>
                 </TabsContent>

@@ -124,7 +124,8 @@ const AwsTable: React.FC<AwsCardProps> = ({ id }) => {
         </div>,
         {
           position: "bottom-right",
-          duration: 10000,
+          duration: 5000,
+          closeButton: true,
         }
       );
     }
@@ -175,7 +176,8 @@ const AwsTable: React.FC<AwsCardProps> = ({ id }) => {
         </div>,
         {
           position: "bottom-right",
-          duration: 10000,
+          duration: 5000,
+          closeButton: true,
         }
       );
     }
@@ -229,7 +231,8 @@ const AwsTable: React.FC<AwsCardProps> = ({ id }) => {
         </div>,
         {
           position: "bottom-right",
-          duration: 10000,
+          duration: 5000,
+          closeButton: true,
         }
       );
     }
@@ -274,7 +277,8 @@ const AwsTable: React.FC<AwsCardProps> = ({ id }) => {
         </div>,
         {
           position: "bottom-right",
-          duration: 10000,
+          duration: 5000,
+          closeButton: true,
         }
       );
     }

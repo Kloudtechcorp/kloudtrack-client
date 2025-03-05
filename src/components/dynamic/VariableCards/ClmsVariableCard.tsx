@@ -14,7 +14,7 @@ import { Switch } from "@/components/ui/switch";
 
 const ClmsVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
   const [weatherData, setWeatherData] = useState<string>(
-    () => localStorage.getItem("coastalData") || "distance"
+    () => localStorage.getItem("coastalData") || "calculatedDistance"
   );
   const [repeatData, setRepeatData] = useState<string>(
     () => localStorage.getItem("coastalRepeat") || "hour"
@@ -74,7 +74,9 @@ const ClmsVariableCard: React.FC<{ id: string[] }> = ({ id }) => {
                         <SelectValue placeholder="Variable" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="distance">Distance</SelectItem>
+                        <SelectItem value="calculatedDistance">
+                          Distance
+                        </SelectItem>
                         <SelectItem value="temperature">Temperature</SelectItem>
                         <SelectItem value="humidity">Humidity</SelectItem>
                         <SelectItem value="pressure">Air Pressure</SelectItem>

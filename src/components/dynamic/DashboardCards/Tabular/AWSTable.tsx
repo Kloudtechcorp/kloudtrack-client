@@ -16,98 +16,55 @@ interface AwsCardProps {
   id: string;
 }
 
-// interface WarningState {
-//   severity: string;
-//   value: number;
-//   lastShownAt: number;
-// }
-
-// interface WarningStates {
-//   heatIndex: WarningState | null;
-//   windSpeed: WarningState | null;
-//   uvIndex: WarningState | null;
-//   precipitation: WarningState | null;
-// }
-
-// const LOCAL_STORAGE_KEY = "weather-warnings";
-// const WARNING_COOLDOWN = 60 * 60 * 1000; // 1 hour in milliseconds
+// Create a type to track warning states
+interface WarningState {
+  lastWarningTime: number;
+  lastWarningColor: string | null;
+}
 
 const AwsTable: React.FC<AwsCardProps> = ({ id }) => {
   const navigate = useNavigate();
   const { data: stationData, isLoading, isError } = useGetAwsData2(id);
-  // const isFirstRender = useRef(true);
-  // const warningStates = useRef<WarningStates>({
-  //   heatIndex: null,
-  //   windSpeed: null,
-  //   uvIndex: null,
-  //   precipitation: null,
-  // });
 
-  // useEffect(() => {
-  //   try {
-  //     const savedWarnings = localStorage.getItem(LOCAL_STORAGE_KEY);
-  //     if (savedWarnings) {
-  //       warningStates.current = JSON.parse(savedWarnings);
-  //     }
-  //   } catch (error) {
-  //     console.error("Failed to load warning states:", error);
-  //     localStorage.removeItem(LOCAL_STORAGE_KEY);
-  //   }
+  // Ref to store warning states for different parameters
+  const warningStatesRef = useRef<{
+    windSpeed?: WarningState;
+    uvIndex?: WarningState;
+    heatIndex?: WarningState;
+    precipitation?: WarningState;
+  }>({});
 
-  //   return () => {
-  //     toast.dismiss();
-  //   };
-  // }, []);
+  // Function to check if a warning should be shown
+  const shouldShowWarning = (
+    paramName: keyof typeof warningStatesRef.current,
+    currentWarningColor: string
+  ): boolean => {
+    const warningStates = warningStatesRef.current;
+    const currentTime = Date.now();
 
-  // const shouldShowWarning = (
-  //   type: keyof WarningStates,
-  //   severity: string,
-  //   value: number
-  // ): boolean => {
-  //   const now = Date.now();
-  //   const currentState = warningStates.current[type];
+    // If no previous warning state exists, show warning
+    if (!warningStates[paramName]) {
+      warningStates[paramName] = {
+        lastWarningTime: currentTime,
+        lastWarningColor: currentWarningColor,
+      };
+      return true;
+    }
 
-  //   if (!currentState) {
-  //     return true;
-  //   }
+    const paramState = warningStates[paramName]!;
+    const timeSinceLastWarning = currentTime - paramState.lastWarningTime;
+    const isColorChanged = paramState.lastWarningColor !== currentWarningColor;
 
-  //   if (currentState.severity !== severity) {
-  //     return true;
-  //   }
+    // Show warning if color changed or 30 minutes have passed
+    if (isColorChanged || timeSinceLastWarning >= 30 * 60 * 1000) {
+      // Update warning state
+      paramState.lastWarningTime = currentTime;
+      paramState.lastWarningColor = currentWarningColor;
+      return true;
+    }
 
-  //   const valueChanged =
-  //     Math.abs((value - currentState.value) / currentState.value) >= 0.05;
-  //   if (valueChanged) {
-  //     return true;
-  //   }
-
-  //   if (now - currentState.lastShownAt >= WARNING_COOLDOWN) {
-  //     return true;
-  //   }
-
-  //   return false;
-  // };
-
-  // const updateWarningState = (
-  //   type: keyof WarningStates,
-  //   severity: string,
-  //   value: number
-  // ) => {
-  //   warningStates.current[type] = {
-  //     severity,
-  //     value,
-  //     lastShownAt: Date.now(),
-  //   };
-
-  //   try {
-  //     localStorage.setItem(
-  //       LOCAL_STORAGE_KEY,
-  //       JSON.stringify(warningStates.current)
-  //     );
-  //   } catch (error) {
-  //     console.error("Failed to save warning states:", error);
-  //   }
-  // };
+    return false;
+  };
 
   useEffect(() => {
     if (!stationData?.data) return;
@@ -121,10 +78,11 @@ const AwsTable: React.FC<AwsCardProps> = ({ id }) => {
       stationData.pastHourPrecip
     );
 
-    // isFirstRender.current = false;
-
-    // Check and show wind warning if needed
-    if (data.windSpeed >= WARNING_THRESHOLDS.windSpeed.high) {
+    // Wind Speed Warning
+    if (
+      data.windSpeed >= WARNING_THRESHOLDS.windSpeed.high &&
+      shouldShowWarning("windSpeed", windWarning.color)
+    ) {
       toast(
         <div className="flex flex-col">
           <span>
@@ -171,8 +129,11 @@ const AwsTable: React.FC<AwsCardProps> = ({ id }) => {
       );
     }
 
-    // Check and show UV warning if needed
-    if (data.uvIndex >= WARNING_THRESHOLDS.uvIndex.high) {
+    // UV Index Warning
+    if (
+      data.uvIndex >= WARNING_THRESHOLDS.uvIndex.high &&
+      shouldShowWarning("uvIndex", uvWarning.color)
+    ) {
       toast(
         <div className="flex flex-col">
           <span>
@@ -219,8 +180,11 @@ const AwsTable: React.FC<AwsCardProps> = ({ id }) => {
       );
     }
 
-    // Check and show heat index warning if needed
-    if (data.heatIndex >= WARNING_THRESHOLDS.heatIndex.high) {
+    // Heat Index Warning
+    if (
+      data.heatIndex >= WARNING_THRESHOLDS.heatIndex.high &&
+      shouldShowWarning("heatIndex", heatIndexWarning.color)
+    ) {
       toast(
         <div className="flex flex-col">
           <span>
@@ -270,8 +234,11 @@ const AwsTable: React.FC<AwsCardProps> = ({ id }) => {
       );
     }
 
-    // Check and show precipitation warning if needed
-    if (stationData.pastHourPrecip >= WARNING_THRESHOLDS.precipitation.high) {
+    // Precipitation Warning
+    if (
+      stationData.pastHourPrecip >= WARNING_THRESHOLDS.precipitation.high &&
+      shouldShowWarning("precipitation", hourRainWarning.color)
+    ) {
       toast(
         <div className="flex flex-col">
           <span>

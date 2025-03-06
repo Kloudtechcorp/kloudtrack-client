@@ -1,3 +1,5 @@
+import { Card } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import React, { useState } from "react";
 
 // TypeScript interface for weather terminology
@@ -12,7 +14,6 @@ interface WeatherTerminology {
 }
 
 const Reference: React.FC = () => {
-  const [filter, setFilter] = useState<string>("all");
   // Track expanded state for each terminology item
   const [expandedItems, setExpandedItems] = useState<{
     [key: number]: boolean;
@@ -90,14 +91,14 @@ const Reference: React.FC = () => {
     },
     {
       term: "Light Rains",
-      threshold: "2.5mm/ph and below",
+      threshold: "2.5mm/h and below",
       definition:
         "Individual drops easily identified and puddles(small muddy pools) form slowly. Small streams may flow in gutters.",
       category: "precipitation",
     },
     {
       term: "Moderate Rains",
-      threshold: "2.5-7.5mm/ph",
+      threshold: "2.5-7.5mm/h",
       definition: "Puddles rapidly forming and down pipes flowing freely",
       category: "precipitation",
     },
@@ -218,14 +219,14 @@ const Reference: React.FC = () => {
     {
       term: "Intense Rain",
       subtitle: "Orange Rainfall",
-      threshold: "15-30mm/ph",
+      threshold: "15-30mm/h",
       definition: "Flooding is threatening",
       category: "precipitation",
     },
     {
       term: "Torrential Rain",
       subtitle: "Red Rainfall",
-      threshold: "30mm/ph and above",
+      threshold: "30mm/h and above",
       definition: "Flooding is threatening",
       category: "precipitation",
     },
@@ -238,12 +239,6 @@ const Reference: React.FC = () => {
       [index]: !prev[index],
     }));
   };
-
-  // Filter terminology based on category selection
-  const filteredTerminologies =
-    filter === "all"
-      ? weatherTerminologies
-      : weatherTerminologies.filter((item) => item.category === filter);
 
   // Color coding based on category
   const getCategoryColor = (category: string, subcategory?: string): string => {
@@ -283,7 +278,7 @@ const Reference: React.FC = () => {
   // Function to render definition with expansion logic
   const renderDefinition = (definition: string, index: number) => {
     const isExpanded = expandedItems[index] || false;
-    const CHARACTER_LIMIT = 100;
+    const CHARACTER_LIMIT = 200;
     const isLongDefinition = definition.length > CHARACTER_LIMIT;
 
     if (!isLongDefinition) {
@@ -328,151 +323,332 @@ const Reference: React.FC = () => {
           Weather Terminology Reference
         </h1>
 
-        {/* Filter options */}
-        <div className="flex flex-wrap gap-2 mb-6">
-          <button
-            onClick={() => setFilter("all")}
-            className={`px-4 py-2 rounded-lg ${
-              filter === "all"
-                ? "bg-blue-600 text-white"
-                : "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200"
-            }`}
-          >
-            All
-          </button>
-          <button
-            onClick={() => setFilter("heatIndex")}
-            className={`px-4 py-2 rounded-lg ${
-              filter === "heatIndex"
-                ? "bg-blue-600 text-white"
-                : "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200"
-            }`}
-          >
-            Heat Index
-          </button>
-          <button
-            onClick={() => setFilter("windSpeed")}
-            className={`px-4 py-2 rounded-lg ${
-              filter === "windSpeed"
-                ? "bg-blue-600 text-white"
-                : "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200"
-            }`}
-          >
-            Wind Speed
-          </button>
-          <button
-            onClick={() => setFilter("precipitation")}
-            className={`px-4 py-2 rounded-lg ${
-              filter === "precipitation"
-                ? "bg-blue-600 text-white"
-                : "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200"
-            }`}
-          >
-            Rainfall
-          </button>
-          <button
-            onClick={() => setFilter("uvIndex")}
-            className={`px-4 py-2 rounded-lg ${
-              filter === "uvIndex"
-                ? "bg-blue-600 text-white"
-                : "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200"
-            }`}
-          >
-            UV Index
-          </button>
-        </div>
-
-        {/* Terminology cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredTerminologies.map((item, index) => (
-            <div
-              key={index}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
-            >
-              <div className="p-4">
-                <div className="flex justify-between items-start mb-2">
-                  <div>
-                    <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
-                      {item.term}
-                    </h2>
-                    {item.subtitle && (
-                      <h3 className="text-base font-semibold text-gray-600 dark:text-white">
-                        {item.subtitle}
-                      </h3>
+        <Tabs
+          defaultValue="all"
+          className="w-full flex flex-col p-3 rounded-2xl gap-5 "
+        >
+          <TabsList className="flex flex-row justify-start gap-3 w-full p-5 container">
+            <TabsTrigger value="all" className="w-fit">
+              All
+            </TabsTrigger>
+            <TabsTrigger value="heatIndex" className="w-fit">
+              Heat Index{" "}
+            </TabsTrigger>
+            <TabsTrigger value="windSpeed" className="w-fit">
+              Wind Speed{" "}
+            </TabsTrigger>
+            <TabsTrigger value="precipitation" className="w-fit">
+              Rainfall{" "}
+            </TabsTrigger>
+            <TabsTrigger value="uvIndex" className="w-fit">
+              UV Index{" "}
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="all">
+            <Card className="p-2">
+              {weatherTerminologies.map((item, index) => (
+                <div
+                  key={index}
+                  className="bg-white dark:bg-gray-800 overflow-hidden"
+                >
+                  <div className="p-4">
+                    <div className="flex justify-between items-start mb-2">
+                      <div>
+                        <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+                          {item.term}
+                        </h2>
+                        {item.subtitle && (
+                          <h3 className="text-base font-semibold text-gray-600 dark:text-white">
+                            {item.subtitle}
+                          </h3>
+                        )}
+                      </div>
+                      <span
+                        className={`text-xs px-2 py-1 rounded-full ${getCategoryColor(
+                          item.category,
+                          item.subcategory
+                        )}`}
+                      >
+                        {getCategoryLabel(item.category)}
+                      </span>
+                    </div>
+                    <div className="text-gray-600 dark:text-gray-300 text-sm mb-3">
+                      {renderDefinition(item.definition, index)}
+                    </div>
+                    {item.threshold && (
+                      <div className="bg-gray-100 dark:bg-gray-700 p-2 rounded-md mt-2">
+                        <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                          <span className="font-bold">Threshold:</span>{" "}
+                          {item.threshold}
+                        </p>
+                      </div>
                     )}
-                  </div>
-                  <span
-                    className={`text-xs px-2 py-1 rounded-full ${getCategoryColor(
-                      item.category,
-                      item.subcategory
-                    )}`}
+                    {item.leadTime && (
+                      <div className="bg-gray-100 dark:bg-gray-700 p-2 rounded-md mt-2">
+                        <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                          <span className="font-bold">Warning Lead Time:</span>{" "}
+                          {item.leadTime}
+                        </p>
+                      </div>
+                    )}
+                  </div>{" "}
+                  <hr className="bg-black h-0.4 w-full" />
+                </div>
+              ))}
+            </Card>
+          </TabsContent>
+          <TabsContent value="heatIndex">
+            <Card className="p-2">
+              {weatherTerminologies
+                .filter((item) => item.category === "heatIndex")
+                .map((item, index) => (
+                  <div
+                    key={index}
+                    className="bg-white dark:bg-gray-800 overflow-hidden"
                   >
-                    {getCategoryLabel(item.category)}
-                  </span>
-                </div>
-                <div className="text-gray-600 dark:text-gray-300 text-sm mb-3">
-                  {renderDefinition(item.definition, index)}
-                </div>
-                {item.threshold && (
-                  <div className="bg-gray-100 dark:bg-gray-700 p-2 rounded-md mt-2">
-                    <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
-                      <span className="font-bold">Threshold:</span>{" "}
-                      {item.threshold}
-                    </p>
+                    <div className="p-4">
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+                            {item.term}
+                          </h2>
+                          {item.subtitle && (
+                            <h3 className="text-base font-semibold text-gray-600 dark:text-white">
+                              {item.subtitle}
+                            </h3>
+                          )}
+                        </div>
+                        <span
+                          className={`text-xs px-2 py-1 rounded-full ${getCategoryColor(
+                            item.category,
+                            item.subcategory
+                          )}`}
+                        >
+                          {getCategoryLabel(item.category)}
+                        </span>
+                      </div>
+                      <div className="text-gray-600 dark:text-gray-300 text-sm mb-3">
+                        {renderDefinition(item.definition, index)}
+                      </div>
+                      {item.threshold && (
+                        <div className="bg-gray-100 dark:bg-gray-700 p-2 rounded-md mt-2">
+                          <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                            <span className="font-bold">Threshold:</span>{" "}
+                            {item.threshold}
+                          </p>
+                        </div>
+                      )}
+                      {item.leadTime && (
+                        <div className="bg-gray-100 dark:bg-gray-700 p-2 rounded-md mt-2">
+                          <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                            <span className="font-bold">
+                              Warning Lead Time:
+                            </span>{" "}
+                            {item.leadTime}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                    <hr className="bg-black h-0.4 w-full" />
                   </div>
-                )}
-                {item.leadTime && (
-                  <div className="bg-gray-100 dark:bg-gray-700 p-2 rounded-md mt-2">
-                    <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
-                      <span className="font-bold">Warning Lead Time:</span>{" "}
-                      {item.leadTime}
-                    </p>
-                  </div>
-                )}
+                ))}
+              <div className="w-full h-full mt-5">
+                <img
+                  src="/assets/references/heatindex-pagasa.png"
+                  alt="pagasa-heatindex"
+                />
               </div>
-            </div>
-          ))}
-        </div>
-
-        {filter === "heatIndex" && (
-          <div className="w-full h-full mt-5">
-            <img
-              src="/assets/references/heatindex-pagasa.png"
-              alt="pagasa-heatindex"
-            />
-          </div>
-        )}
-
-        {filter === "windSpeed" && (
-          <div className="w-full h-full mt-5">
-            <img
-              src="/assets/references/wind-signal-pagasa.jpg"
-              alt="pagasa-wind-signal"
-            />
-          </div>
-        )}
-
-        {filter === "precipitation" && (
-          <div className="w-full h-full mt-5">
-            <img
-              src="/assets/references/rainfall-advisory.webp"
-              alt="pagasa-rainfall"
-            />
-          </div>
-        )}
-
-        {filteredTerminologies.length === 0 && (
-          <div className="text-center py-8">
-            <p className="text-gray-600 dark:text-gray-400">
-              No terminology found for this category.
-            </p>
-          </div>
-        )}
+            </Card>
+          </TabsContent>
+          <TabsContent value="windSpeed">
+            <Card className="p-2">
+              {weatherTerminologies
+                .filter((item) => item.category === "windSpeed")
+                .map((item, index) => (
+                  <div
+                    key={index}
+                    className="bg-white dark:bg-gray-800 overflow-hidden"
+                  >
+                    <div className="p-4">
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+                            {item.term}
+                          </h2>
+                          {item.subtitle && (
+                            <h3 className="text-base font-semibold text-gray-600 dark:text-white">
+                              {item.subtitle}
+                            </h3>
+                          )}
+                        </div>
+                        <span
+                          className={`text-xs px-2 py-1 rounded-full ${getCategoryColor(
+                            item.category,
+                            item.subcategory
+                          )}`}
+                        >
+                          {getCategoryLabel(item.category)}
+                        </span>
+                      </div>
+                      <div className="text-gray-600 dark:text-gray-300 text-sm mb-3">
+                        {renderDefinition(item.definition, index)}
+                      </div>
+                      {item.threshold && (
+                        <div className="bg-gray-100 dark:bg-gray-700 p-2 rounded-md mt-2">
+                          <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                            <span className="font-bold">Threshold:</span>{" "}
+                            {item.threshold}
+                          </p>
+                        </div>
+                      )}
+                      {item.leadTime && (
+                        <div className="bg-gray-100 dark:bg-gray-700 p-2 rounded-md mt-2">
+                          <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                            <span className="font-bold">
+                              Warning Lead Time:
+                            </span>{" "}
+                            {item.leadTime}
+                          </p>
+                        </div>
+                      )}
+                    </div>{" "}
+                    <hr className="bg-black h-0.4 w-full" />
+                  </div>
+                ))}
+              <div className="w-full h-full mt-5">
+                <img
+                  src="/assets/references/wind-signal-pagasa.jpg"
+                  alt="pagasa-wind-signal"
+                />
+              </div>
+            </Card>
+          </TabsContent>
+          <TabsContent value="uvIndex">
+            <Card className="p-2">
+              {weatherTerminologies
+                .filter((item) => item.category === "uvIndex")
+                .map((item, index) => (
+                  <div
+                    key={index}
+                    className="bg-white dark:bg-gray-800 overflow-hidden"
+                  >
+                    <div className="p-4">
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+                            {item.term}
+                          </h2>
+                          {item.subtitle && (
+                            <h3 className="text-base font-semibold text-gray-600 dark:text-white">
+                              {item.subtitle}
+                            </h3>
+                          )}
+                        </div>
+                        <span
+                          className={`text-xs px-2 py-1 rounded-full ${getCategoryColor(
+                            item.category,
+                            item.subcategory
+                          )}`}
+                        >
+                          {getCategoryLabel(item.category)}
+                        </span>
+                      </div>
+                      <div className="text-gray-600 dark:text-gray-300 text-sm mb-3">
+                        {renderDefinition(item.definition, index)}
+                      </div>
+                      {item.threshold && (
+                        <div className="bg-gray-100 dark:bg-gray-700 p-2 rounded-md mt-2">
+                          <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                            <span className="font-bold">Threshold:</span>{" "}
+                            {item.threshold}
+                          </p>
+                        </div>
+                      )}
+                      {item.leadTime && (
+                        <div className="bg-gray-100 dark:bg-gray-700 p-2 rounded-md mt-2">
+                          <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                            <span className="font-bold">
+                              Warning Lead Time:
+                            </span>{" "}
+                            {item.leadTime}
+                          </p>
+                        </div>
+                      )}
+                    </div>{" "}
+                    <hr className="bg-black h-0.4 w-full" />
+                  </div>
+                ))}
+            </Card>
+          </TabsContent>
+          <TabsContent value="precipitation">
+            <Card className="p-2">
+              {weatherTerminologies
+                .filter((item) => item.category === "precipitation")
+                .map((item, index) => (
+                  <div
+                    key={index}
+                    className="bg-white dark:bg-gray-800 overflow-hidden"
+                  >
+                    <div className="p-4">
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+                            {item.term}
+                          </h2>
+                          {item.subtitle && (
+                            <h3 className="text-base font-semibold text-gray-600 dark:text-white">
+                              {item.subtitle}
+                            </h3>
+                          )}
+                        </div>
+                        <span
+                          className={`text-xs px-2 py-1 rounded-full ${getCategoryColor(
+                            item.category,
+                            item.subcategory
+                          )}`}
+                        >
+                          {getCategoryLabel(item.category)}
+                        </span>
+                      </div>
+                      <div className="text-gray-600 dark:text-gray-300 text-sm mb-3">
+                        {renderDefinition(item.definition, index)}
+                      </div>
+                      {item.threshold && (
+                        <div className="bg-gray-100 dark:bg-gray-700 p-2 rounded-md mt-2">
+                          <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                            <span className="font-bold">Threshold:</span>{" "}
+                            {item.threshold}
+                          </p>
+                        </div>
+                      )}
+                      {item.leadTime && (
+                        <div className="bg-gray-100 dark:bg-gray-700 p-2 rounded-md mt-2">
+                          <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                            <span className="font-bold">
+                              Warning Lead Time:
+                            </span>{" "}
+                            {item.leadTime}
+                          </p>
+                        </div>
+                      )}
+                    </div>{" "}
+                    <hr className="bg-black h-0.4 w-full" />
+                  </div>
+                ))}
+              <div className="w-full h-full mt-5">
+                <img
+                  src="/assets/references/rainfall-advisory.webp"
+                  alt="pagasa-rainfall"
+                />
+              </div>
+            </Card>
+          </TabsContent>
+        </Tabs>
 
         <div className="mt-6 text-sm text-gray-600 dark:text-gray-400 flex flex-col">
           <p>Sources:</p>
           <a
-            href="https://www.pagasa.dost.gov.ph/weather/heat-index"
+            href="https://www.pagasa.dost.gov.h/weather/heat-index"
             target="_blank"
             rel="noopener noreferrer"
             className="underline text-blue-700 hover:cursor-pointer hover:text-blue-700/80"
@@ -480,7 +656,7 @@ const Reference: React.FC = () => {
             Pagasa's Heat Index
           </a>
           <a
-            href="https://www.pagasa.dost.gov.ph/information/weather-terminologies"
+            href="https://www.pagasa.dost.gov.h/information/weather-terminologies"
             target="_blank"
             rel="noopener noreferrer"
             className="underline text-blue-700 hover:cursor-pointer hover:text-blue-700/80 w-fit"
@@ -488,7 +664,7 @@ const Reference: React.FC = () => {
             Pagasa's Weather Terminologies
           </a>
           <a
-            href="https://www.pagasa.dost.gov.ph/learning-tools/tropical-cyclone-wind-signal"
+            href="https://www.pagasa.dost.gov.h/learning-tools/tropical-cyclone-wind-signal"
             target="_blank"
             rel="noopener noreferrer"
             className="underline text-blue-700 hover:cursor-pointer hover:text-blue-700/80 w-fit"

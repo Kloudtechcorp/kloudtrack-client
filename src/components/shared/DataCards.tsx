@@ -9,6 +9,7 @@ import {
 import { useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { IoWarning } from "react-icons/io5";
+import { X } from "lucide-react";
 
 type DataCardsProps = {
   type: "DASHBOARD" | "DATADASHBOARD";
@@ -88,42 +89,50 @@ const DataCards = ({
         <div className="flex flex-col">
           <span>
             {`
-              ${windWarning.color === "red" ? "Typhoon Force" : ""}
-              ${windWarning.color === "orange" ? "Storm Force" : ""}
-              ${windWarning.color === "amber" ? "Gale Force" : ""}
-              ${windWarning.color === "yellow" ? "Strong" : ""}
-            `}{" "}
+                ${windWarning.color === "red" ? "Typhoon Force" : ""}
+                ${windWarning.color === "orange" ? "Storm Force" : ""}
+                ${windWarning.color === "amber" ? "Gale Force" : ""}
+                ${windWarning.color === "yellow" ? "Strong" : ""}
+              `}{" "}
             Winds Alert at {stationName}
           </span>
           <span
             className={`
-            ${
-              windWarning.color === "red"
-                ? "text-[#FE0000] font-bold text-2xl"
-                : ""
-            }
-            ${
-              windWarning.color === "orange"
-                ? "text-[#FFC000] font-bold text-2xl"
-                : ""
-            }
-            ${
-              windWarning.color === "amber"
-                ? "text-[#FFFF00] font-bold text-2xl"
-                : ""
-            }
-            ${
-              windWarning.color === "yellow"
-                ? "text-[#00CCFF] font-bold text-2xl"
-                : ""
-            }
-          `}
+                ${
+                  windWarning.color === "red"
+                    ? "text-[#FE0000] font-bold text-2xl"
+                    : ""
+                }
+                ${
+                  windWarning.color === "orange"
+                    ? "text-[#FFC000] font-bold text-2xl"
+                    : ""
+                }
+                ${
+                  windWarning.color === "amber"
+                    ? "text-[#FFFF00] font-bold text-2xl"
+                    : ""
+                }
+                ${
+                  windWarning.color === "yellow"
+                    ? "text-[#00CCFF] font-bold text-2xl"
+                    : ""
+                }
+              `}
           >
             {currentweather.windSpeed}
             {weatherUnit("windSpeed")}
           </span>
+          <X
+            className="absolute top-2 right-2 size-4 hover:cursor-pointer"
+            onClick={() => toast.dismiss(`windSpeed-${stationName}`)}
+          />
         </div>,
-        { position: "bottom-right", duration: 5000, closeButton: true }
+        {
+          position: "bottom-right",
+          duration: 5000,
+          id: `windSpeed-${stationName}`,
+        }
       );
     }
 
@@ -136,42 +145,50 @@ const DataCards = ({
         <div className="flex flex-col">
           <span>
             {`
-              ${uvWarning.color === "red" ? "Extreme" : ""}
-              ${uvWarning.color === "orange" ? "Very High" : ""}
-              ${uvWarning.color === "amber" ? "High" : ""}
-              ${uvWarning.color === "yellow" ? "Moderate" : ""}
-            `}{" "}
+                        ${uvWarning.color === "red" ? "Extreme" : ""}
+                        ${uvWarning.color === "orange" ? "Very High" : ""}
+                        ${uvWarning.color === "amber" ? "High" : ""}
+                        ${uvWarning.color === "yellow" ? "Moderate" : ""}
+                      `}{" "}
             UV Index Alert at {stationName}
           </span>
           <span
             className={`
-            ${
-              uvWarning.color === "red"
-                ? "text-[#9E47CC] font-bold text-2xl"
-                : ""
-            }
-            ${
-              uvWarning.color === "orange"
-                ? "text-[#F55023] font-bold text-2xl"
-                : ""
-            }
-            ${
-              uvWarning.color === "amber"
-                ? "text-[#FF9000] font-bold text-2xl"
-                : ""
-            }
-            ${
-              uvWarning.color === "yellow"
-                ? "text-[#FFBC01] font-bold text-2xl"
-                : ""
-            }
-          `}
+                        ${
+                          uvWarning.color === "red"
+                            ? "text-[#9E47CC] font-bold text-2xl"
+                            : ""
+                        }
+                        ${
+                          uvWarning.color === "orange"
+                            ? "text-[#F55023] font-bold text-2xl"
+                            : ""
+                        }
+                        ${
+                          uvWarning.color === "amber"
+                            ? "text-[#FF9000] font-bold text-2xl"
+                            : ""
+                        }
+                        ${
+                          uvWarning.color === "yellow"
+                            ? "text-[#FFBC01] font-bold text-2xl"
+                            : ""
+                        }
+                      `}
           >
             {currentweather.uvIndex}
             {weatherUnit("uvIndex")}
           </span>
+          <X
+            className="absolute top-2 right-2 size-4 hover:cursor-pointer"
+            onClick={() => toast.dismiss(`uvIndex-${stationName}`)}
+          />
         </div>,
-        { position: "bottom-right", duration: 5000, closeButton: true }
+        {
+          position: "bottom-right",
+          duration: 5000,
+          id: `uvIndex-${stationName}`,
+        }
       );
     }
 
@@ -191,38 +208,46 @@ const DataCards = ({
               ? "Extreme Caution"
               : heatIndexWarning.color === "yellow"
               ? "Caution"
-              : ""}
+              : ""}{" "}
             Heat Index at {stationName}
           </span>
           <span
             className={`
-            ${
-              heatIndexWarning.color === "red"
-                ? "text-[#CC0001] font-bold text-2xl"
-                : ""
-            }
-            ${
-              heatIndexWarning.color === "orange"
-                ? "text-[#FF6600] font-bold text-2xl"
-                : ""
-            }
-            ${
-              heatIndexWarning.color === "amber"
-                ? "text-[#FFCC00] font-bold text-2xl"
-                : ""
-            }
-            ${
-              heatIndexWarning.color === "yellow"
-                ? "text-[#FFFF00] font-bold text-2xl"
-                : ""
-            }
-          `}
+                        ${
+                          heatIndexWarning.color === "red"
+                            ? "text-[#CC0001] font-bold text-2xl"
+                            : ""
+                        }
+                        ${
+                          heatIndexWarning.color === "orange"
+                            ? "text-[#FF6600] font-bold text-2xl"
+                            : ""
+                        }
+                        ${
+                          heatIndexWarning.color === "amber"
+                            ? "text-[#FFCC00] font-bold text-2xl"
+                            : ""
+                        }
+                        ${
+                          heatIndexWarning.color === "yellow"
+                            ? "text-[#FFFF00] font-bold text-2xl"
+                            : ""
+                        }
+                      `}
           >
             {currentweather.heatIndex}
             {weatherUnit("heatIndex")}
           </span>
+          <X
+            className="absolute top-2 right-2 size-4 hover:cursor-pointer"
+            onClick={() => toast.dismiss(`heatIndex-${stationName}`)}
+          />
         </div>,
-        { position: "bottom-right", duration: 5000, closeButton: true }
+        {
+          position: "bottom-right",
+          duration: 5000,
+          id: `heatIndex-${stationName}`,
+        }
       );
     }
 
@@ -235,36 +260,44 @@ const DataCards = ({
         <div className="flex flex-col">
           <span>
             {`
-              ${hourRainWarning.color === "red" ? "Torrential" : ""}
-              ${hourRainWarning.color === "orange" ? "Intense" : ""}
-              ${hourRainWarning.color === "amber" ? "Heavy" : ""}
-            `}{" "}
+                        ${hourRainWarning.color === "red" ? "Torrential" : ""}
+                        ${hourRainWarning.color === "orange" ? "Intense" : ""}
+                        ${hourRainWarning.color === "amber" ? "Heavy" : ""}
+                      `}{" "}
             Rainfall Warning at {stationName}
           </span>
           <span
             className={`
-            ${
-              hourRainWarning.color === "red"
-                ? "text-red-500 font-bold text-2xl"
-                : ""
-            }
-            ${
-              hourRainWarning.color === "orange"
-                ? "text-orange-500 font-bold text-2xl"
-                : ""
-            }
-            ${
-              hourRainWarning.color === "yellow"
-                ? "text-yellow-500 font-bold text-2xl"
-                : ""
-            }
-          `}
+                        ${
+                          hourRainWarning.color === "red"
+                            ? "text-red-500 font-bold text-2xl"
+                            : ""
+                        }
+                        ${
+                          hourRainWarning.color === "orange"
+                            ? "text-orange-500 font-bold text-2xl"
+                            : ""
+                        }
+                        ${
+                          hourRainWarning.color === "yellow"
+                            ? "text-yellow-500 font-bold text-2xl"
+                            : ""
+                        }
+                      `}
           >
             {pastHourPrecip}
             {weatherUnit("precipitation")}/hr
           </span>
+          <X
+            className="absolute top-2 right-2 size-4 hover:cursor-pointer"
+            onClick={() => toast.dismiss(`precipitation-${stationName}`)}
+          />
         </div>,
-        { position: "bottom-right", duration: 5000, closeButton: true }
+        {
+          position: "bottom-right",
+          duration: 5000,
+          id: `precipitation-${stationName}`,
+        }
       );
     }
   }, [currentweather, pastHourPrecip, stationName]);
@@ -329,7 +362,7 @@ const DataCards = ({
                       )}
                     </div>
                   ) : (
-                    <div className="w-full px-2.5 py-0.5">{`${
+                    <div className="weatherDataText">{`${
                       currentweather.heatIndex
                     } ${weatherUnit("heatIndex")}`}</div>
                   )}
@@ -590,7 +623,7 @@ const DataCards = ({
                     )}
                   </div>
                 ) : (
-                  <div className="w-full px-2.5 py-0.5">{`${
+                  <div className="weatherDataText">{`${
                     currentweather.heatIndex
                   } ${weatherUnit("heatIndex")}`}</div>
                 )}

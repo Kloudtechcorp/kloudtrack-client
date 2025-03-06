@@ -50,6 +50,7 @@ import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Trash2, User } from "lucide-react";
+import DeviceCounter from "@/components/shared/DeviceCounter";
 
 const Profile = () => {
   const { theme } = useTheme();
@@ -288,9 +289,10 @@ const Profile = () => {
                 <div>No API key generated</div>
               ) : (
                 <>
-                  <span className="text-nowrap text-md font-bold">
-                    Active Devices: {activeDevices.activeDevices}
-                  </span>
+                  <DeviceCounter
+                    maxDevices={activeDevices.maxDevices}
+                    activeDevices={activeDevices.activeDevices}
+                  />
                   {activeDevices.devices.map((item) => (
                     <Card className="flex gap-2 p-5" key={item.sessionId}>
                       <div className="flex flex-col md:flex-row w-full gap-2">

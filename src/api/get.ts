@@ -30,6 +30,7 @@ import {
   analysisType,
   DynamicDatasetType,
   WeatherStationResponse,
+  ActiveDevicesResponse,
 } from "@/types/queryTypes";
 
 const method: string = "GET";
@@ -410,4 +411,16 @@ export const stackedGraphDataset = async ({
     throw new Error(data.message || "Failed to fetch graph data");
   }
   return data.transformedData;
+};
+// ++++++++++++++++ ACTIVE DEVICES
+export const getActiveDevices = async (): Promise<ActiveDevicesResponse[]> => {
+  const response = await fetch(`${server}/user/auth/active-devices`, {
+    method,
+    credentials: "include",
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to detailed data of a station");
+  }
+  return data;
 };

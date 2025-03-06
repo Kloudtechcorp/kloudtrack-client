@@ -11,6 +11,7 @@ import {
 } from "@/lib/utils";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { X } from "lucide-react";
 
 interface AwsCardProps {
   id: string;
@@ -121,11 +122,17 @@ const AwsTable: React.FC<AwsCardProps> = ({ id }) => {
             {data.windSpeed}
             {weatherUnit("windSpeed")}
           </span>
+          <X
+            className="absolute top-2 right-2 size-4 hover:cursor-pointer"
+            onClick={() =>
+              toast.dismiss(`windSpeed-${stationData.station.name}`)
+            }
+          />
         </div>,
         {
           position: "bottom-right",
           duration: 5000,
-          closeButton: true,
+          id: `windSpeed-${stationData.station.name}`,
         }
       );
     }
@@ -173,11 +180,15 @@ const AwsTable: React.FC<AwsCardProps> = ({ id }) => {
             {data.uvIndex}
             {weatherUnit("uvIndex")}
           </span>
+          <X
+            className="absolute top-2 right-2 size-4 hover:cursor-pointer"
+            onClick={() => toast.dismiss(`uvIndex-${stationData.station.name}`)}
+          />
         </div>,
         {
           position: "bottom-right",
           duration: 5000,
-          closeButton: true,
+          id: `uvIndex-${stationData.station.name}`,
         }
       );
     }
@@ -228,11 +239,17 @@ const AwsTable: React.FC<AwsCardProps> = ({ id }) => {
             {data.heatIndex}
             {weatherUnit("heatIndex")}
           </span>
+          <X
+            className="absolute top-2 right-2 size-4 hover:cursor-pointer"
+            onClick={() =>
+              toast.dismiss(`heatIndex-${stationData.station.name}`)
+            }
+          />
         </div>,
         {
           position: "bottom-right",
           duration: 5000,
-          closeButton: true,
+          id: `heatIndex-${stationData.station.name}`,
         }
       );
     }
@@ -274,11 +291,17 @@ const AwsTable: React.FC<AwsCardProps> = ({ id }) => {
             {stationData.pastHourPrecip}
             {weatherUnit("precipitation")}/hr
           </span>
+          <X
+            className="absolute top-2 right-2 size-4 hover:cursor-pointer"
+            onClick={() =>
+              toast.dismiss(`precipitation-${stationData.station.name}`)
+            }
+          />
         </div>,
         {
           position: "bottom-right",
           duration: 5000,
-          closeButton: true,
+          id: `precipitation-${stationData.station.name}`,
         }
       );
     }

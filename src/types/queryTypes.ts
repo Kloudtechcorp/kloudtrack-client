@@ -334,3 +334,18 @@ export type WeatherStationResponse = {
   recordedAt: string;
   station: Station;
 };
+
+type Device = {
+  deviceNumber: number;
+  deviceName: string;
+  location: string;
+  os: string;
+  expiresAt: string; // ISO date string
+  sessionId: string;
+};
+
+export type ActiveDevicesResponse = {
+  activeDevices: number;
+  devices: Device[];
+  maxDevices: number;
+};

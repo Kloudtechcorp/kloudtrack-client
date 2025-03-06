@@ -437,7 +437,7 @@ const DataCards = ({
                     )}
                   </div>
                 ) : (
-                  "--"
+                  <div className="weatherDataText cardDataDiv">--</div>
                 )}
               </div>
             </CardContent>
@@ -596,7 +596,7 @@ const DataCards = ({
                 )}
               </div>
             ) : (
-              "--"
+              <div className="weatherDataText cardDataDiv">--</div>
             )}
           </div>
         </CardContent>
@@ -697,7 +697,7 @@ const DataCards = ({
                 )}
               </div>
             ) : (
-              "--"
+              <div className="weatherDataText cardDataDiv">--</div>
             )}
           </div>
         </CardContent>

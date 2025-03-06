@@ -36,8 +36,6 @@ const RangeRepeatSelector: React.FC<RangeRepeatSelectorProps> = ({
               <SelectItem value="minute">Minute</SelectItem>
               <SelectItem value="halfhour">30 Minutes</SelectItem>
               <SelectItem value="hour">Hour</SelectItem>
-
-              {rangeData !== "24" && <SelectItem value="day">Day</SelectItem>}
             </SelectContent>
           </Select>
         </span>

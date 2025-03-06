@@ -16,28 +16,139 @@ import { z } from "zod";
 import { useUserContext } from "@/hooks/context/authContext";
 import PuffLoader from "react-spinners/PuffLoader";
 import { useSignInAccount } from "@/hooks/react-query/mutations";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "@/hooks/use-toast";
+
+// Enhanced login schema with device info
+const enhancedLoginSchema = login.extend({
+  deviceInfo: z
+    .object({
+      device: z.string(),
+      browser: z.string(),
+      os: z.string(),
+      location: z.string().optional(),
+    })
+    .optional(),
+});
+
+type EnhancedLoginType = z.infer<typeof enhancedLoginSchema>;
 
 const Signin = () => {
   const navigate = useNavigate();
   // const { theme } = useTheme();
   const { isAuthenticated, checkAuthUser } = useUserContext();
   const [isLoading, setIsLoading] = useState(false);
+  const [locationData, setLocationData] = useState<string | null>(null);
   const { mutateAsync: signInAccount } = useSignInAccount();
 
-  const form = useForm<z.infer<typeof login>>({
-    resolver: zodResolver(login),
+  const form = useForm<EnhancedLoginType>({
+    resolver: zodResolver(enhancedLoginSchema),
     defaultValues: {
       username: "",
       password: "",
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof login>) => {
+  // Fetch location data on component mount
+  useEffect(() => {
+    const fetchLocation = async () => {
+      try {
+        const response = await fetch(
+          "https://ipinfo.io/json?token=d4f581d268b14e"
+        );
+        if (response.ok) {
+          const data = await response.json();
+          if (data.city && data.country) {
+            setLocationData(
+              `${data.city}, ${data.region} ${data.country} ${data.postal}, coordinates: ${data.loc}`
+            );
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching location:", error);
+      }
+    };
+
+    fetchLocation();
+  }, []);
+
+  // Get device information
+  const getDeviceInfo = () => {
+    const userAgent = window.navigator.userAgent;
+    let deviceType = "Unknown";
+    let browserName = "Unknown";
+    let osName = "Unknown";
+
+    // Detect device type
+    if (/iPhone|iPad|iPod/i.test(userAgent)) {
+      deviceType = /iPad/i.test(userAgent) ? "iPad" : "iPhone";
+    } else if (/Android/i.test(userAgent)) {
+      deviceType = /Tablet/i.test(userAgent)
+        ? "Android Tablet"
+        : "Android Phone";
+    } else if (/Windows Phone/i.test(userAgent)) {
+      deviceType = "Windows Phone";
+    } else if (/Macintosh|MacIntel|MacPPC|Mac68K/i.test(userAgent)) {
+      deviceType = "Mac";
+    } else if (/Windows|Win32|Win64|Windows NT/i.test(userAgent)) {
+      deviceType = "Windows PC";
+    } else if (/Linux/i.test(userAgent)) {
+      deviceType = "Linux";
+    }
+
+    // Detect browser
+    if (/chrome/i.test(userAgent) && !/edg/i.test(userAgent)) {
+      browserName = "Chrome";
+    } else if (/firefox/i.test(userAgent)) {
+      browserName = "Firefox";
+    } else if (/safari/i.test(userAgent) && !/chrome/i.test(userAgent)) {
+      browserName = "Safari";
+    } else if (/edg/i.test(userAgent)) {
+      browserName = "Edge";
+    } else if (/opera|opr/i.test(userAgent)) {
+      browserName = "Opera";
+    } else if (/msie|trident/i.test(userAgent)) {
+      browserName = "Internet Explorer";
+    }
+
+    // Detect OS
+    if (/Windows NT 10.0/i.test(userAgent)) {
+      osName = "Windows 10";
+    } else if (/Windows NT 6.3/i.test(userAgent)) {
+      osName = "Windows 8.1";
+    } else if (/Windows NT 6.2/i.test(userAgent)) {
+      osName = "Windows 8";
+    } else if (/Windows NT 6.1/i.test(userAgent)) {
+      osName = "Windows 7";
+    } else if (/Mac OS X/i.test(userAgent)) {
+      osName = "macOS";
+    } else if (/Android/i.test(userAgent)) {
+      osName = "Android";
+    } else if (/iOS|iPhone|iPad|iPod/i.test(userAgent)) {
+      osName = "iOS";
+    } else if (/Linux/i.test(userAgent)) {
+      osName = "Linux";
+    }
+
+    return {
+      device: deviceType,
+      browser: browserName,
+      os: osName,
+      location: locationData || "Unknown location",
+    };
+  };
+
+  const onSubmit = async (values: EnhancedLoginType) => {
     setIsLoading(true);
     try {
-      const session = await signInAccount(values);
+      // Add device info to login data
+      const deviceInfo = getDeviceInfo();
+      const loginData = {
+        ...values,
+        deviceInfo,
+      };
+      console.log(loginData);
+      const session = await signInAccount(loginData);
 
       if (!session) {
         toast({ title: "Login failed. Please try again." });

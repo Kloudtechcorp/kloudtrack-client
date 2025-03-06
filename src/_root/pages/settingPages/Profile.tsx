@@ -9,7 +9,10 @@ import {
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { checkStationType, formatDateString } from "@/lib/utils";
-import { useGetUserProfile } from "@/hooks/react-query/queries";
+import {
+  useGetActiveDevices,
+  useGetUserProfile,
+} from "@/hooks/react-query/queries";
 import { useDeleteApiKey } from "@/hooks/react-query/mutations";
 import { useUserContext } from "@/hooks/context/authContext";
 import {
@@ -44,14 +47,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Trash2 } from "lucide-react";
+import { Trash2, User } from "lucide-react";
 
 const Profile = () => {
   const { theme } = useTheme();
   const { user } = useUserContext();
   const { data: profile, refetch } = useGetUserProfile(user.id);
+  const { data: activeDevices, refetch: refetchDevices } =
+    useGetActiveDevices();
   const { mutateAsync: deleteApiKey } = useDeleteApiKey(refetch);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -61,6 +66,11 @@ const Profile = () => {
       .includes(searchQuery.toLowerCase());
     return matchesSearch;
   });
+
+  useEffect(() => {
+    refetchDevices;
+  }, []);
+
   return (
     <div className="px-5 w-full h-full flex flex-col gap-3">
       <Card x-chunk="dashboard-05-chunk-3">
@@ -271,6 +281,52 @@ const Profile = () => {
                     ))}
                   </TableBody>
                 </Table>
+              )}
+            </div>
+            <div className="px-7 pb-5 flex flex-col gap-2">
+              {!activeDevices ? (
+                <div>No API key generated</div>
+              ) : (
+                <>
+                  <span className="text-nowrap text-md font-bold">
+                    Active Devices: {activeDevices.activeDevices}
+                  </span>
+                  {activeDevices.devices.map((item) => (
+                    <Card className="flex gap-2 p-5" key={item.sessionId}>
+                      <div className="flex flex-col md:flex-row w-full gap-2">
+                        <div className="w-20 hidden md:flex justify-center">
+                          <div className="flex flex-col gap-2 justify-center ">
+                            <User className="size-12" />
+                          </div>
+                        </div>
+                        <div className="w-full flex flex-col">
+                          <h2 className="capitalize font-medium text-lg flex gap-2 items-center">
+                            <span>{item.deviceName}</span>
+                            <span className="flex">
+                              {item.expiresAt &&
+                              new Date(item.expiresAt) <= new Date() ? (
+                                <Badge>Expired</Badge>
+                              ) : null}
+                            </span>
+                          </h2>
+                          <span className="text-base">{item.location}</span>
+                          <span className="text-muted-foreground text-sm">
+                            Expires on{" "}
+                            {item.expiresAt && item.expiresAt !== "Never"
+                              ? formatDateString(
+                                  new Date(
+                                    new Date(item.expiresAt).getTime() +
+                                      8 * 60 * 60 * 1000
+                                  ).toISOString(),
+                                  "long"
+                                )
+                              : item.expiresAt}
+                          </span>
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
+                </>
               )}
             </div>
           </div>

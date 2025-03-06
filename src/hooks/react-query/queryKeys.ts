@@ -38,4 +38,5 @@ export enum QUERY_KEYS {
 
   //
   GET_BUG_REPORTS = "getBugReports",
+  GET_ACTIVE_DEVICES = "getActiveDevices",
 }

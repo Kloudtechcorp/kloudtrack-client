@@ -296,6 +296,7 @@ export type analysisType = {
   stationId: string;
   weatherData: string;
   type: string;
+  repeat: string;
 };
 
 export type detailedStationProps = {
@@ -311,4 +312,40 @@ export type detailedStationProps = {
   serial: string;
   imageLink: string | null;
   createdAt: Date;
+};
+type Station = {
+  name: string;
+  type: string;
+  latitude: number;
+  longitude: number;
+  barangay: string;
+  municipality: string;
+  province: string;
+};
+
+export type WeatherStationResponse = {
+  average: string;
+  currentData: number;
+  max: string;
+  maxTime: string;
+  min: string;
+  minTime: string;
+  past1minute: number;
+  recordedAt: string;
+  station: Station;
+};
+
+type Device = {
+  deviceNumber: number;
+  deviceName: string;
+  location: string;
+  os: string;
+  expiresAt: string; // ISO date string
+  sessionId: string;
+};
+
+export type ActiveDevicesResponse = {
+  activeDevices: number;
+  devices: Device[];
+  maxDevices: number;
 };

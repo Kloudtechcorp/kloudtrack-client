@@ -17,7 +17,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { BugReport } from "../forms/bugReport";
-import { LogOut } from "lucide-react";
+import { Bug, LogOut } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../ui/button";
 // import { Button } from "../ui/button";
@@ -53,6 +53,13 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
       route: "/satellite",
       label: "Satellite",
       tooltip: "Satellite",
+    },
+
+    {
+      imgUrl: "/assets/icons/reference.svg",
+      route: "/references",
+      label: "References",
+      tooltip: "References",
     },
 
     {
@@ -141,16 +148,18 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
           <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger>
               <Button
-                className={`bg-transparent text-black dark:text-white flex items-center py-3 justify-center rounded-sm w-full hover:bg-black/5 dark:hover:bg-white/5 ${
-                  clicked ? "justify-start px-4" : "justify-center"
+                className={`flex gap-4 items-center py-3 px-2 rounded-sm bg-transparent text-black dark:text-white font-normal hover:bg-black/5 dark:hover:bg-black/5 dark:invert ${
+                  clicked ? "justify-start" : "justify-center"
                 }`}
               >
-                <BugIcon theme={""} />
-                {clicked && (
-                  <span className="w-full pl-2 text-sm md:text-base">
-                    Send a Report
-                  </span>
-                )}
+                <Bug className="dark:bg-transparent dark:invert size-4" />
+                <span
+                  className={`dark:invert ${
+                    clicked ? "block md:text-base text-xs" : "hidden"
+                  }`}
+                >
+                  Send Report
+                </span>
               </Button>
             </SheetTrigger>
             <SheetContent side={"left"}>

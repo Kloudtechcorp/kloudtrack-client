@@ -31,7 +31,20 @@ export function formatDateString(
     minute: "numeric",
   });
 
-  return `${formattedDate} at ${time}`;
+  return `${formattedDate} ${time}`;
+}
+
+export function formatDateStringGraph(dateString: string) {
+  const now = new Date(dateString);
+  const utcPlus8Now = new Date(now.getTime() - 8 * 60 * 60 * 1000);
+
+  const date = new Date(utcPlus8Now);
+  const time = date.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "numeric",
+  });
+
+  return `${time}`;
 }
 
 export const getNearestTimeIndex = (hours: number, minutes: number): number => {
@@ -74,7 +87,10 @@ export const returnActive = (active: boolean) => {
   return "Active";
 };
 
-export const getWindDirectionLabel = (value: number) => {
+export const getWindDirectionLabel = (value: number | null) => {
+  if (value === null) {
+    return "--";
+  }
   if (value >= 337.6 || value <= 22.5) {
     return `${Math.round(value * 100) / 100} °N`;
   } else if (value >= 22.6 && value <= 67.5) {
@@ -314,15 +330,47 @@ export function addSpacesToPascalCase(input: string): string {
 
 export const getFormattedDataset = (data: GraphData[]): GraphData[] => {
   return data.map((item) => {
-    const formattedDate = new Date(item.recorded).toLocaleString("en-US", {
+    const recordedDate = new Date(item.recorded);
+    recordedDate.setHours(recordedDate.getHours() + 8); // Add 8 hours
+
+    const formattedDate = recordedDate.toLocaleString("en-US", {
       month: "long",
       day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
       hour12: false,
     });
+
     const datetimeWithAt = formattedDate.replace(",", " at");
     return {
       ...item,
       recorded: datetimeWithAt,
     };
   });
+};
+
+export const WARNING_THRESHOLDS = {
+  heatIndex: { moderate: 27, high: 33, "very high": 42, extreme: 54 },
+  windSpeed: { moderate: 39, high: 62, "very high": 89, extreme: 118 },
+  uvIndex: { moderate: 3, high: 6, "very high": 8, extreme: 11 },
+  precipitation: { moderate: 2.5, high: 7.5, "very high": 15, extreme: 30 },
+};
+
+export const getWarningInfo = (
+  type: keyof typeof WARNING_THRESHOLDS,
+  value: number
+): {
+  level: "none" | "moderate" | "high" | "very high" | "extreme";
+  color: "red" | "orange" | "yellow" | "transparent" | "amber";
+} => {
+  if (!value || value <= 0) return { level: "none", color: "transparent" };
+  const thresholds = WARNING_THRESHOLDS[type];
+  if (value >= thresholds.extreme) return { level: "extreme", color: "red" };
+  if (value >= thresholds["very high"])
+    return { level: "very high", color: "orange" };
+  if (value >= thresholds.high) return { level: "high", color: "amber" };
+  if (value >= thresholds.moderate)
+    return { level: "moderate", color: "yellow" };
+
+  return { level: "none", color: "transparent" };
 };

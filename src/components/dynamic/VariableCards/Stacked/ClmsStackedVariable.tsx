@@ -80,7 +80,6 @@ const ClmsStackedVariable: React.FC<{ id: string[] }> = ({ id }) => {
     await refetch();
     setIsRefetching(false);
   };
-  console.log(graphData);
   const updatedData = useMemo(
     () => (graphData ? getFormattedDataset(graphData) : []),
     [graphData]

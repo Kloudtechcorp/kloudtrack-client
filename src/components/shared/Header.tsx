@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { HeaderProps } from "@/types";
 import { Skeleton } from "../ui/skeleton";
 import { ModeToggle } from "./ModeToggle";

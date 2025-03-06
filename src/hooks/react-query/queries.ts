@@ -3,6 +3,7 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { QUERY_KEYS } from "./queryKeys";
 import {
+  ActiveDevicesResponse,
   analysisType,
   argDashboardType,
   awsDashboardType,
@@ -23,6 +24,7 @@ import {
   TableGraphCardType,
   tablesType,
   userProfileTypes,
+  WeatherStationResponse,
 } from "@/types/queryTypes";
 import {
   getArgData,
@@ -50,6 +52,7 @@ import {
   getStationDetailed,
   getAnalysis,
   stackedGraphDataset,
+  getActiveDevices,
 } from "@/api/get";
 import {
   coastalSensorsType,
@@ -217,7 +220,7 @@ export const useGetStationNames = (
 
 export const useGetAnalysis = (
   graphData: analysisType
-): UseQueryResult<stationComputedTypes, Error> => {
+): UseQueryResult<WeatherStationResponse, Error> => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_TABLE_GRAPH_DATA, graphData],
     queryFn: () => getAnalysis(graphData),
@@ -325,5 +328,17 @@ export const useGetStackedGraphData = (data: DynamicDatasetType) => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_DATASET_ALL],
     queryFn: () => stackedGraphDataset(data),
+  });
+};
+
+export const useGetActiveDevices = (): UseQueryResult<
+  ActiveDevicesResponse,
+  Error
+> => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_ACTIVE_DEVICES],
+    queryFn: () => getActiveDevices(),
+    staleTime: 60000,
+    refetchInterval: 1000,
   });
 };

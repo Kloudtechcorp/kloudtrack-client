@@ -29,6 +29,8 @@ import {
   detailedStationProps,
   analysisType,
   DynamicDatasetType,
+  WeatherStationResponse,
+  ActiveDevicesResponse,
 } from "@/types/queryTypes";
 
 const method: string = "GET";
@@ -226,9 +228,10 @@ export const getAnalysis = async ({
   stationId,
   weatherData,
   type,
-}: analysisType): Promise<stationComputedTypes> => {
+  repeat,
+}: analysisType): Promise<WeatherStationResponse> => {
   const response = await fetch(
-    `${server}/${type}/analysis/${stationId}?variable=${weatherData}`,
+    `${server}/${type}/analysis/v2/${stationId}?variable=${weatherData}&repeat=${repeat}`,
     {
       method,
       credentials: "include",
@@ -283,7 +286,6 @@ export const getWeatherSensors = async (): Promise<weatherSensorsType> => {
     credentials: "include",
   });
   const data = await response.json();
-
   if (!response.ok) {
     throw new Error(
       data.message || "Failed to fetch sensor data in weather stations"
@@ -409,4 +411,16 @@ export const stackedGraphDataset = async ({
     throw new Error(data.message || "Failed to fetch graph data");
   }
   return data.transformedData;
+};
+// ++++++++++++++++ ACTIVE DEVICES
+export const getActiveDevices = async (): Promise<ActiveDevicesResponse[]> => {
+  const response = await fetch(`${server}/user/auth/active-devices`, {
+    method,
+    credentials: "include",
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to detailed data of a station");
+  }
+  return data;
 };

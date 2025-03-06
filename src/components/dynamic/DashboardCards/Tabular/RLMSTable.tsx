@@ -22,7 +22,9 @@ const RlmsTable: React.FC<AwsCardProps> = ({ id }) => {
   if (isLoading || !stationData) {
     return (
       <TableRow className="hover:bg-secondary cursor-pointer">
-        <TableCell>Loading ...</TableCell>
+        <TableCell className="border border-stone-200 dark:border-stone-700">
+          Loading ...
+        </TableCell>
       </TableRow>
     );
   }
@@ -30,25 +32,29 @@ const RlmsTable: React.FC<AwsCardProps> = ({ id }) => {
   if (isError) {
     return (
       <TableRow className="hover:bg-secondary cursor-pointer">
-        <TableCell>Error</TableCell>
+        <TableCell className="border border-stone-200 dark:border-stone-700">
+          Error
+        </TableCell>
       </TableRow>
     );
   }
   if (stationData.data) {
     return (
       <TableRow
-        className="hover:bg-secondary cursor-pointer"
+        className="hover:bg-secondary cursor-pointer h-14"
         onClick={() => navigate(`/${stationData.station.id}`)}
       >
-        <TableCell>{stationData.station.name}</TableCell>
-        <TableCell>
+        <TableCell className="border border-stone-200 dark:border-stone-700">
+          {stationData.station.name}
+        </TableCell>
+        <TableCell className="border border-stone-200 dark:border-stone-700">
           {stationData.station.barangay}, {stationData.station.municipality}
         </TableCell>
-        <TableCell>
+        <TableCell className="border border-stone-200 dark:border-stone-700">
           {formatDateString(stationData.data.recordedAt, "long")}
         </TableCell>
 
-        <TableCell>
+        <TableCell className="border border-stone-200 dark:border-stone-700">
           {stationData.data.distance === null
             ? "--"
             : `${stationData.data.distance} ${weatherUnit("distance")}`}
@@ -59,13 +65,19 @@ const RlmsTable: React.FC<AwsCardProps> = ({ id }) => {
 
   return (
     <TableRow>
-      <TableCell>{stationData.station.name}</TableCell>
-      <TableCell>
+      <TableCell className="border border-stone-200 dark:border-stone-700">
+        {stationData.station.name}
+      </TableCell>
+      <TableCell className="border border-stone-200 dark:border-stone-700">
         {stationData.station.barangay}, {stationData.station.municipality}
       </TableCell>
-      <TableCell>--</TableCell>
+      <TableCell className="border border-stone-200 dark:border-stone-700">
+        --
+      </TableCell>
 
-      <TableCell>--</TableCell>
+      <TableCell className="border border-stone-200 dark:border-stone-700">
+        --
+      </TableCell>
     </TableRow>
   );
 };

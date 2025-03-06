@@ -67,19 +67,25 @@ const AwsStackedVariable: React.FC<{ id: string[] }> = ({ id }) => {
     refetch,
   } = useGetStackedGraphData(stationDataParams);
 
-  const handleWeatherDataChange = async (value: string) => {
+  const handleWeatherDataChange = (value: string) => {
     setIsRefetching(true);
     setWeatherData(value);
-    await refetch();
-    setIsRefetching(false);
   };
 
-  const handleRangeDataChange = async (value: string) => {
+  const handleRangeDataChange = (value: string) => {
     setIsRefetching(true);
     setRangeData(value);
-    await refetch();
-    setIsRefetching(false);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (isRefetching) {
+        await refetch();
+        setIsRefetching(false);
+      }
+    };
+    fetchData();
+  }, [refetch, isRefetching]);
 
   const updatedData = useMemo(
     () => (graphData ? getFormattedDataset(graphData) : []),
@@ -88,19 +94,24 @@ const AwsStackedVariable: React.FC<{ id: string[] }> = ({ id }) => {
 
   const chartConfig = useMemo(() => {
     if (updatedData.length === 0) return {} as ChartConfig;
+
+    const colors = Array.from(
+      { length: 10 },
+      (_, i) => `hsl(var(--chart-${i + 1}))`
+    );
+
     return Object.fromEntries(
       Object.keys(updatedData[0])
         .filter((key) => key !== "recorded")
-        .map((key) => [
+        .map((key, index) => [
           key,
           {
             label: addSpacesToPascalCase(key),
-            color: `hsl(var(--chart-${Math.floor(Math.random() * 10) + 1}))`,
+            color: colors[index % colors.length],
           },
         ])
     ) satisfies ChartConfig;
   }, [updatedData]);
-
   return (
     <div className="mainContainer bg-[#F6F8FC] dark:bg-secondary flex flex-col overflow-hidden">
       <div className="container p-2">
@@ -194,9 +205,24 @@ const AwsStackedVariable: React.FC<{ id: string[] }> = ({ id }) => {
                       />
                       {Object.keys(updatedData[0])
                         .filter((key) => key !== "recorded")
-                        .map((key) => (
-                          <Bar key={key} dataKey={key} fill="#fbd008" />
-                        ))}
+                        .map((key) => {
+                          const getRandomColor = () => {
+                            const letters = "0123456789ABCDEF";
+                            let color = "#";
+                            for (let i = 0; i < 6; i++) {
+                              color += letters[Math.floor(Math.random() * 16)];
+                            }
+                            return color;
+                          };
+                          return (
+                            <Bar
+                              key={key}
+                              dataKey={key}
+                              fill={getRandomColor()}
+                            />
+                          );
+                        })}
+                      <ChartLegend content={<ChartLegendContent />} />
                     </BarChart>
                   ) : (
                     <LineChart
@@ -245,7 +271,16 @@ const AwsStackedVariable: React.FC<{ id: string[] }> = ({ id }) => {
                             />
                           );
                         })}
-                      <ChartLegend content={<ChartLegendContent />} />
+                      <ChartLegend
+                        content={<ChartLegendContent />}
+                        align="center"
+                        wrapperStyle={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          justifyContent: "center",
+                          maxWidth: "100%",
+                        }}
+                      />
                     </LineChart>
                   )}
                 </ChartContainer>

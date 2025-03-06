@@ -12,6 +12,7 @@ import { SonnerToaster } from "@/components/ui/sonner";
 import AdminSettings from "./_root/pages/AdminSettings";
 import VariableDashboard from "./_root/pages/VariableDashboard";
 import NotFound from "./components/shared/NotFound";
+import Reference from "./_root/pages/Reference";
 // import ApiDocument from "./_root/pages/settingPages/ApiDocument";
 
 function App() {
@@ -27,6 +28,8 @@ function App() {
             <Route path="/satellite" element={<Himawari />} />
             <Route path="/graphs" element={<Variable />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/references" element={<Reference />} />
+
             <Route path="/:station/" element={<DataDashboard />} />
 
             <Route

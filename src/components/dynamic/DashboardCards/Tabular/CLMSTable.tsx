@@ -38,32 +38,34 @@ const ClmsTable: React.FC<AwsCardProps> = ({ id }) => {
   if (stationData.data) {
     return (
       <TableRow
-        className="hover:bg-secondary cursor-pointer"
+        className="hover:bg-secondary cursor-pointer h-14"
         onClick={() => navigate(`/${stationData.station.id}`)}
       >
-        <TableCell>{stationData.station.name}</TableCell>
-        <TableCell>
+        <TableCell className="border border-stone-200 dark:border-stone-700">
+          {stationData.station.name}
+        </TableCell>
+        <TableCell className="border border-stone-200 dark:border-stone-700">
           {stationData.station.barangay}, {stationData.station.municipality}
         </TableCell>
-        <TableCell>
+        <TableCell className="border border-stone-200 dark:border-stone-700">
           {formatDateString(stationData.data.recordedAt, "long")}
         </TableCell>
-        <TableCell>
+        <TableCell className="border border-stone-200 dark:border-stone-700">
           {stationData.data.temperature > 0
             ? `${stationData.data.temperature} ${weatherUnit("temperature")}`
             : "--"}
         </TableCell>
-        <TableCell>
+        <TableCell className="border border-stone-200 dark:border-stone-700">
           {stationData.data.humidity > 0
             ? `${stationData.data.humidity} ${weatherUnit("humidity")}`
             : "--"}
         </TableCell>
-        <TableCell>
+        <TableCell className="border border-stone-200 dark:border-stone-700">
           {stationData.data.pressure > 0
             ? `${stationData.data.pressure} ${weatherUnit("pressure")}`
             : "--"}
         </TableCell>
-        <TableCell>
+        <TableCell className="border border-stone-200 dark:border-stone-700">
           {stationData.data.distance === null
             ? "--"
             : `${stationData.data.distance} ${weatherUnit("distance")}`}

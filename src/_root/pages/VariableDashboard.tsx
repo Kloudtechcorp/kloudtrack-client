@@ -240,6 +240,7 @@ const VariableDashboard = () => {
                 stationId={stationData.id}
                 weatherData={weatherData}
                 type={stationData.type.toLowerCase()}
+                repeat={repeatData}
               />
               <div className="w-full flex flex-col gap-5 ">
                 <div className="border p-2 rounded-lg flex flex-col gap-2">

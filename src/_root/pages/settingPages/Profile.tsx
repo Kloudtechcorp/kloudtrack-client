@@ -286,7 +286,7 @@ const Profile = () => {
             </div>
             <div className="px-7 pb-5 flex flex-col gap-2">
               {!activeDevices ? (
-                <div>No API key generated</div>
+                <div>No Device Login</div>
               ) : (
                 <>
                   <DeviceCounter

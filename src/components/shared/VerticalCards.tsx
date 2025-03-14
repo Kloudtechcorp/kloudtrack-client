@@ -3,9 +3,14 @@ import { Card, CardContent } from "../ui/card";
 import { useGetAnalysis } from "@/hooks/react-query/queries";
 import { analysisType, TableGraphCardType } from "@/types/queryTypes";
 import { Skeleton } from "../ui/skeleton";
-import { weatherUnit } from "@/lib/utils";
+import { formatDateStringGraph, weatherUnit } from "@/lib/utils";
 
-const VerticalCards = ({ stationId, weatherData, type }: analysisType) => {
+const VerticalCards = ({
+  stationId,
+  weatherData,
+  type,
+  repeat,
+}: analysisType) => {
   const {
     data: stationData,
     isError,
@@ -14,6 +19,7 @@ const VerticalCards = ({ stationId, weatherData, type }: analysisType) => {
     type,
     stationId,
     weatherData,
+    repeat,
   });
 
   const renderSkeletons = () => (
@@ -30,7 +36,7 @@ const VerticalCards = ({ stationId, weatherData, type }: analysisType) => {
     </>
   );
 
-  const renderCard = (title: string, value: number | null) => {
+  const renderCard = (title: string, value: number | null, time?: string) => {
     return (
       <Card className="w-full md:h-[11rem]">
         <CardContent className="text-center flex flex-col h-full w-full px-0">
@@ -38,12 +44,15 @@ const VerticalCards = ({ stationId, weatherData, type }: analysisType) => {
             <span className="weatherDataTitle">{title}</span>
           </div>
           <div className="cardDataDiv ">
-            <span className="weatherDataText">
-              {weatherData !== "uvIndex"
-                ? value
-                : value?.toString().slice(0, 1)}{" "}
-            </span>
-            <span className="weatherDataText">{weatherUnit(weatherData)}</span>
+            <div className="flex flex-col gap-2">
+              <span className="weatherDataText">
+                {weatherData !== "uvIndex"
+                  ? value
+                  : value?.toString().slice(0, 1)}{" "}
+                {weatherUnit(weatherData)}
+              </span>
+              <span>{time && <span> {time}</span>}</span>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -64,8 +73,16 @@ const VerticalCards = ({ stationId, weatherData, type }: analysisType) => {
     <div className="flex md:flex-col gap-3 md:w-[20%] flex-wrap">
       {renderCard("Current", stationData.currentData)}
       {renderCard("Past 1-minute", stationData.past1minute)}
-      {renderCard("Highest today", stationData.max)}
-      {renderCard("Lowest today", stationData.min)}
+      {renderCard(
+        "Highest today",
+        +stationData.max,
+        formatDateStringGraph(stationData.maxTime)
+      )}
+      {renderCard(
+        "Lowest today",
+        +stationData.min,
+        formatDateStringGraph(stationData.minTime)
+      )}
     </div>
   );
 };

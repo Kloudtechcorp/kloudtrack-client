@@ -147,11 +147,10 @@ const Signin = () => {
         ...values,
         deviceInfo,
       };
-      console.log(loginData);
       const session = await signInAccount(loginData);
 
-      if (!session) {
-        toast({ title: "Login failed. Please try again." });
+      if (session.message) {
+        toast({ title: session.message });
       }
       const isLoggedIn = await checkAuthUser();
 
@@ -161,8 +160,11 @@ const Signin = () => {
       } else {
         toast({ title: "Login failed. Please try again." });
       }
-    } catch (error: unknown) {
-      toast({ title: "Username or password not found" });
+    } catch (error) {
+      toast({
+        title:
+          error instanceof Error ? error.message : "An unknown error occurred",
+      });
     } finally {
       setIsLoading(false);
     }

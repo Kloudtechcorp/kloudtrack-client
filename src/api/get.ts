@@ -280,20 +280,34 @@ export const getIsAuthenticated = async (): Promise<{
 };
 
 //=========================== CHECK SENSORS
-export const getWeatherSensors = async (): Promise<weatherSensorsType> => {
-  const response = await fetch(`${server}/admin/weather/sensors`, {
-    method,
-    credentials: "include",
-  });
+export const getWeatherSensors = async (
+  page = 0,
+  pageSize = 10
+): Promise<{
+  items: weatherSensorsType;
+  totalCount: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}> => {
+  const response = await fetch(
+    `${server}/admin/weather/sensors?page=${page}&pageSize=${pageSize}`,
+    {
+      method,
+      credentials: "include",
+    }
+  );
+
   const data = await response.json();
+
   if (!response.ok) {
     throw new Error(
       data.message || "Failed to fetch sensor data in weather stations"
     );
   }
+
   return data;
 };
-
 export const getCoastalSensors = async (): Promise<coastalSensorsType> => {
   const response = await fetch(`${server}/admin/coastal/sensors`, {
     method,

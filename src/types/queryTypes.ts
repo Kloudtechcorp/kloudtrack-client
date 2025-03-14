@@ -245,6 +245,8 @@ export type downloadParamsTypes = {
   from: Date | undefined;
   to: Date | undefined;
   name: string;
+  interval: string;
+  parameter: string[];
 };
 
 export type weatherDataTypes = {

@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // TypeScript interface for weather terminology
 interface WeatherTerminology {
@@ -18,7 +18,10 @@ const Reference: React.FC = () => {
   const [expandedItems, setExpandedItems] = useState<{
     [key: number]: boolean;
   }>({});
-
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [filteredTerminologies, setFilteredTerminologies] = useState<
+    WeatherTerminology[]
+  >([]);
   // PAGASA weather terminology data
   const weatherTerminologies: WeatherTerminology[] = [
     {
@@ -275,6 +278,67 @@ const Reference: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setFilteredTerminologies(weatherTerminologies);
+    } else {
+      const query = searchQuery.toLowerCase();
+      const filtered = weatherTerminologies.filter(
+        (item) =>
+          item.term.toLowerCase().includes(query) ||
+          (item.subtitle && item.subtitle.toLowerCase().includes(query)) ||
+          item.definition.toLowerCase().includes(query) ||
+          (item.threshold && item.threshold.toLowerCase().includes(query))
+      );
+      setFilteredTerminologies(filtered);
+    }
+  }, [searchQuery, weatherTerminologies]);
+
+  const renderSearchBar = () => (
+    <div className="relative w-full mb-4">
+      <input
+        type="text"
+        placeholder="Search weather terminology..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="w-full p-3 pl-10 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+      />
+      <svg
+        className="absolute left-3 top-3.5 h-5 w-5 text-gray-400 dark:text-gray-300"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+        />
+      </svg>
+      {searchQuery && (
+        <button
+          onClick={() => setSearchQuery("")}
+          className="absolute right-3 top-3 text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-100"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </button>
+      )}
+    </div>
+  );
+  console.log(searchQuery);
   // Function to render definition with expansion logic
   const renderDefinition = (definition: string, index: number) => {
     const isExpanded = expandedItems[index] || false;
@@ -322,7 +386,7 @@ const Reference: React.FC = () => {
         <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">
           Weather Terminology Reference
         </h1>
-
+        {renderSearchBar()}
         <Tabs
           defaultValue="all"
           className="w-full flex flex-col p-3 rounded-2xl gap-5 "
@@ -346,7 +410,7 @@ const Reference: React.FC = () => {
           </TabsList>
           <TabsContent value="all">
             <Card className="p-2">
-              {weatherTerminologies.map((item, index) => (
+              {filteredTerminologies.map((item, index) => (
                 <div
                   key={index}
                   className="bg-white dark:bg-gray-800 overflow-hidden"
@@ -399,7 +463,7 @@ const Reference: React.FC = () => {
           </TabsContent>
           <TabsContent value="heatIndex">
             <Card className="p-2">
-              {weatherTerminologies
+              {filteredTerminologies
                 .filter((item) => item.category === "heatIndex")
                 .map((item, index) => (
                   <div
@@ -462,7 +526,7 @@ const Reference: React.FC = () => {
           </TabsContent>
           <TabsContent value="windSpeed">
             <Card className="p-2">
-              {weatherTerminologies
+              {filteredTerminologies
                 .filter((item) => item.category === "windSpeed")
                 .map((item, index) => (
                   <div
@@ -525,7 +589,7 @@ const Reference: React.FC = () => {
           </TabsContent>
           <TabsContent value="uvIndex">
             <Card className="p-2">
-              {weatherTerminologies
+              {filteredTerminologies
                 .filter((item) => item.category === "uvIndex")
                 .map((item, index) => (
                   <div
@@ -582,7 +646,7 @@ const Reference: React.FC = () => {
           </TabsContent>
           <TabsContent value="precipitation">
             <Card className="p-2">
-              {weatherTerminologies
+              {filteredTerminologies
                 .filter((item) => item.category === "precipitation")
                 .map((item, index) => (
                   <div

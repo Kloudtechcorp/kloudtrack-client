@@ -28,3 +28,15 @@ export const deleteStation = async (
   }
   return data;
 };
+
+export const deleteUser = async (id: number): Promise<{ message: string }> => {
+  const response = await fetch(`${server}/admin/user/delete/${id}`, {
+    method,
+    credentials: "include",
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to delete user!");
+  }
+  return data;
+};

@@ -1,6 +1,6 @@
 import VariableDashboardGraph from "@/components/dynamic/VariableDashboardGraph";
-import NotFound from "@/components/shared/NotFound";
-import VerticalCards from "@/components/shared/VerticalCards";
+import NotFound from "@/components/_root/NotFound";
+import VerticalCards from "@/components/_root/VerticalCards";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Select,

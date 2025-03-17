@@ -33,8 +33,8 @@ import { coastalSensorsType } from "@/types";
 import { checkBadge } from "@/lib/helper";
 import { formatDateString } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
-import NoDataOptions from "@/components/shared/NoDataOptions";
-import AdminControls from "@/components/shared/AdminControls";
+import NoDataOptions from "@/components/_root/NoDataOptions";
+import AdminControls from "@/components/_root/AdminControls";
 
 export function ClmsSensors() {
   const [sorting, setSorting] = React.useState<SortingState>([]);

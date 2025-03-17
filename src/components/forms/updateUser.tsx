@@ -18,7 +18,7 @@ import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 
 import { CircleHelpIcon } from "lucide-react";
-import Tooltip from "../shared/ManualTooltip";
+import Tooltip from "../_root/ManualTooltip";
 
 export const userStationValidation = z.object({
   grantedStations: z.array(z.string()),

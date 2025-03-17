@@ -5,10 +5,10 @@ import PuffLoader from "react-spinners/PuffLoader";
 import { useNavigate } from "react-router-dom";
 import { useGetAwsData2 } from "../../../hooks/react-query/queries";
 import { formatDateString, stationType } from "@/lib/utils";
-import DataCards from "../../shared/DataCards";
+import DataCards from "../../_root/DataCards";
 import { useTheme } from "../../theme-provider";
-import NoData from "@/components/shared/NoData";
-import NavigateIcon from "@/components/shared/icons/NavigateIcon";
+import NoData from "@/components/_root/NoData";
+import NavigateIcon from "@/components/_root/icons/NavigateIcon";
 import { toast } from "sonner";
 import {
   Tooltip,

@@ -4,7 +4,7 @@ import { useGetRlmsData } from "@/hooks/react-query/queries";
 import { formatDateString } from "@/lib/utils";
 import VariableGraph from "@/components/dynamic/VariableGraph";
 import PuffLoader from "react-spinners/PuffLoader";
-import NotFound from "@/components/shared/NotFound";
+import NotFound from "@/components/_root/NotFound";
 import RiverLevelDialog from "../DownloadCards/RiverLevelDialog";
 
 type RlmsDataCardProps = {

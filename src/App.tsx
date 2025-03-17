@@ -11,7 +11,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { SonnerToaster } from "@/components/ui/sonner";
 import AdminSettings from "./_root/pages/admin/AdminSettings";
 import VariableDashboard from "./_root/pages/VariableDashboard";
-import NotFound from "./components/shared/NotFound";
+import NotFound from "./components/_root/NotFound";
 import Reference from "./_root/pages/Reference";
 
 function App() {

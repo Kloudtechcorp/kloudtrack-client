@@ -1,8 +1,8 @@
 import { Outlet } from "react-router-dom";
-import LeftSidebar from "../components/shared/LeftSidebar";
-import Header from "@/components/shared/Header";
+import LeftSidebar from "../components/_root/LeftSidebar";
+import Header from "@/components/_root/Header";
 import { useState } from "react";
-import BottomNavbar from "@/components/shared/BottomNavbar";
+import BottomNavbar from "@/components/_root/BottomNavbar";
 
 const RootLayout = () => {
   const [clicked, setClicked] = useState(false);

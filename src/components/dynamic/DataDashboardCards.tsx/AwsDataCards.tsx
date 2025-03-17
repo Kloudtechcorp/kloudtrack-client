@@ -1,11 +1,11 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import DataCards from "@/components/shared/DataCards";
+import DataCards from "@/components/_root/DataCards";
 import { useGetAwsData2 } from "@/hooks/react-query/queries";
 import { formatDateString } from "@/lib/utils";
 import VariableGraph from "@/components/dynamic/VariableGraph";
 import PuffLoader from "react-spinners/PuffLoader";
-import NotFound from "@/components/shared/NotFound";
+import NotFound from "@/components/_root/NotFound";
 import WeatherDialog from "@/components/dynamic/DownloadCards/WeatherDialog";
 // import WeatherDialog2 from "@/components/dynamic/DownloadCards/WeatherDialog2";
 import { useEffect } from "react";

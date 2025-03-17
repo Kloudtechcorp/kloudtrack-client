@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { useRef, useState } from "react";
 import PuffLoader from "react-spinners/PuffLoader";
-import NotFound from "@/components/shared/NotFound";
+import NotFound from "@/components/_root/NotFound";
 import AwsDataCard from "@/components/dynamic/DataDashboardCards.tsx/AwsDataCards";
 import ArgDataCard from "@/components/dynamic/DataDashboardCards.tsx/ArgDataCard";
 import RlmsDataCard from "@/components/dynamic/DataDashboardCards.tsx/RlmsDataCard";

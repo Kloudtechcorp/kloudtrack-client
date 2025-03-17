@@ -9,7 +9,7 @@ import {
 import React, { useEffect, useState } from "react";
 import TableGraphCard from "../TableGraphCard";
 import { addSpacesToPascalCase, checkRepeat } from "@/lib/utils";
-import RangeRepeatSelector from "@/components/shared/SelectRangeRepeat";
+import RangeRepeatSelector from "@/components/_root/SelectRangeRepeat";
 import { Switch } from "@/components/ui/switch";
 
 const ArgVariableCard: React.FC<{ id: string[] }> = ({ id }) => {

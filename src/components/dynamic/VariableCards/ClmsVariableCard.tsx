@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/select";
 import React, { useEffect, useState } from "react";
 import TableGraphCard from "../TableGraphCard";
-import RangeRepeatSelector from "@/components/shared/SelectRangeRepeat";
+import RangeRepeatSelector from "@/components/_root/SelectRangeRepeat";
 import { addSpacesToPascalCase, checkRepeat } from "@/lib/utils";
 import { Switch } from "@/components/ui/switch";
 

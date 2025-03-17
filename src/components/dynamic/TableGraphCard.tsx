@@ -15,7 +15,7 @@ import {
 import VariableGrapht from "./VariableGraph";
 import { TableGraphCardType, tablesType } from "@/types/queryTypes";
 import { useGetAnalysis } from "@/hooks/react-query/queries";
-import NoData from "../shared/NoData";
+import NoData from "../_root/NoData";
 
 const TableGraphCard = ({
   type,

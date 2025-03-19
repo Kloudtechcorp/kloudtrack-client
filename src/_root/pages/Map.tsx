@@ -28,13 +28,13 @@ import {
 } from "@/api/get";
 import toast from "react-hot-toast";
 import PuffLoader from "react-spinners/PuffLoader";
-import AwsMapCard from "@/components/shared/MapCards/AwsMapCard";
-import ArgMapCard from "@/components/shared/MapCards/ArgMapCard";
-import ClmsMapCard from "@/components/shared/MapCards/ClmsMapCard";
-import RlmsMapCard from "@/components/shared/MapCards/RlmsMapCard";
+import AwsMapCard from "@/components/_root/MapCards/AwsMapCard";
+import ArgMapCard from "@/components/_root/MapCards/ArgMapCard";
+import ClmsMapCard from "@/components/_root/MapCards/ClmsMapCard";
+import RlmsMapCard from "@/components/_root/MapCards/RlmsMapCard";
 import { useTheme } from "@/components/theme-provider";
 import { useUserContext } from "@/hooks/context/authContext";
-import MapLegend from "@/components/shared/MapCards/MapLegend";
+import MapLegend from "@/components/_root/MapCards/MapLegend";
 
 const Map = () => {
   const { user } = useUserContext();

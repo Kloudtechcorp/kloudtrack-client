@@ -20,9 +20,9 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useUpdateBug } from "@/hooks/react-query/mutations";
 import { Skeleton } from "@/components/ui/skeleton";
-import NoDataOptions from "@/components/shared/NoDataOptions";
+import NoDataOptions from "@/components/_root/NoDataOptions";
 import { Input } from "@/components/ui/input";
-import NoBugsOptions from "@/components/shared/NoBugsFound";
+import NoBugsOptions from "@/components/_root/NoBugsFound";
 
 const ReportedBugs = () => {
   const {

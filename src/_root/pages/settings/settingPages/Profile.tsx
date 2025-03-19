@@ -35,7 +35,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useTheme } from "@/components/theme-provider";
-import CopyIcon from "@/components/shared/icons/CopyIcon";
+import CopyIcon from "@/components/_root/icons/CopyIcon";
 import { toast } from "@/hooks/use-toast";
 import {
   Table,
@@ -50,7 +50,7 @@ import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Trash2, User } from "lucide-react";
-import DeviceCounter from "@/components/shared/DeviceCounter";
+import DeviceCounter from "@/components/_root/DeviceCounter";
 
 const Profile = () => {
   const { theme } = useTheme();
@@ -286,7 +286,7 @@ const Profile = () => {
             </div>
             <div className="px-7 pb-5 flex flex-col gap-2">
               {!activeDevices ? (
-                <div>No API key generated</div>
+                <div>No Device Login</div>
               ) : (
                 <>
                   <DeviceCounter

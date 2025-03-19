@@ -2,7 +2,7 @@ import { bugUpdateType } from "@/types";
 import {
   UpdateStationProps,
   updateStationType,
-  updateUserGrantsProps,
+  updateUserType,
   updateUserPasswordType,
 } from "@/types/mutationTypes";
 
@@ -62,22 +62,21 @@ export const updateStation = async (
   return data;
 };
 
-export const updateUserGrants = async (
-  values: updateUserGrantsProps
+export const updateUser = async (
+  values: updateUserType
 ): Promise<{ message: string }> => {
-  const response = await fetch(
-    `${server}/admin/user/${values.id}/granted-stations`,
-    {
-      method,
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        grantedStations: values.grantedStations,
-      }),
-    }
-  );
+  const response = await fetch(`${server}/admin/user/update/${values.id}`, {
+    method,
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      grantedStations: values.grantedStations,
+      ...(values.password && { password: values.password }),
+      ...(values.username && { username: values.username }),
+    }),
+  });
   const data = await response.json();
   if (!response.ok) {
     throw new Error(data.message || "Failed to update station details.");

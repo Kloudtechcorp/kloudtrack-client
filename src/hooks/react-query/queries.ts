@@ -249,18 +249,25 @@ export const useGetIsAuthenticated = (): UseQueryResult<boolean, Error> => {
     refetchInterval: 5000,
   });
 };
-
-export const useGetAwsSensors = (): UseQueryResult<
-  weatherSensorsType,
+export const useGetAwsSensors = (
+  page = 0,
+  pageSize = 10
+): UseQueryResult<
+  {
+    items: weatherSensorsType;
+    totalCount: number;
+    page: number;
+    pageSize: number;
+    totalPages: number;
+  },
   Error
 > => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_AWS_SENSORS],
-    queryFn: () => getWeatherSensors(),
-    staleTime: 60000,
+    queryKey: [QUERY_KEYS.GET_AWS_SENSORS, page, pageSize],
+    queryFn: () => getWeatherSensors(page, pageSize),
+    staleTime: 60000, // 1 minute
   });
 };
-
 export const useGetArgSensors = (): UseQueryResult<
   rainGaugeSensorsType,
   Error

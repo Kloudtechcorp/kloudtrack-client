@@ -4,7 +4,7 @@ import StationRegistration from "./adminpages/StationRegistration";
 import UserCreation from "./adminpages/UserCreation";
 import AddPsgc from "./adminpages/AddPsgc";
 import AddStationType from "./adminpages/AddStationType";
-import NotFound from "@/components/shared/NotFound";
+import NotFound from "@/components/_root/NotFound";
 import { Card } from "@/components/ui/card";
 import UserControl from "./adminpages/UserControl";
 import StationList from "./adminpages/StationList";

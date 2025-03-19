@@ -33,7 +33,7 @@ import AwsTable from "@/components/dynamic/DashboardCards/Tabular/AWSTable";
 import ArgTable from "@/components/dynamic/DashboardCards/Tabular/ARGTable";
 import RlmsTable from "@/components/dynamic/DashboardCards/Tabular/RLMSTable";
 import ClmsTable from "@/components/dynamic/DashboardCards/Tabular/CLMSTable";
-import { WeatherDangerLegends } from "@/components/shared/MultipleLegends";
+import { WeatherDangerLegends } from "@/components/_root/MultipleLegends";
 
 const Dashboard = () => {
   const { user, isLoading } = useUserContext();
@@ -326,12 +326,14 @@ const Dashboard = () => {
                     ) : (
                       <>
                         {filteredStations[category.type].map((station) => (
-                          <category.CardComponent
-                            key={station.id}
-                            id={station.id}
-                          />
+                          <>
+                            <category.CardComponent
+                              key={station.id}
+                              id={station.id}
+                            />
+                            {station.type === "aws" && <WeatherDangerLegends />}
+                          </>
                         ))}
-                        <WeatherDangerLegends />
                       </>
                     )}
                   </div>

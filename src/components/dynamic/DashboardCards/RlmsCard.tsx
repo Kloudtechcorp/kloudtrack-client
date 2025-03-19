@@ -6,10 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { useGetRlmsData } from "../../../hooks/react-query/queries";
 import { formatDateString, stationType } from "@/lib/utils";
 import { useTheme } from "../../theme-provider";
-import NoData from "@/components/shared/NoData";
+import NoData from "@/components/_root/NoData";
 import VariableGraph from "../VariableGraph";
-import NavigateIcon from "@/components/shared/icons/NavigateIcon";
-import MeasurementCard2 from "@/components/shared/MeasurementCard2";
+import NavigateIcon from "@/components/_root/icons/NavigateIcon";
+import MeasurementCard2 from "@/components/_root/MeasurementCard2";
 import {
   Tooltip,
   TooltipContent,

@@ -57,9 +57,11 @@ export type UpdateStationProps = {
   municipality: number;
 };
 
-export type updateUserGrantsProps = {
+export type updateUserType = {
   grantedStations: string[];
   id: number;
+  username?: string;
+  password?: string;
 };
 
 export type reportBugType = {

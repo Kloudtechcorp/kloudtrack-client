@@ -57,7 +57,7 @@ const Header = ({ burgerMenu }: HeaderProps) => {
           <Skeleton className="w-64 h-6" />
         </div>
       ) : (
-        <div className="w-full bg-white dark:bg-[#181819] p-1 h-[3.5rem] flex text-center items-center">
+        <div className="w-full bg-white dark:bg-[#181819] p-1 h-[5rem] flex text-center items-center">
           <div className=" gap-4 md:hidden flex px-2">
             <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
               <SheetTrigger>

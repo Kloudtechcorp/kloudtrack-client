@@ -8,7 +8,6 @@ import {
   signInAccountType,
 } from "@/types/mutationTypes";
 import {
-  DynamicDatasetType,
   coastalDataTypes,
   downloadParamsTypes,
   rainGaugeDataTypes,
@@ -134,6 +133,8 @@ export const downloadWeatherData = async ({
   name,
   from,
   to,
+  interval,
+  parameter,
 }: downloadParamsTypes): Promise<weatherDataTypes[]> => {
   const response = await fetch(`${server}/weather/download`, {
     method,
@@ -141,8 +142,9 @@ export const downloadWeatherData = async ({
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ name, from, to }),
+    body: JSON.stringify({ name, from, to, interval, parameter }),
   });
+
   const data = await response.json();
   if (!response.ok) {
     throw new Error(data.message || "Failed to fetch data");

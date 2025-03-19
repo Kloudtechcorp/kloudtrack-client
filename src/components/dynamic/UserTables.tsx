@@ -11,7 +11,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, EditIcon } from "lucide-react";
+import { ArrowUpDown, ChevronDown, EditIcon, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -34,6 +34,7 @@ import { userListType } from "@/types";
 import { formatDateString } from "@/lib/utils";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -42,6 +43,7 @@ import {
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import UpdateUser from "../forms/updateUser";
 import { Skeleton } from "../ui/skeleton";
+import { useDeleteUser } from "@/hooks/react-query/mutations";
 
 export function UserTables() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -51,6 +53,7 @@ export function UserTables() {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const { data: userList, isLoading, isError } = useGetUsers();
+  const { mutate: deleteUser, isPending } = useDeleteUser();
 
   const columns: ColumnDef<userListType[number]>[] = [
     {
@@ -69,9 +72,7 @@ export function UserTables() {
           <ArrowUpDown />
         </Button>
       ),
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("username")}</div>
-      ),
+      cell: ({ row }) => <div>{row.getValue("username")}</div>,
     },
     {
       accessorKey: "role",
@@ -91,27 +92,58 @@ export function UserTables() {
     },
     {
       id: "actions",
+      header: "Actions",
       enableHiding: false,
       cell: ({ row }) => {
         const id = row.original.id;
         const stations = row.original.stations;
+        const username = row.original.username;
         return (
-          <Dialog>
-            {row.original.role !== "ADMIN" && (
-              <DialogTrigger>
-                <EditIcon />
-              </DialogTrigger>
-            )}
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Edit Station Privileges</DialogTitle>
-                <DialogDescription>
-                  Desselect or select station for stations granted for user.
-                </DialogDescription>
-              </DialogHeader>
-              <UpdateUser id={id} stationIds={stations} />
-            </DialogContent>
-          </Dialog>
+          <div className="flex gap-2">
+            <Dialog>
+              {row.original.role !== "ADMIN" && (
+                <DialogTrigger>
+                  <EditIcon />
+                </DialogTrigger>
+              )}
+              <DialogContent className="sm:max-w-[720px]">
+                <DialogHeader>
+                  <DialogTitle>Edit Station Privileges</DialogTitle>
+                  <DialogDescription>
+                    Desselect or select station for stations granted for user.
+                  </DialogDescription>
+                </DialogHeader>
+                <UpdateUser id={id} stationIds={stations} username={username} />
+              </DialogContent>
+            </Dialog>
+            <Dialog>
+              {row.original.role !== "ADMIN" && (
+                <DialogTrigger>
+                  <Trash2 />
+                </DialogTrigger>
+              )}
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Delete User</DialogTitle>
+                  <DialogDescription>
+                    Ask yourself, why are you here? Why do you want to delete
+                    this user? This action cannot be undone.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="flex flex-col gap-1">
+                  <Button
+                    onClick={() => deleteUser(id)}
+                    variant={"destructive"}
+                  >
+                    {!isPending ? "Are you sure?" : "Deleting..."}
+                  </Button>
+                  <DialogClose className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors border p-2 hover:bg-gray-200 dark:hover:bg-gray-900">
+                    Cancel
+                  </DialogClose>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
         );
       },
     },

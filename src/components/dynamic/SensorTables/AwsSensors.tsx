@@ -33,8 +33,8 @@ import { weatherSensorsType } from "@/types";
 import { checkBadge } from "@/lib/helper";
 import { formatDateString } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
-import NoDataOptions from "@/components/shared/NoDataOptions";
-import AdminControls from "@/components/shared/AdminControls";
+import NoDataOptions from "@/components/_root/NoDataOptions";
+import AdminControls from "@/components/_root/AdminControls";
 
 export function AwsSensors() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -43,9 +43,15 @@ export function AwsSensors() {
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
+  const [pagination, setPagination] = React.useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
-  const { data: weatherData, isLoading, isError } = useGetAwsSensors();
-
+  const { data, isLoading, isError } = useGetAwsSensors(
+    pagination.pageIndex,
+    pagination.pageSize
+  );
   const columns: ColumnDef<weatherSensorsType[number]>[] = [
     {
       accessorKey: "name",
@@ -123,22 +129,24 @@ export function AwsSensors() {
   ];
 
   const table = useReactTable({
-    data: weatherData || [],
+    data: data?.items || [],
     columns,
+    manualPagination: true,
+    pageCount: data?.totalPages || 0,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
+    onColumnVisibilityChange: setColumnVisibility,
+    onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
+      pagination,
     },
   });
-
   if (isLoading) {
     return (
       <div className="flex flex-col gap-3 md:gap-5 w-full container p-2 py-4">
@@ -148,7 +156,7 @@ export function AwsSensors() {
     );
   }
 
-  if (!weatherData || isError) {
+  if (!data || isError) {
     return (
       <div className="py-4">
         <NoDataOptions />
@@ -244,6 +252,10 @@ export function AwsSensors() {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
+        <span className="text-sm text-muted-foreground">
+          Page {pagination.pageIndex + 1} of {data?.totalPages || 0}
+          {data?.totalCount ? ` (${data.totalCount} items total)` : ""}
+        </span>
         <div className="space-x-2">
           <Button
             variant="outline"

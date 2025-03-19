@@ -1,10 +1,19 @@
 import * as z from "zod";
 
 export const login = z.object({
-  username: z.string().min(2),
-  password: z
-    .string()
-    .min(8, { message: "Must be a minimum of 8 characters." }),
+  username: z.string().min(1, "Username is required"),
+  password: z.string().min(1, "Password is required"),
+});
+
+export const deviceInfoSchema = z.object({
+  device: z.string(),
+  browser: z.string(),
+  os: z.string(),
+  location: z.string().optional(),
+});
+
+export const enhancedLoginSchema = login.extend({
+  deviceInfo: deviceInfoSchema.optional(),
 });
 
 export const userValidation = z
@@ -122,3 +131,7 @@ export const bugSchema = z.object({
     message: "Description is required.",
   }),
 });
+
+export type LoginType = z.infer<typeof login>;
+export type DeviceInfoType = z.infer<typeof deviceInfoSchema>;
+export type EnhancedLoginType = z.infer<typeof enhancedLoginSchema>;

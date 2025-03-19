@@ -8,7 +8,7 @@ import {
   reportBugType,
   signInAccountType,
   UpdateStationProps,
-  updateUserGrantsProps,
+  updateUserType,
   updateUserPasswordType,
 } from "@/types/mutationTypes";
 import {
@@ -31,15 +31,13 @@ import {
   updateApiKey,
   updateBugReport,
   updateStation,
-  updateUserGrants,
+  updateUser,
   updateUserPassword,
 } from "@/api/put";
-import { deleteApiKey, deleteStation } from "@/api/delete";
+import { deleteApiKey, deleteStation, deleteUser } from "@/api/delete";
 import { downloadParamsTypes } from "@/types/queryTypes";
 import { apiKeyType, bugUpdateType } from "@/types";
 import { useNavigate } from "react-router-dom";
-import { bugSchema } from "@/types/validation";
-import { z } from "zod";
 
 //CREATE DATA
 export const useSignInAccount = () => {
@@ -252,6 +250,27 @@ export const useDeleteStation = () => {
   });
 };
 
+export const useDeleteUser = () => {
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationFn: (id: number) => deleteUser(id),
+    onError: (error: Error) => {
+      toast({
+        title: "Error!",
+        description: error.message,
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Delete Successful!",
+        description: "User Deleted.",
+      });
+      navigate("/");
+    },
+  });
+};
+
 export const useWeatherDownloadData = () => {
   return useMutation({
     mutationFn: (data: downloadParamsTypes) => downloadWeatherData(data),
@@ -344,7 +363,7 @@ export const useRainGaugeDownloadData = () => {
 
 export const useUpdateUserGrants = () => {
   return useMutation({
-    mutationFn: (data: updateUserGrantsProps) => updateUserGrants(data),
+    mutationFn: (data: updateUserType) => updateUser(data),
     onError: (error: Error) => {
       toast({
         title: "Error!",

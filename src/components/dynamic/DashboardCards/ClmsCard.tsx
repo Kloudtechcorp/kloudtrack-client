@@ -4,11 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { useGetClmsData } from "../../../hooks/react-query/queries";
 import { formatDateString, stationType } from "@/lib/utils";
 import { useTheme } from "../../theme-provider";
-import NoData from "@/components/shared/NoData";
+import NoData from "@/components/_root/NoData";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import NavigateIcon from "@/components/shared/icons/NavigateIcon";
-import MeasurementCard from "@/components/shared/MeasurementCard";
+import NavigateIcon from "@/components/_root/icons/NavigateIcon";
+import MeasurementCard from "@/components/_root/MeasurementCard";
 import {
   Tooltip,
   TooltipContent,

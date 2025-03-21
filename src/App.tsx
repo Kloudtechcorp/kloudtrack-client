@@ -1,18 +1,18 @@
 import { Routes, Route } from "react-router-dom";
-import Signin from "./_auth/signin";
-import RootLayout from "./_root/RootLayout";
-import Map from "./_root/pages/Map";
-import Himawari from "./_root/pages/Himawari";
-import Dashboard from "./_root/pages/home/Home";
-import Settings from "./_root/pages/settings/Settings";
-import Variable from "./_root/pages/Variable";
-import DataDashboard from "./_root/pages/DataDashboard";
+import Signin from "./pages/auth";
+import RootLayout from "./layouts/RootLayout";
+import Map from "./pages/map/Map";
+import Himawari from "./pages/satellite/Himawari";
+import Dashboard from "./pages/home/Home";
+import Settings from "./settings/Settings";
+import Variable from "./pages/graphs/Variable";
+import DataDashboard from "./pages/station/dashboard/DataDashboard";
 import { Toaster } from "@/components/ui/toaster";
 import { SonnerToaster } from "@/components/ui/sonner";
-import AdminSettings from "./_root/pages/admin/AdminSettings";
-import VariableDashboard from "./_root/pages/VariableDashboard";
-import NotFound from "./components/_root/NotFound";
-import Reference from "./_root/pages/Reference";
+import AdminSettings from "./admin/AdminSettings";
+import VariableDashboard from "./pages/station/data-analysis/VariableDashboard";
+import NotFound from "./pages/error/NotFound";
+import Reference from "./pages/references/Reference";
 
 function App() {
   return (

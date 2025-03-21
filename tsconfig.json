@@ -30,6 +30,12 @@
     "allowSyntheticDefaultImports": true, // Allow default imports from modules without a default export
     "downlevelIteration": true // Allow async/await in older environments (useful if supporting older browsers)
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src_old/_auth/sign-in/index.tsx",
+    "src_old/_auth/sign-in/SignIn.tsx",
+    "src_old/_root/pages/home/Home.tsx"
+  ],
   "exclude": ["node_modules"] // Exclude node_modules for faster build and type checking
 }

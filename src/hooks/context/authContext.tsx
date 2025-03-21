@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { createContext, useContext, useEffect, useState } from "react";
 import { UserType } from "../../types";
-import { getIsAuthenticated, getUserSession } from "@/api/get";
+import { getIsAuthenticated, getUserSession } from "@/services/get";
 
 export const INITIAL_USER = {
   id: 0,

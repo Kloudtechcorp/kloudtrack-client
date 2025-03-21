@@ -53,7 +53,7 @@ import {
   getAnalysis,
   stackedGraphDataset,
   getActiveDevices,
-} from "@/api/get";
+} from "@/services/get";
 import {
   coastalSensorsType,
   formattedDataType,

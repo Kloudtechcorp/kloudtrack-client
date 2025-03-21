@@ -5,7 +5,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import AlertIcon from "@/components/dynamic/DynamicIcons/AlertIcon";
+import AlertIcon from "@/components/global/icons/AlertIcon";
 import { triggerWarningToast } from "./triggerWarning";
 import { useNavigate } from "react-router-dom";
 

@@ -25,7 +25,7 @@ import {
   handleLogout,
   reportBug,
   signInAccount,
-} from "@/api/post";
+} from "@/services/post";
 import { toast } from "@/hooks/use-toast";
 import {
   updateApiKey,
@@ -33,8 +33,8 @@ import {
   updateStation,
   updateUser,
   updateUserPassword,
-} from "@/api/put";
-import { deleteApiKey, deleteStation, deleteUser } from "@/api/delete";
+} from "@/services/put";
+import { deleteApiKey, deleteStation, deleteUser } from "@/services/delete";
 import { downloadParamsTypes } from "@/types/queryTypes";
 import { apiKeyType, bugUpdateType } from "@/types";
 import { useNavigate } from "react-router-dom";

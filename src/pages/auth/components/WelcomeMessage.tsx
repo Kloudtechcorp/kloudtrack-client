@@ -1,4 +1,4 @@
-export const WelcomeMessage = () => {
+const WelcomeMessage = () => {
   return (
     <div className="pb-6">
       <p className="leading-7">
@@ -17,3 +17,5 @@ export const WelcomeMessage = () => {
     </div>
   );
 };
+
+export default WelcomeMessage;

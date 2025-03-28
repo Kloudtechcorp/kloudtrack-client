@@ -6,8 +6,6 @@ export type addPsgcType = {
   barangay: string;
 };
 
-export type signInAccountType = { username: string; password: string };
-
 export type addStationTypeType = {
   typeName: "AWS" | "TC" | "CLMS" | "RLMS" | "ARG";
 };
@@ -24,48 +22,4 @@ export type createStationType = {
   imageLink: string;
 };
 
-export type createUserData = {
-  username: string;
-  role: string;
-  password: string;
-  grantedStations: string[];
-};
-
 //Update Data types
-export type updateUserPasswordType = {
-  currentPassword: string;
-  password: string;
-  confirmPassword: string;
-};
-
-export type updateStationType = {
-  stationName: string;
-  latitude: string;
-  longitude: string;
-  imageLink: string;
-};
-
-export type UpdateStationProps = {
-  name: string;
-  latitude: string;
-  longitude: string;
-  image: string;
-  id: string;
-  province: number;
-  region: number;
-  psgc: string;
-  municipality: number;
-};
-
-export type updateUserType = {
-  grantedStations: string[];
-  id: number;
-  username?: string;
-  password?: string;
-};
-
-export type reportBugType = {
-  title: string;
-  description: string;
-  metadata: string;
-};

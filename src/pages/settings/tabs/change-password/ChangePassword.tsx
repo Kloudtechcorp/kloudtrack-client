@@ -19,7 +19,7 @@ import {
 } from "@/hooks/react-query/mutations";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { INITIAL_USER, useUserContext } from "@/hooks/context/authContext";
+import { INITIAL_USER, useUserContext } from "@/hooks/custom-hooks/authContext";
 import { Card } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
 

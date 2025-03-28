@@ -35,7 +35,7 @@ interface SigninFormProps {
   };
 }
 
-export const SigninForm = ({ onSubmit, deviceInfo }: SigninFormProps) => {
+const SigninForm = ({ onSubmit, deviceInfo }: SigninFormProps) => {
   const form = useForm<EnhancedLoginType>({
     resolver: zodResolver(enhancedLoginSchema),
     defaultValues: {
@@ -109,3 +109,4 @@ export const SigninForm = ({ onSubmit, deviceInfo }: SigninFormProps) => {
     </Form>
   );
 };
+export default SigninForm;

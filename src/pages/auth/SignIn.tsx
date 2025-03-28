@@ -1,13 +1,12 @@
 import { Navigate, useNavigate } from "react-router-dom";
-import { useUserContext } from "@/hooks/context/authContext";
+import { useUserContext } from "@/hooks/custom-hooks/authContext";
 import { useSignInAccount } from "@/hooks/react-query/mutations";
 import { toast } from "@/hooks/use-toast";
 import { useState } from "react";
 import PuffLoader from "react-spinners/PuffLoader";
-import { SigninForm } from "@/components/auth/forms/SigninForm";
-import { DeviceInfoProvider } from "@/components/auth/DeviceInforProvider";
 import { Logo } from "@/components/ui/logo";
-import { WelcomeMessage } from "@/components/auth/WelcomeMessage";
+import { DeviceInfoProvider, WelcomeMessage } from "./components";
+import SigninForm from "./components/SigninForm";
 
 const Signin = () => {
   const navigate = useNavigate();

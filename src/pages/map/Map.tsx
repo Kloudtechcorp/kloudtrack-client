@@ -3,8 +3,6 @@ import { Button } from "@/components/ui/button";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { styles } from "@/lib/objects/arrays";
-import MapImage from "@/pages/map/components/MapImage";
-
 import {
   Select,
   SelectContent,
@@ -28,13 +26,15 @@ import {
 } from "@/services/get";
 import toast from "react-hot-toast";
 import PuffLoader from "react-spinners/PuffLoader";
-import AwsMapCard from "@/pages/map/components/AwsMapCard";
-import ArgMapCard from "@/pages/map/components/ArgMapCard";
-import ClmsMapCard from "@/pages/map/components/ClmsMapCard";
-import RlmsMapCard from "@/pages/map/components/RlmsMapCard";
 import { useTheme } from "@/components/theme-provider";
-import { useUserContext } from "@/hooks/context/authContext";
-import MapLegend from "@/pages/map/components/MapLegend";
+import { useUserContext } from "@/hooks/custom-hooks/authContext";
+import {
+  CoastalMapCard,
+  MapImage,
+  RainMapCard,
+  RiverMapCard,
+  WeatherMapCard,
+} from "./components";
 
 const Map = () => {
   const { user } = useUserContext();
@@ -270,16 +270,16 @@ const Map = () => {
               </div>
 
               {(stationDetails.type === "AWS" && (
-                <AwsMapCard data={awsData} />
+                <WeatherMapCard data={awsData} />
               )) ||
                 (stationDetails.type === "ARG" && (
-                  <ArgMapCard data={argData} id={stationDetails.id} />
+                  <RainMapCard data={argData} id={stationDetails.id} />
                 )) ||
                 (stationDetails.type === "RLMS" && (
-                  <RlmsMapCard data={rlmsData} id={stationDetails.id} />
+                  <RiverMapCard data={rlmsData} id={stationDetails.id} />
                 )) ||
                 (stationDetails.type === "CLMS" && (
-                  <ClmsMapCard data={clmsData} />
+                  <CoastalMapCard data={clmsData} />
                 ))}
             </div>
           </div>

@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HeaderProps } from "@/types";
 import { Skeleton } from "../../ui/skeleton";
-import { ModeToggle } from "../../_root/ModeToggle";
+import { ModeToggle } from "../custom-ui/ModeToggle";
 import { Twirl as Hamburger } from "hamburger-react";
-import { INITIAL_USER, useUserContext } from "@/hooks/context/authContext";
+import { INITIAL_USER, useUserContext } from "@/hooks/custom-hooks/authContext";
 import { useHandleLogout } from "@/hooks/react-query/mutations";
 import BugIcon from "../icons/BugIcon";
 import {
@@ -14,7 +14,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { BugReport } from "../../forms/bugReport";
+import { BugReport } from "../forms/SubmitReport";
 import { LogOut } from "lucide-react";
 import {
   Tooltip,

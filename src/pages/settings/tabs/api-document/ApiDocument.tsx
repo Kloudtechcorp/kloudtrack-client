@@ -90,6 +90,7 @@ const ResponseExample: React.FC<ResponseExampleProps> = ({
     )}
   </div>
 );
+
 const EndpointSection: React.FC<EndpointSectionProps> = ({
   title,
   endpoint,
@@ -155,33 +156,6 @@ const EndpointSection: React.FC<EndpointSectionProps> = ({
     </div>
   </section>
 );
-
-interface StationData {
-  recordedAt: string;
-  temperature: number;
-  humidity: number;
-  pressure?: number;
-  heatIndex?: number;
-  precipitation?: number;
-  light?: number;
-  windSpeed?: number;
-  windDirection?: string;
-  uvIndex?: number;
-}
-
-interface Station {
-  id: string;
-  name: string;
-  type: string;
-  latitude: number;
-  longitude: number;
-  barangay: string;
-  municipality: string;
-  province: string;
-  region: string;
-  image: string;
-  data: StationData;
-}
 
 const ApiDocument: React.FC = () => {
   return (

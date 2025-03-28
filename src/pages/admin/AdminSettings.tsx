@@ -1,14 +1,16 @@
-import { useUserContext } from "@/hooks/context/authContext";
+import { useUserContext } from "@/hooks/custom-hooks/authContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import StationRegistration from "./tabs/create-station/StationRegistration";
-import UserCreation from "./tabs/user-create/UserCreation";
-import AddPsgc from "./tabs/psgc/AddPsgc";
-import AddStationType from "./tabs/station-type/AddStationType";
 import NotFound from "@/pages/error/NotFound";
 import { Card } from "@/components/ui/card";
-import UserControl from "./tabs/user-control/UserControl";
-import StationList from "./tabs/station-list/StationList";
-import ReportedBugs from "./tabs/reports/ReportedBugs";
+import {
+  AddStation,
+  AddPsgc,
+  Reports,
+  StationList,
+  StationType,
+  UserControl,
+  CreateUser,
+} from "./tabs";
 
 const AdminSettings = () => {
   const { user } = useUserContext();
@@ -44,7 +46,7 @@ const AdminSettings = () => {
         </TabsList>
         <TabsContent value="account" className="container px-0">
           <Card>
-            <UserCreation />
+            <CreateUser />
           </Card>
         </TabsContent>
         <TabsContent value="psgc" className="container px-0">
@@ -54,12 +56,12 @@ const AdminSettings = () => {
         </TabsContent>
         <TabsContent value="stationType" className="container px-0">
           <Card>
-            <AddStationType />
+            <StationType />
           </Card>
         </TabsContent>
         <TabsContent value="station" className="container px-0">
           <Card>
-            <StationRegistration />
+            <AddStation />
           </Card>
         </TabsContent>
         <TabsContent value="list" className="container px-0">
@@ -74,7 +76,7 @@ const AdminSettings = () => {
         </TabsContent>
         <TabsContent value="bugs" className="container px-0">
           <Card>
-            <ReportedBugs />
+            <Reports />
           </Card>
         </TabsContent>
       </Tabs>

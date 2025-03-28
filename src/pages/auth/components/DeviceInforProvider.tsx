@@ -11,7 +11,7 @@ interface DeviceInfoProviderProps {
   children: (deviceInfo: DeviceInfo) => ReactNode;
 }
 
-export const DeviceInfoProvider = ({ children }: DeviceInfoProviderProps) => {
+const DeviceInfoProvider = ({ children }: DeviceInfoProviderProps) => {
   const [locationData, setLocationData] = useState<string | null>(null);
 
   useEffect(() => {
@@ -100,3 +100,4 @@ export const DeviceInfoProvider = ({ children }: DeviceInfoProviderProps) => {
 
   return <>{children(getDeviceInfo())}</>;
 };
+export default DeviceInfoProvider;

@@ -1,4 +1,4 @@
-import { UserTables } from "@/pages/admin/tabs/user-control/components/UserTables";
+import { UserTable } from "./components";
 
 const UserControl = () => {
   return (
@@ -9,7 +9,7 @@ const UserControl = () => {
         stations granted.
       </span>
       <div className="w-full overflow-auto rounded-xl custom-scrollbar">
-        <UserTables />
+        <UserTable />
       </div>
     </div>
   );

@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -21,7 +20,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
 import { updateStationSchema } from "@/types/validation";
 import { toast } from "@/hooks/use-toast";
 import { useUpdateStation } from "@/hooks/react-query/mutations";
@@ -33,11 +31,11 @@ import {
   useGetStationRegions,
 } from "@/hooks/react-query/queries";
 
-export type UpdateStationProps = {
+type UpdateStationProps = {
   id: string;
 };
 
-const UpdateStation = ({ id }: UpdateStationProps) => {
+export const UpdateStation = ({ id }: UpdateStationProps) => {
   const navigate = useNavigate();
 
   const { data: stationData, isLoading, isError } = useGetStationDetailed(id);
@@ -332,5 +330,3 @@ const UpdateStation = ({ id }: UpdateStationProps) => {
     </Form>
   );
 };
-
-export default UpdateStation;

@@ -4,7 +4,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useUserContext } from "@/hooks/context/authContext";
+import { useUserContext } from "@/hooks/custom-hooks/authContext";
 
 const BottomNavbar = () => {
   const { pathname } = useLocation();

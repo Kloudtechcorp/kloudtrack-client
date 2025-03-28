@@ -1,8 +1,6 @@
 import { Outlet } from "react-router-dom";
-import LeftSidebar from "../components/global/layout/LeftSidebar";
-import Header from "@/components/global/layout/Header";
 import { useState } from "react";
-import BottomNavbar from "@/components/_root/BottomNavbar";
+import { Footer, Header, Sidebar } from "@/components/global/layout";
 
 const RootLayout = () => {
   const [clicked, setClicked] = useState(false);
@@ -14,9 +12,9 @@ const RootLayout = () => {
     <div className="flex flex-col w-full">
       <Header burgerMenu={handleBurgerMenu} />
       <div className="flex h-[calc(100vh-3.5rem)] bg-white dark:bg-[#181819] w-full ">
-        <LeftSidebar clicked={clicked} />
+        <Sidebar clicked={clicked} />
         <div className="block md:hidden ">
-          <BottomNavbar />
+          <Footer />
         </div>
         <section className="flex-1 flex bg-white dark:bg-[#181819] w-full">
           <Outlet />

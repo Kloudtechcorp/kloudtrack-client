@@ -1,16 +1,15 @@
-import React from "react";
-import { Card, CardContent } from "../../../../components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { useGetAnalysis } from "@/hooks/react-query/queries";
-import { analysisType, TableGraphCardType } from "@/types/queryTypes";
-import { Skeleton } from "../../../../components/ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 import { formatDateStringGraph, weatherUnit } from "@/lib/utils";
+import { AnalysisRequirements } from "@/types/station.type";
 
 const VerticalCards = ({
   stationId,
   weatherData,
   type,
   repeat,
-}: analysisType) => {
+}: AnalysisRequirements) => {
   const {
     data: stationData,
     isError,

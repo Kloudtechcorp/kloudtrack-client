@@ -1,10 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ArgCard from "@/components/dynamic/DashboardCards/ArgCard";
-import AwsCard from "@/components/dynamic/DashboardCards/AwsCard";
-import RlmsCard from "@/components/dynamic/DashboardCards/RlmsCard";
-import ClmsCard from "@/components/dynamic/DashboardCards/ClmsCard";
-import { useUserContext } from "@/hooks/context/authContext";
+import { useUserContext } from "@/hooks/custom-hooks/authContext";
 import { useMemo, useRef, useState, useEffect } from "react";
 import { CreditCard, Fullscreen, TableIcon } from "lucide-react";
 import {
@@ -29,11 +25,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import AwsTable from "@/components/dynamic/DashboardCards/Tabular/AWSTable";
-import ArgTable from "@/components/dynamic/DashboardCards/Tabular/ARGTable";
-import RlmsTable from "@/components/dynamic/DashboardCards/Tabular/RLMSTable";
-import ClmsTable from "@/components/dynamic/DashboardCards/Tabular/CLMSTable";
-import { WeatherDangerLegends } from "@/components/_root/MultipleLegends";
+import { WeatherDangerLegends } from "@/pages/home/components/MultipleLegends";
+import {
+  CoastalDataCard,
+  CoastalDataTable,
+  RainDataCard,
+  RainDataTable,
+  RiverDataCard,
+  RiverDataTable,
+  WeatherDataCard,
+} from "./components";
 
 const Dashboard = () => {
   const { user, isLoading } = useUserContext();
@@ -57,10 +58,14 @@ const Dashboard = () => {
 
   const stationCategories = useMemo(
     () => [
-      { type: "AWS", label: "Weather Stations", CardComponent: AwsCard },
-      { type: "ARG", label: "Rain Gauges", CardComponent: ArgCard },
-      { type: "RLMS", label: "River Level", CardComponent: RlmsCard },
-      { type: "CLMS", label: "Coastal Level", CardComponent: ClmsCard },
+      {
+        type: "AWS",
+        label: "Weather Stations",
+        CardComponent: WeatherDataCard,
+      },
+      { type: "ARG", label: "Rain Gauges", CardComponent: RainDataCard },
+      { type: "RLMS", label: "River Level", CardComponent: RiverDataCard },
+      { type: "CLMS", label: "Coastal Level", CardComponent: CoastalDataCard },
     ],
     []
   );
@@ -247,7 +252,10 @@ const Dashboard = () => {
                             <TableBody>
                               {filteredStations[category.type].map(
                                 (station) => (
-                                  <ArgTable key={station.id} id={station.id} />
+                                  <RainDataTable
+                                    key={station.id}
+                                    id={station.id}
+                                  />
                                 )
                               )}
                             </TableBody>
@@ -277,7 +285,10 @@ const Dashboard = () => {
                             <TableBody>
                               {filteredStations[category.type].map(
                                 (station) => (
-                                  <RlmsTable key={station.id} id={station.id} />
+                                  <RiverDataTable
+                                    key={station.id}
+                                    id={station.id}
+                                  />
                                 )
                               )}
                             </TableBody>
@@ -316,7 +327,10 @@ const Dashboard = () => {
                             <TableBody>
                               {filteredStations[category.type].map(
                                 (station) => (
-                                  <ClmsTable key={station.id} id={station.id} />
+                                  <CoastalDataTable
+                                    key={station.id}
+                                    id={station.id}
+                                  />
                                 )
                               )}
                             </TableBody>

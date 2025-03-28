@@ -1,9 +1,8 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { timer } from "./objects/himawariArrays";
 import { DateRange } from "react-day-picker";
 import { endOfDay, startOfDay, subDays } from "date-fns";
-import { GraphData } from "./types";
+import { SATELLITE_TIMER } from "@/constants";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -56,7 +55,7 @@ export const getNearestTimeIndex = (hours: number, minutes: number): number => {
   const formattedTime = `${localHour
     .toString()
     .padStart(2, "0")}${roundedMinutes.toString().padStart(2, "0")}`;
-  return timer.indexOf(formattedTime);
+  return SATELLITE_TIMER.indexOf(formattedTime);
 };
 
 export const delay = (ms: number): Promise<void> => {

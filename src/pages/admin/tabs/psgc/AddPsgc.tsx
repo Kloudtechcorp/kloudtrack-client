@@ -20,7 +20,12 @@ import {
   SelectValue,
   SelectItem,
 } from "@/components/ui/select";
-import { barangays, municipalities, provinces, regions } from "@/lib/psgc";
+import {
+  barangays,
+  municipalities,
+  provinces,
+  regions,
+} from "@/constants/psgc";
 import { useAddPsgc } from "@/hooks/react-query/mutations";
 
 const defaultValues = {

@@ -21,7 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useUserContext } from "@/hooks/context/authContext";
+import { useUserContext } from "@/hooks/custom-hooks/authContext";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,

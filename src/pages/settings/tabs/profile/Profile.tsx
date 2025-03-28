@@ -14,7 +14,7 @@ import {
   useGetUserProfile,
 } from "@/hooks/react-query/queries";
 import { useDeleteApiKey } from "@/hooks/react-query/mutations";
-import { useUserContext } from "@/hooks/context/authContext";
+import { useUserContext } from "@/hooks/custom-hooks/authContext";
 import {
   Dialog,
   DialogContent,

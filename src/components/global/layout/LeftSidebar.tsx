@@ -6,7 +6,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { SidebarProps } from "@/types";
-import { INITIAL_USER, useUserContext } from "@/hooks/context/authContext";
+import { INITIAL_USER, useUserContext } from "@/hooks/custom-hooks/authContext";
 import { useHandleLogout } from "@/hooks/react-query/mutations";
 import BugIcon from "../icons/BugIcon";
 import {
@@ -16,7 +16,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { BugReport } from "../../forms/bugReport";
+import { BugReport } from "../forms/SubmitReport";
 import { Bug, LogOut } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../../ui/button";

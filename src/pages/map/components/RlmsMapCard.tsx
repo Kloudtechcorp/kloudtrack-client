@@ -10,7 +10,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import NoData from "../../error/NoData";
-import VariableGraph from "@/components/dynamic/VariableGraph";
+import VariableGraph from "@/pages/graphs/components/CustomChart";
 
 interface MapCardProps {
   data: rlmsDashboardType | null;

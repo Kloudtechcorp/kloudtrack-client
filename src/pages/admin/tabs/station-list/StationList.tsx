@@ -1,10 +1,7 @@
-import { useUserContext } from "@/hooks/context/authContext";
+import { useUserContext } from "@/hooks/custom-hooks/authContext";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AwsSensors } from "@/components/dynamic/SensorTables/AwsSensors";
-import { ArgSensors } from "@/components/dynamic/SensorTables/ArgSensors";
-import { RlmsSensors } from "@/components/dynamic/SensorTables/RlmsSensors";
-import { ClmsSensors } from "@/components/dynamic/SensorTables/ClmsSensors";
+import { ArgSensors, AwsSensors, ClmsSensors, RlmsSensors } from "./components";
 
 const StationList = () => {
   const { user, isLoading } = useUserContext();

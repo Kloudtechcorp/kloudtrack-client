@@ -1,3 +1,18 @@
+import {
+  PsgcData,
+  ReportDetails,
+  ReportStatus,
+  StationBarangay,
+  StationMunicipality,
+  StationName,
+  StationProvince,
+  StationRegion,
+  StationType,
+  UserData,
+  UserDetails,
+  UserInformation,
+} from "@/types/admin.type";
+
 const server = import.meta.env.VITE_SERVER;
 
 // ** POST REQUESTS **
@@ -6,7 +21,7 @@ export const addPsgc = async (values: PsgcData) => {
   const response = await fetch(`${server}/admin/psgc`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      "Content-": "application/json",
     },
     body: JSON.stringify(values),
     credentials: "include",
@@ -24,7 +39,7 @@ export const addStationType = async (values: StationType) => {
   const response = await fetch(`${server}/admin/station-type`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      "Content-": "application/json",
     },
     body: JSON.stringify(values),
     credentials: "include",
@@ -32,23 +47,8 @@ export const addStationType = async (values: StationType) => {
 
   const data = await response.json();
   if (!response.ok) {
-    throw new Error(data.message || "Error adding Station Type");
+    throw new Error(data.message || "Error adding Station ");
   }
-  return data;
-};
-
-// * This handles creating a station for a new hardware to send off data
-export const createStation = async (station: StationData) => {
-  const response = await fetch(`${server}/admin/station`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(station),
-    credentials: "include",
-  });
-  if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-  const data = await response.json();
   return data;
 };
 
@@ -58,7 +58,7 @@ export const createUser = async (userData: UserData) => {
   const response = await fetch(`${server}/admin/signup`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      "Content-": "application/json",
     },
     body: JSON.stringify(userData),
     credentials: "include",
@@ -72,89 +72,8 @@ export const createUser = async (userData: UserData) => {
 
 // ** GET RQUESTS
 
-// * Get the status of every sensors of every weather station
-// ! THIS TAKES TOO SLOW TO LOAD (approx. 30 seconds)
-// TODO: Find the cause of slow fetching (it might be the backend, so gawin mo to regee)
-export const getWeatherSensors = async (
-  page = 0,
-  pageSize = 10
-): Promise<{
-  items: weatherSensorsType;
-  totalCount: number;
-  page: number;
-  pageSize: number;
-  totalPages: number;
-}> => {
-  const response = await fetch(
-    `${server}/admin/weather/sensors?page=${page}&pageSize=${pageSize}`,
-    {
-      method: "GET",
-      credentials: "include",
-    }
-  );
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(
-      data.message || "Failed to fetch sensor data in weather stations"
-    );
-  }
-
-  return data;
-};
-
-// * Get the status of every sensors of every weather station
-// TODO: UPDATE THIS CODE. (APPLY PAGINATION SAME WITH FOR WEATHER STATIONS)
-export const getCoastalSensors = async (): Promise<coastalSensorsType> => {
-  const response = await fetch(`${server}/admin/coastal/sensors`, {
-    method: "GET",
-    credentials: "include",
-  });
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(
-      data.message || "Failed to fetch sensor data in coastal stations"
-    );
-  }
-  return data;
-};
-
-// * Get the status of every sensors of every weather station
-// TODO: UPDATE THIS CODE. (APPLY PAGINATION SAME WITH FOR WEATHER STATIONS)
-export const getRainGaugeSensors = async (): Promise<rainGaugeSensorsType> => {
-  const response = await fetch(`${server}/admin/raingauge/sensors`, {
-    method: "GET",
-    credentials: "include",
-  });
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(
-      data.message || "Failed to fetch sensor data in rain gauge stations"
-    );
-  }
-  return data;
-};
-
-export const getRiverLevelSensors =
-  async (): Promise<riverLevelSensorsType> => {
-    const response = await fetch(`${server}/admin/riverlevel/sensors`, {
-      method: "GET",
-      credentials: "include",
-    });
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(
-        data.message || "Failed to fetch sensor data in river level stations"
-      );
-    }
-    return data;
-  };
-
-export const getUserList = async (): Promise<userListType> => {
+// * Get the list of users
+export const getUserList = async (): Promise<UserDetails[]> => {
   const response = await fetch(`${server}/admin/all-users`, {
     method: "GET",
     credentials: "include",
@@ -167,7 +86,8 @@ export const getUserList = async (): Promise<userListType> => {
   return data;
 };
 
-export const getBugReports = async (): Promise<reportedBugType[]> => {
+// * Get the list of reports
+export const getReports = async (): Promise<ReportDetails[]> => {
   const response = await fetch(`${server}/admin/reports`, {
     method: "GET",
     credentials: "include",
@@ -178,6 +98,120 @@ export const getBugReports = async (): Promise<reportedBugType[]> => {
     throw new Error(data.message || "Failed to fetch users");
   }
   return data.data;
+};
+
+// * Fetch the station types
+export const getStations = async (): Promise<StationName[]> => {
+  const response = await fetch(`${server}/admin/station-types`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`);
+  }
+  const data = await response.json();
+  return data.types || [];
+};
+
+// ** This functions will fetch the psgc information
+// * This will fetch the regions
+export const getStationRegions = async (): Promise<StationRegion[]> => {
+  const response = await fetch(`${server}/admin/regions`, {
+    method: "GET",
+    credentials: "include",
+  });
+  if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+  const data = await response.json();
+  return data.regions;
+};
+
+// * This will fetch the provinces
+export const getStationProvinces = async (
+  regionId: number
+): Promise<StationProvince[]> => {
+  const response = await fetch(`${server}/admin/provinces/${regionId}`, {
+    method: "GET",
+    credentials: "include",
+  });
+  if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+  const data = await response.json();
+  return data.provinces;
+};
+
+// * This will fetch the municipalities
+export const getStationMunicipalities = async (
+  provinceId: number
+): Promise<StationMunicipality[]> => {
+  const response = await fetch(`${server}/admin/municipalities/${provinceId}`, {
+    method: "GET",
+    credentials: "include",
+  });
+  if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+  const data = await response.json();
+
+  return data.municipalities;
+};
+
+// * This will fetch the barangays
+export const getStationBarangays = async (
+  municipalityId: number
+): Promise<StationBarangay[]> => {
+  const response = await fetch(`${server}/admin/barangays/${municipalityId}`, {
+    method: "GET",
+    credentials: "include",
+  });
+  if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+  const data = await response.json();
+
+  return data.barangays;
+};
+
+// ** UPDATE REQUESTS
+
+// * This function will update the user information
+export const updateUser = async (
+  values: UserInformation
+): Promise<{ message: string }> => {
+  const response = await fetch(`${server}/admin/user/update/${values.id}`, {
+    method: "PUT",
+    credentials: "include",
+    headers: {
+      "Content-": "application/json",
+    },
+    body: JSON.stringify({
+      grantedStations: values.grantedStations,
+      ...(values.password && { password: values.password }),
+      ...(values.username && { username: values.username }),
+    }),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to update station details.");
+  }
+  return data;
+};
+
+// * This function will update the status of a reported issue
+export const updateReportStatus = async (
+  values: ReportStatus
+): Promise<{ message: string }> => {
+  const response = await fetch(`${server}/admin/reports`, {
+    method: "PUT",
+    credentials: "include",
+    headers: {
+      "Content-": "application/json",
+    },
+    body: JSON.stringify({
+      id: values.id,
+      status: values.status,
+    }),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to update bug report.");
+  }
+  return data;
 };
 
 // ** DELETE REQUESTS
@@ -193,6 +227,19 @@ export const deleteStation = async (
   const data = await response.json();
   if (!response.ok) {
     throw new Error(data.message || "Failed to delete station!");
+  }
+  return data;
+};
+
+//* This handles deleting an user
+export const deleteUser = async (id: number): Promise<{ message: string }> => {
+  const response = await fetch(`${server}/admin/user/delete/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to delete user!");
   }
   return data;
 };

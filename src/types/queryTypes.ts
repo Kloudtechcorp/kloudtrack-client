@@ -199,15 +199,6 @@ export type userProfileTypes = {
   }[];
 };
 
-export type TableGraphCardType = {
-  type: string;
-  stationId: string;
-  weatherData: string;
-  range: number;
-  repeat: string;
-  showDots?: boolean;
-};
-
 export type DynamicDatasetType = {
   type: string;
   stationIds: string[];
@@ -249,39 +240,6 @@ export type downloadParamsTypes = {
   parameter: string[];
 };
 
-export type weatherDataTypes = {
-  recordedAt: string;
-  temperature: number;
-  humidity: number;
-  pressure: number;
-  heatIndex: number;
-  light: number;
-  uvIntensity: number;
-  windDirection: number;
-  windSpeed: number;
-  precipitation: number;
-  gust: number;
-  uvIndex: number;
-};
-
-export type coastalDataTypes = {
-  recordedAt: string;
-  temperature: number;
-  humidity: number;
-  pressure: number;
-  distance: number;
-};
-
-export type riverLevelDataTypes = {
-  recordedAt: string;
-  distance: number;
-};
-
-export type rainGaugeDataTypes = {
-  recordedAt: string;
-  precipitation: number;
-};
-
 export type downloadableDataTypes = {
   weatherdata: weatherDataTypes[];
 };
@@ -292,62 +250,4 @@ export type tablesType = {
   range: number;
   repeat: string;
   type: string;
-};
-
-export type analysisType = {
-  stationId: string;
-  weatherData: string;
-  type: string;
-  repeat: string;
-};
-
-export type detailedStationProps = {
-  id: number;
-  typeId: number;
-  stationName: string;
-  psgc: string;
-  latitude: number;
-  longitude: number;
-  municipalityId: number;
-  provinceId: number;
-  regionId: number;
-  serial: string;
-  imageLink: string | null;
-  createdAt: Date;
-};
-type Station = {
-  name: string;
-  type: string;
-  latitude: number;
-  longitude: number;
-  barangay: string;
-  municipality: string;
-  province: string;
-};
-
-export type WeatherStationResponse = {
-  average: string;
-  currentData: number;
-  max: string;
-  maxTime: string;
-  min: string;
-  minTime: string;
-  past1minute: number;
-  recordedAt: string;
-  station: Station;
-};
-
-type Device = {
-  deviceNumber: number;
-  deviceName: string;
-  location: string;
-  os: string;
-  expiresAt: string; // ISO date string
-  sessionId: string;
-};
-
-export type ActiveDevicesResponse = {
-  activeDevices: number;
-  devices: Device[];
-  maxDevices: number;
 };

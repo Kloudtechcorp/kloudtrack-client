@@ -1,4 +1,4 @@
-export { WEATHER_TERMINOLOGIES } from "./weather-terminologies";
-export { SATELLITE_BANDS } from "./satellite-bands";
-export { SATELLITE_TIMER } from "./satellite-timer";
-export { MAPBOX_STYLES } from "./mapbox-themes";
+export { WEATHER_TERMINOLOGIES } from "./weatherReferences";
+export { SATELLITE_BANDS, SATELLITE_TIMER } from "./satelliteConstants";
+export { MAPBOX_STYLES } from "./mapboxConstants";
+export { QUERY_KEYS } from "./queryKeys";

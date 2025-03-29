@@ -12,7 +12,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { ArrowUpDown, ChevronDown } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -29,24 +28,24 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetArgSensors } from "@/hooks/react-query/queries";
-import { rainGaugeSensorsType } from "@/types";
-import { checkBadge } from "@/lib/helper";
+import { useGetClmsSensors } from "@/hooks/react-query/queries";
 import { formatDateString } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import NoDataOptions from "@/pages/error/NoDataOptions";
 import AdminControls from "@/pages/admin/components/AdminControls";
+import { CoastalSensor } from "@/types/station.type";
+import CheckSensor from "./CheckSensor";
 
-export function ArgSensors() {
+export function CoastalSensors() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
-  const { data: rainGaugeData, isLoading, isError } = useGetArgSensors();
+  const { data: coastalData, isLoading, isError } = useGetClmsSensors();
 
-  const columns: ColumnDef<rainGaugeSensorsType[number]>[] = [
+  const columns: ColumnDef<CoastalSensor[][number]>[] = [
     {
       accessorKey: "name",
       header: ({ column }) => (
@@ -58,9 +57,7 @@ export function ArgSensors() {
           <ArrowUpDown />
         </Button>
       ),
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("name")}</div>
-      ),
+      cell: ({ row }) => <div>{row.getValue("name")}</div>,
     },
     {
       accessorKey: "serial",
@@ -68,10 +65,26 @@ export function ArgSensors() {
       cell: ({ row }) => <div>{row.getValue("serial")}</div>,
     },
     {
-      accessorKey: "rainGauge",
-      header: "Slave",
-      cell: ({ row }) => <div>{checkBadge(row.getValue("rainGauge"))}</div>,
+      accessorKey: "BME280",
+      header: "BME280",
+      cell: ({ row }) => <div>{CheckSensor(row.getValue("BME280"))}</div>,
     },
+    {
+      accessorKey: "sonic1",
+      header: "Ultrasonic-1",
+      cell: ({ row }) => <div>{CheckSensor(row.getValue("sonic1"))}</div>,
+    },
+    {
+      accessorKey: "sonic2",
+      header: "Ultrasonic-2",
+      cell: ({ row }) => <div>{CheckSensor(row.getValue("sonic2"))}</div>,
+    },
+    {
+      accessorKey: "sonic3",
+      header: "Ultrasonic-3",
+      cell: ({ row }) => <div>{CheckSensor(row.getValue("sonic3"))}</div>,
+    },
+
     {
       accessorKey: "recordedAt",
       header: "Date Recorded",
@@ -95,7 +108,7 @@ export function ArgSensors() {
   ];
 
   const table = useReactTable({
-    data: rainGaugeData || [],
+    data: coastalData || [],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -120,7 +133,7 @@ export function ArgSensors() {
     );
   }
 
-  if (!rainGaugeData || isError) {
+  if (!coastalData || isError) {
     return (
       <div className="py-4">
         <NoDataOptions />

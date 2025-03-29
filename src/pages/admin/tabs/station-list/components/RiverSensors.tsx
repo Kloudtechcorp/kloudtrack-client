@@ -28,31 +28,24 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetAwsSensors } from "@/hooks/react-query/queries";
-import { weatherSensorsType } from "@/types";
-import { checkBadge } from "@/lib/helper";
+import { useGetRlmsSensors } from "@/hooks/react-query/queries";
 import { formatDateString } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import NoDataOptions from "@/pages/error/NoDataOptions";
 import AdminControls from "@/pages/admin/components/AdminControls";
+import { RiverLevelSensor } from "@/types/station.type";
+import CheckSensor from "./CheckSensor";
 
-export function AwsSensors() {
+export function RiverSensors() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
-  const [pagination, setPagination] = React.useState({
-    pageIndex: 0,
-    pageSize: 10,
-  });
+  const { data: riverData, isLoading, isError } = useGetRlmsSensors();
 
-  const { data, isLoading, isError } = useGetAwsSensors(
-    pagination.pageIndex,
-    pagination.pageSize
-  );
-  const columns: ColumnDef<weatherSensorsType[number]>[] = [
+  const columns: ColumnDef<RiverLevelSensor[][number]>[] = [
     {
       accessorKey: "name",
       header: ({ column }) => (
@@ -64,7 +57,9 @@ export function AwsSensors() {
           <ArrowUpDown />
         </Button>
       ),
-      cell: ({ row }) => <div>{row.getValue("name")}</div>,
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("name")}</div>
+      ),
     },
     {
       accessorKey: "serial",
@@ -72,39 +67,9 @@ export function AwsSensors() {
       cell: ({ row }) => <div>{row.getValue("serial")}</div>,
     },
     {
-      accessorKey: "BME280a",
-      header: "BME280-1",
-      cell: ({ row }) => <div>{checkBadge(row.getValue("BME280a"))}</div>,
-    },
-    {
-      accessorKey: "BME280b",
-      header: "BME280-2",
-      cell: ({ row }) => <div>{checkBadge(row.getValue("BME280b"))}</div>,
-    },
-    {
-      accessorKey: "BME280c",
-      header: "BME280-3",
-      cell: ({ row }) => <div>{checkBadge(row.getValue("BME280c"))}</div>,
-    },
-    {
-      accessorKey: "BH1750",
-      header: "BH1750",
-      cell: ({ row }) => <div>{checkBadge(row.getValue("BH1750"))}</div>,
-    },
-    {
-      accessorKey: "AS5600",
-      header: "AS5600",
-      cell: ({ row }) => <div>{checkBadge(row.getValue("AS5600"))}</div>,
-    },
-    {
-      accessorKey: "UV",
-      header: "UV",
-      cell: ({ row }) => <div>{checkBadge(row.getValue("UV"))}</div>,
-    },
-    {
-      accessorKey: "SLAVE",
-      header: "SLAVE",
-      cell: ({ row }) => <div>{checkBadge(row.getValue("SLAVE"))}</div>,
+      accessorKey: "sonic",
+      header: "Ultrasonic",
+      cell: ({ row }) => <div>{CheckSensor(row.getValue("sonic"))}</div>,
     },
     {
       accessorKey: "recordedAt",
@@ -129,24 +94,22 @@ export function AwsSensors() {
   ];
 
   const table = useReactTable({
-    data: data?.items || [],
+    data: riverData || [],
     columns,
-    manualPagination: true,
-    pageCount: data?.totalPages || 0,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
-    onColumnVisibilityChange: setColumnVisibility,
-    onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
-      pagination,
     },
   });
+
   if (isLoading) {
     return (
       <div className="flex flex-col gap-3 md:gap-5 w-full container p-2 py-4">
@@ -156,7 +119,7 @@ export function AwsSensors() {
     );
   }
 
-  if (!data || isError) {
+  if (!riverData || isError) {
     return (
       <div className="py-4">
         <NoDataOptions />
@@ -185,19 +148,21 @@ export function AwsSensors() {
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
-              .map((column) => (
-                <DropdownMenuCheckboxItem
-                  key={column.id}
-                  className="capitalize"
-                  checked={column.getIsVisible()}
-                  onCheckedChange={(value) => {
-                    column.toggleVisibility(!!value);
-                  }}
-                  onSelect={(event) => event.preventDefault()}
-                >
-                  {column.id}
-                </DropdownMenuCheckboxItem>
-              ))}
+              .map((column) => {
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) =>
+                      column.toggleVisibility(!!value)
+                    }
+                    onSelect={(event) => event.preventDefault()}
+                  >
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                );
+              })}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
@@ -252,10 +217,6 @@ export function AwsSensors() {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <span className="text-sm text-muted-foreground">
-          Page {pagination.pageIndex + 1} of {data?.totalPages || 0}
-          {data?.totalCount ? ` (${data.totalCount} items total)` : ""}
-        </span>
         <div className="space-x-2">
           <Button
             variant="outline"

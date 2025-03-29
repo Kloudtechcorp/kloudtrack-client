@@ -170,7 +170,7 @@ export const getStationData = async (
   return data.data;
 };
 
-export const getActiveDevices = async (): Promise<ActiveDevices[]> => {
+export const getActiveDevices = async (): Promise<ActiveDevices> => {
   const response = await fetch(`${server}/user/auth/active-devices`, {
     method: "GET",
     credentials: "include",

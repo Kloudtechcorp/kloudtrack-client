@@ -1,5 +1,6 @@
-export { ArgSensors } from "./ArgSensors";
-export { AwsSensors } from "./AwsSensors";
-export { ClmsSensors } from "./ClmsSensors";
-export { RlmsSensors } from "./RlmsSensors";
+export { RainGaugeSensors } from "./RainGaugeSensors";
+export { WeatherSensors } from "./WeatherSensors";
+export { CoastalSensors } from "./CoastalSensors";
+export { RiverSensors } from "./RiverSensors";
 export { UpdateStation } from "./UpdateStation";
+export { default as CheckSensor } from "./CheckSensor";

@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AuthProvider } from "./hooks/custom-hooks/authContext.tsx";
 import React from "react";
-import { QueryProvider } from "./hooks/react-query/QueryProvider.tsx";
+import { QueryProvider } from "./hooks/QueryProvider.tsx";
 import { ToastProvider } from "./components/ui/toast.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

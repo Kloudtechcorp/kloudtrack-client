@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 
-export const checkBadge = (check: string) => {
+const CheckSensor = (check: string) => {
   if (check === "Failed") {
     return <Badge variant={"destructive"}>Failed</Badge>;
   } else if (check === "No Value") {
@@ -10,3 +10,5 @@ export const checkBadge = (check: string) => {
   }
   return <Badge variant={"default"}>Working</Badge>;
 };
+
+export default CheckSensor;

@@ -12,6 +12,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { ArrowUpDown, ChevronDown } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -28,24 +29,24 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetRlmsSensors } from "@/hooks/react-query/queries";
-import { riverLevelSensorsType } from "@/types";
-import { checkBadge } from "@/lib/helper";
+import { useGetArgSensors } from "@/hooks/react-query/queries";
 import { formatDateString } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import NoDataOptions from "@/pages/error/NoDataOptions";
 import AdminControls from "@/pages/admin/components/AdminControls";
+import { RainGaugeSensor } from "@/types/station.type";
+import CheckSensor from "./CheckSensor";
 
-export function RlmsSensors() {
+export function RainGaugeSensors() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
-  const { data: riverData, isLoading, isError } = useGetRlmsSensors();
+  const { data: rainGaugeData, isLoading, isError } = useGetArgSensors();
 
-  const columns: ColumnDef<riverLevelSensorsType[number]>[] = [
+  const columns: ColumnDef<RainGaugeSensor[][number]>[] = [
     {
       accessorKey: "name",
       header: ({ column }) => (
@@ -67,9 +68,9 @@ export function RlmsSensors() {
       cell: ({ row }) => <div>{row.getValue("serial")}</div>,
     },
     {
-      accessorKey: "sonic",
-      header: "Ultrasonic",
-      cell: ({ row }) => <div>{checkBadge(row.getValue("sonic"))}</div>,
+      accessorKey: "rainGauge",
+      header: "Slave",
+      cell: ({ row }) => <div>{CheckSensor(row.getValue("rainGauge"))}</div>,
     },
     {
       accessorKey: "recordedAt",
@@ -94,7 +95,7 @@ export function RlmsSensors() {
   ];
 
   const table = useReactTable({
-    data: riverData || [],
+    data: rainGaugeData || [],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -119,7 +120,7 @@ export function RlmsSensors() {
     );
   }
 
-  if (!riverData || isError) {
+  if (!rainGaugeData || isError) {
     return (
       <div className="py-4">
         <NoDataOptions />

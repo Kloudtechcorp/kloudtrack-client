@@ -28,13 +28,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetRlmsSensors } from "@/hooks/react-query/queries";
 import { formatDateString } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import NoDataOptions from "@/pages/error/NoDataOptions";
 import AdminControls from "@/pages/admin/components/AdminControls";
 import { RiverLevelSensor } from "@/types/station.type";
 import CheckSensor from "./CheckSensor";
+import { useGetRiverLevelSensors } from "@/hooks/queries/useAdmin";
 
 export function RiverSensors() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -43,7 +43,7 @@ export function RiverSensors() {
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
-  const { data: riverData, isLoading, isError } = useGetRlmsSensors();
+  const { data: riverData, isLoading, isError } = useGetRiverLevelSensors();
 
   const columns: ColumnDef<RiverLevelSensor[][number]>[] = [
     {

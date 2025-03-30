@@ -99,7 +99,7 @@ export type CoastalData = {
 
 export type StationData = {
   stationName: string;
-  station: string;
+  stationType: string;
   latitude: string;
   longitude: string;
   psgc: string;

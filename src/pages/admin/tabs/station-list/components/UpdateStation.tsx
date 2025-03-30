@@ -20,16 +20,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { updateStationSchema } from "@/types/validation";
+import { updateStationSchema } from "@/lib/validation";
 import { toast } from "@/hooks/use-toast";
-import { useUpdateStation } from "@/hooks/react-query/mutations";
+import { useGetStationDetailed } from "@/hooks/queries/useStations";
 import {
   useGetStationBarangays,
-  useGetStationDetailed,
   useGetStationMunicipalities,
   useGetStationProvinces,
   useGetStationRegions,
-} from "@/hooks/react-query/queries";
+} from "@/hooks/queries/useAdmin";
+import { useUpdateStation } from "@/hooks/mutations/useStationMutations";
 
 type UpdateStationProps = {
   id: string;

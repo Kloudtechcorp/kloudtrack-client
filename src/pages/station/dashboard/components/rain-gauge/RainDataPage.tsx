@@ -1,11 +1,11 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import { useGetArgData } from "@/hooks/react-query/queries";
 import { formatDateString } from "@/lib/utils";
 import VariableGraph from "@/pages/graphs/components/CustomChart";
 import PuffLoader from "react-spinners/PuffLoader";
 import NotFound from "@/pages/error/NotFound";
 import RainGaugeDialog from "./RainDownloadDialog";
+import { useGetRainData } from "@/hooks/queries/useStations";
 
 type ArgDataCardProps = {
   stationId: string;
@@ -13,7 +13,7 @@ type ArgDataCardProps = {
 
 const ArgDataCard = ({ stationId }: ArgDataCardProps) => {
   const navigate = useNavigate();
-  const { data: stationData, isError, isLoading } = useGetArgData(stationId);
+  const { data: stationData, isError, isLoading } = useGetRainData(stationId);
 
   if (isError || !stationData?.data) {
     return (

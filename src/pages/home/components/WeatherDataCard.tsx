@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Card, CardContent, CardTitle } from "../../ui/card";
-import { Button } from "../../ui/button";
 import PuffLoader from "react-spinners/PuffLoader";
 import { useNavigate } from "react-router-dom";
-import { useGetAwsData2 } from "../../../hooks/react-query/queries";
 import { formatDateString, stationType } from "@/lib/utils";
-import DataCards from "../../_root/DataCards";
-import { useTheme } from "../../theme-provider";
 import NoData from "@/pages/error/NoData";
 import NavigateIcon from "@/components/global/icons/NavigateIcon";
 import { toast } from "sonner";
@@ -17,6 +12,11 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Map, { Marker } from "react-map-gl";
+import DataCards from "@/components/global/custom-ui/DataCards";
+import { useGetWeatherData } from "@/hooks/queries/useStations";
+import { useTheme } from "@/components/theme-provider";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 interface AwsCardProps {
   id: string;
@@ -24,7 +24,7 @@ interface AwsCardProps {
 
 const WeatherDataCard: React.FC<AwsCardProps> = ({ id }) => {
   const navigate = useNavigate();
-  const { data: stationData, isLoading, isError } = useGetAwsData2(id);
+  const { data: stationData, isLoading, isError } = useGetWeatherData(id);
   const [clicked, setClicked] = useState(false);
   const { theme } = useTheme();
   const [mapboxStyle] = useState(

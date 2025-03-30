@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { HeaderProps } from "@/types";
-import { Skeleton } from "../../ui/skeleton";
-import { ModeToggle } from "../custom-ui/ModeToggle";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ModeToggle } from "@/components/global/custom-ui/ModeToggle";
 import { Twirl as Hamburger } from "hamburger-react";
 import { INITIAL_USER, useUserContext } from "@/hooks/custom-hooks/authContext";
-import { useHandleLogout } from "@/hooks/react-query/mutations";
-import BugIcon from "../icons/BugIcon";
+import BugIcon from "@/components/global/icons/BugIcon";
 import {
   Sheet,
   SheetContent,
@@ -14,16 +12,17 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { BugReport } from "../forms/SubmitReport";
 import { LogOut } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "../../ui/tooltip";
+} from "@/components/ui/tooltip";
+import { useHandleLogout } from "@/hooks/mutations/useAuthMutations";
+import SubmitReport from "../forms/SubmitReport";
 
-const Header = ({ burgerMenu }: HeaderProps) => {
+const Header = ({ burgerMenu }: HeaderToggle) => {
   const [isSheetOpen, setSheetOpen] = useState(false);
   const navigate = useNavigate();
   const { setUser, user, setIsAuthenticated, isLoading } = useUserContext();
@@ -69,7 +68,7 @@ const Header = ({ burgerMenu }: HeaderProps) => {
               <SheetContent side={"bottom"}>
                 <SheetHeader>
                   <SheetTitle>Report a Bug!</SheetTitle>
-                  <BugReport onClose={closeSheet} />
+                  <SubmitReport onClose={closeSheet} />
                 </SheetHeader>
               </SheetContent>
             </Sheet>

@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import { Card, CardContent, CardTitle } from "../../ui/card";
-import { Button } from "../../ui/button";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import PuffLoader from "react-spinners/PuffLoader";
 import { useNavigate } from "react-router-dom";
-import { useGetArgData } from "../../../hooks/react-query/queries";
-import { formatDateString, stationType } from "@/lib/utils";
-import { useTheme } from "../../theme-provider";
+import { formatDateString, stationType, weatherUnit } from "@/lib/utils";
+import { useTheme } from "@/components/theme-provider";
 import NoData from "@/pages/error/NoData";
-import VariableGraph from "../VariableGraph";
 import NavigateIcon from "@/components/global/icons/NavigateIcon";
-import MeasurementCard2 from "@/components/_root/MeasurementCard2";
 import {
   TooltipContent,
   Tooltip,
@@ -17,10 +14,12 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Map, { Marker } from "react-map-gl";
+import { useGetRainData } from "@/hooks/queries/useStations";
+import DataVisuals from "@/pages/graphs/components/DataVisuals";
 
 const RainDataCard: React.FC<{ id: string }> = ({ id }) => {
   const navigate = useNavigate();
-  const { data: stationData, isLoading, isError } = useGetArgData(id);
+  const { data: stationData, isLoading, isError } = useGetRainData(id);
   const [clicked, setClicked] = useState(false);
   const { theme } = useTheme();
   const [mapboxStyle] = useState(
@@ -149,12 +148,30 @@ const RainDataCard: React.FC<{ id: string }> = ({ id }) => {
               </TooltipProvider>
             </div>
             <Card className="flex flex-col h-full mb-3">
-              <MeasurementCard2
-                label="Precipitation"
-                value={stationData.data.precipitation}
-                unit="mm"
-              />
-              <VariableGraph
+              <Card className="cardDashboard">
+                <CardContent className="px-0 p-0 h-full">
+                  <div className="text-center w-full flex flex-col h-full">
+                    <div className="cardTitleDiv">
+                      <span className="weatherDataTitle">Precipitation</span>
+                    </div>
+
+                    <div className="text-xl flex h-full items-center justify-center">
+                      <div className="font-medium text-xl flex h-full items-center flex-row justify-center gap-2">
+                        <div className="flex flex-col w-full">
+                          <span className="weatherDataText">
+                            {stationData.data.precipitation === null
+                              ? "--"
+                              : `${
+                                  stationData.data.precipitation
+                                } ${weatherUnit("precipitation")}`}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              <DataVisuals
                 stationId={id}
                 weatherData="precipitation"
                 repeat="minute"

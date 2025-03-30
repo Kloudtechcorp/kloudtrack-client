@@ -45,3 +45,22 @@ interface MappedProvince extends Province {
 interface MappedMunicipality extends Municipality {
   barangays: Array<Barangay>;
 }
+
+interface ModeToggle {
+  expand: boolean;
+}
+
+interface RangeRepeatSelectorProps {
+  repeatData: string;
+  setRepeatData: React.Dispatch<React.SetStateAction<string>>;
+  rangeData: string;
+  setRangeData: React.Dispatch<React.SetStateAction<string>>;
+}
+
+interface HeaderToggle {
+  burgerMenu: (data: boolean) => void;
+}
+
+interface SidebarToggle {
+  clicked: boolean;
+}

@@ -195,7 +195,7 @@ export const getDataset = async ({
 };
 export const getStationDetailed = async (
   id: string
-): Promise<StationInformation[]> => {
+): Promise<StationInformation> => {
   const response = await fetch(`${server}/admin/station/${id}`, {
     method: "GET",
     credentials: "include",

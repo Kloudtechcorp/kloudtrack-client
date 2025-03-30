@@ -28,13 +28,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetClmsSensors } from "@/hooks/react-query/queries";
 import { formatDateString } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import NoDataOptions from "@/pages/error/NoDataOptions";
 import AdminControls from "@/pages/admin/components/AdminControls";
 import { CoastalSensor } from "@/types/station.type";
 import CheckSensor from "./CheckSensor";
+import { useGetCoastalSensors } from "@/hooks/queries/useAdmin";
 
 export function CoastalSensors() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -43,7 +43,7 @@ export function CoastalSensors() {
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
-  const { data: coastalData, isLoading, isError } = useGetClmsSensors();
+  const { data: coastalData, isLoading, isError } = useGetCoastalSensors();
 
   const columns: ColumnDef<CoastalSensor[][number]>[] = [
     {

@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-
 import {
   Card,
   CardContent,
@@ -9,11 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { checkStationType, formatDateString } from "@/lib/utils";
-import {
-  useGetActiveDevices,
-  useGetUserProfile,
-} from "@/hooks/react-query/queries";
-import { useDeleteApiKey } from "@/hooks/react-query/mutations";
+
 import { useUserContext } from "@/hooks/custom-hooks/authContext";
 import {
   Dialog,
@@ -50,7 +45,12 @@ import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Trash2, User } from "lucide-react";
-import DeviceCounter from "@/components/_root/DeviceCounter";
+import {
+  useGetActiveDevices,
+  useGetUserProfile,
+} from "@/hooks/queries/useUser";
+import { useDeleteApiKey } from "@/hooks/mutations/useUserMutations";
+import { DeviceCounter } from "./components";
 
 const Profile = () => {
   const { theme } = useTheme();

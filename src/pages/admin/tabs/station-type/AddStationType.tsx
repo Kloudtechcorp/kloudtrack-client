@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { stationTypeSchema } from "@/types/validation";
+import { stationTypeSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -19,13 +19,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useAddStationType } from "@/hooks/react-query/mutations";
-import { useNavigate } from "react-router-dom";
-const defaultValues = {
-  typeName: "AWS",
-};
+import { useAddStationType } from "@/hooks/mutations/useAdminMutations";
+
 const AddStationType = () => {
-  const navigate = useNavigate();
   const { mutateAsync: addStationType, isPending } = useAddStationType();
   const form = useForm<z.infer<typeof stationTypeSchema>>({
     resolver: zodResolver(stationTypeSchema),

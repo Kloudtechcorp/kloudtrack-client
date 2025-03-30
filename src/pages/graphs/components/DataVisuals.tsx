@@ -12,10 +12,10 @@ import {
   formatDateStringGraph,
   weatherUnit,
 } from "@/lib/utils";
-import { useGetAnalysis } from "@/hooks/react-query/queries";
 import NoData from "../../error/NoData";
 import { LinearGraph } from "@/types/station.type";
 import CustomChart from "./CustomChart";
+import { useGetAnalysis } from "@/hooks/queries/useStations";
 
 const DataVisuals = ({
   type,

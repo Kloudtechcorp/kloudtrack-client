@@ -12,7 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState } from "react";
-import { psgcValidation } from "@/types/validation";
+import { psgcValidation } from "@/lib/validation";
 import {
   Select,
   SelectContent,
@@ -26,7 +26,7 @@ import {
   provinces,
   regions,
 } from "@/constants/psgc";
-import { useAddPsgc } from "@/hooks/react-query/mutations";
+import { useAddPsgc } from "@/hooks/mutations/useAdminMutations";
 
 const defaultValues = {
   psgc: "",

@@ -11,14 +11,13 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useUpdateUserGrants } from "@/hooks/react-query/mutations";
 import { useUserContext } from "@/hooks/custom-hooks/authContext";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "../../../../../components/ui/input";
-import { Separator } from "../../../../../components/ui/separator";
-
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 import { CircleHelpIcon } from "lucide-react";
-import Tooltip from "../../../../../components/global/custom-ui/ManualTooltip";
+import Tooltip from "@/components/global/custom-ui/ManualTooltip";
+import { useUpdateUser } from "@/hooks/mutations/useAdminMutations";
 
 export const userStationValidation = z.object({
   grantedStations: z.array(z.string()),
@@ -34,7 +33,7 @@ type updateUsersProps = {
 
 const UpdateUser = ({ id, stationIds, username }: updateUsersProps) => {
   const { user } = useUserContext();
-  const { mutate: updateUser, isPending } = useUpdateUserGrants();
+  const { mutate: updateUser, isPending } = useUpdateUser();
   const form = useForm<z.infer<typeof userStationValidation>>({
     resolver: zodResolver(userStationValidation),
     defaultValues: {

@@ -15,11 +15,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "../../ui/textarea";
-import { bugSchema } from "@/types/validation";
-import { useReportBug } from "@/hooks/react-query/mutations";
+import { bugSchema } from "@/lib/validation";
+import { useReport } from "@/hooks/mutations/useUserMutations";
 
 export default function SubmitReport({ onClose }: { onClose: () => void }) {
-  const { mutateAsync: reportBug } = useReportBug();
+  const { mutateAsync: reportBug } = useReport();
   const form = useForm<z.infer<typeof bugSchema>>({
     resolver: zodResolver(bugSchema),
     defaultValues: {

@@ -1,7 +1,12 @@
 import { useUserContext } from "@/hooks/custom-hooks/authContext";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArgSensors, AwsSensors, ClmsSensors, RlmsSensors } from "./components";
+import {
+  CoastalSensors,
+  RainGaugeSensors,
+  RiverSensors,
+  WeatherSensors,
+} from "./components";
 
 const StationList = () => {
   const { user, isLoading } = useUserContext();
@@ -63,22 +68,22 @@ const StationList = () => {
             </TabsList>
             {hasAwsStations && (
               <TabsContent value="aws">
-                <AwsSensors />
+                <WeatherSensors />
               </TabsContent>
             )}
             {hasArgStations && (
               <TabsContent value="arg">
-                <ArgSensors />
+                <RainGaugeSensors />
               </TabsContent>
             )}
             {hasRlmsStations && (
               <TabsContent value="rlms">
-                <RlmsSensors />
+                <RiverSensors />
               </TabsContent>
             )}
             {hasClmsStations && (
               <TabsContent value="clms">
-                <ClmsSensors />
+                <CoastalSensors />
               </TabsContent>
             )}
           </Tabs>

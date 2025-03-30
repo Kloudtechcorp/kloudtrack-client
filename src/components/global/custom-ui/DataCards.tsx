@@ -1,4 +1,3 @@
-import { stationCurrentWeatherType } from "@/types/queryTypes";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   getWindDirectionLabel,
@@ -10,10 +9,11 @@ import { useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { IoWarning } from "react-icons/io5";
 import { X } from "lucide-react";
+import { WeatherData } from "@/types/station.type";
 
 type DataCardsProps = {
   type: "DASHBOARD" | "DATADASHBOARD";
-  currentweather: stationCurrentWeatherType;
+  currentweather: WeatherData;
   pastHourPrecip: number;
   stationName: string;
   id: string;

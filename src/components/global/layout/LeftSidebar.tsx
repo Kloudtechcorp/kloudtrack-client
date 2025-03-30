@@ -5,10 +5,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { SidebarProps } from "@/types";
 import { INITIAL_USER, useUserContext } from "@/hooks/custom-hooks/authContext";
-import { useHandleLogout } from "@/hooks/react-query/mutations";
-import BugIcon from "../icons/BugIcon";
 import {
   Sheet,
   SheetContent,
@@ -16,13 +13,13 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { BugReport } from "../forms/SubmitReport";
 import { Bug, LogOut } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../../ui/button";
-// import { Button } from "../ui/button";
+import { useHandleLogout } from "@/hooks/mutations/useAuthMutations";
+import SubmitReport from "../forms/SubmitReport";
 
-const LeftSidebar = ({ clicked }: SidebarProps) => {
+const LeftSidebar = ({ clicked }: SidebarToggle) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { setUser, user, setIsAuthenticated } = useUserContext();
@@ -165,7 +162,7 @@ const LeftSidebar = ({ clicked }: SidebarProps) => {
             <SheetContent side={"left"}>
               <SheetHeader>
                 <SheetTitle>Report!</SheetTitle>
-                <BugReport onClose={closeSheet} />
+                <SubmitReport onClose={closeSheet} />
               </SheetHeader>
             </SheetContent>
           </Sheet>

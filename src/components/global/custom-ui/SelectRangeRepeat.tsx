@@ -7,13 +7,6 @@ import {
 } from "@/components/ui/select";
 import React from "react";
 
-interface RangeRepeatSelectorProps {
-  repeatData: string;
-  setRepeatData: React.Dispatch<React.SetStateAction<string>>;
-  rangeData: string;
-  setRangeData: React.Dispatch<React.SetStateAction<string>>;
-}
-
 const RangeRepeatSelector: React.FC<RangeRepeatSelectorProps> = ({
   repeatData,
   setRepeatData,

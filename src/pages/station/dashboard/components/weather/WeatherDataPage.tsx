@@ -1,7 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import DataCards from "@/components/global/custom-ui/DataCards";
-import { useGetAwsData2 } from "@/hooks/react-query/queries";
 import { formatDateString } from "@/lib/utils";
 import VariableGraph from "@/pages/graphs/components/CustomChart";
 import PuffLoader from "react-spinners/PuffLoader";
@@ -9,6 +8,7 @@ import NotFound from "@/pages/error/NotFound";
 import WeatherDialog from "./WeatherDownloadDialog";
 import { useEffect } from "react";
 import { toast } from "sonner";
+import { useGetWeatherData } from "@/hooks/queries/useStations";
 
 type AwsDataCardProps = {
   stationId: string;
@@ -16,7 +16,11 @@ type AwsDataCardProps = {
 
 const AwsDataCard = ({ stationId }: AwsDataCardProps) => {
   const navigate = useNavigate();
-  const { data: stationData, isError, isLoading } = useGetAwsData2(stationId);
+  const {
+    data: stationData,
+    isError,
+    isLoading,
+  } = useGetWeatherData(stationId);
 
   useEffect(() => {
     return () => {

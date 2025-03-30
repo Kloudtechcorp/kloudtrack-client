@@ -15,9 +15,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DatePicker } from "../../../../../components/global/custom-ui/datePicker";
-import { Input } from "../../../../../components/ui/input";
-import { useGenerateApi } from "@/hooks/react-query/mutations";
+import { Input } from "@/components/ui/input";
+import { useGenerateApi } from "@/hooks/mutations/useUserMutations";
+import { DatePicker } from "@/components/global/custom-ui/datePicker";
 
 const FormSchema = z.object({
   expiresAt: z.date().nullable(),

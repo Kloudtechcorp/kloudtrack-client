@@ -1,7 +1,5 @@
 import React from "react";
 import { formatDateString } from "@/lib/utils";
-import { rlmsDashboardType } from "@/types/queryTypes";
-
 import { Card, CardContent, CardDescription } from "@/components/ui/card";
 import {
   Tooltip,
@@ -11,9 +9,10 @@ import {
 } from "@/components/ui/tooltip";
 import NoData from "../../error/NoData";
 import VariableGraph from "@/pages/graphs/components/CustomChart";
+import { RiverDashboard } from "@/types/station.type";
 
 interface MapCardProps {
-  data: rlmsDashboardType | null;
+  data: RiverDashboard | null;
   id: string;
 }
 

@@ -8,7 +8,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { useGetStationNames } from "@/hooks/react-query/queries";
 import { checkRepeat } from "@/lib/utils";
 import { Fullscreen } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -16,6 +15,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import PuffLoader from "react-spinners/PuffLoader";
 import { VerticalCards } from "./components";
 import VariableDashboardGraph from "./components/VariableDashboardGraph";
+import { useGetStationNames } from "@/hooks/queries/useUser";
 
 const DataGraphs = () => {
   const navigate = useNavigate();

@@ -1,10 +1,10 @@
 import React from "react";
 import { formatDateString } from "@/lib/utils";
-import { clmsDashboardType } from "@/types/queryTypes";
 import { Card, CardContent, CardDescription } from "@/components/ui/card";
+import { CoastalDashboard } from "@/types/station.type";
 
 interface MapCardProps {
-  data: clmsDashboardType | null;
+  data: CoastalDashboard | null;
 }
 
 const ClmsDataCard: React.FC<MapCardProps> = ({ data }) => {

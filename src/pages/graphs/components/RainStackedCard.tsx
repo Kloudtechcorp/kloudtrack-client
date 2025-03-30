@@ -16,7 +16,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { useGetStackedGraphData } from "@/hooks/react-query/queries";
 import {
   Bar,
   BarChart,
@@ -26,8 +25,9 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { DynamicDatasetType } from "@/types/queryTypes";
 import PuffLoader from "react-spinners/PuffLoader";
+import { useGetStackedGraphData } from "@/hooks/queries/useStations";
+import { StackedGraph } from "@/types/station.type";
 
 const RainStackedCard: React.FC<{ id: string[] }> = ({ id }) => {
   const [weatherData, setWeatherData] = useState<string>(
@@ -48,7 +48,7 @@ const RainStackedCard: React.FC<{ id: string[] }> = ({ id }) => {
     localStorage.setItem("rainRange", rangeData);
   }, [rangeData]);
 
-  const stationDataParams = useMemo<DynamicDatasetType>(
+  const stationDataParams = useMemo<StackedGraph>(
     () => ({
       type: "arg",
       stationIds: id,

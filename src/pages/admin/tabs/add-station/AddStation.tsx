@@ -11,9 +11,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import toast from "react-hot-toast";
-import { useEffect, useState } from "react";
-import { stationSchema } from "@/types/validation";
+import { stationSchema } from "@/lib/validation";
 import {
   Select,
   SelectContent,
@@ -22,13 +20,14 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import {
-  useGetStationTypes,
-  useGetStationRegions,
-  useGetStationProvinces,
-  useGetStationMunicipalities,
   useGetStationBarangays,
-} from "@/hooks/react-query/queries";
-import { useCreateStation } from "@/hooks/react-query/mutations";
+  useGetStationMunicipalities,
+  useGetStationProvinces,
+  useGetStationRegions,
+  useGetStationTypes,
+} from "@/hooks/queries/useAdmin";
+import { useState } from "react";
+import { useCreateStation } from "@/hooks/mutations/useStationMutations";
 
 const AddStation = () => {
   const { data: stationTypes } = useGetStationTypes();

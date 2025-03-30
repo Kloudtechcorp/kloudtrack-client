@@ -90,7 +90,7 @@ export const useUpdateUser = () => {
   });
 };
 
-export const useUpdateBug = (onSuccess: () => void) => {
+export const useUpdateReportStatus = (onSuccess: () => void) => {
   return useMutation({
     mutationFn: (data: ReportStatus) => updateReportStatus(data),
     onError: (error: Error) => {

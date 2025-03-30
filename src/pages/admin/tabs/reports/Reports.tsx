@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useGetBugReports } from "@/hooks/react-query/queries";
+import { useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -18,20 +17,17 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useUpdateBug } from "@/hooks/react-query/mutations";
 import { Skeleton } from "@/components/ui/skeleton";
 import NoDataOptions from "@/pages/error/NoDataOptions";
 import { Input } from "@/components/ui/input";
 import NoBugsOptions from "@/pages/error/NoBugsFound";
+import { useGetReports } from "@/hooks/queries/useAdmin";
+import { useUpdateReportStatus } from "@/hooks/mutations/useAdminMutations";
 
 const Reports = () => {
-  const {
-    data: getBugReports,
-    isLoading,
-    isError,
-    refetch,
-  } = useGetBugReports();
-  const { mutateAsync: updateBugReport, isPending } = useUpdateBug(refetch);
+  const { data: getBugReports, isLoading, isError, refetch } = useGetReports();
+  const { mutateAsync: updateBugReport, isPending } =
+    useUpdateReportStatus(refetch);
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState<"ALL" | "OPEN" | "RESOLVED">("ALL");
 

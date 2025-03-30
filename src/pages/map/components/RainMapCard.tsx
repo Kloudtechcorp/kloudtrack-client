@@ -1,6 +1,5 @@
 import React from "react";
 import { formatDateString } from "@/lib/utils";
-import { argDashboardType } from "@/types/queryTypes";
 
 import { Card, CardContent, CardDescription } from "@/components/ui/card";
 import {
@@ -11,13 +10,14 @@ import {
 } from "@/components/ui/tooltip";
 import NoData from "../../error/NoData";
 import VariableGraph from "@/pages/graphs/components/CustomChart";
+import { RainDashboard } from "@/types/station.type";
 
 interface MapCardProps {
-  data: argDashboardType | null;
+  data: RainDashboard | null;
   id: string;
 }
 
-const ArgMapCard: React.FC<MapCardProps> = ({ data, id }) => {
+const RainMapCard: React.FC<MapCardProps> = ({ data, id }) => {
   if (!data || !data.data) {
     return (
       <div className="flex flex-col gap-2 w-full px-2">
@@ -95,4 +95,4 @@ const ArgMapCard: React.FC<MapCardProps> = ({ data, id }) => {
   );
 };
 
-export default ArgMapCard;
+export default RainMapCard;

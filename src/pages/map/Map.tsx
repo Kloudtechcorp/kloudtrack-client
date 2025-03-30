@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { styles } from "@/lib/objects/arrays";
 import {
   Select,
   SelectContent,
@@ -10,20 +9,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { stationStaticType } from "@/types";
-import {
-  argDashboardType,
-  awsDashboardType2,
-  clmsDashboardType,
-  rlmsDashboardType,
-} from "@/types/queryTypes";
-import {
-  getArgData,
-  getAwsData2,
-  getClmsData,
-  getRlmsData,
-  getStationData,
-} from "@/services/get";
 import toast from "react-hot-toast";
 import PuffLoader from "react-spinners/PuffLoader";
 import { useTheme } from "@/components/theme-provider";
@@ -31,22 +16,39 @@ import { useUserContext } from "@/hooks/custom-hooks/authContext";
 import {
   CoastalMapCard,
   MapImage,
+  MapLegend,
   RainMapCard,
   RiverMapCard,
   WeatherMapCard,
 } from "./components";
+import {
+  CoastalDashboard,
+  RainDashboard,
+  RiverDashboard,
+  WeatherDashboard,
+} from "@/types/station.type";
+import {
+  getCoastalData,
+  getRainData,
+  getRiverData,
+  getWeatherData,
+} from "@/services/stationService";
+import { getStationData } from "@/services/userService";
+import { StationDetails } from "@/types/user.type";
+import { MAPBOX_STYLES } from "@/constants";
 
 const Map = () => {
   const { user } = useUserContext();
   const [isLoading, setIsLoading] = useState(false);
   const mapContainer = useRef<HTMLDivElement>(null);
-  const [awsData, setAwsData] = useState<awsDashboardType2 | null>(null);
-  const [argData, setArgData] = useState<argDashboardType | null>(null);
-  const [rlmsData, setRlmsData] = useState<rlmsDashboardType | null>(null);
-  const [clmsData, setClmsData] = useState<clmsDashboardType | null>(null);
+  const [awsData, setAwsData] = useState<WeatherDashboard | null>(null);
+  const [argData, setArgData] = useState<RainDashboard | null>(null);
+  const [rlmsData, setRlmsData] = useState<RiverDashboard | null>(null);
+  const [clmsData, setClmsData] = useState<CoastalDashboard | null>(null);
   const { theme } = useTheme();
-  const [stationDetails, setStationDetails] =
-    useState<stationStaticType | null>(null);
+  const [stationDetails, setStationDetails] = useState<StationDetails | null>(
+    null
+  );
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const [mapboxStyle, setMapboxStyle] = useState(
     theme === "dark"
@@ -154,7 +156,7 @@ const Map = () => {
               setRlmsData(null);
               try {
                 if (item.type === "AWS") {
-                  const stationData = await getAwsData2(item.id);
+                  const stationData = await getWeatherData(item.id);
                   if (!stationData) {
                     toast.error("Error fetching station data");
                     throw new Error("Error fetching data");
@@ -162,7 +164,7 @@ const Map = () => {
                   setAwsData(stationData);
                   setStationDetails(stationInfo);
                 } else if (item.type === "ARG") {
-                  const stationData = await getArgData(item.id);
+                  const stationData = await getRainData(item.id);
                   if (!stationData) {
                     toast.error("Error fetching station data");
                     throw new Error("Error fetching data");
@@ -170,7 +172,7 @@ const Map = () => {
                   setArgData(stationData);
                   setStationDetails(stationInfo);
                 } else if (item.type === "RLMS") {
-                  const stationData = await getRlmsData(item.id);
+                  const stationData = await getRiverData(item.id);
                   if (!stationData) {
                     toast.error("Error fetching station data");
                     throw new Error("Error fetching data");
@@ -178,7 +180,7 @@ const Map = () => {
                   setRlmsData(stationData);
                   setStationDetails(stationInfo);
                 } else if (item.type === "CLMS") {
-                  const stationData = await getClmsData(item.id);
+                  const stationData = await getCoastalData(item.id);
                   if (!stationData) {
                     toast.error("Error fetching station data");
                     throw new Error("Error fetching data");
@@ -233,7 +235,7 @@ const Map = () => {
               <SelectValue placeholder="Theme" />
             </SelectTrigger>
             <SelectContent>
-              {styles.map((style, key) => (
+              {MAPBOX_STYLES.map((style, key) => (
                 <SelectItem value={style.uri} key={key}>
                   {style.title}
                 </SelectItem>

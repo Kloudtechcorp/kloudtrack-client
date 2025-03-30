@@ -1,7 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { useGetStationNames } from "@/hooks/react-query/queries";
 import {
   Dialog,
   DialogContent,
@@ -20,6 +19,7 @@ import {
   RiverDataPage,
   WeatherDataPage,
 } from "./components";
+import { useGetStationNames } from "@/hooks/queries/useUser";
 
 const Dashboard = () => {
   const { station } = useParams<string>();

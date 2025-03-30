@@ -29,13 +29,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetArgSensors } from "@/hooks/react-query/queries";
 import { formatDateString } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import NoDataOptions from "@/pages/error/NoDataOptions";
 import AdminControls from "@/pages/admin/components/AdminControls";
 import { RainGaugeSensor } from "@/types/station.type";
 import CheckSensor from "./CheckSensor";
+import { useGetRainGaugeSensors } from "@/hooks/queries/useAdmin";
 
 export function RainGaugeSensors() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -44,7 +44,7 @@ export function RainGaugeSensors() {
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
-  const { data: rainGaugeData, isLoading, isError } = useGetArgSensors();
+  const { data: rainGaugeData, isLoading, isError } = useGetRainGaugeSensors();
 
   const columns: ColumnDef<RainGaugeSensor[][number]>[] = [
     {

@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { useGetArgData } from "@/hooks/react-query/queries";
 import { formatDateString, weatherUnit } from "@/lib/utils";
 import { TableCell, TableRow } from "@/components/ui/table";
+import { useGetRainData } from "@/hooks/queries/useStations";
 
 interface AwsCardProps {
   id: string;
@@ -11,7 +11,7 @@ interface AwsCardProps {
 
 const RainDataTable: React.FC<AwsCardProps> = ({ id }) => {
   const navigate = useNavigate();
-  const { data: stationData, isLoading, isError } = useGetArgData(id);
+  const { data: stationData, isLoading, isError } = useGetRainData(id);
 
   useEffect(() => {
     return () => {

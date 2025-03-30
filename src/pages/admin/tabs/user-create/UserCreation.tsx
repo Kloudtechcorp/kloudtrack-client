@@ -12,8 +12,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { userValidation } from "@/types/validation";
-import { useCreateUser } from "@/hooks/react-query/mutations";
+import { userValidation } from "@/lib/validation";
 import {
   Select,
   SelectContent,
@@ -23,15 +22,8 @@ import {
 } from "@/components/ui/select";
 import { useUserContext } from "@/hooks/custom-hooks/authContext";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { useCreateUser } from "@/hooks/mutations/useAdminMutations";
 
 const defaultValues = {
   username: "",

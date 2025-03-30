@@ -29,8 +29,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetUsers } from "@/hooks/react-query/queries";
-import { userListType } from "@/types";
 import { formatDateString } from "@/lib/utils";
 import {
   Dialog,
@@ -39,11 +37,13 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "../../../../../components/ui/dialog";
+} from "@/components/ui/dialog";
 import { DialogTrigger } from "@radix-ui/react-dialog";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useGetUsers } from "@/hooks/queries/useAdmin";
+import { useDeleteUser } from "@/hooks/mutations/useAdminMutations";
+import { UserDetails } from "@/types/admin.type";
 import UpdateUser from "./updateUser";
-import { Skeleton } from "../../../../../components/ui/skeleton";
-import { useDeleteUser } from "@/hooks/react-query/mutations";
 
 export default function UserTables() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -55,7 +55,7 @@ export default function UserTables() {
   const { data: userList, isLoading, isError } = useGetUsers();
   const { mutate: deleteUser, isPending } = useDeleteUser();
 
-  const columns: ColumnDef<userListType[number]>[] = [
+  const columns: ColumnDef<UserDetails[][number]>[] = [
     {
       accessorKey: "id",
       header: "User ID",

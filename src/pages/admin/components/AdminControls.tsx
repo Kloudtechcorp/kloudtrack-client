@@ -1,18 +1,17 @@
-import { Button } from "../../../components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetTitle,
   SheetTrigger,
-} from "../../../components/ui/sheet";
-import UpdateStation from "../../../components/forms/UpdateStation";
+} from "@/components/ui/sheet";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "../../../components/ui/tooltip";
+} from "@/components/ui/tooltip";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,8 +23,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useDeleteStation } from "@/hooks/react-query/mutations";
 import { Edit, Trash2 } from "lucide-react";
+import { useDeleteStation } from "@/hooks/mutations/useStationMutations";
+import { UpdateStation } from "../tabs/station-list/components";
 
 type AdminControlsProps = {
   id: string;

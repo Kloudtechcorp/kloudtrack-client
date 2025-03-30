@@ -13,6 +13,7 @@ export enum QUERY_KEYS {
   GET_STATION_MUNICIPALITIES = "getStationMunicipalities",
   GET_STATION_BARANGAYS = "getStationBarangays",
   GET_STATION_NAMES = "getStationNames",
+  GET_STATION_DETAILED = "getStationDetailed",
 
   //User Profile
   GET_USER_PROFILE = "getUserProfile",

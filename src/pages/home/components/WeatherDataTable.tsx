@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { useGetAwsData2 } from "@/hooks/react-query/queries";
 import {
   formatDateString,
   getWarningInfo,
@@ -12,6 +11,7 @@ import {
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
+import { useGetWeatherData } from "@/hooks/queries/useStations";
 
 interface AwsCardProps {
   id: string;
@@ -25,7 +25,7 @@ interface WarningState {
 
 const WeatherDataTable: React.FC<AwsCardProps> = ({ id }) => {
   const navigate = useNavigate();
-  const { data: stationData, isLoading, isError } = useGetAwsData2(id);
+  const { data: stationData, isLoading, isError } = useGetWeatherData(id);
 
   // Ref to store warning states for different parameters
   const warningStatesRef = useRef<{

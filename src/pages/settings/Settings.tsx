@@ -1,7 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ChangePassword from "./settingPages/ChangePassword";
-import Profile from "./settingPages/Profile";
-import ApiDocument from "./settingPages/ApiDocument";
+import { ApiDocument, ChangePassword, Profile } from "./tabs";
 
 const Settings = () => {
   return (

@@ -14,8 +14,8 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import PuffLoader from "react-spinners/PuffLoader";
-import { useGetDataset } from "@/hooks/react-query/queries";
 import { FormattedData, LinearGraph } from "@/types/station.type";
+import { useGetDataset } from "@/hooks/queries/useStations";
 // import { formatDateString } from "@/lib/utils";
 
 const chartConfig = {

@@ -1,9 +1,8 @@
 import { Moon, Sun } from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useTheme } from "@/components/theme-provider";
-import { ModeToggleProps } from "@/types";
 
-export function ModeToggle({ expand }: ModeToggleProps) {
+export function ModeToggle({ expand }: ModeToggle) {
   const { setTheme, theme } = useTheme();
 
   return (

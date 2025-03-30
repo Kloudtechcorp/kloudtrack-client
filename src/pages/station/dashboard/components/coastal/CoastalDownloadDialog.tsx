@@ -1,18 +1,18 @@
-import { Button } from "../../ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogTitle,
   DialogTrigger,
-} from "../../ui/dialog";
+} from "@/components/ui/dialog";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
-import { Calendar } from "../../ui/calendar";
+import { Calendar } from "@/components/ui/calendar";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { downloadSchema } from "@/types/validation";
+import { downloadSchema } from "@/lib/validation";
 import {
   Form,
   FormControl,
@@ -20,15 +20,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../../ui/form";
-import { RadioGroup, RadioGroupItem } from "../../ui/radio-group";
-import { coastalDataTypes } from "@/types/queryTypes";
+} from "@/components/ui/form";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { formatDateString, getDateRange } from "@/lib/utils";
 import toast from "react-hot-toast";
-import { useCoastalDownloadData } from "@/hooks/react-query/mutations";
 import { Separator } from "@/components/ui/separator";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { useCoastalDownloadData } from "@/hooks/mutations/useUserMutations";
+import { CoastalData } from "@/types/user.type";
 
 type CoastalDialogProps = {
   id: string;
@@ -51,7 +51,7 @@ const CoastalDialog = ({ id, name }: CoastalDialogProps) => {
     getDateRange(selected, now)
   );
 
-  const generateCSVData = (data: coastalDataTypes[]): string => {
+  const generateCSVData = (data: CoastalData[]): string => {
     if (!data || data.length === 0) return "";
     const headers = [
       "Date Recorded",
@@ -70,7 +70,7 @@ const CoastalDialog = ({ id, name }: CoastalDialogProps) => {
     return [headers.join(","), ...rows.map((row) => row.join(","))].join("\n");
   };
 
-  const generateJSONData = (data: coastalDataTypes[]): string => {
+  const generateJSONData = (data: CoastalData[]): string => {
     return JSON.stringify(data, null, 2);
   };
 

@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import { Card, CardContent, CardTitle } from "../../ui/card";
-import { Button } from "../../ui/button";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import PuffLoader from "react-spinners/PuffLoader";
 import { useNavigate } from "react-router-dom";
-import { useGetRlmsData } from "../../../hooks/react-query/queries";
 import { formatDateString, stationType } from "@/lib/utils";
-import { useTheme } from "../../theme-provider";
+import { useTheme } from "@/components/theme-provider";
 import NoData from "@/pages/error/NoData";
-import VariableGraph from "../VariableGraph";
 import NavigateIcon from "@/components/global/icons/NavigateIcon";
-import MeasurementCard2 from "@/components/_root/MeasurementCard2";
 import {
   Tooltip,
   TooltipContent,
@@ -17,10 +14,13 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Map, { Marker } from "react-map-gl";
+import { useGetRiverData } from "@/hooks/queries/useStations";
+import MeasurementCard from "@/components/global/custom-ui/MeasurementCard";
+import DataVisuals from "@/pages/graphs/components/DataVisuals";
 
 const RiverDataCard: React.FC<{ id: string }> = ({ id }) => {
   const navigate = useNavigate();
-  const { data: stationData, isLoading, isError } = useGetRlmsData(id);
+  const { data: stationData, isLoading, isError } = useGetRiverData(id);
   const [clicked, setClicked] = useState(false);
   const { theme } = useTheme();
   const [mapboxStyle] = useState(
@@ -146,12 +146,12 @@ const RiverDataCard: React.FC<{ id: string }> = ({ id }) => {
               </TooltipProvider>
             </div>
             <Card className="flex flex-col h-full mb-3">
-              <MeasurementCard2
+              <MeasurementCard
                 label="Distance"
                 value={stationData.data.distance}
                 unit="mm"
               />
-              <VariableGraph
+              <DataVisuals
                 stationId={id}
                 weatherData="distance"
                 repeat="minute"

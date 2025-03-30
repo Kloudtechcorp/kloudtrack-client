@@ -1,18 +1,18 @@
-import { Button } from "../../ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogTitle,
   DialogTrigger,
-} from "../../ui/dialog";
+} from "@/components/ui/dialog";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
-import { Calendar } from "../../ui/calendar";
+import { Calendar } from "@/components/ui/calendar";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { downloadSchema } from "@/types/validation";
+import { downloadSchema } from "@/lib/validation";
 import {
   Form,
   FormControl,
@@ -21,21 +21,21 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../../ui/form";
-import { RadioGroup, RadioGroupItem } from "../../ui/radio-group";
-import { weatherDataTypes } from "@/types/queryTypes";
+} from "@/components/ui/form";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   formatDateString,
   getDateRange,
   getWindDirectionLabel,
 } from "@/lib/utils";
 import toast from "react-hot-toast";
-import { useWeatherDownloadData } from "@/hooks/react-query/mutations";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Loader2 } from "lucide-react";
+import { useWeatherDownloadData } from "@/hooks/mutations/useUserMutations";
+import { WeatherData } from "@/types/user.type";
 
 const updatedDownloadSchema = downloadSchema.extend({
   format: z.enum(["csv", "json", "pdf"]),
@@ -118,7 +118,7 @@ const WeatherDialog = ({ id, name }: WeatherDialogProps) => {
     }
   };
 
-  const generateCSVData = (data: weatherDataTypes[]): string => {
+  const generateCSVData = (data: WeatherData[]): string => {
     if (!data || data.length === 0) return "";
 
     const selectedItems = items.filter((item) =>
@@ -143,7 +143,7 @@ const WeatherDialog = ({ id, name }: WeatherDialogProps) => {
     return [headers.join(","), ...rows.map((row) => row.join(","))].join("\n");
   };
 
-  const generateJSONData = (data: weatherDataTypes[]): string => {
+  const generateJSONData = (data: WeatherData[]): string => {
     if (selectedParameters.length === items.length) {
       return JSON.stringify(data, null, 2);
     }

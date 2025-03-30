@@ -1,5 +1,5 @@
+import { useTheme } from "@/components/theme-provider";
 import { Laptop, AlertCircle } from "lucide-react";
-import { useTheme } from "../theme-provider";
 
 type DeviceCounterProps = {
   activeDevices: number;

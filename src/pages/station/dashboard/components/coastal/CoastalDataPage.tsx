@@ -1,11 +1,11 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import { useGetClmsData } from "@/hooks/react-query/queries";
 import { formatDateString } from "@/lib/utils";
 import VariableGraph from "@/pages/graphs/components/CustomChart";
 import PuffLoader from "react-spinners/PuffLoader";
 import NotFound from "@/pages/error/NotFound";
 import CoastalDialog from "./CoastalDownloadDialog";
+import { useGetCoastalData } from "@/hooks/queries/useStations";
 
 type CoastalDataCardProps = {
   stationId: string;
@@ -13,7 +13,11 @@ type CoastalDataCardProps = {
 
 const CoastalDataCard = ({ stationId }: CoastalDataCardProps) => {
   const navigate = useNavigate();
-  const { data: stationData, isError, isLoading } = useGetClmsData(stationId);
+  const {
+    data: stationData,
+    isError,
+    isLoading,
+  } = useGetCoastalData(stationId);
 
   if (isError || !stationData?.data) {
     return (

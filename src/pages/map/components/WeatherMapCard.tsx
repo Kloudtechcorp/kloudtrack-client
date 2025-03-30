@@ -1,7 +1,5 @@
 import React from "react";
 import { formatDateString, getWindDirectionLabel } from "@/lib/utils";
-import { awsDashboardType2 } from "@/types/queryTypes";
-
 import { Card, CardContent, CardDescription } from "@/components/ui/card";
 import {
   Tooltip,
@@ -11,9 +9,10 @@ import {
 } from "@/components/ui/tooltip";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import NoData from "@/pages/error/NoData";
+import { WeatherDashboard } from "@/types/station.type";
 
 interface MapCardProps {
-  data: awsDashboardType2 | null;
+  data: WeatherDashboard | null;
 }
 
 const AwsMapCard: React.FC<MapCardProps> = ({ data }) => {

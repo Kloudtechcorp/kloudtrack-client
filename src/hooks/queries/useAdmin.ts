@@ -83,7 +83,7 @@ export const useGetWeatherSensors = (
   pageSize = 10
 ): UseQueryResult<
   {
-    items: WeatherSensor;
+    items: WeatherSensor[];
     totalCount: number;
     page: number;
     pageSize: number;
@@ -98,15 +98,18 @@ export const useGetWeatherSensors = (
   });
 };
 
-export const useGetArgSensors = (): UseQueryResult<RainGaugeSensor, Error> => {
+export const useGetRainGaugeSensors = (): UseQueryResult<
+  RainGaugeSensor[],
+  Error
+> => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_ARG_SENSORS],
     queryFn: () => getRainGaugeSensors(),
     staleTime: 60000,
   });
 };
-export const useGetRlmsSensors = (): UseQueryResult<
-  RiverLevelSensor,
+export const useGetRiverLevelSensors = (): UseQueryResult<
+  RiverLevelSensor[],
   Error
 > => {
   return useQuery({
@@ -115,7 +118,10 @@ export const useGetRlmsSensors = (): UseQueryResult<
     staleTime: 60000,
   });
 };
-export const useGetClmsSensors = (): UseQueryResult<CoastalSensor, Error> => {
+export const useGetCoastalSensors = (): UseQueryResult<
+  CoastalSensor[],
+  Error
+> => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_CLMS_SENSORS],
     queryFn: () => getCoastalSensors(),
@@ -132,7 +138,7 @@ export const useGetUsers = (): UseQueryResult<UserDetails[], Error> => {
   });
 };
 
-export const useGetBugReports = (): UseQueryResult<ReportDetails[], Error> => {
+export const useGetReports = (): UseQueryResult<ReportDetails[], Error> => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_BUG_REPORTS],
     queryFn: () => getReports(),

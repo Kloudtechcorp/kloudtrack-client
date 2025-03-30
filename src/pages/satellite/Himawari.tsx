@@ -1,7 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { timer } from "../../lib/objects/himawariArrays";
 import { Slider } from "@/components/ui/slider";
-import { band } from "@/lib/objects/arrays";
 import { Button } from "@/components/ui/button";
 import {
   roundUpToNearest10Minutes,
@@ -19,6 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Fullscreen } from "lucide-react";
+import { SATELLITE_BANDS, SATELLITE_TIMER } from "@/constants";
 
 const Himawari = () => {
   const [isCycling, setIsCycling] = useState(false);
@@ -39,10 +38,10 @@ const Himawari = () => {
     const currentHours = now.getUTCHours();
     const currentMinutes = now.getUTCMinutes();
     const nearestTimeIndex = getNearestTimeIndex(currentHours, currentMinutes);
-    const startTimeIndex = nearestTimeIndex % timer.length;
+    const startTimeIndex = nearestTimeIndex % SATELLITE_TIMER.length;
     return [
-      ...timer.slice(startTimeIndex - 1),
-      ...timer.slice(0, nearestTimeIndex - 1),
+      ...SATELLITE_TIMER.slice(startTimeIndex - 1),
+      ...SATELLITE_TIMER.slice(0, nearestTimeIndex - 1),
     ];
   };
 
@@ -166,7 +165,7 @@ const Himawari = () => {
               <Slider
                 className="grow"
                 defaultValue={[0]}
-                max={timer.length - 1}
+                max={SATELLITE_TIMER.length - 1}
                 step={1}
                 value={sliderValue}
                 onValueChange={handleSliderChange}
@@ -229,7 +228,7 @@ const Himawari = () => {
                   <SelectValue placeholder="Band" />
                 </SelectTrigger>
                 <SelectContent>
-                  {band.map((item, index) => (
+                  {SATELLITE_BANDS.map((item, index) => (
                     <SelectItem value={item.value} key={index}>
                       {item.title}
                     </SelectItem>

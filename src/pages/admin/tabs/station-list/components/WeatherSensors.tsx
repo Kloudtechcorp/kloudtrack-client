@@ -7,7 +7,6 @@ import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
@@ -28,13 +27,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetAwsSensors } from "@/hooks/react-query/queries";
 import { formatDateString } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import NoDataOptions from "@/pages/error/NoDataOptions";
 import AdminControls from "@/pages/admin/components/AdminControls";
 import { WeatherSensor } from "@/types/station.type";
 import CheckSensor from "./CheckSensor";
+import { useGetWeatherSensors } from "@/hooks/queries/useAdmin";
 
 export function WeatherSensors() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -48,7 +47,7 @@ export function WeatherSensors() {
     pageSize: 10,
   });
 
-  const { data, isLoading, isError } = useGetAwsSensors(
+  const { data, isLoading, isError } = useGetWeatherSensors(
     pagination.pageIndex,
     pagination.pageSize
   );

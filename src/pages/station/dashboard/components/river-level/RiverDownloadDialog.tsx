@@ -1,18 +1,18 @@
-import { Button } from "../../ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogTitle,
   DialogTrigger,
-} from "../../ui/dialog";
+} from "@/components/ui/dialog";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
-import { Calendar } from "../../ui/calendar";
+import { Calendar } from "@/components/ui/calendar";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { downloadSchema } from "@/types/validation";
+import { downloadSchema } from "@/lib/validation";
 import {
   Form,
   FormControl,
@@ -20,15 +20,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../../ui/form";
-import { RadioGroup, RadioGroupItem } from "../../ui/radio-group";
-import { riverLevelDataTypes } from "@/types/queryTypes";
+} from "@/components/ui/form";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { formatDateString, getDateRange } from "@/lib/utils";
 import toast from "react-hot-toast";
-import { useRiverLevelDownloadData } from "@/hooks/react-query/mutations";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { Separator } from "@/components/ui/separator";
+import { useRiverLevelDownloadData } from "@/hooks/mutations/useUserMutations";
+import { RiverLevelData } from "@/types/user.type";
 
 type RiverLevelDialogProps = {
   id: string;
@@ -51,7 +51,7 @@ const RiverLevelDialog = ({ id, name }: RiverLevelDialogProps) => {
     getDateRange(selected, now)
   );
 
-  const generateCSVData = (data: riverLevelDataTypes[]): string => {
+  const generateCSVData = (data: RiverLevelData[]): string => {
     if (!data || data.length === 0) return "";
     const headers = ["Date Recorded", "Height (cm)"];
     const rows = data.map((item) => [
@@ -61,7 +61,7 @@ const RiverLevelDialog = ({ id, name }: RiverLevelDialogProps) => {
     return [headers.join(","), ...rows.map((row) => row.join(","))].join("\n");
   };
 
-  const generateJSONData = (data: riverLevelDataTypes[]): string => {
+  const generateJSONData = (data: RiverLevelData[]): string => {
     return JSON.stringify(data, null, 2);
   };
 

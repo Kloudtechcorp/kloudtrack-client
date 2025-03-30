@@ -11,17 +11,13 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { passwordSchema } from "@/types/validation";
-import { checkPasswordStrength } from "@/lib/utils";
-import {
-  useHandleLogout,
-  useUpdateUserPassword,
-} from "@/hooks/react-query/mutations";
-import { useState } from "react";
+import { passwordSchema } from "@/lib/validation";
 import { useNavigate } from "react-router-dom";
 import { INITIAL_USER, useUserContext } from "@/hooks/custom-hooks/authContext";
 import { Card } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
+import { useUpdateUserPassword } from "@/hooks/mutations/useUserMutations";
+import { useHandleLogout } from "@/hooks/mutations/useAuthMutations";
 
 const defaultValues = {
   currentPassword: "",

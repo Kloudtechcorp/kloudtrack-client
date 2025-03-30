@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import PuffLoader from "react-spinners/PuffLoader";
 import { useNavigate } from "react-router-dom";
-import { useGetClmsData } from "../../../hooks/react-query/queries";
 import { formatDateString, stationType } from "@/lib/utils";
-import { useTheme } from "../../theme-provider";
 import NoData from "@/pages/error/NoData";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -16,10 +14,12 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Map, { Marker } from "react-map-gl";
+import { useGetCoastalData } from "@/hooks/queries/useStations";
+import { useTheme } from "@/components/theme-provider";
 
 const CoastalDataCard: React.FC<{ id: string }> = ({ id }) => {
   const navigate = useNavigate();
-  const { data: stationData, isLoading, isError } = useGetClmsData(id);
+  const { data: stationData, isLoading, isError } = useGetCoastalData(id);
   const [clicked, setClicked] = useState(false);
   const { theme } = useTheme();
   const [mapboxStyle] = useState(

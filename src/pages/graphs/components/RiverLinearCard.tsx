@@ -7,10 +7,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import TableGraphCard from "../TableGraphCard";
 import { addSpacesToPascalCase, checkRepeat } from "@/lib/utils";
 import RangeRepeatSelector from "@/components/global/custom-ui/SelectRangeRepeat";
 import { Switch } from "@/components/ui/switch";
+import DataVisuals from "./DataVisuals";
 
 const RiverLinearCard: React.FC<{ id: string[] }> = ({ id }) => {
   const [weatherData, setWeatherData] = useState<string>(
@@ -93,7 +93,7 @@ const RiverLinearCard: React.FC<{ id: string[] }> = ({ id }) => {
 
             <div className="flex flex-col gap-[.4rem] overflow-y-auto w-full custom-scrollbar">
               {id.map((id, key) => (
-                <TableGraphCard
+                <DataVisuals
                   type={"rlms"}
                   stationId={id}
                   weatherData={weatherData}

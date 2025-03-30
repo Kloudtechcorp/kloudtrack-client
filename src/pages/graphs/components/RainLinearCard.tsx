@@ -7,10 +7,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import React, { useEffect, useState } from "react";
-import TableGraphCard from "../TableGraphCard";
 import { addSpacesToPascalCase, checkRepeat } from "@/lib/utils";
 import RangeRepeatSelector from "@/components/global/custom-ui/SelectRangeRepeat";
 import { Switch } from "@/components/ui/switch";
+import DataVisuals from "./DataVisuals";
 
 const RainLinearCard: React.FC<{ id: string[] }> = ({ id }) => {
   const [weatherData, setWeatherData] = useState<string>(
@@ -109,7 +109,7 @@ const RainLinearCard: React.FC<{ id: string[] }> = ({ id }) => {
             </div>
             <div className="tableGraphCard">
               {id.map((id, key) => (
-                <TableGraphCard
+                <DataVisuals
                   type={"arg"}
                   stationId={id}
                   weatherData={weatherData}

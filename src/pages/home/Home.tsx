@@ -34,6 +34,7 @@ import {
   RiverDataCard,
   RiverDataTable,
   WeatherDataCard,
+  WeatherDataTable,
 } from "./components";
 
 const Dashboard = () => {
@@ -217,7 +218,7 @@ const Dashboard = () => {
                               <TableBody>
                                 {filteredStations[category.type].map(
                                   (station) => (
-                                    <AwsTable
+                                    <WeatherDataTable
                                       key={station.id}
                                       id={station.id}
                                     />

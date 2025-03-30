@@ -97,9 +97,9 @@ export const useGetDataset = (
 
 export const useGetStationDetailed = (
   id: string
-): UseQueryResult<StationInformation[], Error> => {
+): UseQueryResult<StationInformation, Error> => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_BUG_REPORTS],
+    queryKey: [QUERY_KEYS.GET_STATION_DETAILED],
     queryFn: () => getStationDetailed(id),
     staleTime: 5000,
     refetchInterval: 5000,

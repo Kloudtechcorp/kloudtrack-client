@@ -1,11 +1,11 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import { useGetRlmsData } from "@/hooks/react-query/queries";
 import { formatDateString } from "@/lib/utils";
 import VariableGraph from "@/pages/graphs/components/CustomChart";
 import PuffLoader from "react-spinners/PuffLoader";
 import NotFound from "@/pages/error/NotFound";
 import RiverLevelDialog from "./RiverDownloadDialog";
+import { useGetRiverData } from "@/hooks/queries/useStations";
 
 type RlmsDataCardProps = {
   stationId: string;
@@ -13,7 +13,7 @@ type RlmsDataCardProps = {
 
 const RlmsDataCard = ({ stationId }: RlmsDataCardProps) => {
   const navigate = useNavigate();
-  const { data: stationData, isError, isLoading } = useGetRlmsData(stationId);
+  const { data: stationData, isError, isLoading } = useGetRiverData(stationId);
 
   if (isError || !stationData?.data) {
     return (

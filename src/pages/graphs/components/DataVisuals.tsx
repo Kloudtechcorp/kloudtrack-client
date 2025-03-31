@@ -14,7 +14,7 @@ import {
 } from "@/lib/utils";
 import NoData from "../../error/NoData";
 import { LinearGraph } from "@/types/station.type";
-import CustomChart from "./CustomChart";
+import CustomChart from "../../../components/global/custom-ui/CustomChart";
 import { useGetAnalysis } from "@/hooks/queries/useStations";
 
 const DataVisuals = ({

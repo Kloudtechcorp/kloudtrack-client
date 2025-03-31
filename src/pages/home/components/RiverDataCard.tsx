@@ -16,7 +16,7 @@ import {
 import Map, { Marker } from "react-map-gl";
 import { useGetRiverData } from "@/hooks/queries/useStations";
 import MeasurementCard from "@/components/global/custom-ui/MeasurementCard";
-import DataVisuals from "@/pages/graphs/components/DataVisuals";
+import CustomChart from "@/components/global/custom-ui/CustomChart";
 
 const RiverDataCard: React.FC<{ id: string }> = ({ id }) => {
   const navigate = useNavigate();
@@ -151,7 +151,7 @@ const RiverDataCard: React.FC<{ id: string }> = ({ id }) => {
                 value={stationData.data.distance}
                 unit="mm"
               />
-              <DataVisuals
+              <CustomChart
                 stationId={id}
                 weatherData="distance"
                 repeat="minute"

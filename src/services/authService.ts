@@ -31,7 +31,7 @@ export const getIsAuthenticated = async (): Promise<{
 // ** POST REQUESTS
 export const signInAccount = async (user: SignIn) => {
   const response = await fetch(`${server}/user/auth/signin`, {
-    method: "GET",
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
@@ -48,7 +48,7 @@ export const signInAccount = async (user: SignIn) => {
 };
 export const handleLogout = async () => {
   const response = await fetch(`${server}/user/auth/logout`, {
-    method: "GET",
+    method: "POST",
     credentials: "include",
   });
   const data = await response.json();

@@ -8,7 +8,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import NoData from "../../error/NoData";
-import VariableGraph from "@/pages/graphs/components/CustomChart";
+import VariableGraph from "@/components/global/custom-ui/CustomChart";
 import { RiverDashboard } from "@/types/station.type";
 
 interface MapCardProps {

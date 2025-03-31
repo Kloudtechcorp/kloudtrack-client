@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { formatDateString } from "@/lib/utils";
-import VariableGraph from "@/pages/graphs/components/CustomChart";
+import VariableGraph from "@/components/global/custom-ui/CustomChart";
 import PuffLoader from "react-spinners/PuffLoader";
 import NotFound from "@/pages/error/NotFound";
 import RainGaugeDialog from "./RainDownloadDialog";

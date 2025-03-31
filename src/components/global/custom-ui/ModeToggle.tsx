@@ -1,38 +1,33 @@
 import { Moon, Sun } from "lucide-react";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useTheme } from "@/components/theme-provider";
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
-export function ModeToggle({ expand }: ModeToggle) {
+export function ModeToggle() {
   const { setTheme, theme } = useTheme();
 
   return (
-    <ToggleGroup
-      type="single"
-      className={`flex flex-row gap-0 ${
-        expand && "flex-row"
-      } rounded-sm bg-black/5 dark:bg-white/5 h-8`}
-      value={theme}
-    >
-      <ToggleGroupItem
-        value="light"
-        className="rounded-md border-b-4 border-[#fbd008] dark:border-none"
-        onClick={() => {
-          const selectedTheme = theme === "light" ? "dark" : "light";
-          setTheme(selectedTheme);
-        }}
-      >
-        <Sun className="size-3" />
-      </ToggleGroupItem>
-      <ToggleGroupItem
-        value="dark"
-        className="rounded-md dark:border-b-4 dark:border-[#fbd008]"
-        onClick={() => {
-          const selectedTheme = theme === "dark" ? "light" : "dark";
-          setTheme(selectedTheme);
-        }}
-      >
-        <Moon className="size-3" />
-      </ToggleGroupItem>
-    </ToggleGroup>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+          >
+            <Sun className="h-[1.5rem] w-[1.3rem] dark:hidden" />
+            <Moon className="hidden h-5 w-5 dark:block" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Click to toggle theme</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }

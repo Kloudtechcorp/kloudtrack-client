@@ -47,10 +47,11 @@ export function WeatherSensors() {
     pageSize: 10,
   });
 
-  const { data, isLoading, isError } = useGetWeatherSensors(
-    pagination.pageIndex,
-    pagination.pageSize
-  );
+  const {
+    data: weatherData,
+    isLoading,
+    isError,
+  } = useGetWeatherSensors(pagination.pageIndex, pagination.pageSize);
   const columns: ColumnDef<WeatherSensor[][number]>[] = [
     {
       accessorKey: "name",
@@ -128,10 +129,10 @@ export function WeatherSensors() {
   ];
 
   const table = useReactTable({
-    data: data?.items || [],
+    data: weatherData ? weatherData.items : [],
     columns,
     manualPagination: true,
-    pageCount: data?.totalPages || 0,
+    pageCount: weatherData ? weatherData.totalPages : 0,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
@@ -155,7 +156,7 @@ export function WeatherSensors() {
     );
   }
 
-  if (!data || isError) {
+  if (!weatherData || isError) {
     return (
       <div className="py-4">
         <NoDataOptions />
@@ -252,8 +253,10 @@ export function WeatherSensors() {
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <span className="text-sm text-muted-foreground">
-          Page {pagination.pageIndex + 1} of {data?.totalPages || 0}
-          {data?.totalCount ? ` (${data.totalCount} items total)` : ""}
+          Page {pagination.pageIndex + 1} of {weatherData?.totalPages || 0}
+          {weatherData?.totalCount
+            ? ` (${weatherData.totalCount} items total)`
+            : ""}
         </span>
         <div className="space-x-2">
           <Button

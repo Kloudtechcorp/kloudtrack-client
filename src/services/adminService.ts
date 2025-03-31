@@ -21,7 +21,7 @@ export const addPsgc = async (values: PsgcData) => {
   const response = await fetch(`${server}/admin/psgc`, {
     method: "POST",
     headers: {
-      "Content-": "application/json",
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(values),
     credentials: "include",
@@ -39,7 +39,7 @@ export const addStationType = async (values: StationType) => {
   const response = await fetch(`${server}/admin/station-type`, {
     method: "POST",
     headers: {
-      "Content-": "application/json",
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(values),
     credentials: "include",
@@ -58,7 +58,7 @@ export const createUser = async (userData: UserData) => {
   const response = await fetch(`${server}/admin/signup`, {
     method: "POST",
     headers: {
-      "Content-": "application/json",
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(userData),
     credentials: "include",
@@ -177,7 +177,7 @@ export const updateUser = async (
     method: "PUT",
     credentials: "include",
     headers: {
-      "Content-": "application/json",
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       grantedStations: values.grantedStations,
@@ -200,7 +200,7 @@ export const updateReportStatus = async (
     method: "PUT",
     credentials: "include",
     headers: {
-      "Content-": "application/json",
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       id: values.id,

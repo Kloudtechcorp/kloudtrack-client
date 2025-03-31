@@ -109,8 +109,8 @@ const Header = ({ burgerMenu }: HeaderToggle) => {
               <img src={"/assets/pd-icons/bataangov.png"} />
             </span>
           </div>
-          <div className="mr-2">
-            <ModeToggle expand={false} />
+          <div className="mr-10">
+            <ModeToggle />
           </div>
         </div>
       )}

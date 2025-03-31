@@ -15,7 +15,8 @@ import {
 } from "@/components/ui/tooltip";
 import Map, { Marker } from "react-map-gl";
 import { useGetRainData } from "@/hooks/queries/useStations";
-import DataVisuals from "@/pages/graphs/components/DataVisuals";
+import CustomChart from "@/components/global/custom-ui/CustomChart";
+import MeasurementCard from "@/components/global/custom-ui/MeasurementCard";
 
 const RainDataCard: React.FC<{ id: string }> = ({ id }) => {
   const navigate = useNavigate();
@@ -148,30 +149,12 @@ const RainDataCard: React.FC<{ id: string }> = ({ id }) => {
               </TooltipProvider>
             </div>
             <Card className="flex flex-col h-full mb-3">
-              <Card className="cardDashboard">
-                <CardContent className="px-0 p-0 h-full">
-                  <div className="text-center w-full flex flex-col h-full">
-                    <div className="cardTitleDiv">
-                      <span className="weatherDataTitle">Precipitation</span>
-                    </div>
-
-                    <div className="text-xl flex h-full items-center justify-center">
-                      <div className="font-medium text-xl flex h-full items-center flex-row justify-center gap-2">
-                        <div className="flex flex-col w-full">
-                          <span className="weatherDataText">
-                            {stationData.data.precipitation === null
-                              ? "--"
-                              : `${
-                                  stationData.data.precipitation
-                                } ${weatherUnit("precipitation")}`}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              <DataVisuals
+              <MeasurementCard
+                label="Distance"
+                value={stationData.data.precipitation}
+                unit="mm"
+              />
+              <CustomChart
                 stationId={id}
                 weatherData="precipitation"
                 repeat="minute"

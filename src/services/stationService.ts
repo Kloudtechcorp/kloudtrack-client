@@ -245,7 +245,7 @@ export const createStation = async (station: StationData) => {
   const response = await fetch(`${server}/admin/station`, {
     method: "POST",
     headers: {
-      "Content-": "application/json",
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(station),
     credentials: "include",
@@ -264,7 +264,7 @@ export const updateStation = async (
     method: "PUT",
     credentials: "include",
     headers: {
-      "Content-": "application/json",
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       stationName: values.name,
